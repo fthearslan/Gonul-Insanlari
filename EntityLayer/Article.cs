@@ -31,6 +31,8 @@ namespace EntityLayer
         public List<Comment> Comments { get; set;}
 
         public List<Video>? Videos { get; set;}
+        public AppUser AppUser { get; set; }
+
 
     }
 }

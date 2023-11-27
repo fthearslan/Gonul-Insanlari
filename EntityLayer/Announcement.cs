@@ -18,6 +18,7 @@ namespace EntityLayer
         public DateTime Created { get; set; }
         public bool Status { get; set; }
         public bool ToPublish { get; set; }
+        public AppUser AppUser { get; set; }
 
     }
 }

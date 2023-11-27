@@ -25,6 +25,7 @@ namespace EntityLayer
 
         public int? ArticleID { get; set; }
         public Article? Article { get; set; }
+        public AppUser AppUser { get; set; }
 
     }
 }
