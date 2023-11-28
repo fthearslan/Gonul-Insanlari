@@ -23,5 +23,10 @@ namespace EntityLayer
         [InverseProperty("Receiver")]
         public List<Assignment> AssignmentReceived { get; set; }
 
+        [InverseProperty("Sender")]
+        public List<Message> MessagesSent { get; set; }
+        [InverseProperty("Receiver")]
+        public List<Message> MessagesReceived { get; set; }
+
     }
 }
