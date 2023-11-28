@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,42 @@ namespace BussinessLayer.Concrete
 {
     public class AssignmentManager : IAssignmentService
     {
+        IAssignmentDAL _assignment;
+
+        public AssignmentManager(IAssignmentDAL assignment)
+        {
+            _assignment = assignment;
+        }
+
         public void Add(Assignment entity)
         {
-            throw new NotImplementedException();
+            _assignment.Insert(entity);
         }
 
         public void Delete(Assignment entity)
         {
-            throw new NotImplementedException();
+            _assignment.Delete(entity);
+
         }
 
         public Assignment GetById(int id)
         {
-            throw new NotImplementedException();
+            return _assignment.Get(x => x.AssignmentId == id);
         }
 
         public List<Assignment> List()
         {
-            throw new NotImplementedException();
+            return _assignment.List();
         }
 
         public List<Assignment> ListFilter()
         {
-            throw new NotImplementedException();
+            return _assignment.ListFilter(x => x.Status == true);
         }
 
         public void Update(Assignment entity)
         {
-            throw new NotImplementedException();
+            _assignment.Update(entity);
         }
     }
 }

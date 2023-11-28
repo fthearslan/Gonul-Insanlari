@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class AnnouncementManager : IAnnouncementService
     {
+        IAnnouncementDAL _announcement;
+
+        public AnnouncementManager(IAnnouncementDAL announcement)
+        {
+            _announcement = announcement;
+        }
+
         public void Add(Announcement entity)
         {
-            throw new NotImplementedException();
+            _announcement.Insert(entity);
         }
 
         public void Delete(Announcement entity)
         {
-            throw new NotImplementedException();
+            _announcement.Delete(entity);
         }
 
         public Announcement GetById(int id)
         {
-            throw new NotImplementedException();
+            return _announcement.Get(x => x.ID == id);
         }
 
         public List<Announcement> List()
         {
-            throw new NotImplementedException();
+            return _announcement.List();
         }
 
         public List<Announcement> ListFilter()
         {
-            throw new NotImplementedException();
+            return _announcement.ListFilter(x => x.Status == true);
         }
 
         public void Update(Announcement entity)
         {
-            throw new NotImplementedException();
+            _announcement.Update(entity);
         }
     }
 }

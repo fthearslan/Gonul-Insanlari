@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class MessageManager : IMessageService
     {
+        IMessageDAL _message;
+
+        public MessageManager(IMessageDAL message)
+        {
+            _message = message;
+        }
+
         public void Add(Message entity)
         {
-            throw new NotImplementedException();
+            _message.Insert(entity);
         }
 
         public void Delete(Message entity)
         {
-            throw new NotImplementedException();
+            _message.Delete(entity);
         }
 
         public Message GetById(int id)
         {
-            throw new NotImplementedException();
+            return _message.Get(x => x.MessageID == id);
         }
 
         public List<Message> List()
         {
-            throw new NotImplementedException();
+            return _message.List();
         }
 
         public List<Message> ListFilter()
         {
-            throw new NotImplementedException();
+            return _message.ListFilter(x => x.Status == true);
         }
 
         public void Update(Message entity)
         {
-            throw new NotImplementedException();
+             _message.Update(entity);
         }
     }
 }

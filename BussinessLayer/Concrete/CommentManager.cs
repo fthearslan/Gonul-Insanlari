@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class CommentManager : ICommentService
     {
+        ICommentDAL _comment;
+
+        public CommentManager(ICommentDAL comment)
+        {
+            _comment = comment;
+        }
+
         public void Add(Comment entity)
         {
-            throw new NotImplementedException();
+            _comment.Insert(entity);
         }
 
         public void Delete(Comment entity)
         {
-            throw new NotImplementedException();
+            _comment.Delete(entity);
         }
 
         public Comment GetById(int id)
         {
-            throw new NotImplementedException();
+            return _comment.Get(x => x.CommentID == id);
         }
 
         public List<Comment> List()
         {
-            throw new NotImplementedException();
+            return _comment.List();
         }
 
         public List<Comment> ListFilter()
         {
-            throw new NotImplementedException();
+            return _comment.ListFilter(x => x.Status == true);
         }
 
         public void Update(Comment entity)
         {
-            throw new NotImplementedException();
+            _comment.Update(entity);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class VideoManager : IVideoService
     {
+        IVideoDAL _video;
+
+        public VideoManager(IVideoDAL video)
+        {
+            _video = video;
+        }
+
         public void Add(Video entity)
         {
-            throw new NotImplementedException();
+            _video.Insert(entity);
         }
 
         public void Delete(Video entity)
         {
-            throw new NotImplementedException();
+            _video.Delete(entity);
         }
 
         public Video GetById(int id)
         {
-            throw new NotImplementedException();
+            return _video.Get(x => x.VideoID == id);
         }
 
         public List<Video> List()
         {
-            throw new NotImplementedException();
+            return _video.List();
         }
 
         public List<Video> ListFilter()
         {
-            throw new NotImplementedException();
+            return _video.ListFilter(x => x.Status == true);
         }
 
         public void Update(Video entity)
         {
-            throw new NotImplementedException();
+            _video.Update(entity);
         }
     }
 }

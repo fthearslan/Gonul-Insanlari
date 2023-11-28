@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class ArticleManager : IArticleService
     {
+        IArticleDAL _article;
+
+        public ArticleManager(IArticleDAL article)
+        {
+            _article = article;
+        }
+
         public void Add(Article entity)
         {
-            throw new NotImplementedException();
+            _article.Insert(entity);
         }
 
         public void Delete(Article entity)
         {
-            throw new NotImplementedException();
+            _article.Delete(entity);
         }
 
         public Article GetById(int id)
         {
-            throw new NotImplementedException();
+            return _article.Get(x => x.ArticleID == id);
         }
 
         public List<Article> List()
         {
-            throw new NotImplementedException();
+            return _article.List();
         }
 
         public List<Article> ListFilter()
         {
-            throw new NotImplementedException();
+            return _article.ListFilter(x => x.Status == true);
         }
 
         public void Update(Article entity)
         {
-            throw new NotImplementedException();
+            _article.Update(entity);
         }
     }
 }

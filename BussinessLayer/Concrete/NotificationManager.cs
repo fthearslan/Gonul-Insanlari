@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract;
+using DataAccessLayer.Abstract;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,41 @@ namespace BussinessLayer.Concrete
 {
     public class NotificationManager : INotificationService
     {
+        INotificationDAL _notify;
+
+        public NotificationManager(INotificationDAL notify)
+        {
+            _notify = notify;
+        }
+
         public void Add(Notification entity)
         {
-            throw new NotImplementedException();
+            _notify.Insert(entity);
         }
 
         public void Delete(Notification entity)
         {
-            throw new NotImplementedException();
+            _notify.Delete(entity);
         }
 
         public Notification GetById(int id)
         {
-            throw new NotImplementedException();
+            return _notify.Get(x => x.ID == id);
         }
 
         public List<Notification> List()
         {
-            throw new NotImplementedException();
+            return _notify.List();
         }
 
         public List<Notification> ListFilter()
         {
-            throw new NotImplementedException();
+            return _notify.ListFilter(x => x.Status == true);
         }
 
         public void Update(Notification entity)
         {
-            throw new NotImplementedException();
+            _notify.Update(entity);
         }
     }
 }
