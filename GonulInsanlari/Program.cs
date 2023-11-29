@@ -7,24 +7,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
-builder.Services.AddMvc(config =>
-{
-	var policy=new AuthorizationPolicyBuilder()
-	.RequireAuthenticatedUser()
-	.Build();
-	config.Filters.Add(new AuthorizeFilter(policy));
-}
-);
+//builder.Services.AddMvc(config =>
+//{
+//	var policy=new AuthorizationPolicyBuilder()
+//	.RequireAuthenticatedUser()
+//	.Build();
+//	config.Filters.Add(new AuthorizeFilter(policy));
+//}
+//);
 
 builder.Services.AddMvc();
-builder.Services.AddAuthentication(
-	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-{
-	x.LoginPath = "Admin/Login/Login";
+//builder.Services.AddAuthentication(
+//	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+//{
+//	x.LoginPath = "/Admin/Login/Login";
 
-}
+//}
 
-	);
+//	);
 	
 
 
@@ -43,9 +43,18 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
+//app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+      name: "areas",
+      pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+    );
+});
+
 
 app.MapControllerRoute(
 	name: "default",
