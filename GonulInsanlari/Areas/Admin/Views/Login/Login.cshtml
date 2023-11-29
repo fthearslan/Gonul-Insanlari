@@ -1,0 +1,93 @@
+﻿@using GonulInsanlari.Areas.Admin.Models
+@model SignInViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Admin Panel</title>
+
+    <link href="~/inspinia-gh-pages/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/font-awesome/css/font-awesome.css" rel="stylesheet">
+
+    <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="loginColumns animated fadeInDown">
+        <div class="row">
+
+            <div class="col-md-6">
+                <h2 class="font-bold">Welcome to Administration Panel</h2>
+
+                <p>
+                    This is where you will find an opportunity to gudie people to better life.
+                </p>
+                <p>
+                    “Whoever guides someone to goodness will have a reward like the one who did it.”
+                </p>
+            </div>
+            <div class="col-md-6">
+                <div class="ibox-content">
+                    <form class="m-t" role="form" asp-action="Login">
+                        <div class="form-group">
+                            <input type="text" class="form-control" asp-for="@Model.Username"  placeholder="Username" >
+                        <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <input type="password" class="form-control" placeholder="Password"  asp-for="@Model.Password" id="typepass">
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                        </div>
+                        <input type="checkbox" onclick="Toggle()">
+                        <strong>Show Password</strong>
+
+                        <button type="submit" class="btn btn-primary block full-width m-b">Login</button>
+
+                        <a href="#">
+                            <small>Forgot password?</small>
+                        </a>
+                    </form>
+                    <span class="text-danger">@TempData["Error"]</span>
+             
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                Gonul Insanlari
+            </div>
+            <div class="col-md-6 text-right">
+                <small>© 2023</small>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+
+</html>
+<script>
+    // Change the type of input to password or text
+    function Toggle() {
+        let temp = document.getElementById("typepass");
+
+        if (temp.type === "password") {
+            temp.type = "text";
+        }
+        else {
+            temp.type = "password";
+        }
+    }
+</script>

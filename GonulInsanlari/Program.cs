@@ -1,3 +1,5 @@
+using DataAccessLayer.Concrete;
+using EntityLayer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -7,25 +9,28 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession();
-//builder.Services.AddMvc(config =>
-//{
-//	var policy=new AuthorizationPolicyBuilder()
-//	.RequireAuthenticatedUser()
-//	.Build();
-//	config.Filters.Add(new AuthorizeFilter(policy));
-//}
-//);
+builder.Services.AddMvc(config =>
+{
+	var policy = new AuthorizationPolicyBuilder()
+	.RequireAuthenticatedUser()
+	.Build();
+	config.Filters.Add(new AuthorizeFilter(policy));
+}
+);
+builder.Services.AddDbContext<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+
 
 builder.Services.AddMvc();
-//builder.Services.AddAuthentication(
-//	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
-//{
-//	x.LoginPath = "/Admin/Login/Login";
+builder.Services.AddAuthentication(
+	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
+{
+	x.LoginPath = "/Admin/Login/Login";
 
-//}
+}
 
-//	);
-	
+	);
+
 
 
 var app = builder.Build();
@@ -43,7 +48,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-//app.UseAuthentication();
+app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
 
