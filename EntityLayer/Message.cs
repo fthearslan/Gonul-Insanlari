@@ -19,6 +19,7 @@ namespace EntityLayer
         public DateTime Created { get; set; }
         public bool Status { get; set; }
         public bool IsDraft { get; set; }
+        public bool IsSeen { get; set; }
         public AppUser Sender { get; set; }
         public AppUser Receiver { get; set; }
     }

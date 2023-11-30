@@ -1,12 +1,24 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using EntityLayer;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 {
-    public class AdminSideBar:ViewComponent
+    public class AdminSideBar : ViewComponent
     {
-        public IViewComponentResult Invoke()
+        UserManager<AppUser> _UserManager;
+
+        public AdminSideBar(UserManager<AppUser> userManager)
         {
-            return View();
+            _UserManager = userManager;
+        }
+       
+        public  IViewComponentResult Invoke()
+        {
+           var user=_UserManager.GetUserAsync(HttpContext.User).Result;
+            
+            return View(user);
         }
     }
 }

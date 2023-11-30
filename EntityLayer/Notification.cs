@@ -14,8 +14,6 @@ namespace EntityLayer
         [StringLength(75)]
         public string Title { get; set; }
         [StringLength(30)]
-        public string? Type { get; set; }
-        [StringLength(30)]
         public string? Symbol { get; set; }
         [StringLength(150)]
         public string Content { get; set; }

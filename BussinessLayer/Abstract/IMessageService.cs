@@ -9,5 +9,6 @@ namespace BussinessLayer.Abstract
 {
    public interface IMessageService : IGenericService<Message>
     {
+        List<Message> GetListWithSender(int id);
     }
 }

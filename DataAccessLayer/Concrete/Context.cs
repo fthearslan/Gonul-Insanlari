@@ -16,24 +16,6 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\SQLEXPRESS;database=GoDb;integrated security=true; TrustServerCertificate=true;");
         }
 
-
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    modelBuilder.Entity<Assignment>()
-        //        .HasOne(x => x.Sender)
-        //        .WithMany(y => y.AssignmentsSent)
-        //        .HasForeignKey(z => z.)
-        //        .OnDelete(DeleteBehavior.ClientSetNull);
-
-        //    modelBuilder.Entity<Assignment>()
-        //        .HasOne(x => x.Receiver)
-        //        .WithMany(y => y.ToReceive)
-        //        .HasForeignKey(z => z.ReceiverID)
-        //        .OnDelete(DeleteBehavior.ClientSetNull);
-        //    base.OnModelCreating(modelBuilder);
-        //}
-
         public DbSet<About> Abouts { get; set; }
         public DbSet<Announcement> Announcements { get; set; }
         public DbSet<Article> Articles { get; set; }
@@ -45,6 +27,10 @@ namespace DataAccessLayer.Concrete
         public DbSet<Video> Videos { get; set; }
 
         public DbSet<Assignment> Assignments { get; set; }
+
+        public DbSet<Message> Messages { get; set; }
+
+        public DbSet<Notification> Notifications { get; set; }
      
 
     }

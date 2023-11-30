@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
     public interface IMessageDAL:IRepository<Message>
     {
+       List<Message> GetListhWithSender(int id); 
     }
 }

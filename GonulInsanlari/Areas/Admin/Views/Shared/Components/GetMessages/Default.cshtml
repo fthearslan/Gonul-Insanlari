@@ -1,26 +1,30 @@
-﻿
+﻿@model List<Message>
+
 <li class="dropdown">
     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-        <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-    </a>
+        <i class="fa fa-envelope"></i>  <span class="label label-warning">@ViewBag.Count</span> 
+            </a>
     <ul class="dropdown-menu dropdown-messages">
-        <li>
-            <div class="dropdown-messages-box">
-                <a class="dropdown-item float-left" href="profile.html">
-                    <img alt="image" class="rounded-circle" src="img/a7.jpg">
-                </a>
-                <div class="media-body">
-                    <small class="float-right">46h ago</small>
-                    <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>. <br>
-                    <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
+        @foreach (var message in Model)
+        {
+            <li>
+                <div  class="dropdown-messages-box">
+                    <a style="padding-left:0;" class="dropdown-item float-left" href="#">
+                        <img alt="image" class="rounded-circle" src="~/Images/@message.Sender.ImagePath">
+                    </a>
+                    <div class="media-body">
+                        <small class="float-right">@GetDate.GetCreateDate(message.Created)</small> 
+                        <strong>@message.Sender.UserName</strong>. <br>
+                        <small class="text-muted">@message.Content</small>
+                    </div>
                 </div>
-            </div>
-        </li>
-        <li class="dropdown-divider"></li>
+            </li>
+            <li class="dropdown-divider"></li>
+        }
         <li>
             <div class="text-center link-block">
                 <a href="mailbox.html" class="dropdown-item">
-                    <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
+                    <i class="fa fa-envelope"></i> <strong>Read Other @ViewBag.Rest Messages</strong>
                 </a>
             </div>
         </li>

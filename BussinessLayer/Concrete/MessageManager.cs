@@ -33,6 +33,16 @@ namespace BussinessLayer.Concrete
             return _message.Get(x => x.MessageID == id);
         }
 
+        public List<Message> GetByWriter(int id)
+        {
+            return _message.ListFilter(x => x.Receiver.Id == id);
+        }
+
+        public List<Message> GetListWithSender(int id)
+        {
+            return _message.GetListhWithSender(id);
+        }
+
         public List<Message> List()
         {
             return _message.List();
@@ -45,7 +55,7 @@ namespace BussinessLayer.Concrete
 
         public void Update(Message entity)
         {
-             _message.Update(entity);
+            _message.Update(entity);
         }
     }
 }
