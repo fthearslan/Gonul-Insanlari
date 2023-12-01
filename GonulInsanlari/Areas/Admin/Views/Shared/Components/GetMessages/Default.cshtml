@@ -9,13 +9,15 @@
         {
             <li>
                 <div  class="dropdown-messages-box">
-                    <a style="padding-left:0;" class="dropdown-item float-left" href="#">
+                    <a style="padding-left:0;"  class="dropdown-item float-left" href="#">
                         <img alt="image" class="rounded-circle" src="~/Images/@message.Sender.ImagePath">
                     </a>
                     <div class="media-body">
-                        <small class="float-right">@GetDate.GetCreateDate(message.Created)</small> 
-                        <strong>@message.Sender.UserName</strong>. <br>
+                        <small class="float-right">@GetDate.GetCreateDate(message.Created)</small>
+                        <a href="/Admin/Message/GetDetails/@message.MessageID" style="padding-left:0;" class="dropdown-item float-left">
+                        <strong>@message.Sender.UserName</strong><br>
                         <small class="text-muted">@message.Content</small>
+                   </a>
                     </div>
                 </div>
             </li>
