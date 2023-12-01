@@ -17,6 +17,7 @@ namespace EntityLayer
         public string? Symbol { get; set; }
         [StringLength(150)]
         public string Content { get; set; }
+        public int? Value { get; set; }
         public DateTime Created { get; set; }
         public bool Status { get; set; }
 
