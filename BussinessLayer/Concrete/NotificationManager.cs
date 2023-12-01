@@ -40,7 +40,7 @@ namespace BussinessLayer.Concrete
 
         public List<Notification> ListFilter()
         {
-            return _notify.ListFilter(x => x.Status == true);
+            return _notify.ListFilter(x => x.Status == true).OrderByDescending(x=>x.Created).ToList();
         }
 
         public void Update(Notification entity)
