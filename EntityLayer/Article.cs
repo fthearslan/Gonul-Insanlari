@@ -19,6 +19,8 @@ namespace EntityLayer
         public string Content { get; set; }
 
         public DateTime Created { get; set; }
+        public DateTime? Edited { get; set; }
+        public string? EditedBy { get; set; }
 
         public bool Status { get; set; }
 
