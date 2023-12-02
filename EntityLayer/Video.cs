@@ -23,6 +23,8 @@ namespace EntityLayer
         public int CategoryID { get; set; }
         public Category Category { get; set; }
 
+        public DateTime? Edited { get; set; }
+        public string? EditedBy { get; set; }
         public int? ArticleID { get; set; }
         public Article? Article { get; set; }
         public AppUser AppUser { get; set; }

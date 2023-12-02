@@ -18,9 +18,12 @@ namespace EntityLayer
         public string Content { get; set; }
         public DateTime Created { get; set; }
         public bool Status { get; set; }
-        public int ArticleID { get; set; }
+        public bool IsApproved { get; set; }
+        public int? ArticleID { get; set; }
+        public string? EditedBy { get; set; }
+        public DateTime? Edited { get; set; }
         public Article Article { get; set; }
-        public int VideoID { get; set; }
+        public int? VideoID { get; set; }
         public Video Video { get; set; }
 
 

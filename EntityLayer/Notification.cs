@@ -15,6 +15,7 @@ namespace EntityLayer
         public string Title { get; set; }
         [StringLength(30)]
         public string? Symbol { get; set; }
+        public string Type { get; set; }
         [StringLength(150)]
         public string Content { get; set; }
         public int? Value { get; set; }
