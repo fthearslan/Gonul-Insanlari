@@ -35,4 +35,11 @@
     <Folder Include="Areas\Admin\Data\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\inspinia-gh-pages\index.html">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -19,6 +19,7 @@ namespace EntityLayer
         public bool IsCompleted { get; set; }
 
         public DateTime Created { get; set; }
+        public DateTime Due {  get; set; }
 
         public AppUser Sender { get; set; }
         public AppUser? Receiver { get; set; }
