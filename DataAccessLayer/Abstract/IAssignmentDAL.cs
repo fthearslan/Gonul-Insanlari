@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
 public interface IAssignmentDAL:IRepository<Assignment>
     {
+        List<Assignment> GetAssignmentsWithSender(int id);
     }
 }

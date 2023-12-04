@@ -29,6 +29,12 @@ namespace BussinessLayer.Concrete
 
         }
 
+        public List<Assignment> GetAssignmentsWithSender(int id)
+        {
+       return _assignment.GetAssignmentsWithSender(id);
+        }
+
+
         public Assignment GetById(int id)
         {
             return _assignment.Get(x => x.AssignmentId == id);

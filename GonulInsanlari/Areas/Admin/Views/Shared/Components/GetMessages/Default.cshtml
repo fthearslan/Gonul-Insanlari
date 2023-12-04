@@ -15,7 +15,7 @@
                     <div class="media-body">
                         <small class="float-right">@GetDate.GetCreateDate(message.Created)</small>
                         <a href="/Admin/Message/GetDetails/@message.MessageID" style="padding-left:0;" class="dropdown-item float-left">
-                        <strong style="font-weight:600">@message.Sender.UserName</strong><br>
+                        <strong style="font-weight:500">@message.Sender.UserName</strong><br>
                             @if(@message.Content.Length >= 40)
                             {
                                 <small style="font-weight:400">@message.Content.Substring(0,@message.Content.Substring(0,40).LastIndexOf(" "))...</small>

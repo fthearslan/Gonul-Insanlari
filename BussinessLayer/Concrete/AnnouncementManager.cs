@@ -40,7 +40,7 @@ namespace BussinessLayer.Concrete
 
         public List<Announcement> ListFilter()
         {
-            return _announcement.ListFilter(x => x.Status == true);
+            return _announcement.ListFilter(x => x.Status == true && x.ToPublish == false).OrderByDescending(x=>x.Created).ToList();
         }
 
         public void Update(Announcement entity)

@@ -1,24 +1,26 @@
-﻿
+﻿@model List<Assignment>
 <div id="tab-2" class="tab-pane">
     <div class="sidebar-title">
-        <h3>Latest projects</h3>
-        <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+        <h3>Assignments</h3>
+        <p style="font-weight:600"><i class="fa fa-tim"></i>@ViewBag.Count, <a href="#">see all</a>.</p>
     </div>
 
     <ul class="sidebar-list">
+     @foreach(var assignment in Model){
         <li>
-            <a href="#">
-                <div class="small float-right m-t-xs">9 hours ago</div>
-                <h4>Business valuation</h4>
-                It is a long established fact that a reader will be distracted.
+            <a href="Admin/Assignment/GetDetails/@assignment.AssignmentId">
+                <div class="small float-right m-t-xs">@GetDate.GetCreateDate(assignment.Created)</div>
+                <h4>@assignment.Title</h4>
+                    @assignment.Content.Substring(0,assignment.Content.Substring(0,100).LastIndexOf(" "))...
 
-                <div class="small">Completion with: 22%</div>
-                <div class="progress progress-mini">
-                    <div style="width: 22%;" class="progress-bar progress-bar-warning"></div>
+                <div style="margin-top:4px;" class="small">@assignment.Due.Subtract(assignment.Created).Days days left</div>
+                    <div class="progress progress-mini">
+                    <div style="width:@ProgressBarWidth.GetWidth(assignment.Created,assignment.Due)%;" class="progress-bar progress-bar-warning"></div>
                 </div>
-                <div class="small text-muted m-t-xs">Project end: 4:00 pm - 12.06.2014</div>
+                    <div class="small text-muted m-t-xs">Due: @(((DateTime)assignment.Due).ToString("dd-MMM-yyyy"))</div>
             </a>
         </li>
+     }
     </ul>
 
 </div>

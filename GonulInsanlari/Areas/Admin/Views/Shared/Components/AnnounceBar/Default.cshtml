@@ -1,15 +1,16 @@
-﻿<div id="right-sidebar" class="animated">
+﻿@model List<Announcement>
+<div id="right-sidebar" class="animated">
     <div class="sidebar-container">
 
         <ul class="nav nav-tabs navs-3">
             <li>
                 <a class="nav-link active " data-toggle="tab" href="#tab-1"> <i class="fa fa-bullhorn"></i></a>
-            </li> 
+            </li>
             <li>
                 <a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-calendar"></i></a>
             </li>
             <li>
-                <a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-gear"></i> </a>
+                <a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-bookmark"></i> </a>
             </li>
         </ul>
 
@@ -20,143 +21,39 @@
 
                 <div class="sidebar-title">
                     <h3>Announcements</h3>
-                    <small><i class="fa fa-tim"></i>count</small>
+                    <p style="font-weight:600"><i class="fa fa-tim"></i>There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
                 </div>
 
                 <div>
-                    <div class="sidebar-message">
-                        <a href="#">
-                            <div class="float-left text-center">
-                                <img alt="image" class="rounded-circle message-avatar" src="img/a1.jpg">
-                            </div>
-                            <div class="media-body">
-
-                                There are many variations of passages of Lorem Ipsum available.
-                                <br>
-                                <small class="text-muted">Today 4:21 pm</small>
-                            </div>
-                        </a>
-                    </div>
+                    @foreach (var announce in Model)
+                    {
+                        <div class="sidebar-message">
+                            <a href="/Admin/Announcement/GetDetails/@announce.ID">
+                                <div class="float-left text-center">
+                                    <i class="fa fa-bullhorn fa-2x"></i>
+                                </div>
+                                <div class="media-body">
+                                <h4>@announce.Title</h4>
+                                    @announce.Details.Substring(0,announce.Details.Substring(0,100).LastIndexOf(" "))...
+                                    <br>
+                                    <small class="text-muted">@GetDate.GetCreateDate(announce.Created)</small>
+                                </div>
+                            </a>
+                        </div>
+                    }
                 </div>
             </div>
             @await Component.InvokeAsync("AssignmentBar")
             <div id="tab-3" class="tab-pane">
 
                 <div class="sidebar-title">
-                    <h3></i> Settings</h3>
-                    <small><i class="fa fa-tim"></i> You have 14 projects. 10 not completed.</small>
+                    <h3></i>Notes</h3>
+                    <small><i class="fa fa-tim"></i>Notes will be here.</small>
                 </div>
-
-                <div class="setings-item">
-                    <span>
-                        Show notifications
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example">
-                            <label class="onoffswitch-label" for="example">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Disable Chat
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="collapsemenu" checked class="onoffswitch-checkbox" id="example2">
-                            <label class="onoffswitch-label" for="example2">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Enable history
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example3">
-                            <label class="onoffswitch-label" for="example3">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Show charts
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example4">
-                            <label class="onoffswitch-label" for="example4">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Offline users
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example5">
-                            <label class="onoffswitch-label" for="example5">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Global search
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" checked name="collapsemenu" class="onoffswitch-checkbox" id="example6">
-                            <label class="onoffswitch-label" for="example6">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="setings-item">
-                    <span>
-                        Update everyday
-                    </span>
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            <input type="checkbox" name="collapsemenu" class="onoffswitch-checkbox" id="example7">
-                            <label class="onoffswitch-label" for="example7">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="sidebar-content">
-                    <h4>Settings</h4>
-                    <div class="small">
-                        I belive that. Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        And typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
-                        Over the years, sometimes by accident, sometimes on purpose (injected humour and the like).
-                    </div>
-                </div>
-
+                Content
             </div>
+
         </div>
     </div>
 </div>
-     
+
