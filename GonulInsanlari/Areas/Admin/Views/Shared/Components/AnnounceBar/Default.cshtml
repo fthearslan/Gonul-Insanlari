@@ -10,7 +10,7 @@
                 <a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-calendar"></i></a>
             </li>
             <li>
-                <a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-bookmark"></i> </a>
+                <a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-sticky-note"></i> </a>
             </li>
         </ul>
 
@@ -21,7 +21,7 @@
 
                 <div class="sidebar-title">
                     <h3>Announcements</h3>
-                    <p style="font-weight:600"><i class="fa fa-tim"></i>There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
+                    <p style="font-weight:600">There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
                 </div>
 
                 <div>
@@ -30,10 +30,10 @@
                         <div class="sidebar-message">
                             <a href="/Admin/Announcement/GetDetails/@announce.ID">
                                 <div class="float-left text-center">
-                                    <i class="fa fa-bullhorn fa-2x"></i>
+                                    <i class="fa fa-bullhorn fa-lg"></i>
                                 </div>
                                 <div class="media-body">
-                                <h4>@announce.Title</h4>
+                                    <h4>@announce.Title</h4>
                                     @announce.Details.Substring(0,announce.Details.Substring(0,100).LastIndexOf(" "))...
                                     <br>
                                     <small class="text-muted">@GetDate.GetCreateDate(announce.Created)</small>
@@ -44,15 +44,7 @@
                 </div>
             </div>
             @await Component.InvokeAsync("AssignmentBar")
-            <div id="tab-3" class="tab-pane">
-
-                <div class="sidebar-title">
-                    <h3></i>Notes</h3>
-                    <small><i class="fa fa-tim"></i>Notes will be here.</small>
-                </div>
-                Content
-            </div>
-
+            @await Component.InvokeAsync("AdminGetNotes")
         </div>
     </div>
 </div>
