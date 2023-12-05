@@ -9,7 +9,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         ContactManager contactManager = new ContactManager(new EFContactDAL());
         public IViewComponentResult Invoke()
         {
-            var contacts = contactManager.ListFilter().Take(4).ToList();
+            var contacts = contactManager.ListFilter().Take(8).ToList();
             var Count = contactManager.ListFilter().Count;
             ViewBag.Count = Count;
             return View(contacts);

@@ -1,0 +1,35 @@
+﻿@model List<Announcement>
+
+<div class="col-lg-6">
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5>Announcements</h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="close-link">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        @foreach (var announce in Model)
+        {
+           
+                <div class="ibox-content ibox-heading">
+                <a style="text-decoration-color:inherit" href="/Admin/Announcement/Details/@announce.ID">
+                    <h3>
+                        <i style="margin-right:15px;" class="fa fa-bullhorn fa-lg"></i>@announce.Title
+                    </h3>
+                    @if (announce.Details.Length >= 150)
+                    {
+                        <small>@announce.Details.Substring(0,announce.Details.Substring(0,150).LastIndexOf(" "))...</small>
+                    }
+                    <small>@announce.Details</small>
+                </a>
+                </div>
+            
+        }
+    </div>
+
+</div>

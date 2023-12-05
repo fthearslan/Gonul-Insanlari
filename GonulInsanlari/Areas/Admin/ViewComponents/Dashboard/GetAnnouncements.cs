@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
 {
-    public class GetArticles:ViewComponent
+    public class GetAnnouncements:ViewComponent
     {
-        ArticleManager articleManager= new ArticleManager(new EFArticleDAL());
+        AnnouncementManager manager = new AnnouncementManager(new EFAnnouncementDAL());
+
         public IViewComponentResult Invoke()
         {
-            var articles = articleManager.ListWithCategory().Take(10).ToList();
-            return View(articles);
+            var announcements = manager.ListFilter().Take(3).ToList();
+            return View(announcements);
         }
     }
 }
