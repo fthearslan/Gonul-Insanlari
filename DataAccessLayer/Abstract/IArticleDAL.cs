@@ -9,5 +9,6 @@ namespace DataAccessLayer.Abstract
 {
 public interface IArticleDAL:IRepository<Article>
     {
+        List<Article> ListWithCategory();
     }
 }

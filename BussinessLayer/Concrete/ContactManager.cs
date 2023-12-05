@@ -42,7 +42,7 @@ namespace BussinessLayer.Concrete
 
         public List<Contact> ListFilter()
         {
-            return _contact.ListFilter(x => x.Status == true);
+            return _contact.ListFilter(x => x.Status == true && x.IsSeen==false).OrderByDescending(x=>x.Created).ToList();
         }
 
         public void Update(Contact entity)

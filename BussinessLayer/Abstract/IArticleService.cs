@@ -9,5 +9,6 @@ namespace BussinessLayer.Abstract
 {
     public interface IArticleService:IGenericService<Article>
     {
+        List<Article> ListWithCategory();
     }
 }

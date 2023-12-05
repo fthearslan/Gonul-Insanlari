@@ -40,7 +40,12 @@ namespace BussinessLayer.Concrete
 
         public List<Article> ListFilter()
         {
-            return _article.ListFilter(x => x.Status == true);
+            return _article.ListFilter(x => x.Status == true).OrderByDescending(x=>x.Created).ToList();
+        }
+
+        public List<Article> ListWithCategory()
+        {
+            return _article.ListWithCategory();
         }
 
         public void Update(Article entity)
