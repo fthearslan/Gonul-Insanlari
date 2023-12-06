@@ -3,6 +3,7 @@
 <div class="col-lg-4">
     <div class="ibox ">
         <div class="ibox-title">
+            <span class="label label-success float-right">@ViewBag.Count New Contacts</span>
             <h5>Contacts</h5>
             <div class="ibox-tools">
                 <a class="collapse-link">
@@ -13,47 +14,51 @@
                 </a>
             </div>
         </div>
-        @foreach (var contact in Model)
-        {
-            <div class="ibox-content ibox-heading">
-                <a style="text-decoration-color:inherit" href="/Admin/Contact/GetDetails/@contact.ID">
-                <h3><i style="margin-right:10px;" class="fa fa-envelope-o"></i>@contact.NameSurname - @contact.EmailAddress</h3>
-                @if (contact.Content.Length>=10)
-                {
-                    <small>
-                        <i class="fa fa-tim"></i> @contact.Content.Substring(0,contact.Content.Substring(0,10).LastIndexOf(" ")).
-                        ..
-                    </small>
-                }
-                <small>@contact.Content</small>
-            </a>
-            </div>
-        }
-        @*      <div class="ibox-content">
-        <div class="feed-activity-list">
-        @foreach (var contact in Model)
-        {
-        <div class="feed-element">
-        <a style="text-decoration-color:inherit" href="/Admin/Contact/GetDetails/@contact.ID">
-        <div>
+
+        @* <div class="ibox-content ibox-heading">
+
         <small class="float-right text-navy">@GetDate.GetCreateDate(contact.Created)</small>
-        <strong>@contact.NameSurname</strong>
-        @if (contact.Content.Length >= 40)
-        {
-        <div>
-        @contact.Content.Substring(0,contact.Content.Substring(0,35).LastIndexOf(" ")).
-        ..
-        </div>
-        }
-        <div>@contact.Content</div>
-        <small class="text-muted"></small>
-        </div>
+
+        <h3><i style="margin-right:10px;" class="fa fa-envelope-o"></i>@contact.NameSurname - @contact.EmailAddress</h3>
+        @contact.Subject
+        <div class="float-right">
+        <a style="text-decoration-color:#525761;margin-bottom:30px;" href="/Admin/Contact/GetDetails/@contact.ID">
+        <i  class="fa fa-chevron-right fa-3x"></i>
         </a>
+        </div>
 
         </div>
-        }
+        *@
 
+        <div class="ibox-content">
+            <div class="feed-activity-list">
+                @foreach (var contact in Model)
+                {
+                    <div class="feed-element">
+                        <a style="text-decoration-color:#525761" href="/Admin/Contact/GetDetails/@contact.ID">
+                            <div>
+                                <small class="float-right text-navy">@GetDate.GetCreateDate(contact.Created)</small>
+                                <i style="margin-right:10px;margin-left:2px;" class="fa fa-envelope-o"></i>  <strong>@contact.NameSurname</strong> - @contact.EmailAddress
+                                @if (contact.Content.Length >= 70)
+                                {
+                                    <div>
+                                        @contact.Content.Substring(0,contact.Content.Substring(0,70).LastIndexOf(" "))...
+
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div>@contact.Content</div>
+
+                                }
+                                <small class="text-muted"></small>
+                            </div>
+                        </a>
+
+                    </div>
+                }
+
+            </div>
         </div>
-        </div> *@
     </div>
 </div>

@@ -17,6 +17,8 @@ namespace EntityLayer
         public string EmailAddress { get; set; }
         [StringLength(300)]
         public string Content { get; set; }
+        [StringLength(50)]
+        public string Subject { get; set; }
         public DateTime Created { get; set; }
         public bool IsSeen { get; set; }
         public bool Status { get; set; }
