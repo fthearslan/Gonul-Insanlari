@@ -1,0 +1,66 @@
+﻿@model List<Assignment>
+
+<div class="col-lg-6">
+    <div class="ibox ">
+        <div class="ibox-title">
+            <h5><a href="/Admin/Assignment/List" style="color:inherit">Assignments</a></h5>
+            <div class="ibox-tools">
+                <a class="collapse-link">
+                    <i class="fa fa-chevron-up"></i>
+                </a>
+                <a class="close-link">
+                    <i class="fa fa-times"></i>
+                </a>
+            </div>
+        </div>
+        <div class="ibox-content">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-hover margin bottom">
+                        <thead>
+                            <tr>
+                                <th style="width: 1%" class="text-center">#</th>
+                                <th>Title</th>
+                                <th class="text-center">Due</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var assign in Model)
+                            {
+                                string Status;
+
+                                if (assign.IsCompleted == true)
+                                {
+                                    Status = "Done";
+                                }
+                                else
+                                {
+                                    Status = "Progressing";
+                                }
+
+                                <tr>
+                                    <td class="text-center">#</td>
+                                    <td>
+                                        <a style="text-decoration-color:#525761" href="/Admin/Assignments/Details/@assign.AssignmentId">
+                                            <div style="height:100%;width:100%">
+                                                @assign.Title
+                                            </div>
+                                        </a>
+                                    </td>
+                                    <td class="text-center small">@assign.Due.ToString("MMM-dd-yyy")</td>
+                                    <td class="text-center"><span class="label label-primary">@Status</span></td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>

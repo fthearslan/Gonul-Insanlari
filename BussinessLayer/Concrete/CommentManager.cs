@@ -40,7 +40,7 @@ namespace BussinessLayer.Concrete
 
         public List<Comment> ListFilter()
         {
-            return _comment.ListFilter(x => x.Status == true);
+            return _comment.ListFilter(x => x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
         public void Update(Comment entity)

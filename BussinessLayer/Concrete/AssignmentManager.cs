@@ -29,9 +29,15 @@ namespace BussinessLayer.Concrete
 
         }
 
+        public List<Assignment> GetAssignmentsByReceiver(int id)
+        {
+
+            return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver==null && x.Status == true).OrderByDescending(x => x.Created).ToList();
+        }
+
         public List<Assignment> GetAssignmentsWithSender(int id)
         {
-       return _assignment.GetAssignmentsWithSender(id);
+            return _assignment.GetAssignmentsWithSender(id);
         }
 
 
