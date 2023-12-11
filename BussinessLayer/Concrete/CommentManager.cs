@@ -28,6 +28,11 @@ namespace BussinessLayer.Concrete
             _comment.Delete(entity);
         }
 
+        public List<Comment> GetByArticle(int id)
+        {
+            return _comment.ListFilter(x => x.ArticleID == id);
+        }
+
         public Comment GetById(int id)
         {
             return _comment.Get(x => x.CommentID == id);

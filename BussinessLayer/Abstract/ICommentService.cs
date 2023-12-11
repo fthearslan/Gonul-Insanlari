@@ -9,5 +9,6 @@ namespace BussinessLayer.Abstract
 {
     public interface ICommentService:IGenericService<Comment>
     {
+        List<Comment> GetByArticle(int id);
     }
 }
