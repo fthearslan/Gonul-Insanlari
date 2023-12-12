@@ -21,7 +21,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             switch (notification.Type)
             {
                 case "Article":
-                    return RedirectToAction("GetDetails", "Article",notification);
+                    return RedirectToAction("GetDetailsByNotification", "Article",notification);
                 case "Comment":
                     return RedirectToAction("GetDetails", "Comment");
                 case "Video":

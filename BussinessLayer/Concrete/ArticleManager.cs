@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _article.Get(x => x.ArticleID == id);
         }
 
+        public Article GetWithVideos(int id)
+        {
+            return _article.GetWithVideos(id);
+        }
+
         public List<Article> List()
         {
             return _article.List();

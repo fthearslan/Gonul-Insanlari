@@ -28,7 +28,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (value != null)
             {
                 int id = (int)value;
-                var article = manager.GetById(id);
+                var article = manager.GetWithVideos(id);
                 return View(article);
             }
             else
@@ -39,7 +39,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
         public IActionResult GetDetails(int id)
         {
-            var article = manager.GetById(id);
+            var article = manager.GetWithVideos(id);
             if (article != null)
             {
                 return View(article);

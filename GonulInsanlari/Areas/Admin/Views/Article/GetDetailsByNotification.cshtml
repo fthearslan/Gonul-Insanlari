@@ -1,7 +1,8 @@
 ﻿@using EntityLayer
 @model Article
+
 @{
-    ViewData["Title"] = "GetDetails";
+    ViewData["Title"] = "GetDetailsByNotification";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -10,15 +11,29 @@
         <div class="col-lg-10">
             <div class="ibox">
                 <div class="ibox-content">
-                    <div class="text-center article-title">
+                    <div style="margin-bottom:25px;" class="text-center article-title">
                         <span class="text-muted"><i class="fa fa-clock-o"></i> @Model.Created.ToString("MMM-dd-yyyy")</span>
-                        <h1>
+                        <h1 style="margin-bottom:25px;">
                             @Model.Title
                         </h1>
+                        @if (Model.Videos != null)
+                        {
+                            @foreach (var video in Model.Videos)
+                            {
+
+                                <center>
+                                    <iframe width="95%" height="600" src="@video.Path" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                </center>
+                            }
+
+                        }
                     </div>
+
                     <p>
                         @Model.Content
                     </p>
+                    <h5 style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser.UserName</h5>
+
                     <hr>
 
                     @await Component.InvokeAsync("GetCommentsByArticle",Model.ArticleID)
