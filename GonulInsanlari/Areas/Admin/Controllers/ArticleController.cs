@@ -14,17 +14,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class ArticleController : Controller
     {
         ArticleManager manager = new ArticleManager(new EFArticleDAL());
-        public IActionResult Index()
+        public IActionResult List()
         {
-            return View();
+            var articles = manager.ListWithCategory();
+            return View(articles);
         }
-
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
         {
-
-
-
             if (value != null)
             {
                 int id = (int)value;
@@ -33,10 +30,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             else
             {
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
             }
-
         }
+
         public IActionResult GetDetails(int id)
         {
             var article = manager.GetWithVideos(id);
@@ -49,7 +46,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return RedirectToAction("Index");
 
             }
-
         }
     }
 }

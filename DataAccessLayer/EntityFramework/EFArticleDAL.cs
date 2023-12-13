@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer;
+using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,13 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Articles.Include(a => a.Videos).Include(a=>a.AppUser).OrderByDescending(a => a.Created).Where(x=>x.ArticleID==id && x.Status==true).SingleOrDefault();
+#pragma warning disable CS8603 // Possible null reference return.
+                return c.Articles
+                    .Include(a => a.Videos)
+                    .Include(a => a.AppUser)
+                    .OrderByDescending(a => a.Created).Where(x => x.ArticleID == id && x.Status == true)
+                    .SingleOrDefault();
+#pragma warning restore CS8603 // Possible null reference return.
             }
 
         }
@@ -25,10 +32,13 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Articles.Include(a => a.Category).OrderByDescending(a=>a.Created).Where(x=>x.Status==true).ToList();
+                return c.Articles
+                    .Include(a => a.Category)
+                    .OrderByDescending(a => a.Created)
+                    .Where(x => x.Status == true).ToList();
             }
         }
-    
+
     }
 
 }

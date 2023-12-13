@@ -1,0 +1,51 @@
+﻿@using EntityLayer
+@using GonulInsanlari.Areas.Admin.Models
+@model List<Article>
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-12">
+        <h2>Articles</h2>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+         @foreach (var article in Model)
+            {
+        <div class="col-md-3">
+                <div class="ibox">
+                    <div class="ibox-content product-box">
+
+                        <div class="product-imitation">
+                            
+                            <img alt="image" src="~/Images/@article.ImagePath">
+                        </div>
+                        <div class="product-desc">
+                            <span class="product-price">
+                                @GetDate.GetCreateDate(article.Created)
+                            </span>
+                            <small class="text-muted">@article.Category.Name</small>
+                            <a href="#" class="product-name">@article.Title</a>
+
+
+
+                            <div class="small m-t-xs">
+                                @article.Content.Substring(0, article.Content.Substring(0,35).LastIndexOf(" "))...
+                            </div>
+                            <div class="m-t text-righ">
+                                <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i class="fa fa-long-arrow-right"></i> </a>
+                                <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i class="fa fa-pencil-square-o"></i> </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+        </div>
+        }
+
+    </div>
+</div>
+
