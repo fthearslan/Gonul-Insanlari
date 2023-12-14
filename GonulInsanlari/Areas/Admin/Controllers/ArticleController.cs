@@ -15,9 +15,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class ArticleController : Controller
     {
         ArticleManager manager = new ArticleManager(new EFArticleDAL());
-        public IActionResult List(int pageNumber=1)
+        public IActionResult List(int pageNumber = 1)
         {
-            var articles = manager.ListWithCategory().ToPagedList(pageNumber,12);
+            var articles = manager.ListWithCategory().ToPagedList(pageNumber, 12);
             return View(articles);
         }
         [HttpGet("{Value}")]
@@ -31,7 +31,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             else
             {
-                    return RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -48,5 +48,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             }
         }
+      
     }
 }
