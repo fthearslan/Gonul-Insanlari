@@ -1,0 +1,38 @@
+﻿@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Article>
+
+<div class="row">
+
+    @foreach (var article in Model)
+    {
+        <div class="col-md-3">
+            <div class="ibox">
+                <div class="ibox-content product-box">
+                    <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
+                    <div class="product-desc">
+                        <span class="product-price">
+                            <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.Comments.Count
+                            <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
+                        </span>
+                        <small class="text-muted">@article.Category.Name</small>
+                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
+
+
+
+                        <div class="small m-t-xs">
+                            @article.Content.Substring(0, article.Content.Substring(0,35).LastIndexOf(" "))...
+                        </div>
+                        <div class="m-t text-righ">
+                            <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                            <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+</div>
+@* @Html.PagedListPager((IPagedList)Model,pageNumber=>("",new { pageNumber})) *@

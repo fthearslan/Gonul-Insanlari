@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _article.Get(x => x.ArticleID == id);
         }
 
+        public List<Article> GetDrafts()
+        {
+            return _article.ListWithCategory().Where(x=>x.IsDraft==true).ToList();
+        }
+
         public Article GetWithVideos(int id)
         {
             return _article.GetWithVideos(id);
@@ -50,7 +55,7 @@ namespace BussinessLayer.Concrete
 
         public List<Article> ListWithCategory()
         {
-            return _article.ListWithCategory();
+            return _article.ListWithCategory().Where(x=>x.IsDraft==false).ToList();
         }
 
         public void Update(Article entity)

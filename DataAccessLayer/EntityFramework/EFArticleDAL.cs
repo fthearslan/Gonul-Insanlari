@@ -34,6 +34,7 @@ namespace DataAccessLayer.EntityFramework
             {
                 return c.Articles
                     .Include(a => a.Category)
+                    .Include(a => a.Comments)
                     .OrderByDescending(a => a.Created)
                     .Where(x => x.Status == true).ToList();
             }

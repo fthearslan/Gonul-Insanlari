@@ -1,6 +1,9 @@
 ﻿@using EntityLayer
 @using GonulInsanlari.Areas.Admin.Models
-@model List<Article>
+@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<Article>
+
 @{
     ViewData["Title"] = "List";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -9,43 +12,83 @@
 <div class="row wrapper border-bottom white-bg page-heading">
     <div class="col-lg-12">
         <h2>Articles</h2>
+        <div class="ibox-tools">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                <i style="margin-right:5px;" class="fa fa-filter fa-lg"></i> <strong>Filter</strong>
+            </a>
+            <ul class="dropdown-menu dropdown-user">
+                <li>
+                    <a href="#" class="dropdown-item">Week</a>
+                </li>
+                <li>
+                    <a href="#" class="dropdown-item">Month</a>
+                </li>
+            </ul>
+        </div>
     </div>
+    
 </div>
+
+
+
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-         @foreach (var article in Model)
-            {
-        <div class="col-md-3">
-                <div class="ibox">
-                    <div class="ibox-content product-box">
+    <div class="col-lg-12">
+        <div class="tabs-container">
+            <ul class="nav nav-tabs" role="tablist">
+                <li><a class="nav-link active" data-toggle="tab" href="#tab-1">Released</a></li>
+                <li><a class="nav-link" data-toggle="tab" href="#tab-2">Drafts</a></li>
+            </ul>
+            <div class="tab-content">
+                <div role="tabpanel" id="tab-1" class="tab-pane active">
+                    <div class="panel-body">
+                        <div class="row">
 
-                        <div class="product-imitation">
-                            
-                            <img alt="image" src="~/Images/@article.ImagePath">
+                            @foreach (var article in Model)
+                            {
+                                <div class="col-md-3">
+                                    <div class="ibox">
+                                        <div class="ibox-content product-box">
+                                            <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
+                                            <div class="product-desc">
+                                                <span class="product-price">
+                                                    <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.Comments.Count
+                                                    <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
+                                                </span>
+                                                <small class="text-muted">@article.Category.Name</small>
+                                                <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
+
+
+
+                                                <div class="small m-t-xs">
+                                                    @article.Content.Substring(0, article.Content.Substring(0,35).LastIndexOf(" "))...
+                                                </div>
+                                                <div class="m-t text-righ">
+                                                    <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                                                    <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+
                         </div>
-                        <div class="product-desc">
-                            <span class="product-price">
-                                @GetDate.GetCreateDate(article.Created)
-                            </span>
-                            <small class="text-muted">@article.Category.Name</small>
-                            <a href="#" class="product-name">@article.Title</a>
+                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
 
-
-
-                            <div class="small m-t-xs">
-                                @article.Content.Substring(0, article.Content.Substring(0,35).LastIndexOf(" "))...
-                            </div>
-                            <div class="m-t text-righ">
-                                <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i class="fa fa-long-arrow-right"></i> </a>
-                                <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i class="fa fa-pencil-square-o"></i> </a>
-                            </div>
-                        </div>
                     </div>
                 </div>
+                <div role="tabpanel" id="tab-2" class="tab-pane">
+                    <div class="panel-body">
+                       @await Component.InvokeAsync("GetDrafts")
+                    </div>
+                </div>
+            </div>
+
 
         </div>
-        }
-
     </div>
+    
+   
 </div>
 

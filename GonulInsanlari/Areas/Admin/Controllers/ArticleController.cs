@@ -5,6 +5,7 @@ using Humanizer.Localisation.TimeToClockNotation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography.X509Certificates;
+using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -14,9 +15,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class ArticleController : Controller
     {
         ArticleManager manager = new ArticleManager(new EFArticleDAL());
-        public IActionResult List()
+        public IActionResult List(int pageNumber=1)
         {
-            var articles = manager.ListWithCategory();
+            var articles = manager.ListWithCategory().ToPagedList(pageNumber,12);
             return View(articles);
         }
         [HttpGet("{Value}")]

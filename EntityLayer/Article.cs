@@ -23,6 +23,7 @@ namespace EntityLayer
         public string? EditedBy { get; set; }
 
         public bool Status { get; set; }
+        public bool IsDraft { get; set; }
 
         public string ImagePath { get; set; }
 
