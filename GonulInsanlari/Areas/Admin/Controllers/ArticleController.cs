@@ -4,6 +4,7 @@ using EntityLayer;
 using Humanizer.Localisation.TimeToClockNotation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Cryptography.X509Certificates;
 using X.PagedList;
 
@@ -14,10 +15,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [AllowAnonymous]
     public class ArticleController : Controller
     {
-        ArticleManager manager = new ArticleManager(new EFArticleDAL());
+        ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
+        CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         public IActionResult List(int pageNumber = 1)
         {
-            var articles = manager.ListWithCategory().ToPagedList(pageNumber, 12);
+            var articles = _articleManager.ListWithCategory().ToPagedList(pageNumber, 12);
             return View(articles);
         }
         [HttpGet("{Value}")]
@@ -26,7 +28,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (value != null)
             {
                 int id = (int)value;
-                var article = manager.GetWithVideos(id);
+                var article = _articleManager.GetWithVideos(id);
                 return View(article);
             }
             else
@@ -37,7 +39,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult GetDetails(int id)
         {
-            var article = manager.GetWithVideos(id);
+            var article = _articleManager.GetWithVideos(id);
             if (article != null)
             {
                 return View(article);
@@ -48,6 +50,25 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             }
         }
-      
+
+        [HttpGet]
+        public IActionResult AddArticle()
+        {
+            List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
+                                               select new SelectListItem
+                                               {
+                                                   Value = x.CategoryID.ToString(),
+                                                   Text = x.Name,
+                                               }).ToList();
+            ViewBag.Categories = categories;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddArticle(Article article)
+        {
+           
+            return View();
+        }
     }
 }
