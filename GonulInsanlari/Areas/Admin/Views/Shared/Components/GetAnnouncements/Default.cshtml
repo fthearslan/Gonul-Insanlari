@@ -16,8 +16,7 @@
         @foreach (var announce in Model)
         {
            
-                <div class="ibox-content ibox-heading">
-                <a style="text-decoration-color:inherit" href="/Admin/Announcement/Details/@announce.ID">
+                <div style="cursor:pointer" class="ibox-content ibox-heading myBox">
                     <h3>
                         <i style="margin-right:15px;" class="fa fa-bullhorn fa-lg"></i>@announce.Title
                     </h3>
@@ -26,10 +25,17 @@
                         <small>@announce.Details.Substring(0,announce.Details.Substring(0,150).LastIndexOf(" "))...</small>
                     }
                     <small>@announce.Details</small>
-                </a>
+                <a @* style="text-decoration-color:inherit" *@ href="/Admin/Announcement/Details/@announce.ID"></a>
+               
                 </div>
             
         }
     </div>
 
 </div>
+<script>
+    $(".myBox").click(function () {
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
+</script>

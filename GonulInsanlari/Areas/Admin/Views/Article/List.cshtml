@@ -45,32 +45,45 @@
 
                             @foreach (var article in Model)
                             {
-                                <div class="col-md-3">
-                                    <div class="ibox">
-                                        <div class="ibox-content product-box">
-                                            <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
-                                            <div class="product-desc">
-                                                <span class="product-price">
-                                                    <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.Comments.Count
-                                                    <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
-                                                </span>
-                                                <small class="text-muted">@article.Category.Name</small>
-                                                <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
+                                if (article.IsDraft == false)
+                                {
+                                    <div class="col-md-3">
+                                        <div class="ibox">
+                                            <div class="ibox-content product-box">
+                                                <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
+                                                <div class="product-desc">
+                                                    <span class="product-price">
+                                                        <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.Comments.Count
+                                                        <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
+                                                    </span>
+                                                    <small class="text-muted">@article.Category.Name</small>
+                                                    @if (article.Title.Length > 40)
+                                                    {
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title.Substring(0,article.Title.Substring(0,40).LastIndexOf(" "))...</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
+
+                                                    }
 
 
 
-                                                <div class="small m-t-xs">
-                                                    @article.Content.Substring(0, article.Content.Substring(0,35).LastIndexOf(" "))...
-                                                </div>
-                                                <div class="m-t text-righ">
-                                                    <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
-                                                    <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                                                    <div @* class="small m-t-sm" *@>
+                                                        <small><strong> @@@article.AppUser.UserName - @article.Created.ToString("dd-MMM-yyyy")</strong></small>
+                                                    </div>
+                                                    <div class="m-t text-righ">
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                                                        <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                </div>
+                                    </div>
+                                }
+                              
                             }
 
                         </div>
@@ -82,7 +95,55 @@
 
                 <div role="tabpanel" id="tab-2" class="tab-pane">
                     <div class="panel-body">
-                        @await Component.InvokeAsync("GetDrafts")
+
+                        <div class="row">
+
+                            @foreach (var article in Model)
+                            {
+                                if (article.IsDraft == true)
+                                {
+                                    <div class="col-md-3">
+                                        <div class="ibox">
+                                            <div class="ibox-content product-box">
+                                                <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
+                                                <div class="product-desc">
+                                                    <span class="product-price">
+                                                        <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.Comments.Count
+                                                        <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
+                                                    </span>
+                                                    <small class="text-muted">@article.Category.Name</small>
+                                                    @if (article.Title.Length > 40)
+                                                    {
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title.Substring(0,article.Title.Substring(0,40).LastIndexOf(" "))...</a>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
+
+                                                    }
+
+
+
+                                                    <div>
+                                                        <small><strong> @@@article.AppUser.UserName - @article.Created.ToString("dd-MMM-yyyy")</strong></small>
+                                                    </div>
+                                                    <div class="m-t text-righ">
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                                                        <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                }
+                             
+                            }
+
+                        </div>
+                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
+
 
                     </div>
                 </div>

@@ -55,7 +55,7 @@ namespace BussinessLayer.Concrete
 
         public List<Article> ListWithCategory()
         {
-            return _article.ListWithCategory().Where(x=>x.IsDraft==false).ToList();
+            return _article.ListWithCategory();
         }
 
         public void Update(Article entity)

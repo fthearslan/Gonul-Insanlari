@@ -14,7 +14,8 @@
     <link href="~/inspinia-gh-pages/css/plugins/steps/jquery.steps.css" rel="stylesheet">
     <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
     <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
-
+    <link href="~/css/side.css" rel="stylesheet" />
+    <link href="~/css/sideanimate.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -28,6 +29,32 @@
 
             <div class="wrapper wrapper-content">
                @RenderBody()
+                <div id="ss_menu">
+                    <div class="myBox" >
+                       <i  class="fa fa-plus"></i>
+                       <a href="/Admin/Article/AddArticle"></a>
+                    </div>
+                    <div class="myBox">
+                        <i class="fa fa-video-camera"></i>
+                        <a href="/Admin/Video/AddVideo"></a>
+                    </div>
+                    <div class="myBox">
+                        <i class="fa fa-commenting"></i>
+                        <a href="/Admin/Message/GetList"></a>
+                    </div>
+                    <div class="myBox">
+                        <i class="fa fa-bullhorn"></i>
+                        <a href="/Admin/Announcement/GetList"></a>
+                    </div>
+                    <div class="menu">
+                        <div class="share" id="ss_toggle" data-rot="180">
+                          
+                            <div class="circle"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                   
+                </div>
             </div>
             <div class="footer">
                 <div class="float-right">
@@ -40,9 +67,13 @@
 
 
             @await Component.InvokeAsync("AnnounceBar")
+            
+
         </div>
     </div>
 
+    
+    
     <!-- Mainly scripts -->
     <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
     <script src="~/inspinia-gh-pages/js/popper.min.js"></script>
@@ -50,7 +81,7 @@
     <script src="~/inspinia-gh-pages/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/sparkline/jquery.sparkline.min.js"></script>
-
+  @*   <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> *@
     <!-- Peity -->
     <script src="~/inspinia-gh-pages/js/plugins/peity/jquery.peity.min.js"></script>
     <script src="~/inspinia-gh-pages/js/demo/peity-demo.js"></script>
@@ -63,3 +94,40 @@
 </body>
 
 </html>
+<script>
+    $(document).ready(function (ev) {
+        var toggle = $('#ss_toggle');
+        var menu = $('#ss_menu');
+        var rot;
+
+        $('#ss_toggle').on('click', function (ev) {
+            rot = parseInt($(this).data('rot')) - 180;
+            menu.css('transform', 'rotate(' + rot + 'deg)');
+            menu.css('webkitTransform', 'rotate(' + rot + 'deg)');
+            if ((rot / 180) % 2 == 0) {
+                //Moving in
+                toggle.parent().addClass('ss_active');
+                toggle.addClass('close');
+            } else {
+                //Moving Out
+                toggle.parent().removeClass('ss_active');
+                toggle.removeClass('close');
+            }
+            $(this).data('rot', rot);
+        });
+
+        menu.on('transitionend webkitTransitionEnd oTransitionEnd', function () {
+            if ((rot / 180) % 2 == 0) {
+                $('#ss_menu div i').addClass('ss_animate');
+            } else {
+                $('#ss_menu div i').removeClass('ss_animate');
+            }
+        });
+
+    });
+
+    $(".myBox").click(function () {
+        window.location = $(this).find("a").attr("href");
+        return false;
+    });
+</script>

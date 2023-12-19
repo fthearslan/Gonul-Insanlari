@@ -30,7 +30,7 @@
                     </div>
                  
                     <p>
-                        @Model.Content
+                        @Html.Raw(@Model.Content)
                     </p>
          <h5  style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser.UserName</h5>
                     

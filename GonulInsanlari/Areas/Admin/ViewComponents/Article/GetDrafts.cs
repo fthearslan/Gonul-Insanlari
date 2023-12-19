@@ -14,5 +14,5 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
            var drafts = manager.GetDrafts().ToPagedList(pageNumber,4);
             return View(drafts);
         }
-    }
+    } 
 }

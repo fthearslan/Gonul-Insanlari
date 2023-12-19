@@ -35,6 +35,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Include(a => a.Category)
                     .Include(a => a.Comments)
+                    .Include(a=>a.AppUser)
                     .OrderByDescending(a => a.Created)
                     .Where(x => x.Status == true).ToList();
             }

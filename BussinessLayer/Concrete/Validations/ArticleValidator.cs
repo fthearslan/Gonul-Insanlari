@@ -1,0 +1,22 @@
+﻿using EntityLayer;
+using FluentValidation;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BussinessLayer.Concrete.Validations
+{
+    public class ArticleValidator : AbstractValidator<Article>
+    {
+        public ArticleValidator()
+        {
+            RuleFor(x => x.Title).NotEmpty().WithMessage("Title cannot be empty.");
+            RuleFor(x => x.Title).MinimumLength(10).WithMessage("Title cannot contain less than 10 charachters.");
+            RuleFor(x => x.Title).MaximumLength(50).WithMessage("Title cannot contain more than 50 charachters.");
+            RuleFor(x => x.Content).NotEmpty().WithMessage("This field is required.");
+            RuleFor(x => x.Content).MinimumLength(500).WithMessage("Too short for an article.");
+        }
+    }
+}
