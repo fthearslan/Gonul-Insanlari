@@ -79,7 +79,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article,IFormFile file)
+        public async Task<IActionResult> AddArticle(Article article,IFormFile file,string url)
         {
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
@@ -88,7 +88,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
-           
+
+
             ValidationResult result = validator.Validate(article);
             if (result.IsValid)
             {
@@ -99,6 +100,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 }
                 else
                 {
+                    
                     TempData["Error"] = "Please, select an image file.";
                     return View(article);
                 }

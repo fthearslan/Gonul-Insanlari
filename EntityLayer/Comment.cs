@@ -23,8 +23,6 @@ namespace EntityLayer
         public string? EditedBy { get; set; }
         public DateTime? Edited { get; set; }
         public Article Article { get; set; }
-        public int? VideoID { get; set; }
-        public Video Video { get; set; }
 
 
     }

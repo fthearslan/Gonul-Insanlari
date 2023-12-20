@@ -20,6 +20,6 @@ namespace EntityLayer
         public string ImagePath { get; set; }
         public bool Status { get; set; }
         public List<Article> Articles { get; set; }
-        public List<Video> Videos { get; set; }
+       
     }
 }
