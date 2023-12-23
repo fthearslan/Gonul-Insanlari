@@ -256,6 +256,21 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Articles");
                 });
 
+            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
+                {
+                    b.Property<int>("ArticleID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VideoID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ArticleID", "VideoID");
+
+                    b.HasIndex("VideoID");
+
+                    b.ToTable("ArticleVideos");
+                });
+
             modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
                     b.Property<int>("AssignmentId")
@@ -571,13 +586,10 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoID"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
+                    b.Property<int?>("AppUserIdId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("ArticleID")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsUrl")
@@ -592,9 +604,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("VideoID");
 
-                    b.HasIndex("AppUserId");
-
-                    b.HasIndex("ArticleID");
+                    b.HasIndex("AppUserIdId");
 
                     b.ToTable("Videos");
                 });
@@ -732,6 +742,25 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
+                {
+                    b.HasOne("EntityLayer.Article", "Article")
+                        .WithMany("Videos")
+                        .HasForeignKey("ArticleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EntityLayer.Video", "Video")
+                        .WithMany("Articles")
+                        .HasForeignKey("VideoID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("Video");
+                });
+
             modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
                     b.HasOne("EntityLayer.AppUser", "Receiver")
@@ -790,15 +819,11 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Video", b =>
                 {
-                    b.HasOne("EntityLayer.AppUser", null)
+                    b.HasOne("EntityLayer.AppUser", "AppUserId")
                         .WithMany("Videos")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserIdId");
 
-                    b.HasOne("EntityLayer.Article", "Article")
-                        .WithMany("Videos")
-                        .HasForeignKey("ArticleID");
-
-                    b.Navigation("Article");
+                    b.Navigation("AppUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -879,6 +904,11 @@ namespace DataAccessLayer.Migrations
                 });
 
             modelBuilder.Entity("EntityLayer.Category", b =>
+                {
+                    b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("EntityLayer.Video", b =>
                 {
                     b.Navigation("Articles");
                 });

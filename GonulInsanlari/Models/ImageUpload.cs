@@ -4,18 +4,18 @@
     {
         public static string Upload(IFormFile file)
         {
-         if(file !=null)
+            if (file != null)
             {
-                string Extension = Path.GetExtension(file.FileName);
-                string Image = Guid.NewGuid().ToString() + Extension;
-                var location = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/", Image);
-                var stream = new FileStream(location, FileMode.Create);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/", file.FileName);
+                if (System.IO.File.Exists(path))
+                {
+                    return file.FileName;
+                }
+                var stream = new FileStream(path, FileMode.Create);
                 file.CopyTo(stream);
-                return Image;
+                return file.FileName;
             }
             return null;
-            
-           
         }
     }
 }

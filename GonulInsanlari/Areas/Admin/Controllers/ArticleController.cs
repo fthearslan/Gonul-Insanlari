@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
+using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer;
 using FluentValidation.Results;
@@ -9,7 +10,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Build.Framework;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using NuGet.Protocol.Plugins;
 using System.Security.Cryptography.X509Certificates;
 using X.PagedList;
 
@@ -22,6 +26,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         UserManager<AppUser> _userManager;
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
+        VideoManager _videoManager = new VideoManager(new EFVideoDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
 
@@ -55,10 +60,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetWithVideos(id);
             if (article != null)
             {
+                if (article.Videos != null)
+                {
+                    foreach (var vid in article.Videos)
+                    {
+                        var video = _videoManager.GetById(vid.VideoID);
+                        ViewBag.Path = video.Path;
+                        ViewBag.IsUrl = video.IsUrl;
+                    }
+                }
                 return View(article);
             }
             else
             {
+                // Not found page will be placed here.
                 return RedirectToAction("Index");
 
             }
@@ -79,7 +94,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article,IFormFile file,string url)
+        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url)
         {
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
@@ -88,27 +103,67 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
-
-
+            article.ImagePath = ImageUpload.Upload(file);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            article.AppUser = user;
+            article.Created = DateTime.Now;
+            article.Status = true;
             ValidationResult result = validator.Validate(article);
             if (result.IsValid)
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                if (file != null)
+                if (video != null)
                 {
-                    article.ImagePath = ImageUpload.Upload(file);
+                    _articleManager.Add(article);
+                    article.Videos = new List<ArticleVideo>()
+                 { new ArticleVideo()
+                    {
+
+                        ArticleID=article.ArticleID,
+                        Video=new Video()
+                        {
+                            Path=ImageUpload.Upload(video),
+                            IsUrl=false,
+                            AppUser=user
+                            
+                        }
+                    }
+
+                 };
+                    _articleManager.Update(article);
+                    return RedirectToAction("List");
+                
                 }
                 else
                 {
-                    
-                    TempData["Error"] = "Please, select an image file.";
-                    return View(article);
+                    if (url != null)
+                    {
+                        _articleManager.Add(article);
+                        article.Videos = new List<ArticleVideo>()
+                 { new ArticleVideo()
+                    {
+
+                        ArticleID=article.ArticleID,
+                        Video=new Video()
+                        {
+                            Path=url,
+                            IsUrl=true,
+                            AppUser=user
+
+                        }
+                    }
+
+                 };
+                        _articleManager.Update(article);
+                        return RedirectToAction("List");
+
+                    }
+                    else
+                    {
+                        _articleManager.Add(article);
+                        return RedirectToAction("List");
+                    }
+                   
                 }
-                article.AppUser = user;
-                article.Status = true;
-                article.Created = DateTime.Now;
-                _articleManager.Add(article);
-                return RedirectToAction("List");
             }
             else
             {
@@ -117,13 +172,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                 }
                 return View(article);
+
             }
 
-
-
         }
-
-     
-
     }
 }

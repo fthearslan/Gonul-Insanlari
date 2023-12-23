@@ -17,13 +17,13 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-#pragma warning disable CS8603 // Possible null reference return.
                 return c.Articles
+                    .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.Videos)
                     .Include(a => a.AppUser)
-                    .OrderByDescending(a => a.Created).Where(x => x.ArticleID == id && x.Status == true)
+                    .OrderByDescending(a => a.Created)
                     .SingleOrDefault();
-#pragma warning restore CS8603 // Possible null reference return.
+
             }
 
         }

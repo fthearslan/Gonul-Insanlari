@@ -59,7 +59,7 @@
 
                                 <div class="custom-file col-sm-10 ">
                                     <div class="input_container">
-                                        <input type="file" name="file" asp-for=ImagePath id="fileUpload">
+                                        <input type="file" name="file" accept="image/*" asp-for=ImagePath id="fileUpload">
                                         <span class="text-danger">@TempData["Error"]</span>
 
                                     </div>
@@ -80,8 +80,8 @@
 
                                             </ul>
                                         </div>
-                                    </div> 
-                                     <input style="display:none" id="imgupload" type="file">
+                                    </div>
+                                    <input style="display:none" id="imgupload" name="video" type="file" accept="video/*">
                                    
                                        
                                 </div>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-    public interface IVideoDAL:IRepository<Video>
+    public interface IVideoDAL : IRepository<Video>
     {
     }
 }

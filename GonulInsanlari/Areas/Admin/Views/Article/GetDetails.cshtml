@@ -16,19 +16,27 @@
                         <h1 style="margin-bottom:25px;">
                             @Model.Title
                         </h1>
+                      
                         @if (Model.Videos != null)
                         {
                             @foreach (var video in Model.Videos)
                             {
+                                if (ViewBag.IsUrl==false)
+                                {
+                                    <video src="~/Images/@ViewBag.Path" controls width="%95" height="200"></video>
+                                }
+                                if (ViewBag.IsUrl == true)
+                                {
+                                    <center>
+                                        <iframe width="95%" height="600" src="@ViewBag.Path" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                                    </center>
+                                }
 
-                                <center>
-                                    <iframe width="95%" height="600" src="@video.Path" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-                                </center>
                             }
 
                         }
-                    </div>
-                 
+                    
+                 <div>
                     <p>
                         @Html.Raw(@Model.Content)
                     </p>
@@ -43,5 +51,6 @@
         </div>
     </div>
 
-
+    </div>
+    </div>
 </div>

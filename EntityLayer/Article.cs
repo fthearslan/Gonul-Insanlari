@@ -10,6 +10,7 @@ namespace EntityLayer
 {
     public class Article
     {
+
         [Key]
         public int ArticleID { get; set; }
 
@@ -30,9 +31,9 @@ namespace EntityLayer
 
         public Category Category { get; set; }
 
-        public List<Comment> Comments { get; set;}
+        public List<Comment> Comments { get; set; }
 
-        public List<Video>? Videos { get; set;}
+        public List<ArticleVideo> Videos { get; set; }
         public AppUser AppUser { get; set; }
 
 

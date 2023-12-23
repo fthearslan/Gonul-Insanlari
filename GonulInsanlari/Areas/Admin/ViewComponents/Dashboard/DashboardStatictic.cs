@@ -9,7 +9,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
     {
         CommentManager commentManager = new CommentManager(new EFCommentDAL());
         ArticleManager articleManager= new ArticleManager(new EFArticleDAL());
-        VideoManager videoManager= new VideoManager(new EFVideoDAL());
+        VideoManager videoManager = new VideoManager(new EFVideoDAL());
         public IViewComponentResult Invoke()
         {
             var commentcount = commentManager.List().Count;
