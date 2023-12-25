@@ -7,7 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Admin\Models\PrintPage.cs" />
+    <Compile Remove="Controllers\PrintControlller.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="iTextSharp" Version="5.5.13.3" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.25" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.TagHelpers" Version="2.2.0" />
@@ -23,6 +29,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.jQuery.Unobtrusive.Ajax" Version="3.2.6" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.3.2" />
     <PackageReference Include="X.PagedList" Version="8.4.7" />
     <PackageReference Include="X.PagedList.Mvc.Core" Version="8.4.7" />
   </ItemGroup>
@@ -37,6 +44,7 @@
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\ViewComponents\Categories\" />
     <Folder Include="Areas\Admin\Views\Notification\" />
+    <Folder Include="wwwroot\PdfReports\" />
   </ItemGroup>
 
   <ItemGroup>

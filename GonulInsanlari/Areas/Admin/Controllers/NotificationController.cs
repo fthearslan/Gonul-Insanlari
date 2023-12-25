@@ -17,9 +17,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public IActionResult GetDetails(int id)
         {
             var notification= manager.GetById(id);
-         
+            notification.Status = false;
+             manager.Update(notification);
+
             switch (notification.Type)
             {
+                
                 case "Article":
                     return RedirectToAction("GetDetailsByNotification", "Article",notification);
                 case "Comment":

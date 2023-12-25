@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using EntityLayer;
 using FluentValidation.Results;
+using GonulInsanlari.Areas.Admin.Models;
 using GonulInsanlari.Models;
 using Humanizer.Localisation.TimeToClockNotation;
 using Microsoft.AspNetCore.Authorization;
@@ -16,6 +17,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NuGet.Protocol.Plugins;
 using System.Security.Cryptography.X509Certificates;
 using X.PagedList;
+using Rotativa.AspNetCore;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -45,9 +47,29 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             if (value != null)
             {
+
                 int id = (int)value;
                 var article = _articleManager.GetWithVideos(id);
-                return View(article);
+                if (article != null)
+                {
+                    if (article.Videos != null)
+                    {
+                        foreach (var vid in article.Videos)
+                        {
+                            var video = _videoManager.GetById(vid.VideoID);
+                            ViewBag.Path = video.Path;
+                            ViewBag.IsUrl = video.IsUrl;
+                        }
+                    }
+                    return View(article);
+                }
+                else
+                {
+                    // Not found page will be placed here.
+                    return RedirectToAction("Index");
+
+                }
+               
             }
             else
             {
@@ -103,39 +125,18 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
-            article.ImagePath = ImageUpload.Upload(file);
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            article.AppUser = user;
-            article.Created = DateTime.Now;
-            article.Status = true;
-            ValidationResult result = validator.Validate(article);
-            if (result.IsValid)
+            if (video==null || url==null) 
             {
-                if (video != null)
+                article.ImagePath = ImageUpload.Upload(file);
+                var user = await _userManager.GetUserAsync(HttpContext.User);
+                article.AppUser = user;
+                article.Created = DateTime.Now;
+                article.Status = true;
+                ValidationResult result = validator.Validate(article);
+                if (result.IsValid)
                 {
-                    _articleManager.Add(article);
-                    article.Videos = new List<ArticleVideo>()
-                 { new ArticleVideo()
-                    {
 
-                        ArticleID=article.ArticleID,
-                        Video=new Video()
-                        {
-                            Path=ImageUpload.Upload(video),
-                            IsUrl=false,
-                            AppUser=user
-                            
-                        }
-                    }
-
-                 };
-                    _articleManager.Update(article);
-                    return RedirectToAction("List");
-                
-                }
-                else
-                {
-                    if (url != null)
+                    if (video != null)
                     {
                         _articleManager.Add(article);
                         article.Videos = new List<ArticleVideo>()
@@ -145,8 +146,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         ArticleID=article.ArticleID,
                         Video=new Video()
                         {
-                            Path=url,
-                            IsUrl=true,
+                            Path=ImageUpload.Upload(video),
+                            IsUrl=false,
                             AppUser=user
 
                         }
@@ -159,22 +160,56 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
                     else
                     {
-                        _articleManager.Add(article);
-                        return RedirectToAction("List");
+                        if (url != null)
+                        {
+                            _articleManager.Add(article);
+
+                            article.Videos = new List<ArticleVideo>()
+
+                 { new ArticleVideo()
+                    {
+
+                        ArticleID=article.ArticleID,
+                        Video=new Video()
+                        {
+                            Path=GetUrl.GetVideoUrl(url),
+                            IsUrl=true,
+                            AppUser=user
+
+                        }
                     }
-                   
+
+                 };
+                            _articleManager.Update(article);
+
+                            return RedirectToAction("List");
+
+                        }
+                        else
+                        {
+                            _articleManager.Add(article);
+                            return RedirectToAction("List");
+                        }
+
+                    }
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+                    return View(article);
+
                 }
             }
             else
             {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
-                return View(article);
-
+                TempData["Error"] = "Please choose either a video file or video url.";
+                return View();
             }
-
         }
+
+
     }
 }

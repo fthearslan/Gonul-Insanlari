@@ -3,6 +3,7 @@ using EntityLayer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Rotativa.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -51,6 +52,8 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseSession();
 app.UseAuthorization();
+
+
 
 app.UseEndpoints(endpoints =>
 {
