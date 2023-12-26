@@ -10,7 +10,7 @@
     <div class="row justify-content-md-center">
         <div class="col-lg-10">
             <div class="ibox">
-                <div class="ibox-content">
+                <div class="ibox-content" style="overflow-x:hidden">
                     <div style="margin-bottom:25px;" class="text-center article-title">
                         <span class="text-muted"><i class="fa fa-clock-o"></i> @Model.Created.ToString("MMM-dd-yyyy")</span>
                         <h1 style="margin-bottom:40px;">
@@ -39,10 +39,13 @@
                  <div>
                      <p style="margin-top:50px;">
                         @Html.Raw(@Model.Content)
-                    </p>
-         <h5  style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser.UserName</h5>
-                    
-                    <hr>
+
+                            </p>
+                            <h5  style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser.UserName</h5>
+
+                            <a style="margin-right:0;margin-top:15px;" class="btn btn-default float-right" href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
+
+                            <hr>
 
                     @await Component.InvokeAsync("GetCommentsByArticle",Model.ArticleID)
 

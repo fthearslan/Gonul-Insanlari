@@ -18,6 +18,8 @@ using NuGet.Protocol.Plugins;
 using System.Security.Cryptography.X509Certificates;
 using X.PagedList;
 using Rotativa.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+using DataAccessLayer.Migrations;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -69,7 +71,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     return RedirectToAction("Index");
 
                 }
-               
+
             }
             else
             {
@@ -125,7 +127,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
-            if (video==null || url==null) 
+            if (video == null || url == null)
             {
                 article.ImagePath = ImageUpload.Upload(file);
                 var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -154,7 +156,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
 
                  };
-                        _articleManager.Update(article);
+                       _articleManager.Update(article);
                         return RedirectToAction("List");
 
                     }
@@ -210,6 +212,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-
+    
     }
+
 }

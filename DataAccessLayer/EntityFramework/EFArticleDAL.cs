@@ -17,7 +17,7 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Articles
+                return  c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.Videos)
                     .Include(a => a.AppUser)

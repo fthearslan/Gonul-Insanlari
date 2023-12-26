@@ -12,6 +12,7 @@ namespace BussinessLayer.Abstract
         List<Article> ListWithCategory();
         Article GetWithVideos(int id);
         List<Article> GetDrafts();
+        //Task UpdateAsync(Article article);
 
 
     }

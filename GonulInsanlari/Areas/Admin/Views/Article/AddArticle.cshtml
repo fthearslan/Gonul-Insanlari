@@ -35,11 +35,12 @@
                         <h2>Please fill the required fields below.</h2>
 
                         <form id="form_id" asp-action="AddArticle" enctype="multipart/form-data">
-                          @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
-                                <div class="col-sm-10"><input type="text" id="title" asp-for="Title" class="form-control">
-                                        <span asp-validation-for="Title" class="text-danger"></span>
+                                <div class="col-sm-10">
+                                    <input type="text" id="title" asp-for="Title"  class="form-control">
+                                    <span asp-validation-for="Title" class="text-danger"></span>
                                 </div>
 
                             </div>
@@ -55,7 +56,7 @@
 
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">Upload Image</label>
-                               
+
 
                                 <div class="custom-file col-sm-10 ">
                                     <div class="input_container">
@@ -71,7 +72,7 @@
                                 <label class="col-sm-2 col-form-label">Upload Video</label>
 
                                 <div class="col-sm-10">
-                                     <div class="input-group m-b">
+                                    <div class="input-group m-b">
                                         <div class="input-group-prepend">
                                             <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Upload</button>
                                             <ul class="dropdown-menu">
@@ -82,8 +83,8 @@
                                         </div>
                                     </div>
                                     <input style="display:none" id="imgupload" name="video" type="file" accept="video/*">
-                                   
-                                       
+
+
                                 </div>
 
 
@@ -99,7 +100,7 @@
                                                 <p>
                                                     Upload a youtube video by typing the Url address below.
                                                 </p>
-                                                <div class="form-group"><label>Video Url</label> <input type="url" name="Url"  class="form-control"></div>
+                                                <div class="form-group"><label>Video Url</label> <input type="url" name="Url" class="form-control"></div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
@@ -123,8 +124,8 @@
                             <div class="form-group row">
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button class ="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in">Submit</button>
-                                   
+                                    <button id="btn"  class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in">Submit</button>
+
                                 </div>
                             </div>
                         </form>
@@ -141,6 +142,8 @@
 
 
 @section Script {
+    <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
+
     <script>
 
         $(document).ready(function () {
@@ -189,7 +192,7 @@
             document.getElementById("textbox").value = file;
         }
     </script>
-    <script type="text/javascript">
+       <script type="text/javascript">
         $("#btn").click(function () {
             var textareaValue = $('#summernote').summernote('code');
             let article = {
@@ -248,5 +251,7 @@
             $('#summernote').summernote();
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
+
     </script>
-}
+   
+  }

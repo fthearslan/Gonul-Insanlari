@@ -38,9 +38,9 @@ namespace BussinessLayer.Concrete
             return _article.ListWithCategory().Where(x=>x.IsDraft==true).ToList();
         }
 
-        public Article GetWithVideos(int id)
+        public  Article GetWithVideos(int id)
         {
-            return _article.GetWithVideos(id);
+            return  _article.GetWithVideos(id);
         }
 
         public List<Article> List()
@@ -58,9 +58,13 @@ namespace BussinessLayer.Concrete
             return _article.ListWithCategory();
         }
 
+        //public async Task UpdateAsync(Article entity)
+        //{
+        //   await _article.Update(entity);
+        //}
         public void Update(Article entity)
         {
-            _article.Update(entity);
+             _article.Update(entity);
         }
     }
 }

@@ -27,9 +27,9 @@ namespace DataAccessLayer.Concrete
             db.SaveChanges();
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public T  Get(Expression<Func<T, bool>> filter)
         {
-            return _dbset.SingleOrDefault(filter);
+            return   _dbset.SingleOrDefault(filter);
         }
 
         public void Insert(T entity)
