@@ -39,16 +39,19 @@
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">
-                                    <input type="text" id="title" asp-for="Title"  class="form-control">
-                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                    <input type="text" id="title" asp-for="Title" class="form-control">
+                                    <div style="margin-top:5px;">
+                                        <span asp-validation-for="Title" class="text-danger" id="validate"></span>
+                                    </div> 
                                 </div>
+                         
 
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
+                                    <select asp-for="CategoryID"  id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -58,12 +61,7 @@
                                 <label class="col-sm-2 col-form-label">Upload Image</label>
 
 
-                              @*   <div class="col-sm-10 ">
-                                    <div class="input_container">
-                                        <input type="file" name="file" accept="image/*" asp-for=ImagePath id="fileUpload">
-                                      
-                                    </div>
-                                </div> *@
+                            
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
@@ -72,8 +70,11 @@
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control">
+                                       
+                                            
+                                        
                                     </div>
-                                    <span asp-validation-for="ImagePath" style="margin-left:auto;margin-right:auto" class="text-danger"></span>
+                                    <span  asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
 
 
@@ -97,7 +98,7 @@
                                             </ul>
                                         </div>
                                        
-                                         <input type="text" id="textbox" class="form-control">
+                                         <input type="text" style="background-color:white" id="textbox"  class="form-control" readonly="readonly">
                                     </div>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
 
@@ -134,11 +135,16 @@
                                 <div class="col-sm-10">
                                     <textarea id="content" asp-for="Content" class="summernote">
                                         </textarea>
-                                    <span asp-validation-for="Content" class="text-danger"></span>
+
+                                    <span style="margin-top:5px;" asp-validation-for="Content" class="text-danger" id="validate3" ></span>
+
+                            
 
                                 </div>
+
                             </div>
                             <div class="form-group row">
+                               
 
                                 <div style="margin-right:15px;margin-left:auto">
                                     <button id="btn"  class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in">Submit</button>
@@ -159,8 +165,9 @@
 
 
 @section Script {
+  
     <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
-
+    
     <script>
 
         $(document).ready(function () {
@@ -242,6 +249,7 @@
                     let result = jQuery.parseJSON(func);
                 }
             });
+         
         });
     </script>
     <script src="~/inspinia-gh-pages/js/plugins/ladda/spin.min.js"></script>
@@ -269,6 +277,7 @@
         });
     </script> *@
     <script src="~/inspinia-gh-pages/js/plugins/cropper/cropper.min.js"></script>
+
     <script>
 
     </script>
