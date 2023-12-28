@@ -76,7 +76,7 @@
                                     </div>
                                     <span  asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-
+                                    <input id="isdraft" type="hidden" value="true" />
 
                                 </div>
 
@@ -101,7 +101,7 @@
                                          <input type="text" style="background-color:white" id="textbox"  class="form-control" readonly="readonly">
                                     </div>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-
+                                    
 
                                 </div>
                                 <span style="margin-left:auto;margin-right:auto" class="text-danger">@TempData["Error"]</span>
@@ -147,7 +147,8 @@
                                
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btn"  class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in">Submit</button>
+                                    <button id="btndraft" type="submit" class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
                             </div>
@@ -238,8 +239,8 @@
                 Title: $("#title").val(),
                 ImagePath: $("#fileUpload").val(),
                 Content: textareaValue,
-                CategoryID: $("#drop").val()
-
+                CategoryID: $("#drop").val(),
+                
             };
             $.ajax({
                 type: "post",
@@ -250,6 +251,28 @@
                 }
             });
          
+        });
+    </script>
+    <script type="text/javascript">
+        $("#btndraft").click(function () {
+            var textareaValue = $('#summernote').summernote('code');
+            var isDraft = "true";
+            let article = {
+                Title: $("#title").val(),
+                ImagePath: $("#fileUpload").val(),
+                Content: textareaValue,
+                CategoryID: $("#drop").val(),
+                IsDraft: $("#isdraft").val()
+            };
+            $.ajax({
+                type: "post",
+                url: "/Admin/Article/AddArticle",
+                data: article,isDraft,
+                success: function (func) {
+                    let result = jQuery.parseJSON(func);
+                }
+            });
+
         });
     </script>
     <script src="~/inspinia-gh-pages/js/plugins/ladda/spin.min.js"></script>

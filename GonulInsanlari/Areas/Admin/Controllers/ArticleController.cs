@@ -20,6 +20,9 @@ using X.PagedList;
 using Rotativa.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using DataAccessLayer.Migrations;
+using Microsoft.Extensions.Options;
+using System.Security;
+using FluentValidation;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -47,6 +50,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
         {
+         
             if (value != null)
             {
 
@@ -118,8 +122,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url)
+        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url,string isDraft)
         {
+            
+
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
                                                {
@@ -127,6 +133,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
+            
+            
+            
+            
             if (video == null || url == null)
             {
                 article.ImagePath = ImageUpload.Upload(file);
@@ -134,13 +144,24 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 article.AppUser = user;
                 article.Created = DateTime.Now;
                 article.Status = true;
-                ValidationResult result = validator.Validate(article);
+                ValidationResult result;
+                if (isDraft=="true")
+                {
+                    article.IsDraft = true;
+                    result = await validator.ValidateAsync(article,options=>options.IncludeRuleSets("Draft"));
+                }
+                else
+                {
+                    result = await validator.ValidateAsync(article);
+
+                }
                 if (result.IsValid)
                 {
+                    _articleManager.Add(article);
 
                     if (video != null)
                     {
-                        _articleManager.Add(article);
+
                         article.Videos = new List<ArticleVideo>()
                  { new ArticleVideo()
                     {
@@ -156,7 +177,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
 
                  };
-                       _articleManager.Update(article);
+                        _articleManager.Update(article);
                         return RedirectToAction("List");
 
                     }
@@ -164,7 +185,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     {
                         if (url != null)
                         {
-                            _articleManager.Add(article);
+
 
                             article.Videos = new List<ArticleVideo>()
 
@@ -184,12 +205,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                  };
                             _articleManager.Update(article);
 
-                            return RedirectToAction("List");
+                            return RedirectToAction("GetDetails", new { id = article.ArticleID });
 
                         }
                         else
                         {
-                            _articleManager.Add(article);
+
                             return RedirectToAction("List");
                         }
 
@@ -208,11 +229,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             else
             {
                 TempData["Error"] = "Please choose either a video file or video url.";
-                return View();
+                return View(article);
             }
         }
 
-    
-    }
+      
+
+       
+
+    } 
 
 }
