@@ -28,6 +28,11 @@ namespace BussinessLayer.Concrete
             _article.Delete(entity);
         }
 
+        public List<Article> GetAll()
+        {
+            return _article.GetAll().Where(x => x.Status == true).ToList();
+        }
+
         public Article GetById(int id)
         {
             return _article.Get(x => x.ArticleID == id);
@@ -35,12 +40,12 @@ namespace BussinessLayer.Concrete
 
         public List<Article> GetDrafts()
         {
-            return _article.ListWithCategory().Where(x=>x.IsDraft==true).ToList();
+            return _article.ListReleased().Where(x => x.IsDraft == true).ToList();
         }
 
-        public  Article GetWithVideos(int id)
+        public Article GetWithVideos(int id)
         {
-            return  _article.GetWithVideos(id);
+            return _article.GetWithVideos(id);
         }
 
         public List<Article> List()
@@ -50,12 +55,12 @@ namespace BussinessLayer.Concrete
 
         public List<Article> ListFilter()
         {
-            return _article.ListFilter(x => x.Status == true).OrderByDescending(x=>x.Created).ToList();
+            return _article.ListFilter(x => x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
-        public List<Article> ListWithCategory()
+        public List<Article> ListReleased()
         {
-            return _article.ListWithCategory();
+            return _article.ListReleased();
         }
 
         //public async Task UpdateAsync(Article entity)
@@ -64,7 +69,7 @@ namespace BussinessLayer.Concrete
         //}
         public void Update(Article entity)
         {
-             _article.Update(entity);
+            _article.Update(entity);
         }
     }
 }

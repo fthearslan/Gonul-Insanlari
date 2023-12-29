@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,19 @@ namespace DataAccessLayer.EntityFramework
 {
     public class EFArticleDAL : GenericRepository<Article>, IArticleDAL
     {
+        public  List<Article> GetAll()
+        {
+            using (var c= new Context())
+            {
+                return  c.Articles
+                    .Include(a=>a.Category)
+                    .Include(a=>a.AppUser)
+                    .Include(a=>a.Comments)
+                    .ToList();
+            }
+
+        }
+
         public Article GetWithVideos(int id)
         {
             using (var c = new Context())
@@ -28,7 +42,7 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
-        public List<Article> ListWithCategory()
+        public List<Article> ListReleased()
         {
             using (var c = new Context())
             {

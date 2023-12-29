@@ -1,0 +1,128 @@
+﻿@using EntityLayer
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Article>
+@{
+    ViewData["Title"] = "GetDrafts";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<link href="~/inspinia-gh-pages/css/plugins/footable/footable.core.css" rel="stylesheet">
+
+<div style="margin-top:20px;margin-bottom:20px;" class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h2><i class="fa fa-file"></i> Articles</h2>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div  class="ibox-content">
+                <div class="row">
+                    <div style="margin-left:auto;margin-right:0;" class="col-sm-3">
+                        <div class="input-group">
+                            <input placeholder="Search" type="text" class="form-control form-control-sm"> <span class="input-group-append">
+                                <button type="button" class="btn btn-sm btn-primary">
+                                    Search
+                                </button>
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th># Title</th>
+                                <th>Category</th>
+                                <th>Created</th>
+                                <th>Status</th>
+                                <th>Status</th>
+                                <th>Admin</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var article in Model)
+                            {
+                                string color,text,draftcolor,drafttext;
+                                
+                                if (article.Status == true)
+                                {
+                                     color = "label label-success";
+                                    text = "Enabled";
+
+                                }
+                                else
+                                {
+                                    color = "label label-danger";
+                                    text = "Disabled";
+
+                                }
+                                if (article.IsDraft== true)
+                                {
+                                    draftcolor = "label label-warning";
+                                    drafttext = "Drafted";
+
+                                }
+                                else
+                                {
+                                    draftcolor = "label label-info";
+                                    drafttext = "Released";
+
+                                }
+                                <tr>
+                                    <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@article.ArticleID"></a><strong>#</strong> @article.Title</td>
+                                    <td><span style="cursor:pointer" class="label label-primary myBox"><a href="#categorypage"></a>@article.Category.Name</span></td>
+                                    <td>@article.Created.ToString("dd-MMM-yyyy")</td>
+                                    <td><span class="@color">@text</span></td>
+                                    <td><span class="@draftcolor"> @drafttext</span></td>
+                                    <td>@article.Created.ToString("dd-MMM-yyyy")</td>
+                                    <td>@@@article.AppUser.UserName</td>
+                                    <td class="btn-group">
+                                        <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@article.ArticleID">View</a>
+                                        <a class="btn-warning btn btn-xs" href="/Admin/Article/EditArticle/@article.ArticleID">Edit</a>
+                                        <a class="btn-danger btn btn-xs" href="/Admin/Article/DeleteArticle/@article.ArticleID"><i class="fa fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("GetAllAsList",new {pageNumber}))
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Script{
+    <script>
+
+        $(".myBox").click(function () {
+            window.location = $(this).find("a").attr("href");
+            return false;
+        });
+
+    </script>
+ 
+
+
+}
+@{
+    ViewData["Title"] = "GetAllAsList";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+

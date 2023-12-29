@@ -9,10 +9,11 @@ namespace BussinessLayer.Abstract
 {
     public interface IArticleService:IGenericService<Article>
     {
-        List<Article> ListWithCategory();
+        List<Article> ListReleased();
         Article GetWithVideos(int id);
         List<Article> GetDrafts();
-        //Task UpdateAsync(Article article);
+     
+        List<Article> GetAll();
 
 
     }

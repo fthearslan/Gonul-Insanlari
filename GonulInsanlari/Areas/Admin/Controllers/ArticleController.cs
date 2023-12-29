@@ -23,6 +23,7 @@ using DataAccessLayer.Migrations;
 using Microsoft.Extensions.Options;
 using System.Security;
 using FluentValidation;
+using System.Runtime.CompilerServices;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -42,9 +43,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _userManager = userManager;
         }
 
+        
         public IActionResult List(int pageNumber = 1)
         {
-            var articles = _articleManager.ListWithCategory().ToPagedList(pageNumber, 12);
+            var articles = _articleManager.ListReleased().ToPagedList(pageNumber, 12);
             return View(articles);
         }
         [HttpGet("{Value}")]
@@ -233,8 +235,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-      
+      public async Task<IActionResult> GetDrafts(int pageNumber=1)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var drafts = _articleManager.GetDrafts().Where(x=>x.AppUser.Id==user.Id).ToPagedList(pageNumber,12);
+            return View(drafts);
+        }
 
+     public async Task<IActionResult> GetAllAsList(int pageNumber=1)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var article = await _articleManager.GetAll().ToPagedListAsync(pageNumber,20);
+            return View(article);
+        }
        
 
     } 

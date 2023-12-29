@@ -9,7 +9,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         ArticleManager articleManager= new ArticleManager(new EFArticleDAL());
         public IViewComponentResult Invoke()
         {
-            var articles = articleManager.ListWithCategory().Take(10).ToList();
+            var articles = articleManager.ListReleased().Take(10).ToList();
             return View(articles);
         }
     }
