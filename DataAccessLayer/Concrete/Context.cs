@@ -39,23 +39,23 @@ namespace DataAccessLayer.Concrete
 
 
 
-        public DbSet<About> Abouts { get; set; }
-        public DbSet<Announcement> Announcements { get; set; }
-        public DbSet<Article> Articles { get; set; }
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Comment> Comments { get; set; }
-        public DbSet<Contact> Contacts { get; set; }
-        public DbSet<NewsLetter> NewsLetters { get; set; }
+        public DbSet<About> Abouts { get; set; } = null!;
+        public DbSet<Announcement> Announcements { get; set; }= null!;
+        public DbSet<Article> Articles { get; set; } = null!;
+        public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Comment> Comments { get; set; } = null!;
+        public DbSet<Contact> Contacts { get; set; } = null!;
+        public DbSet<NewsLetter> NewsLetters { get; set; } = null!;
 
-        public DbSet<Video> Videos { get; set; }
+        public DbSet<Video> Videos { get; set; } = null!;
 
-        public DbSet<Assignment> Assignments { get; set; }
+        public DbSet<Assignment> Assignments { get; set; } = null!;
 
-        public DbSet<Message> Messages { get; set; }
+        public DbSet<Message> Messages { get; set; } = null!;
 
-        public DbSet<Notification> Notifications { get; set; }
-        public DbSet<Note> Notes { get; set; }
-        public DbSet<ArticleVideo> ArticleVideos { get; set; }
+        public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<Note> Notes { get; set; } = null!;
+        public DbSet<ArticleVideo> ArticleVideos { get; set; } = null!;
 
 
     }

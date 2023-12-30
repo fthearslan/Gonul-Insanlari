@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using X.PagedList;
 
 namespace BussinessLayer.Concrete
 {
@@ -38,9 +39,13 @@ namespace BussinessLayer.Concrete
             return _article.Get(x => x.ArticleID == id);
         }
 
-        public List<Article> GetDrafts()
+     
+
+        public List<Article> GetDraftsByUser(int userId)
         {
-            return _article.ListReleased().Where(x => x.IsDraft == true).ToList();
+            return _article.ListReleased()
+                .Where(x => x.IsDraft == true && x.AppUser.Id == userId).
+                ToList();
         }
 
         public Article GetWithVideos(int id)

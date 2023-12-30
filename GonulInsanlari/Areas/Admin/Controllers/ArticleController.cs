@@ -24,6 +24,8 @@ using Microsoft.Extensions.Options;
 using System.Security;
 using FluentValidation;
 using System.Runtime.CompilerServices;
+using Microsoft.Extensions.Caching.Memory;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -32,18 +34,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [AllowAnonymous]
     public class ArticleController : Controller
     {
-        UserManager<AppUser> _userManager;
+        private readonly IMemoryCache _memoryCache;
+        private readonly UserManager<AppUser> _userManager;
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
         VideoManager _videoManager = new VideoManager(new EFVideoDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
 
-        public ArticleController(UserManager<AppUser> userManager)
+        public ArticleController(UserManager<AppUser> userManager,IMemoryCache memoryCache)
         {
-            _userManager = userManager;
+            this._userManager = userManager;
+            this._memoryCache=memoryCache;
         }
 
-        
+
         public IActionResult List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased().ToPagedList(pageNumber, 12);
@@ -52,7 +56,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
         {
-         
+
             if (value != null)
             {
 
@@ -124,9 +128,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url,string isDraft)
+        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url, string isDraft)
         {
-            
+
 
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
@@ -135,10 +139,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
-            
-            
-            
-            
+
+
+
+
             if (video == null || url == null)
             {
                 article.ImagePath = ImageUpload.Upload(file);
@@ -147,10 +151,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 article.Created = DateTime.Now;
                 article.Status = true;
                 ValidationResult result;
-                if (isDraft=="true")
+                if (isDraft == "true")
                 {
                     article.IsDraft = true;
-                    result = await validator.ValidateAsync(article,options=>options.IncludeRuleSets("Draft"));
+                    result = await validator.ValidateAsync(article, options => options.IncludeRuleSets("Draft"));
                 }
                 else
                 {
@@ -235,21 +239,61 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-      public async Task<IActionResult> GetDrafts(int pageNumber=1)
+        [HttpGet]
+        public async Task<IActionResult> GetDrafts(int pageNumber = 1)
         {
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var drafts = _articleManager.GetDrafts().Where(x=>x.AppUser.Id==user.Id).ToPagedList(pageNumber,12);
+             
+            var draftList = (List<Article>) _memoryCache.Get("List");
+            _memoryCache.Remove("List");
+            if(draftList != null)
+            {
+                return View(await draftList.ToPagedListAsync(pageNumber, 15));
+            }
+
+            var drafts = _articleManager.GetDraftsByUser(user.Id)
+                .ToPagedList(pageNumber, 15);
             return View(drafts);
         }
 
-     public async Task<IActionResult> GetAllAsList(int pageNumber=1)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> GetDrafts(string submit, int pageNumber = 1)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var article = await _articleManager.GetAll().ToPagedListAsync(pageNumber,20);
+            var drafts = await _articleManager.GetDraftsByUser(user.Id).ToPagedListAsync(pageNumber, 15);
+            if (submit != null)
+            {
+                List<Article> draftList = new List<Article>();
+                foreach (var art in drafts)
+                {
+                    if (art.Title.Contains(submit))
+                    {
+                        draftList.Add(art);
+
+                    }
+                }
+                const string cacheKey = "List";
+                if (!_memoryCache.TryGetValue(cacheKey, out List<Article> cachedData))
+                {
+                    cachedData = draftList;
+                    _memoryCache.Set(cacheKey, cachedData);
+                }
+                return View(await draftList.ToPagedListAsync(pageNumber, 15));
+            }
+            return View(drafts);
+        }
+
+        public async Task<IActionResult> GetAllAsList(int pageNumber = 1)
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var article = await _articleManager.GetAll().ToPagedListAsync(pageNumber, 20);
             return View(article);
         }
-       
 
-    } 
+
+
+    }
 
 }

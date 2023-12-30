@@ -11,9 +11,10 @@ namespace BussinessLayer.Abstract
     {
         List<Article> ListReleased();
         Article GetWithVideos(int id);
-        List<Article> GetDrafts();
+        List<Article> GetDraftsByUser(int userId);
      
         List<Article> GetAll();
+
 
 
     }

@@ -1,0 +1,43 @@
+﻿@using EntityLayer
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@model IPagedList<Article>
+<div id="result" class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+
+                <th>Title</th>
+                <th>Category</th>
+                <th>Created</th>
+                <th>Saved by</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <span class="text-danger">@TempData["NotFound"]</span>
+        <tbody>
+
+            
+            {
+                @foreach (var draft in Model)
+                {
+                    <tr>
+                        <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@draft.ArticleID"></a># @draft.Title</td>
+                        <td><span style="cursor:pointer" class="label label-primary myBox"><a href="#categorypage"></a>@draft.Category.Name</span></td>
+                        <td>@draft.Created.ToString("dd-MMM-yyyy")</td>
+                        <td>@@@draft.AppUser.UserName</td>
+                        <td class="btn-group">
+                            <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@draft.ArticleID">View</a>
+                            <a class="btn-danger btn btn-xs" href="/Admin/Article/DeleteArticle/@draft.ArticleID"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+            }
+        </tbody>
+    </table>
+
+    @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("GetDrafts",new {pageNumber}))
+</div>
