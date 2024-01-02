@@ -22,7 +22,7 @@ namespace DataAccessLayer.Concrete
 
         public void Delete(T entity)
         {
-            var DeletedEntity = db.Entry(entity);
+            var DeletedEntity =  db.Entry(entity);
             DeletedEntity.State = EntityState.Deleted;
             db.SaveChanges();
         }

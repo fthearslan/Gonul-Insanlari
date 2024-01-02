@@ -240,57 +240,42 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetDrafts(int pageNumber = 1)
+        public async Task<IActionResult> GetDrafts()
         {
-            if (_memoryCache.Get("List") is not null)
-            {
-                var draft_list = new List<Article>();
-                draft_list = _memoryCache.Get("List") as List<Article>;
-                TempData["Search"] = _memoryCache.Get("Count");
-                return View(await draft_list.ToPagedListAsync(pageNumber,15));
-            }
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var drafts = await _articleManager.GetDraftsByUser(user.Id).ToPagedListAsync(pageNumber, 15);
-            TempData["id"] = user.Id;
+            var drafts = _articleManager.GetDraftsByUser(user.Id);
             return View(drafts);
+
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetDrafts(string search, int pageNumber = 1)
+        [HttpGet]
+        public IActionResult GetAllAsList()
         {
-            int id = Convert.ToInt16(TempData["id"]);
-            var drafts = _articleManager.GetDraftsByUser(id);
-            if (drafts != null && search != null)
-            {
-                List<Article> draft_list = new List<Article>();
-                foreach (var draft in drafts)
-                {
-                    if (draft.Title.Contains(search))
-                    {
-                        draft_list.Add(draft);
-                    }
-                }
-                TempData["Search"] = draft_list.Count + " results for '"+ search + "' are being displayed.";
-               const string cacheKey = "List";
-                const string count = "Count";
-                _memoryCache.Set(cacheKey,draft_list);
-                _memoryCache.Set(count, TempData["Search"]);
-
-                return View(await draft_list.ToPagedListAsync(pageNumber, 15));
-
-            }
-            _memoryCache.Remove("List");
-            return View(await drafts.ToPagedListAsync(pageNumber, 15));
-        }
-
-        public async Task<IActionResult> GetAllAsList(int pageNumber = 1)
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var article = await _articleManager.GetAll().ToPagedListAsync(pageNumber, 20);
+            var article = _articleManager.GetAll();
             return View(article);
         }
 
+        public IActionResult Delete(int id)
+        {
+            var article = _articleManager.GetById(id);
+            if (article != null)
+            {
+                if (article.IsDraft==true)
+                {
+                    _articleManager.Delete(article);
+                    return RedirectToAction("GetDrafts");
+
+                }
+                else
+                {
+                    article.Status = false;
+                    _articleManager.Update(article);
+                }
+
+            }
+            return RedirectToAction("GetAllAsList");
+
+        }
 
 
     }

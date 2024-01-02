@@ -16,6 +16,5 @@ namespace BussinessLayer.Abstract
         List<Article> GetAll();
 
 
-
     }
 }
