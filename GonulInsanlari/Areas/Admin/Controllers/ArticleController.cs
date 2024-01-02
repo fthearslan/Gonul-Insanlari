@@ -41,10 +41,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
 
-        public ArticleController(UserManager<AppUser> userManager,IMemoryCache memoryCache)
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache)
         {
             this._userManager = userManager;
-            this._memoryCache=memoryCache;
+            this._memoryCache = memoryCache;
         }
 
 
@@ -242,47 +242,46 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> GetDrafts(int pageNumber = 1)
         {
-
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-             
-            var draftList = (List<Article>) _memoryCache.Get("List");
-            _memoryCache.Remove("List");
-            if(draftList != null)
+            if (_memoryCache.Get("List") is not null)
             {
-                return View(await draftList.ToPagedListAsync(pageNumber, 15));
+                var draft_list = new List<Article>();
+                draft_list = _memoryCache.Get("List") as List<Article>;
+                TempData["Search"] = _memoryCache.Get("Count");
+                return View(await draft_list.ToPagedListAsync(pageNumber,15));
             }
-
-            var drafts = _articleManager.GetDraftsByUser(user.Id)
-                .ToPagedList(pageNumber, 15);
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            var drafts = await _articleManager.GetDraftsByUser(user.Id).ToPagedListAsync(pageNumber, 15);
+            TempData["id"] = user.Id;
             return View(drafts);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> GetDrafts(string submit, int pageNumber = 1)
+        public async Task<IActionResult> GetDrafts(string search, int pageNumber = 1)
         {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var drafts = await _articleManager.GetDraftsByUser(user.Id).ToPagedListAsync(pageNumber, 15);
-            if (submit != null)
+            int id = Convert.ToInt16(TempData["id"]);
+            var drafts = _articleManager.GetDraftsByUser(id);
+            if (drafts != null && search != null)
             {
-                List<Article> draftList = new List<Article>();
-                foreach (var art in drafts)
+                List<Article> draft_list = new List<Article>();
+                foreach (var draft in drafts)
                 {
-                    if (art.Title.Contains(submit))
+                    if (draft.Title.Contains(search))
                     {
-                        draftList.Add(art);
-
+                        draft_list.Add(draft);
                     }
                 }
-                const string cacheKey = "List";
-                if (!_memoryCache.TryGetValue(cacheKey, out List<Article> cachedData))
-                {
-                    cachedData = draftList;
-                    _memoryCache.Set(cacheKey, cachedData);
-                }
-                return View(await draftList.ToPagedListAsync(pageNumber, 15));
+                TempData["Search"] = draft_list.Count + " results for '"+ search + "' are being displayed.";
+               const string cacheKey = "List";
+                const string count = "Count";
+                _memoryCache.Set(cacheKey,draft_list);
+                _memoryCache.Set(count, TempData["Search"]);
+
+                return View(await draft_list.ToPagedListAsync(pageNumber, 15));
+
             }
-            return View(drafts);
+            _memoryCache.Remove("List");
+            return View(await drafts.ToPagedListAsync(pageNumber, 15));
         }
 
         public async Task<IActionResult> GetAllAsList(int pageNumber = 1)

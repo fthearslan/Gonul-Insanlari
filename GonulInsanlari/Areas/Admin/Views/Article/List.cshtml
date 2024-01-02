@@ -27,8 +27,8 @@
 
                             @foreach (var article in Model)
                             {
-                                if (article.IsDraft == false)
-                                {
+                               
+                                
                                     <div class="col-md-3">
                                         <div class="ibox">
                                             <div class="ibox-content product-box">
@@ -41,7 +41,7 @@
                                                     <small class="text-muted">@article.Category.Name</small>
                                                     @if (article.Title.Length > 40)
                                                     {
-                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title.Substring(0,article.Title.Substring(0,40).LastIndexOf(" "))...</a>
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title.Substring(0,40)...</a>
 
                                                     }
                                                     else
@@ -64,7 +64,7 @@
                                         </div>
 
                                     </div>
-                                }
+                                
                               
                             }
 

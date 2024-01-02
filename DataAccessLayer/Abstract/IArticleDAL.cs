@@ -13,5 +13,7 @@ namespace DataAccessLayer.Abstract
         Article GetWithVideos(int id);
 
         List<Article> GetAll();
+
+        List<Article> GetDraftsByUser(int userId);
     }
 }

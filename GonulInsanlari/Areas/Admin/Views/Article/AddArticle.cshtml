@@ -9,9 +9,15 @@
 <link href="~/inspinia-gh-pages/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
 <link href="~/inspinia-gh-pages/css/plugins/ladda/ladda-themeless.min.css" rel="stylesheet">
 <link href="~/css/fileupload.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+<script src="~/inspinia-gh-pages/js/plugins/cropper/cropper.min.js"></script>
 
-
-
+<script src="~/inspinia-gh-pages/js/plugins/ladda/spin.min.js"></script>
+<script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.min.js"></script>
+<script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.jquery.min.js"></script>
 
 
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -34,7 +40,7 @@
                     <div class="text-center m-t-md">
                         <h2>Please fill the required fields below.</h2>
 
-                        <form id="form_id" asp-action="AddArticle" enctype="multipart/form-data">
+                        <form id="form_id" asp-action="AddArticle"  enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
@@ -42,16 +48,16 @@
                                     <input type="text" id="title" asp-for="Title" class="form-control">
                                     <div style="margin-top:5px;">
                                         <span asp-validation-for="Title" class="text-danger" id="validate"></span>
-                                    </div> 
+                                    </div>
                                 </div>
-                         
+
 
                             </div>
                             <div class="hr-line-dashed"></div>
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select asp-for="CategoryID"  id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
+                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -61,7 +67,7 @@
                                 <label class="col-sm-2 col-form-label">Upload Image</label>
 
 
-                            
+
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
@@ -70,11 +76,11 @@
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control">
-                                       
-                                            
-                                        
+
+
+
                                     </div>
-                                    <span  asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
+                                    <span asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
                                     <input id="isdraft" type="hidden" value="true" />
 
@@ -97,11 +103,11 @@
 
                                             </ul>
                                         </div>
-                                       
-                                         <input type="text" style="background-color:white" id="textbox"  class="form-control" readonly="readonly">
+
+                                        <input type="text" style="background-color:white" id="textbox" class="form-control" readonly="readonly">
                                     </div>
                                     <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-                                    
+
 
                                 </div>
                                 <span style="margin-left:auto;margin-right:auto" class="text-danger">@TempData["Error"]</span>
@@ -136,18 +142,18 @@
                                     <textarea id="content" asp-for="Content" class="summernote">
                                         </textarea>
 
-                                    <span style="margin-top:5px;" asp-validation-for="Content" class="text-danger" id="validate3" ></span>
+                                    <span style="margin-top:5px;" asp-validation-for="Content" class="text-danger" id="validate3"></span>
 
-                            
+
 
                                 </div>
 
                             </div>
                             <div class="form-group row">
-                               
+
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btndraft" type="submit" class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
                                     <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
@@ -166,9 +172,9 @@
 
 
 @section Script {
-  
+
     <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
-    
+
     <script>
 
         $(document).ready(function () {
@@ -210,109 +216,36 @@
         });
 
     </script>
-    
+    <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
+
     <script>
         function showFileName(input) {
             var file = $("#imgupload").val().split('\\').pop();;
             document.getElementById("textbox").value = file;
         }
-
-    </script>
-    <script>
         function showImageName(input) {
             var file = $("#fileUpload").val().split('\\').pop();;
             document.getElementById("textbox1").value = file;
         }
-
-    </script>
-    <script>
         function showVideoUrl(input) {
             var url = $("#videourl").val();
             document.getElementById("textbox").value = url;
         }
-
     </script>
-       <script type="text/javascript">
-        $("#btn").click(function () {
-            var textareaValue = $('#summernote').summernote('code');
-            let article = {
-                Title: $("#title").val(),
-                ImagePath: $("#fileUpload").val(),
-                Content: textareaValue,
-                CategoryID: $("#drop").val(),
-                
-            };
-            $.ajax({
-                type: "post",
-                url: "/Admin/Article/AddArticle",
-                data: article,
-                success: function (func) {
-                    let result = jQuery.parseJSON(func);
-                }
-            });
-         
-        });
-    </script>
-    <script type="text/javascript">
-        $("#btndraft").click(function () {
-            var textareaValue = $('#summernote').summernote('code');
-            var isDraft = "true";
-            let article = {
-                Title: $("#title").val(),
-                ImagePath: $("#fileUpload").val(),
-                Content: textareaValue,
-                CategoryID: $("#drop").val(),
-                IsDraft: $("#isdraft").val()
-            };
-            $.ajax({
-                type: "post",
-                url: "/Admin/Article/AddArticle",
-                data: article,isDraft,
-                success: function (func) {
-                    let result = jQuery.parseJSON(func);
-                }
-            });
-
-        });
-    </script>
-    <script src="~/inspinia-gh-pages/js/plugins/ladda/spin.min.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.min.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.jquery.min.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
+   
     <script>
         $(document).ready(function () {
 
             $('.summernote').summernote();
 
         });
-    </script>
-    @* <script>
-        $('.custom-file-input').on('change', function () {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        }); $('.custom-file-input2').on('change', function () {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.custom-file-label').addClass("selected").html(fileName);
-        });
-        $('.custom-file-input').on('change', function () {
-            let fileName = $(this).val().split('\\').pop();
-            $(this).next('.text form-control').addClass("selected").html(fileName);
-        });
-    </script> *@
-    <script src="~/inspinia-gh-pages/js/plugins/cropper/cropper.min.js"></script>
-
-    <script>
+     
 
     </script>
-    <script src="~/inspinia-gh-pages/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/select2/select2.full.min.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/datapicker/bootstrap-datepicker.js"></script>
-    <script>
+  <script>
         $(document).ready(function () {
             $('#summernote').summernote();
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
-
-    </script>
-   
-  }
+</script>
+}

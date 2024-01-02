@@ -43,9 +43,9 @@ namespace BussinessLayer.Concrete
 
         public List<Article> GetDraftsByUser(int userId)
         {
-            return _article.ListReleased()
-                .Where(x => x.IsDraft == true && x.AppUser.Id == userId).
-                ToList();
+            return _article.GetDraftsByUser(userId).ToList();
+               
+
         }
 
         public Article GetWithVideos(int id)

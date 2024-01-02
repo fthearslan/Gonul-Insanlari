@@ -27,6 +27,22 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
+        public List<Article> GetDraftsByUser(int userId)
+        {
+
+            using (var c= new Context())
+            {
+                return c.Articles
+                    .Where(a=>a.IsDraft==true)
+                    .Include(a=>a.Category)
+                    .Include(a=>a.AppUser)
+                    .OrderBy(c=>c.Created)
+                    .ToList();
+
+            }
+
+        }
+
         public Article GetWithVideos(int id)
         {
             using (var c = new Context())
@@ -51,7 +67,7 @@ namespace DataAccessLayer.EntityFramework
                     .Include(a => a.Comments)
                     .Include(a=>a.AppUser)
                     .OrderByDescending(a => a.Created)
-                    .Where(x => x.Status == true).ToList();
+                    .Where(x => x.Status == true && x.IsDraft==false).ToList();
             }
         }
 
