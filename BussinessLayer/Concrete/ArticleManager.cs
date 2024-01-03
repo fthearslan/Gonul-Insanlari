@@ -39,7 +39,12 @@ namespace BussinessLayer.Concrete
             return _article.Get(x => x.ArticleID == id);
         }
 
-     
+        public Article GetByIdInclude(int id)
+        {
+
+            return _article.GetByIdInclude(id);
+
+        }
 
         public List<Article> GetDraftsByUser(int userId)
         {
@@ -68,10 +73,7 @@ namespace BussinessLayer.Concrete
             return _article.ListReleased();
         }
 
-        //public async Task UpdateAsync(Article entity)
-        //{
-        //   await _article.Update(entity);
-        //}
+        
         public void Update(Article entity)
         {
             _article.Update(entity);

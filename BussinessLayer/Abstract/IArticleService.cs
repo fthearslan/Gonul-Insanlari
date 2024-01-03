@@ -15,6 +15,8 @@ namespace BussinessLayer.Abstract
      
         List<Article> GetAll();
 
+        Article GetByIdInclude(int id);
+
 
     }
 }

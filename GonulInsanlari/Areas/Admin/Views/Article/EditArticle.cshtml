@@ -1,9 +1,10 @@
 ﻿@using EntityLayer
 @model Article
 @{
-    ViewData["Title"] = "AddArticle";
+    ViewData["Title"] = "EditArticle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
 
 <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
 <link href="~/inspinia-gh-pages/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
@@ -21,7 +22,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<div  class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
             <div class="ibox ">
@@ -41,8 +42,11 @@
                     <div class="text-center m-t-md">
                         <h2>Please fill the required fields below.</h2>
 
-                        <form id="form_id" asp-action="AddArticle"   enctype="multipart/form-data" >
+                        <form id="form_id" asp-action="EditArticle" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
+
+                            <input type="hidden" asp-for="ArticleID" />
+                            <input type="hidden" name="userId" value="@Model.AppUser.Id" />
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">
@@ -60,6 +64,7 @@
                                 <div class="col-sm-10">
                                     <select asp-for="CategoryID" id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
                                 </div>
+                                <span asp-validation-for="CategoryID" class="text-danger"></span>
                             </div>
                             <div class="hr-line-dashed"></div>
 
@@ -154,7 +159,7 @@
 
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btndraft" class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
                                     <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
@@ -234,28 +239,27 @@
             document.getElementById("textbox").value = url;
         }
     </script>
-   
+
     <script>
         $(document).ready(function () {
 
             $('.summernote').summernote();
 
         });
-     
+
 
     </script>
-  <script>
+    <script>
         $(document).ready(function () {
             $('#summernote').summernote();
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
-</script>
-<script>
+    </script>
+    <script>
         window.onbeforeunload = function (event) {
             event.returnValue = "Write something clever here..";
         };
-</script>
-   
+    </script>
 
 
 

@@ -15,5 +15,7 @@ namespace DataAccessLayer.Abstract
         List<Article> GetAll();
 
         List<Article> GetDraftsByUser(int userId);
+
+        Article GetByIdInclude(int id);
     }
 }

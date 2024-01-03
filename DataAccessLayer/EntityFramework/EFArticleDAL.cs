@@ -14,29 +14,45 @@ namespace DataAccessLayer.EntityFramework
 {
     public class EFArticleDAL : GenericRepository<Article>, IArticleDAL
     {
-        public  List<Article> GetAll()
+        public List<Article> GetAll()
         {
-            using (var c= new Context())
+            using (var c = new Context())
             {
-                return  c.Articles
-                    .Include(a=>a.Category)
-                    .Include(a=>a.AppUser)
-                    .Include(a=>a.Comments)
+                return c.Articles
+                    .Include(a => a.Category)
+                    .Include(a => a.AppUser)
+                    .Include(a => a.Comments)
                     .ToList();
             }
+
+        }
+
+        public Article GetByIdInclude(int id)
+        {
+
+            using (var c = new Context())
+            {
+
+                return c.Articles
+                     .Where(a => a.ArticleID == id)
+                     .Include(c => c.Category).
+                     Include(v => v.Videos)
+                     .Include(u => u.AppUser)
+                     .SingleOrDefault();
+            };
 
         }
 
         public List<Article> GetDraftsByUser(int userId)
         {
 
-            using (var c= new Context())
+            using (var c = new Context())
             {
                 return c.Articles
-                    .Where(a=>a.IsDraft==true)
-                    .Include(a=>a.Category)
-                    .Include(a=>a.AppUser)
-                    .OrderBy(c=>c.Created)
+                    .Where(a => a.IsDraft == true)
+                    .Include(a => a.Category)
+                    .Include(a => a.AppUser)
+                    .OrderBy(c => c.Created)
                     .ToList();
 
             }
@@ -47,11 +63,10 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return  c.Articles
+                return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.Videos)
                     .Include(a => a.AppUser)
-                    .OrderByDescending(a => a.Created)
                     .SingleOrDefault();
 
             }
@@ -65,9 +80,9 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Include(a => a.Category)
                     .Include(a => a.Comments)
-                    .Include(a=>a.AppUser)
+                    .Include(a => a.AppUser)
                     .OrderByDescending(a => a.Created)
-                    .Where(x => x.Status == true && x.IsDraft==false).ToList();
+                    .Where(x => x.Status == true && x.IsDraft == false).ToList();
             }
         }
 

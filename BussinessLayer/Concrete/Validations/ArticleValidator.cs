@@ -19,6 +19,7 @@ namespace BussinessLayer.Concrete.Validations
             RuleFor(x => x.Content).NotEmpty().WithMessage("This field is required.");
             RuleFor(x => x.Content).MinimumLength(500).WithMessage("Too short for an article.");
             RuleFor(x => x.ImagePath).NotEmpty().WithMessage("Please, select an image.");
+            RuleFor(x => x.CategoryID).NotEmpty().WithMessage("Please, select a category.");
            
             RuleSet("Draft", () =>
             {

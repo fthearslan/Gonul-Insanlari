@@ -26,6 +26,7 @@ using FluentValidation;
 using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using Newtonsoft.Json;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -260,7 +261,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetById(id);
             if (article != null)
             {
-                if (article.IsDraft==true)
+                if (article.IsDraft == true)
                 {
                     _articleManager.Delete(article);
                     return RedirectToAction("GetDrafts");
@@ -276,6 +277,63 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return RedirectToAction("GetAllAsList");
 
         }
+
+        [HttpGet]
+        public IActionResult EditArticle(int id)
+        {
+            List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
+                                               select new SelectListItem
+                                               {
+                                                   Value = x.CategoryID.ToString(),
+                                                   Text = x.Name
+                                               }).ToList();
+
+            ViewBag.Categories = categories;
+           TempData["Categories"]=JsonConvert.SerializeObject(categories);
+
+            var article = _articleManager.GetByIdInclude(id);
+            if (article == null)
+            {
+                return RedirectToAction("NotFound");
+            }
+            TempData["Article"] = JsonConvert.SerializeObject(article);
+            return View(article);
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditArticle(Article article,string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var ArticleBound = JsonConvert.DeserializeObject<Article>(TempData["Article"].ToString());
+
+
+          
+            article.AppUser = user;
+            
+                ViewBag.Categories = JsonConvert.DeserializeObject<List<SelectListItem>>(TempData["Categories"].ToString());
+
+            var result = await validator.ValidateAsync(article);
+            if (result.IsValid)
+            {
+                _articleManager.Update(article);
+                return RedirectToAction("List");
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+
+            }
+
+            return View(article);
+
+        }
+
+
 
 
     }
