@@ -15,8 +15,8 @@ namespace EntityLayer
         public int ArticleID { get; set; }
 
         [StringLength(maximumLength: 50)]
-        public string Title { get; set; }
-        public string Content { get; set; }
+        public string Title { get; set; } = null!;
+        public string Content { get; set; } = null!;
 
         public DateTime Created { get; set; }
         public DateTime? Edited { get; set; }
@@ -25,16 +25,16 @@ namespace EntityLayer
         public bool Status { get; set; }
         public bool IsDraft { get; set; }
 
-        public string ImagePath { get; set; }
+        public string ImagePath { get; set; } = null!;
 
-        public int CategoryID { get; set; }
+        public int CategoryID { get; set; } 
 
-        public Category Category { get; set; }
+        public Category Category { get; set; } = null!;
 
-        public List<Comment> Comments { get; set; }
+        public List<Comment> Comments { get; set; } = null!;
 
-        public List<ArticleVideo> Videos { get; set; }
-        public AppUser AppUser { get; set; }
+        public List<ArticleVideo> Videos { get; set; } = null!;
+        public AppUser AppUser { get; set; } = null!;
 
 
     }

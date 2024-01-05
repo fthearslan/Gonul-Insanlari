@@ -28,6 +28,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Newtonsoft.Json;
 
+
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
@@ -65,15 +66,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var article = _articleManager.GetWithVideos(id);
                 if (article != null)
                 {
-                    if (article.Videos != null)
-                    {
-                        foreach (var vid in article.Videos)
-                        {
-                            var video = _videoManager.GetById(vid.VideoID);
-                            ViewBag.Path = video.Path;
-                            ViewBag.IsUrl = video.IsUrl;
-                        }
-                    }
                     return View(article);
                 }
                 else
@@ -124,120 +116,46 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name,
                                                }).ToList();
             ViewBag.Categories = categories;
+            _memoryCache.Remove("Categories");
+            _memoryCache.Set("Categories", categories);
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article, IFormFile file, IFormFile video, string url, string isDraft)
+        public async Task<IActionResult> AddArticle(Article article, IFormFile image, bool? isDraft)
         {
+            ViewBag.Categories = _memoryCache.Get("Categories");
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            article.AppUser = user;
+            article.Status = true;
+            article.Created = DateTime.Now;
+            article.ImagePath = await ImageUpload.UploadAsync(image);
 
-
-            List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
-                                               select new SelectListItem
-                                               {
-                                                   Value = x.CategoryID.ToString(),
-                                                   Text = x.Name,
-                                               }).ToList();
-            ViewBag.Categories = categories;
-
-
-
-
-            if (video == null || url == null)
+            ValidationResult result;
+            if (isDraft != true)
             {
-                article.ImagePath = ImageUpload.Upload(file);
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                article.AppUser = user;
-                article.Created = DateTime.Now;
-                article.Status = true;
-                ValidationResult result;
-                if (isDraft == "true")
-                {
-                    article.IsDraft = true;
-                    result = await validator.ValidateAsync(article, options => options.IncludeRuleSets("Draft"));
-                }
-                else
-                {
-                    result = await validator.ValidateAsync(article);
-
-                }
-                if (result.IsValid)
-                {
-                    _articleManager.Add(article);
-
-                    if (video != null)
-                    {
-
-                        article.Videos = new List<ArticleVideo>()
-                 { new ArticleVideo()
-                    {
-
-                        ArticleID=article.ArticleID,
-                        Video=new Video()
-                        {
-                            Path=ImageUpload.Upload(video),
-                            IsUrl=false,
-                            AppUser=user
-
-                        }
-                    }
-
-                 };
-                        _articleManager.Update(article);
-                        return RedirectToAction("List");
-
-                    }
-                    else
-                    {
-                        if (url != null)
-                        {
-
-
-                            article.Videos = new List<ArticleVideo>()
-
-                 { new ArticleVideo()
-                    {
-
-                        ArticleID=article.ArticleID,
-                        Video=new Video()
-                        {
-                            Path=GetUrl.GetVideoUrl(url),
-                            IsUrl=true,
-                            AppUser=user
-
-                        }
-                    }
-
-                 };
-                            _articleManager.Update(article);
-
-                            return RedirectToAction("GetDetails", new { id = article.ArticleID });
-
-                        }
-                        else
-                        {
-
-                            return RedirectToAction("List");
-                        }
-
-                    }
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }
-                    return View(article);
-
-                }
+                result = validator.Validate(article);
             }
             else
             {
-                TempData["Error"] = "Please choose either a video file or video url.";
-                return View(article);
+                result = validator.Validate(article, options => options.IncludeRuleSets("Draft"));
+                article.IsDraft = true;
             }
+
+            if (result.IsValid)
+            {
+                _articleManager.Add(article);
+                return RedirectToAction("GetDetails", new { id = article.ArticleID });
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+            }
+            return View(article);
         }
 
         [HttpGet]
@@ -289,45 +207,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                }).ToList();
 
             ViewBag.Categories = categories;
-           TempData["Categories"]=JsonConvert.SerializeObject(categories);
+            TempData["Categories"] = JsonConvert.SerializeObject(categories);
 
-            var article = _articleManager.GetByIdInclude(id);
-            if (article == null)
-            {
-                return RedirectToAction("NotFound");
-            }
-            TempData["Article"] = JsonConvert.SerializeObject(article);
-            return View(article);
+
+            return View();
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditArticle(Article article,string userId)
+        public async Task<IActionResult> EditArticle(Article article, string userId)
         {
-            var user = await _userManager.FindByIdAsync(userId);
-            var ArticleBound = JsonConvert.DeserializeObject<Article>(TempData["Article"].ToString());
-
-
-          
-            article.AppUser = user;
-            
-                ViewBag.Categories = JsonConvert.DeserializeObject<List<SelectListItem>>(TempData["Categories"].ToString());
-
-            var result = await validator.ValidateAsync(article);
-            if (result.IsValid)
-            {
-                _articleManager.Update(article);
-                return RedirectToAction("List");
-            }
-            else
-            {
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
-
-            }
 
             return View(article);
 

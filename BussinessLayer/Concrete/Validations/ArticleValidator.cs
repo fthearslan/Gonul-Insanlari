@@ -24,6 +24,8 @@ namespace BussinessLayer.Concrete.Validations
             RuleSet("Draft", () =>
             {
                 RuleFor(x => x.Title).NotEmpty().WithMessage("Title cannot be empty.");
+                RuleFor(x => x.Content).NotEmpty().WithMessage("Content cannot be empty.");
+                RuleFor(x => x.Content).MinimumLength(100).WithMessage("Too short for draft.");
                 RuleFor(x => x.Title).MinimumLength(10).WithMessage("Title cannot contain less than 10 charachters.");
                 RuleFor(x => x.ImagePath).NotEmpty().WithMessage("Please, select an image.");
                 RuleFor(x => x.CategoryID).NotEmpty().WithMessage("Please, choose a category.");

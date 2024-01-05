@@ -2,7 +2,7 @@
 {
     public class ImageUpload
     {
-        public static string Upload(IFormFile file)
+        public static async Task<string> UploadAsync(IFormFile file)
         {
             if (file != null)
             {
@@ -12,7 +12,7 @@
                     return file.FileName;
                 }
                 var stream = new FileStream(path, FileMode.Create);
-                file.CopyTo(stream);
+                await file.CopyToAsync(stream);
                 return file.FileName;
             }
             return null;

@@ -1,5 +1,6 @@
 using DataAccessLayer.Concrete;
 using EntityLayer;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
@@ -23,7 +24,6 @@ builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddMvc();
 builder.Services.AddAuthentication(
 	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {

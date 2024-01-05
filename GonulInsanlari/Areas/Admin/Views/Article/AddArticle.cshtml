@@ -73,7 +73,7 @@
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
                                             <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
-                                            <input style="display:none" type="file" name="file" accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
+                                            <input style="display:none" type="file" name="image" accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control">
@@ -82,58 +82,10 @@
 
                                     </div>
                                     <span asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
-                                    <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-                                    <input id="isdraft" type="hidden" value="true" />
 
                                 </div>
 
 
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Upload Video</label>
-
-                                <div class="col-sm-10">
-                                    <div class="input-group m-b">
-                                        <div class="input-group-prepend">
-                                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Upload</button>
-                                            <ul class="dropdown-menu">
-                                                <li style="list-style-type:none"><a onclick="$('#imgupload').trigger('click'); return false;" href="#">Upload from device</a></li>
-                                                <li style="list-style-type:none"><a href="#" data-toggle="modal" data-target="#myModal">Upload a youtube Video</a></li>
-
-                                            </ul>
-                                        </div>
-
-                                        <input type="text" style="background-color:white" id="textbox" class="form-control" readonly="readonly">
-                                    </div>
-                                    <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-
-
-                                </div>
-                                <span style="margin-left:auto;margin-right:auto" class="text-danger">@TempData["Error"]</span>
-
-                                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content animated bounceInRight">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                <i class="fa fa-youtube-play modal-icon"></i>
-                                                <h4 class="modal-title">Upload From Youtube</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>
-                                                    Upload a youtube video by typing the Url address below.
-                                                </p>
-                                                <div class="form-group"><label>Video Url</label> <input type="url" name="Url" id="videourl" onchange="showVideoUrl(this)" class="form-control"></div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-primary">Done</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
 
                             <div class="hr-line-dashed"></div>

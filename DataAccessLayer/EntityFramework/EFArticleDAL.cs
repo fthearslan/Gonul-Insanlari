@@ -21,7 +21,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
-                    .Include(a => a.Comments)
+                    .Include(a => a.Comments).OrderByDescending(c=>c.Created)
                     .ToList();
             }
 
@@ -35,8 +35,7 @@ namespace DataAccessLayer.EntityFramework
 
                 return c.Articles
                      .Where(a => a.ArticleID == id)
-                     .Include(c => c.Category).
-                     Include(v => v.Videos)
+                     .Include(c => c.Category)
                      .Include(u => u.AppUser)
                      .SingleOrDefault();
             };
@@ -52,7 +51,7 @@ namespace DataAccessLayer.EntityFramework
                     .Where(a => a.IsDraft == true)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
-                    .OrderBy(c => c.Created)
+                    .OrderByDescending(c => c.Created)
                     .ToList();
 
             }
@@ -65,7 +64,6 @@ namespace DataAccessLayer.EntityFramework
             {
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
-                    .Include(a => a.Videos)
                     .Include(a => a.AppUser)
                     .SingleOrDefault();
 
