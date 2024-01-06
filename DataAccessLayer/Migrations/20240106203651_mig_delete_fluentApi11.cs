@@ -5,100 +5,87 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccessLayer.Migrations
 {
-    public partial class mig_video_reship_drop : Migration
+    public partial class mig_delete_fluentApi11 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Comments_Videos_VideoID",
-                table: "Comments");
-
+           
             migrationBuilder.DropForeignKey(
                 name: "FK_Videos_AspNetUsers_AppUserId",
                 table: "Videos");
 
-            migrationBuilder.DropForeignKey(
-                name: "FK_Videos_Categories_CategoryID",
-                table: "Videos");
-
             migrationBuilder.DropIndex(
-                name: "IX_Videos_CategoryID",
+                name: "IX_Videos_AppUserId",
                 table: "Videos");
 
-            migrationBuilder.DropIndex(
-                name: "IX_Comments_VideoID",
-                table: "Comments");
-
+           
             migrationBuilder.DropColumn(
-                name: "CategoryID",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "Description",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "Edited",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "EditedBy",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "ImagePath",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "Title",
-                table: "Videos");
-
-            migrationBuilder.DropColumn(
-                name: "VideoID",
-                table: "Comments");
-
-            migrationBuilder.AlterColumn<int>(
                 name: "AppUserId",
+                table: "Videos");
+
+           
+
+          
+           
+         
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Created",
                 table: "Videos",
-                type: "int",
+                type: "datetime2",
                 nullable: true,
-                oldClrType: typeof(int),
-                oldType: "int");
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
 
-            migrationBuilder.AddColumn<bool>(
-                name: "IsUrl",
-                table: "Videos",
+           
+
+            migrationBuilder.AlterColumn<bool>(
+                name: "Status",
+                table: "Articles",
                 type: "bit",
-                nullable: false,
-                defaultValue: false);
+                nullable: true,
+                oldClrType: typeof(bool),
+                oldType: "bit");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Videos_AspNetUsers_AppUserId",
-                table: "Videos",
-                column: "AppUserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id");
+           
+
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Videos_AspNetUsers_AppUserId",
-                table: "Videos");
+            migrationBuilder.DropTable(
+                name: "ArticleVideos");
 
             migrationBuilder.DropColumn(
                 name: "IsUrl",
                 table: "Videos");
 
-            migrationBuilder.AlterColumn<int>(
+            migrationBuilder.DropColumn(
+                name: "IsDraft",
+                table: "Articles");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "Created",
+                table: "Videos",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true);
+
+            migrationBuilder.AddColumn<int>(
                 name: "AppUserId",
                 table: "Videos",
                 type: "int",
                 nullable: false,
-                defaultValue: 0,
-                oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+                defaultValue: 0);
+
+            migrationBuilder.AddColumn<int>(
+                name: "ArticleID",
+                table: "Videos",
+                type: "int",
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "CategoryID",
@@ -147,6 +134,26 @@ namespace DataAccessLayer.Migrations
                 type: "int",
                 nullable: true);
 
+            migrationBuilder.AlterColumn<bool>(
+                name: "Status",
+                table: "Articles",
+                type: "bit",
+                nullable: false,
+                defaultValue: false,
+                oldClrType: typeof(bool),
+                oldType: "bit",
+                oldNullable: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Videos_AppUserId",
+                table: "Videos",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Videos_ArticleID",
+                table: "Videos",
+                column: "ArticleID");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Videos_CategoryID",
                 table: "Videos",
@@ -163,6 +170,13 @@ namespace DataAccessLayer.Migrations
                 column: "VideoID",
                 principalTable: "Videos",
                 principalColumn: "VideoID");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Videos_Articles_ArticleID",
+                table: "Videos",
+                column: "ArticleID",
+                principalTable: "Articles",
+                principalColumn: "ArticleID");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Videos_AspNetUsers_AppUserId",

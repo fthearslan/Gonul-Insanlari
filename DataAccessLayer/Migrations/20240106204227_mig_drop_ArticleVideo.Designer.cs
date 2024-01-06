@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20231221231407_mig_video_created_nullable")]
-    partial class mig_video_created_nullable
+    [Migration("20240106204227_mig_drop_ArticleVideo")]
+    partial class mig_drop_ArticleVideo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -238,10 +238,10 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDraft")
+                    b.Property<bool?>("IsDraft")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -256,21 +256,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
-                {
-                    b.Property<int>("ArticleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideoID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticleID", "VideoID");
-
-                    b.HasIndex("VideoID");
-
-                    b.ToTable("ArticleVideos");
                 });
 
             modelBuilder.Entity("EntityLayer.Assignment", b =>
@@ -588,9 +573,6 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoID"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
@@ -605,8 +587,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("VideoID");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Videos");
                 });
@@ -744,25 +724,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
-                {
-                    b.HasOne("EntityLayer.Article", "Article")
-                        .WithMany("Videos")
-                        .HasForeignKey("ArticleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EntityLayer.Video", "Video")
-                        .WithMany("Articles")
-                        .HasForeignKey("VideoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Video");
-                });
-
             modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
                     b.HasOne("EntityLayer.AppUser", "Receiver")
@@ -817,13 +778,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("EntityLayer.Video", b =>
-                {
-                    b.HasOne("EntityLayer.AppUser", null)
-                        .WithMany("Videos")
-                        .HasForeignKey("AppUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -892,23 +846,14 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("EntityLayer.Article", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("EntityLayer.Category", b =>
-                {
-                    b.Navigation("Articles");
-                });
-
-            modelBuilder.Entity("EntityLayer.Video", b =>
                 {
                     b.Navigation("Articles");
                 });

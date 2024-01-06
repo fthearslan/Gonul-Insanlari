@@ -18,12 +18,12 @@ namespace EntityLayer
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
 
-        public DateTime Created { get; set; }
+        public DateTime Created { get; set; } = DateTime.Now;
         public DateTime? Edited { get; set; }
         public string? EditedBy { get; set; }
 
-        public bool Status { get; set; }
-        public bool IsDraft { get; set; }
+        public bool? Status { get; set; }
+        public bool? IsDraft { get; set; }
 
         public string ImagePath { get; set; } = null!;
 
@@ -33,7 +33,7 @@ namespace EntityLayer
 
         public List<Comment> Comments { get; set; } = null!;
 
-        public List<ArticleVideo> Videos { get; set; } = null!;
+
         public AppUser AppUser { get; set; } = null!;
 
 

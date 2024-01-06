@@ -236,10 +236,10 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDraft")
+                    b.Property<bool?>("IsDraft")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -254,21 +254,6 @@ namespace DataAccessLayer.Migrations
                     b.HasIndex("CategoryID");
 
                     b.ToTable("Articles");
-                });
-
-            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
-                {
-                    b.Property<int>("ArticleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideoID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticleID", "VideoID");
-
-                    b.HasIndex("VideoID");
-
-                    b.ToTable("ArticleVideos");
                 });
 
             modelBuilder.Entity("EntityLayer.Assignment", b =>
@@ -586,9 +571,6 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoID"), 1L, 1);
 
-                    b.Property<int?>("AppUserIdId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
@@ -603,8 +585,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("VideoID");
-
-                    b.HasIndex("AppUserIdId");
 
                     b.ToTable("Videos");
                 });
@@ -742,25 +722,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("EntityLayer.ArticleVideo", b =>
-                {
-                    b.HasOne("EntityLayer.Article", "Article")
-                        .WithMany("Videos")
-                        .HasForeignKey("ArticleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EntityLayer.Video", "Video")
-                        .WithMany("Articles")
-                        .HasForeignKey("VideoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("Video");
-                });
-
             modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
                     b.HasOne("EntityLayer.AppUser", "Receiver")
@@ -815,15 +776,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("EntityLayer.Video", b =>
-                {
-                    b.HasOne("EntityLayer.AppUser", "AppUserId")
-                        .WithMany("Videos")
-                        .HasForeignKey("AppUserIdId");
-
-                    b.Navigation("AppUserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -892,23 +844,14 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("EntityLayer.Article", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("EntityLayer.Category", b =>
-                {
-                    b.Navigation("Articles");
-                });
-
-            modelBuilder.Entity("EntityLayer.Video", b =>
                 {
                     b.Navigation("Articles");
                 });

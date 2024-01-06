@@ -16,25 +16,6 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\SQLEXPRESS;database=GoDb;integrated security=true; TrustServerCertificate=true;");
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        {
-            base.OnModelCreating(builder);
-            builder.Entity<ArticleVideo>()
-                           .HasKey(av => new { av.ArticleID, av.VideoID });
-
-            builder.Entity<ArticleVideo>()
-                .HasOne(av => av.Article)
-                .WithMany(a => a.Videos)
-                .HasForeignKey(a => a.ArticleID);
-
-            builder.Entity<ArticleVideo>()
-                .HasOne(av => av.Video)
-                .WithMany(v => v.Articles)
-                .HasForeignKey(v => v.VideoID);
-
-
-        }
-
 
 
 
@@ -55,7 +36,7 @@ namespace DataAccessLayer.Concrete
 
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Note> Notes { get; set; } = null!;
-        public DbSet<ArticleVideo> ArticleVideos { get; set; } = null!;
+       
 
 
     }

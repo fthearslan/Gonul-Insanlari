@@ -87,15 +87,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetWithVideos(id);
             if (article != null)
             {
-                if (article.Videos != null)
-                {
-                    foreach (var vid in article.Videos)
-                    {
-                        var video = _videoManager.GetById(vid.VideoID);
-                        ViewBag.Path = video.Path;
-                        ViewBag.IsUrl = video.IsUrl;
-                    }
-                }
+            
                 return View(article);
             }
             else

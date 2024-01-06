@@ -15,8 +15,6 @@ namespace EntityLayer
         public DateTime? Created { get; set; }
         public bool Status { get; set; }
         public bool IsUrl { get; set; }
-        public List<ArticleVideo> Articles { get; set; }
-
-        public  AppUser? AppUser { get; set; }
+      
     }
 }

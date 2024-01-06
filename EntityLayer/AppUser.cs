@@ -16,7 +16,7 @@ namespace EntityLayer
         public string ImagePath { get; set; }
         public bool Status { get; set; }
         public List<Article> Articles { get; set; }
-        public List<Video> Videos { get; set; }
+    
         public List<Announcement> Announcements { get; set; }
         [InverseProperty("Sender")]
         public List<Assignment> AssignmentsSent { get; set; }

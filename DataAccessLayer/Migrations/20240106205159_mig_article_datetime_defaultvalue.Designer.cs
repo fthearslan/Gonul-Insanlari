@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20231220120215_mig_art_video1")]
-    partial class mig_art_video1
+    [Migration("20240106205159_mig_article_datetime_defaultvalue")]
+    partial class mig_article_datetime_defaultvalue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace DataAccessLayer.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("ArticleVideo", b =>
-                {
-                    b.Property<int>("ArticlesArticleID")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VideosVideoID")
-                        .HasColumnType("int");
-
-                    b.HasKey("ArticlesArticleID", "VideosVideoID");
-
-                    b.HasIndex("VideosVideoID");
-
-                    b.ToTable("ArticleVideo");
-                });
 
             modelBuilder.Entity("EntityLayer.About", b =>
                 {
@@ -253,10 +238,10 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsDraft")
+                    b.Property<bool?>("IsDraft")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Status")
+                    b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
                     b.Property<string>("Title")
@@ -588,10 +573,7 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoID"), 1L, 1);
 
-                    b.Property<int?>("AppUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Created")
+                    b.Property<DateTime?>("Created")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsUrl")
@@ -605,8 +587,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("bit");
 
                     b.HasKey("VideoID");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Videos");
                 });
@@ -714,21 +694,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ArticleVideo", b =>
-                {
-                    b.HasOne("EntityLayer.Article", null)
-                        .WithMany()
-                        .HasForeignKey("ArticlesArticleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EntityLayer.Video", null)
-                        .WithMany()
-                        .HasForeignKey("VideosVideoID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("EntityLayer.Announcement", b =>
                 {
                     b.HasOne("EntityLayer.AppUser", "AppUser")
@@ -815,13 +780,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("EntityLayer.Video", b =>
-                {
-                    b.HasOne("EntityLayer.AppUser", null)
-                        .WithMany("Videos")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("EntityLayer.AppRole", null)
@@ -888,8 +846,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("EntityLayer.Article", b =>
