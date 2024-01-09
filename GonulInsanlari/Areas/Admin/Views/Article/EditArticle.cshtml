@@ -1,5 +1,5 @@
-﻿@using EntityLayer
-@model Article
+﻿@using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
+@model ArticleEditViewModel 
 @{
     ViewData["Title"] = "EditArticle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -46,7 +46,6 @@
                             @Html.AntiForgeryToken()
 
                             <input type="hidden" asp-for="ArticleID" />
-                            <input type="hidden" name="userId" value="@Model.AppUser.Id" />
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">
@@ -62,7 +61,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
+                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="(List<SelectListItem>)@ViewData["Categories"]"></select>
                                 </div>
                                 <span asp-validation-for="CategoryID" class="text-danger"></span>
                             </div>
@@ -78,10 +77,10 @@
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
                                             <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
-                                            <input style="display:none" type="file" name="file" accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
+                                            <input style="display:none" type="file"  accept="image/*" onchange="showImageName(this)" asp-for=Image id="fileUpload">
                                         </div>
 
-                                        <input type="text" id="textbox1" class="form-control">
+                                        <input type="text" id="textbox1" asp-for="ImagePath" class="form-control">
 
 
 
@@ -96,54 +95,9 @@
                             </div>
 
                             <div class="hr-line-dashed"></div>
+                   
                             <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Upload Video</label>
-
-                                <div class="col-sm-10">
-                                    <div class="input-group m-b">
-                                        <div class="input-group-prepend">
-                                            <button data-toggle="dropdown" class="btn btn-white dropdown-toggle" type="button">Upload</button>
-                                            <ul class="dropdown-menu">
-                                                <li style="list-style-type:none"><a onclick="$('#imgupload').trigger('click'); return false;" href="#">Upload from device</a></li>
-                                                <li style="list-style-type:none"><a href="#" data-toggle="modal" data-target="#myModal">Upload a youtube Video</a></li>
-
-                                            </ul>
-                                        </div>
-
-                                        <input type="text" style="background-color:white" id="textbox" class="form-control" readonly="readonly">
-                                    </div>
-                                    <input style="display:none" class="custom-file-input" id="imgupload" name="video" type="file" onchange="showFileName(this)" accept="video/*">
-
-
-                                </div>
-                                <span style="margin-left:auto;margin-right:auto" class="text-danger">@TempData["Error"]</span>
-
-                                <div class="modal inmodal" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content animated bounceInRight">
-                                            <div class="modal-header">
-                                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                                <i class="fa fa-youtube-play modal-icon"></i>
-                                                <h4 class="modal-title">Upload From Youtube</h4>
-                                            </div>
-                                            <div class="modal-body">
-                                                <p>
-                                                    Upload a youtube video by typing the Url address below.
-                                                </p>
-                                                <div class="form-group"><label>Video Url</label> <input type="url" name="Url" id="videourl" onchange="showVideoUrl(this)" class="form-control"></div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                                <button type="button" data-dismiss="modal" class="btn btn-primary">Done</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="hr-line-dashed"></div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label">Upload Video</label>
+                                <label class="col-sm-2 col-form-label">Content</label>
                                 <div class="col-sm-10">
                                     <textarea id="content" asp-for="Content" class="summernote">
                                         </textarea>
@@ -159,8 +113,8 @@
 
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btndraft" class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
-                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
+                                    <button id="btndraft" class="ladda-button ladda-button-demo btn btn-warning" name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" name="IsDraft" value="false" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
                             </div>

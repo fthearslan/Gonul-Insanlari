@@ -4,7 +4,7 @@
  *
  * Copyright 2013- Alan Hong. and other contributors
  * summernote may be freely distributed under the MIT license.
- *
+ *  
  * Date: 2018-02-20T00:34Z
  */
 (function (global, factory) {

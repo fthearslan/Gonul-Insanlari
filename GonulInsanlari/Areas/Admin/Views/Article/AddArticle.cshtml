@@ -1,5 +1,5 @@
-﻿@using EntityLayer
-@model Article
+﻿@using GonulInsanlari.Areas.Admin.Models.ViewModels.Article
+@model ArticleCreateViewModel
 @{
     ViewData["Title"] = "AddArticle";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -58,7 +58,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="ViewBag.Categories"></select>
+                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="(List<SelectListItem>)@ViewData["Categories"]"></select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -73,7 +73,7 @@
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
                                             <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
-                                            <input style="display:none" type="file" name="image" accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
+                                            <input style="display:none" type="file"  accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control">
@@ -106,8 +106,8 @@
 
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning" name="isDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
-                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
+                                    <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning"  name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in" name="IsDraft" value="false"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
                             </div>

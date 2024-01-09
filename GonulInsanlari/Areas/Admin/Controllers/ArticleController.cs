@@ -27,7 +27,9 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Newtonsoft.Json;
-
+using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
+using AutoMapper;
+using JetBrains.Annotations;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -38,15 +40,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         private readonly IMemoryCache _memoryCache;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IMapper _mapper;
+
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
-        VideoManager _videoManager = new VideoManager(new EFVideoDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
 
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache)
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
+            this._mapper = mapper;
         }
 
 
@@ -70,16 +74,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 }
                 else
                 {
-                    // Not found page will be placed here.
-                    return RedirectToAction("Index");
+                    return View("List");
 
                 }
-
             }
+
             else
             {
-                return RedirectToAction("List");
+                return View("List");
             }
+
         }
 
         public IActionResult GetDetails(int id)
@@ -87,7 +91,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetWithVideos(id);
             if (article != null)
             {
-            
+
                 return View(article);
             }
             else
@@ -107,7 +111,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Value = x.CategoryID.ToString(),
                                                    Text = x.Name,
                                                }).ToList();
-            ViewBag.Categories = categories;
+            ViewData["Categories"] = categories;
             _memoryCache.Remove("Categories");
             _memoryCache.Set("Categories", categories);
             return View();
@@ -115,39 +119,36 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddArticle(Article article, IFormFile image, bool? isDraft)
+        public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
         {
-            ViewBag.Categories = _memoryCache.Get("Categories");
+            ViewData["Categories"] = _memoryCache.Get("Categories");
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            article.AppUser = user;
-            article.Status = true;
-            article.Created = DateTime.Now;
-            article.ImagePath = await ImageUpload.UploadAsync(image);
-
-            ValidationResult result;
-            if (isDraft != true)
+            if (ModelState.IsValid)
             {
-                result = validator.Validate(article);
-            }
-            else
-            {
-                result = validator.Validate(article, options => options.IncludeRuleSets("Draft"));
-                article.IsDraft = true;
-            }
-
-            if (result.IsValid)
-            {
-                _articleManager.Add(article);
-                return RedirectToAction("GetDetails", new { id = article.ArticleID });
-            }
-            else
-            {
-                foreach (var error in result.Errors)
+                Article article = _mapper.Map<Article>(model);
+                article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
+                article.AppUser = user;
+                var result = validator.Validate(article);
+                if (result.IsValid)
                 {
-                    ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    _articleManager.Add(article);
+                    _memoryCache.Remove("Categories");
+                    return RedirectToAction("GetDetails", new { id = article.ArticleID });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+                    return View(model);
                 }
             }
-            return View(article);
+            else
+            {
+                return View(model);
+
+            }
         }
 
         [HttpGet]
@@ -198,21 +199,46 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name
                                                }).ToList();
 
-            ViewBag.Categories = categories;
-            TempData["Categories"] = JsonConvert.SerializeObject(categories);
-
-
-            return View();
-
+            Article article = _articleManager.GetByIdInclude(id);
+            ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
+            
+            ViewData["Categories"] = categories;
+            _memoryCache.Set("Categories", categories);
+            return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditArticle(Article article, string userId)
+        public async Task<IActionResult> EditArticle(ArticleEditViewModel model)
         {
-
-            return View(article);
-
+            ViewData["Categories"] = _memoryCache.Get("Categories");
+            if (ModelState.IsValid)
+            {
+                if (model.Image != null)
+                {
+                    model.ImagePath = await ImageUpload.UploadAsync(model.Image);
+                }
+                Article article = _mapper.Map<Article>(model);
+                var result = validator.Validate(article);
+                if (result.IsValid)
+                {
+                    article.Status = true;
+                    _articleManager.Update(article);
+                    return RedirectToAction("GetDetails", new { id = article.ArticleID });
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+                    return View(model);
+                }
+            }
+            else
+            {
+                return View(model);
+            }
         }
 
 

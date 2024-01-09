@@ -1,4 +1,4 @@
-﻿namespace GonulInsanlari.Areas.Admin.Models
+﻿namespace GonulInsanlari.Areas.Admin.Models.Tools
 {
     public static class GetDate
     {

@@ -1,11 +1,13 @@
 using DataAccessLayer.Concrete;
 using EntityLayer;
 using FluentValidation.AspNetCore;
+using GonulInsanlari.Areas.Admin.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Extensions.Caching.Memory;
 using Rotativa.AspNetCore;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,7 @@ builder.Services.AddMvc(config =>
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 builder.Services.AddMemoryCache();
-
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(
 	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {

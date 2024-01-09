@@ -10,9 +10,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
         public IViewComponentResult Invoke(int id)
         {
             var comments = manager.GetByArticle(id);
-            int Count = comments.Count;
-            ViewBag.Count = Count;
-            if (comments.Count == 0)
+            if (comments.Count==0)
             {
                 TempData["Warning"] = "There is no comment for this article.";
             }

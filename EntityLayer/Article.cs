@@ -10,7 +10,6 @@ namespace EntityLayer
 {
     public class Article
     {
-
         [Key]
         public int ArticleID { get; set; }
 

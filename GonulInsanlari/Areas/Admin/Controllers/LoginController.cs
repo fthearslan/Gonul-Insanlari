@@ -1,5 +1,5 @@
 ﻿using EntityLayer;
-using GonulInsanlari.Areas.Admin.Models;
+using GonulInsanlari.Areas.Admin.Models.ViewModels.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
