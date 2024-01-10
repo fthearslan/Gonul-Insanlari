@@ -57,7 +57,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased();
-            return View(await model.ToPagedListAsync(pageNumber,12));
+            return View();
         }
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
