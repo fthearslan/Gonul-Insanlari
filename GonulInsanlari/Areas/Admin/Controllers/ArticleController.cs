@@ -54,10 +54,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
-        public IActionResult List(int pageNumber = 1)
+        public async Task<IActionResult> List(int pageNumber = 1)
         {
-            var articles = _articleManager.ListReleased().ToPagedList(pageNumber, 12);
-            return View(articles);
+            var articles = _articleManager.ListReleased();
+            return View(await model.ToPagedListAsync(pageNumber,12));
         }
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
@@ -211,6 +211,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditArticle(ArticleEditViewModel model)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
             ViewData["Categories"] = _memoryCache.Get("Categories");
             if (ModelState.IsValid)
             {
@@ -222,6 +223,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var result = validator.Validate(article);
                 if (result.IsValid)
                 {
+                    article.EditedBy = user.UserName.ToString();
                     article.Status = true;
                     _articleManager.Update(article);
                     return RedirectToAction("GetDetails", new { id = article.ArticleID });
@@ -241,7 +243,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-
+       
 
 
     }

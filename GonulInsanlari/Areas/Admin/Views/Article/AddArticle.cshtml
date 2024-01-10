@@ -107,7 +107,7 @@
 
                                 <div style="margin-right:15px;margin-left:auto">
                                     <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning"  name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
-                                    <button id="btn" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in" name="IsDraft" value="false"><i class="fa fa-check"></i> Submit</button>
+                                    <button id="btn" onclick="fire()" type="button" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in" name="IsDraft" value="false"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
                             </div>
@@ -207,8 +207,31 @@
             event.returnValue = "Write something clever here..";
         };
 </script>
-   
+  <script>
+
+  function fire() {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You may want to chechk it out again...",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, publish it!"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+                    document.getElementById("form_id").submit();
+
+                  
+                }
 
 
+            });
+
+        }
+
+    </script>
 
 }

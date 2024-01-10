@@ -65,7 +65,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
-                    .SingleOrDefault();
+                    .FirstOrDefault();
 
             }
 
@@ -80,7 +80,7 @@ namespace DataAccessLayer.EntityFramework
                     .Include(a => a.Comments)
                     .Include(a => a.AppUser)
                     .OrderByDescending(a => a.Created)
-                    .Where(x => x.Status == true && x.IsDraft == false).ToList();
+                    .Where(x => x.Status == true && x.IsDraft == false).AsNoTrackingWithIdentityResolution().ToList();
             }
         }
 

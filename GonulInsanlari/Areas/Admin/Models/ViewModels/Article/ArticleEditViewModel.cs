@@ -22,7 +22,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public string? ImagePath { get; set; }
       
         public IFormFile? Image { get; set; }
-     
-        public bool? IsDraft { get; set; }
+
+        public bool IsDraft { get; set; } = false;
     }
 }

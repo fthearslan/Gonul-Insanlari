@@ -27,12 +27,12 @@ namespace EntityLayer
         public string ImagePath { get; set; } = null!;
 
         public int CategoryID { get; set; } 
-
+        
         public Category Category { get; set; } = null!;
 
         public List<Comment> Comments { get; set; } = null!;
 
-
+        public Video? Video { get; set; }
         public AppUser AppUser { get; set; } = null!;
 
 

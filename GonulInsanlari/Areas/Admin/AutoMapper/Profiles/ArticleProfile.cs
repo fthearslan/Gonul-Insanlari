@@ -14,6 +14,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             CreateMap<ArticleEditViewModel, Article>();
             CreateMap<Article,ArticleEditViewModel>();
 
+            CreateMap<ArticleListViewModel, Article>();
+            CreateMap<Article, ArticleListViewModel>();
+            
         }
     }
 }
