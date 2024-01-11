@@ -1,20 +1,17 @@
-﻿using EntityLayer;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
-    public class ArticleListViewModel
+    public class ArticleDetailsViewModel
     {
 
         public int ArticleID { get; set; }
         public string Title { get; set; }
-        public Category Category { get; set; }
-        public string ImagePath { get; set; }
+        public string Content { get; set; }
         public string AppUser { get; set; }
         public DateTime Created { get; set; }
-        public int CommentCount { get; set; }
-        
-
-
+        public DateTime? Edited { get; set; }
+        public string? EditedBy { get; set; }
+        public bool IsDraft { get; set; }
     }
 }

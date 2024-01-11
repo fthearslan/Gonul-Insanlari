@@ -57,7 +57,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased();
-            return View();
+            List<ArticleListViewModel> model = _mapper.Map<List<ArticleListViewModel>>(articles);
+            return View(await model.ToPagedListAsync(pageNumber, 12));
         }
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
@@ -89,17 +90,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public IActionResult GetDetails(int id)
         {
             var article = _articleManager.GetWithVideos(id);
-            if (article != null)
+            if (article is not null)
             {
-
-                return View(article);
+                ArticleDetailsViewModel model=_mapper.Map<ArticleDetailsViewModel>(article);
+                return View(model);
             }
-            else
-            {
-                // Not found page will be placed here.
-                return RedirectToAction("Index");
+            // Not found page will be placed here.
+            return View();
 
-            }
         }
 
         [HttpGet]
@@ -201,7 +199,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             Article article = _articleManager.GetByIdInclude(id);
             ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-            
+
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
             return View(model);
@@ -243,7 +241,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-       
+
 
 
     }

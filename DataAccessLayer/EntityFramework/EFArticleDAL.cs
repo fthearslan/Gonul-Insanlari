@@ -65,6 +65,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
+                    .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
 
             }

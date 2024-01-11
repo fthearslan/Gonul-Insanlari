@@ -1,5 +1,4 @@
-﻿@using EntityLayer
-@using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
+﻿@using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 @using X.PagedList.Mvc.Core
 @using X.PagedList
 @model IPagedList<ArticleListViewModel>
@@ -38,15 +37,15 @@
                                                         <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.CommentCount
                                                         <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
                                                     </span>
-                                                    <small class="text-muted">@article.Category</small>
+                                                    <small class="text-muted">@article.Category.Name</small>
                                                     @if (article.Title.Length > 40)
                                                     {
-                                                        <a href="/Admin/Article/GetDetails/@article.ArticelID" class="product-name">@article.Title.Substring(0,40)...</a>
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title.Substring(0,40)...</a>
 
                                                     }
                                                     else
                                                     {
-                                                        <a href="/Admin/Article/GetDetails/@article.ArticelID" class="product-name">@article.Title</a>
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="product-name">@article.Title</a>
 
                                                     }
 
@@ -56,8 +55,8 @@
                                                         <small><strong> @@@article.AppUser - @article.Created.ToString("dd-MMM-yyyy")</strong></small>
                                                     </div>
                                                     <div class="m-t text-righ">
-                                                        <a href="/Admin/Article/GetDetails/@article.ArticelID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
-                                                        <a href="/Admin/Article/EditArticle/@article.ArticelID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+                                                        <a href="/Admin/Article/GetDetails/@article.ArticleID" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                                                        <a href="/Admin/Article/EditArticle/@article.ArticleID" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
                                                     </div>
                                                 </div>
                                             </div>
