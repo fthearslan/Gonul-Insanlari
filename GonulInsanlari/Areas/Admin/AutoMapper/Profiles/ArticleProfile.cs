@@ -19,6 +19,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(mod => mod.CommentCount, opt => opt.MapFrom(art => art.Comments.Count));
             CreateMap<Article, ArticleDetailsViewModel>();
 
+            CreateMap<Article, ArticleAllViewModel>();
         }
     }
 }

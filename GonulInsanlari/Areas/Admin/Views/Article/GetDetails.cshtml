@@ -12,22 +12,22 @@
             <div class="ibox">
                 <div class="ibox-content" style="overflow-x:hidden">
                     <div style="margin-bottom:25px;" class="text-center article-title">
-                        <span class="text-muted"><i class="fa fa-clock-o"></i> @Model.Created.ToString("MMM-dd-yyyy")</span>
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> @Model.Created.ToString("MMM-dd-yyyy")</span>
                         <h1 style="margin-bottom:40px;">
                             @Model.Title
                         </h1>
-                      
-                      
-                    
-                 <div>
-                     <p style="margin-top:50px;">
-                        @Html.Raw(@Model.Content)
+
+
+
+                        <div>
+                            <p style="margin-top:50px;">
+                                @Html.Raw(@Model.Content)
 
                             </p>
                             @if (Model.IsDraft == false)
                             {
                                 <h5 style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser</h5>
-
+                               
 
                                 <a style="margin-right:0;margin-top:15px;" class="btn btn-default float-right" href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
 
@@ -41,16 +41,16 @@
                             }
                             else
                             {
-                                <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="#"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+                                <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Article/EditArticle/@Model.ArticleID"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
 
                             }
 
 
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    </div>
+        </div>
     </div>
 </div>

@@ -10,12 +10,15 @@ namespace DataAccessLayer.Abstract
     public interface IArticleDAL : IRepository<Article>
     {
         List<Article> ListReleased();
-        Article GetWithVideos(int id);
+        Article GetByUser(int id);
 
-        List<Article> GetAll();
+        List<Article> GetAllWithoutDrafts();
+
+        List<Article> GetAllIncludeDrafts();
 
         List<Article> GetDraftsByUser(int userId);
 
         Article GetByIdInclude(int id);
+       
     }
 }

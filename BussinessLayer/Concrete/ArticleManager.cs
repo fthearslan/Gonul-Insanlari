@@ -29,9 +29,9 @@ namespace BussinessLayer.Concrete
             _article.Delete(entity);
         }
 
-        public List<Article> GetAll()
+        public List<Article> GetAllIncludeDrafts()
         {
-            return _article.GetAll().Where(x => x.Status == true).ToList();
+            return _article.GetAllIncludeDrafts().Where(x => x.Status == true).ToList();
         }
 
         public Article GetById(int id)
@@ -49,13 +49,12 @@ namespace BussinessLayer.Concrete
         public List<Article> GetDraftsByUser(int userId)
         {
             return _article.GetDraftsByUser(userId).ToList();
-               
 
         }
 
-        public Article GetWithVideos(int id)
+        public Article GetByUser(int id)
         {
-            return _article.GetWithVideos(id);
+            return _article.GetByUser(id);
         }
 
         public List<Article> List()
@@ -77,6 +76,11 @@ namespace BussinessLayer.Concrete
         public void Update(Article entity)
         {
             _article.Update(entity);
+        }
+
+        public List<Article> GetAllWithoutDrafts()
+        {
+            return _article.GetAllWithoutDrafts();
         }
     }
 }

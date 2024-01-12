@@ -45,7 +45,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
-
+        
         public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper)
         {
             this._userManager = userManager;
@@ -68,7 +68,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
 
                 int id = (int)value;
-                var article = _articleManager.GetWithVideos(id);
+                var article = _articleManager.GetByUser(id);
                 if (article != null)
                 {
                     return View(article);
@@ -89,7 +89,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult GetDetails(int id)
         {
-            var article = _articleManager.GetWithVideos(id);
+            var article = _articleManager.GetByUser(id);
             if (article is not null)
             {
                 ArticleDetailsViewModel model=_mapper.Map<ArticleDetailsViewModel>(article);
@@ -149,22 +149,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetDrafts()
-        {
-            var user = await _userManager.GetUserAsync(HttpContext.User);
-            var drafts = _articleManager.GetDraftsByUser(user.Id);
-            return View(drafts);
-
-        }
+        
 
         [HttpGet]
-        public IActionResult GetAllAsList()
-        {
-            var article = _articleManager.GetAll();
-            return View(article);
-        }
-
+ 
         public IActionResult Delete(int id)
         {
             var article = _articleManager.GetById(id);
