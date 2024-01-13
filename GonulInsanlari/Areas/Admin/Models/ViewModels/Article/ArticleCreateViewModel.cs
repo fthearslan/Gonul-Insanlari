@@ -27,6 +27,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public bool Status { get; set; } = true;    
         public Category? Category { get; set; }
 
+        public IFormFile VideoPath { get; set; } = null!;
+
         public bool IsDraft { get; set; } = false;
 
       

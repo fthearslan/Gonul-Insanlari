@@ -63,13 +63,14 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
-        public Article GetByUser(int id)
+        public Article GetDetailsByUser(int id)
         {
             using (var c = new Context())
             {
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
+                    .Include(a=>a.Video)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
 

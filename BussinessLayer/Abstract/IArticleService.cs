@@ -10,7 +10,7 @@ namespace BussinessLayer.Abstract
     public interface IArticleService:IGenericService<Article>
     {
         List<Article> ListReleased();
-        Article GetByUser(int id);
+        Article GetDetailsByUser(int id);
         List<Article> GetDraftsByUser(int userId);
      
         List<Article> GetAllIncludeDrafts();

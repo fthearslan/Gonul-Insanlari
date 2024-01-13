@@ -129,7 +129,28 @@
             });
         });
     </script>
-  
+
+<script>
+    $(document).ready(function () {
+        $("#dataTable1").dataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+            },
+            "searching": true,
+            "ordering": true,
+            "paging": true,
+            "pagingType": "full_numbers",
+            "pageLength": 10,
+            "responsive": true,
+            "columnDefs": [{
+                "targets": 3,
+                "orderable": false
+            }]
+        });
+    });
+</script>
+
+
 
     <script>
         function fire(id) {

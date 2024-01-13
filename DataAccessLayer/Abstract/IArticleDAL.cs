@@ -10,7 +10,7 @@ namespace DataAccessLayer.Abstract
     public interface IArticleDAL : IRepository<Article>
     {
         List<Article> ListReleased();
-        Article GetByUser(int id);
+        Article GetDetailsByUser(int id);
 
         List<Article> GetAllWithoutDrafts();
 

@@ -68,7 +68,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
 
                 int id = (int)value;
-                var article = _articleManager.GetByUser(id);
+                var article = _articleManager.GetDetailsByUser(id);
                 if (article != null)
                 {
                     return View(article);
@@ -89,7 +89,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult GetDetails(int id)
         {
-            var article = _articleManager.GetByUser(id);
+            var article = _articleManager.GetDetailsByUser(id);
             if (article is not null)
             {
                 ArticleDetailsViewModel model=_mapper.Map<ArticleDetailsViewModel>(article);
@@ -125,6 +125,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 Article article = _mapper.Map<Article>(model);
                 article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
+                // video will be inserted here...
                 article.AppUser = user;
                 var result = validator.Validate(article);
                 if (result.IsValid)

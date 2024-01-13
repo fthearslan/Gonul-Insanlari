@@ -58,7 +58,7 @@
                             <div class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Category</label>
                                 <div class="col-sm-10">
-                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="(List<SelectListItem>)@ViewData["Categories"]"></select>
+                                    <select asp-for="CategoryID" id="drop" class="form-control" asp-items="(List<SelectListItem>?)@ViewData["Categories"]"></select>
                                 </div>
                             </div>
                             <div class="hr-line-dashed"></div>
@@ -77,6 +77,30 @@
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control">
+
+
+
+                                    </div>
+                                    <span asp-validation-for="ImagePath" class="text-danger" id="validate2"></span>
+
+                                </div>
+
+
+                            </div>
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Upload Video</label>
+
+
+
+                                <div class="col-sm-10">
+                                    <div class="input-group m-b">
+                                        <div class="input-group-prepend">
+                                            <button onclick="$('#videoupload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
+                                            <input style="display:none" type="file" accept="video/*" onchange="showFileName(this)" asp-for=VideoPath id="videoupload">
+                                        </div>
+
+                                        <input type="text" id="textbox2" class="form-control">
 
 
 
@@ -174,16 +198,12 @@
 
     <script>
         function showFileName(input) {
-            var file = $("#imgupload").val().split('\\').pop();;
-            document.getElementById("textbox").value = file;
+            var file = $("#videoupload").val().split('\\').pop();;
+            document.getElementById("textbox2").value = file;
         }
         function showImageName(input) {
             var file = $("#fileUpload").val().split('\\').pop();;
             document.getElementById("textbox1").value = file;
-        }
-        function showVideoUrl(input) {
-            var url = $("#videourl").val();
-            document.getElementById("textbox").value = url;
         }
     </script>
    

@@ -52,9 +52,9 @@ namespace BussinessLayer.Concrete
 
         }
 
-        public Article GetByUser(int id)
+        public Article GetDetailsByUser(int id)
         {
-            return _article.GetByUser(id);
+            return _article.GetDetailsByUser(id);
         }
 
         public List<Article> List()

@@ -4,12 +4,13 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class Context:IdentityDbContext<AppUser,AppRole,int>
+    public class Context : IdentityDbContext<AppUser, AppRole, int>
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,10 +19,8 @@ namespace DataAccessLayer.Concrete
 
 
 
-
-
         public DbSet<About> Abouts { get; set; } = null!;
-        public DbSet<Announcement> Announcements { get; set; }= null!;
+        public DbSet<Announcement> Announcements { get; set; } = null!;
         public DbSet<Article> Articles { get; set; } = null!;
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Comment> Comments { get; set; } = null!;
@@ -36,7 +35,7 @@ namespace DataAccessLayer.Concrete
 
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Note> Notes { get; set; } = null!;
-       
+
 
 
     }
