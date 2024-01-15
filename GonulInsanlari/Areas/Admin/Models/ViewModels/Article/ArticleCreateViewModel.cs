@@ -31,7 +31,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 
         public bool IsDraft { get; set; } = false;
 
-      
+                    
      
     }
 }

@@ -72,7 +72,7 @@ namespace BussinessLayer.Concrete
             return _article.ListReleased();
         }
 
-        
+
         public void Update(Article entity)
         {
             _article.Update(entity);
@@ -81,6 +81,12 @@ namespace BussinessLayer.Concrete
         public List<Article> GetAllWithoutDrafts()
         {
             return _article.GetAllWithoutDrafts();
+        }
+
+        public async Task InserWithVideo(Article article)
+        {
+          await _article.InsertWithVideo(article);
+
         }
     }
 }

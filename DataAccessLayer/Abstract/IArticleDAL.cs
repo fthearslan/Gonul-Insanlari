@@ -19,6 +19,10 @@ namespace DataAccessLayer.Abstract
         List<Article> GetDraftsByUser(int userId);
 
         Article GetByIdInclude(int id);
-       
+
+        Task InsertWithVideo(Article article);
+
+    
+
     }
 }

@@ -55,7 +55,7 @@ namespace DataAccessLayer.EntityFramework
                     .Where(a => a.IsDraft == true)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
-                    .OrderByDescending(c => c.Created) 
+                    .OrderByDescending(c => c.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
 
@@ -70,7 +70,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
-                    .Include(a=>a.Video)
+                    //.Include(a => a.Video)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
 
@@ -104,6 +104,19 @@ namespace DataAccessLayer.EntityFramework
                     .OrderByDescending(a => a.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
+            }
+
+        }
+
+        public async Task InsertWithVideo(Article article)
+        {
+
+            using(var c= new Context())
+            {
+
+                await c.Articles.AddAsync(article);
+                await c.SaveChangesAsync();
+
             }
 
         }

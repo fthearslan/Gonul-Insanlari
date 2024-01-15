@@ -17,6 +17,19 @@ namespace DataAccessLayer.Concrete
             optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\SQLEXPRESS;database=GoDb;integrated security=true; TrustServerCertificate=true;");
         }
 
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<Video>()
+                .HasKey(x => x.VideoId);
+
+            builder.Entity<Video>()
+                .HasOne(v => v.Article)
+                .WithOne(a => a.Video)
+                .HasForeignKey<Video>(v => v.ArticleID);
+
+        }
 
 
         public DbSet<About> Abouts { get; set; } = null!;

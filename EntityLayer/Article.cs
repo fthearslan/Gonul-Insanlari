@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,7 @@ namespace EntityLayer
 {
     public class Article
     {
+
         [Key]
         public int ArticleID { get; set; }
 
@@ -33,7 +35,7 @@ namespace EntityLayer
         public List<Comment> Comments { get; set; } = null!;
 
         public Video? Video { get; set; }
-        public AppUser AppUser { get; set; } = null!;
+        public AppUser? AppUser { get; set; } 
 
 
     }

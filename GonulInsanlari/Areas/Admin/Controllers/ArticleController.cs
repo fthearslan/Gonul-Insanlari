@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using AutoMapper;
 using JetBrains.Annotations;
+using Humanizer;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -45,7 +46,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
-        
+        Context db = new Context();
         public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper)
         {
             this._userManager = userManager;
@@ -92,7 +93,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetDetailsByUser(id);
             if (article is not null)
             {
-                ArticleDetailsViewModel model=_mapper.Map<ArticleDetailsViewModel>(article);
+                ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
                 return View(model);
             }
             // Not found page will be placed here.
@@ -119,18 +120,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
         {
+            
             ViewData["Categories"] = _memoryCache.Get("Categories");
             var user = await _userManager.GetUserAsync(HttpContext.User);
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
                 article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
-                // video will be inserted here...
-                article.AppUser = user;
+                article.Video = new Video
+                {
+                    Path = "Example_Path",
+
+                };
                 var result = validator.Validate(article);
                 if (result.IsValid)
                 {
-                    _articleManager.Add(article);
+                    await _articleManager.InserWithVideo(article);
                     _memoryCache.Remove("Categories");
                     return RedirectToAction("GetDetails", new { id = article.ArticleID });
                 }
@@ -150,10 +155,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-        
+
 
         [HttpGet]
- 
+
         public IActionResult Delete(int id)
         {
             var article = _articleManager.GetById(id);
