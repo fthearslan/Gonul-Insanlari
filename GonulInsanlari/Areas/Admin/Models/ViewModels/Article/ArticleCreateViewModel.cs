@@ -17,21 +17,25 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         [StringLength(15000, MinimumLength = 500, ErrorMessage = "Article content cannot contain less than 500 character.")]
         public string Content { get; set; } = null!;
 
-        public DateTime Created { get; set; }=DateTime.Now;
+        public DateTime Created { get; set; } = DateTime.Now;
 
         [Required(ErrorMessage = "Please, select an image for this article.")]
 
         public IFormFile ImagePath { get; set; } = null!;
         public int? CategoryID { get; set; }
 
-        public bool Status { get; set; } = true;    
+        public bool Status { get; set; } = true;
         public Category? Category { get; set; }
 
         public IFormFile VideoPath { get; set; } = null!;
 
         public bool IsDraft { get; set; } = false;
 
-                    
-     
     }
+
+
+
+
+
 }
+

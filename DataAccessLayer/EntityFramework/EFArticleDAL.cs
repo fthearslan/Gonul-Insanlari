@@ -70,7 +70,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
-                    //.Include(a => a.Video)
+                    .Include(a => a.Video)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
 
@@ -108,18 +108,19 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
-        public async Task InsertWithVideo(Article article)
-        {
+        //public async Task InsertWithVideo(Article article)
+        //{
 
-            using(var c= new Context())
-            {
+        //    using (var c = new Context())
+        //    {
 
-                await c.Articles.AddAsync(article);
-                await c.SaveChangesAsync();
+        //        await c.Articles.AddAsync(article);
+        //        await c.SaveChangesAsync();
 
-            }
+        //    }
 
-        }
+        //}
     }
 
 }
+

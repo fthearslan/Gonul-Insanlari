@@ -23,6 +23,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
       
         public IFormFile? Image { get; set; }
 
+        public string VideoDirectory { get; set; }
+        public IFormFile? VideoPath { get; set; }
         public bool IsDraft { get; set; } = false;
     }
 }

@@ -20,9 +20,9 @@ namespace DataAccessLayer.Abstract
 
         Article GetByIdInclude(int id);
 
-        Task InsertWithVideo(Article article);
+        //Task InsertWithVideo(Article article);
 
-    
+
 
     }
 }

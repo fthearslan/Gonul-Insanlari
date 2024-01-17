@@ -98,7 +98,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             // Not found page will be placed here.
             return View();
-
         }
 
         [HttpGet]
@@ -120,22 +119,31 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
         {
-            
+
             ViewData["Categories"] = _memoryCache.Get("Categories");
+
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
                 article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
-                article.Video = new Video
-                {
-                    Path = "Example_Path",
+                article.AppUserID = user.Id;
 
-                };
+                if (model.VideoPath is not null)
+                {
+                    article.Video = new Video
+                    {
+                        Path = await ImageUpload.UploadAsync(model.VideoPath),
+                    };
+
+                }
+
                 var result = validator.Validate(article);
+
                 if (result.IsValid)
                 {
-                    await _articleManager.InserWithVideo(article);
+                    _articleManager.Add(article);
                     _memoryCache.Remove("Categories");
                     return RedirectToAction("GetDetails", new { id = article.ArticleID });
                 }
@@ -183,7 +191,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpGet]
         public IActionResult EditArticle(int id)
-        {
+        { 
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
                                                {
@@ -193,9 +201,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             Article article = _articleManager.GetByIdInclude(id);
             ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-
+            // map ViideoPath somehow??  
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
+
             return View(model);
         }
 
@@ -207,14 +216,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             ViewData["Categories"] = _memoryCache.Get("Categories");
             if (ModelState.IsValid)
             {
+                
                 if (model.Image != null)
                 {
                     model.ImagePath = await ImageUpload.UploadAsync(model.Image);
                 }
+
                 Article article = _mapper.Map<Article>(model);
+
                 var result = validator.Validate(article);
+
                 if (result.IsValid)
                 {
+                    article.Video = new Video() { Path = await ImageUpload.UploadAsync(model.VideoPath) };   
                     article.EditedBy = user.UserName.ToString();
                     article.Status = true;
                     _articleManager.Update(article);

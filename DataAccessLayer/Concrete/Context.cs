@@ -29,6 +29,10 @@ namespace DataAccessLayer.Concrete
                 .WithOne(a => a.Video)
                 .HasForeignKey<Video>(v => v.ArticleID);
 
+            builder.Entity<Article>()
+                .HasOne(a => a.AppUser)
+                .WithMany(u => u.Articles)
+                .HasForeignKey(a => a.AppUserID);
         }
 
 

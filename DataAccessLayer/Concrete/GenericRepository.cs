@@ -22,8 +22,7 @@ namespace DataAccessLayer.Concrete
 
         public void Delete(T entity)
         {
-            var DeletedEntity =  db.Entry(entity);
-            DeletedEntity.State = EntityState.Deleted;
+            _dbset.Remove(entity);
             db.SaveChanges();
         }
 
@@ -34,15 +33,13 @@ namespace DataAccessLayer.Concrete
 
         public void Insert(T entity)
         {
-            var AddedEntity = db.Entry(entity);
-            AddedEntity.State = EntityState.Added;
+           _dbset.Add(entity);
             db.SaveChanges();
         }
 
         public List<T> List()
         {
             return _dbset.ToList();
-
         }
 
         public List<T> ListFilter(Expression<Func<T, bool>> filter)
@@ -52,8 +49,7 @@ namespace DataAccessLayer.Concrete
 
         public void Update(T entity)
         {
-            var UpdatedEntity = db.Entry(entity);
-            UpdatedEntity.State = EntityState.Modified;
+            _dbset.Update(entity);
             db.SaveChanges();
         }
     }
