@@ -31,6 +31,8 @@ using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using AutoMapper;
 using JetBrains.Annotations;
 using Humanizer;
+using System.Runtime.Serialization;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -127,17 +129,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
-                article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
+                //article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
                 article.AppUserID = user.Id;
-
-                if (model.VideoPath is not null)
-                {
-                    article.Video = new Video
-                    {
-                        Path = await ImageUpload.UploadAsync(model.VideoPath),
-                    };
-
-                }
 
                 var result = validator.Validate(article);
 
@@ -191,7 +184,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpGet]
         public IActionResult EditArticle(int id)
-        { 
+        {
+
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
                                                {
@@ -201,10 +195,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             Article article = _articleManager.GetByIdInclude(id);
             ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-            // map ViideoPath somehow??  
+            //ViewData["Video"] = model.PathString;
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
-
             return View(model);
         }
 
@@ -213,11 +206,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> EditArticle(ArticleEditViewModel model)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
+
             ViewData["Categories"] = _memoryCache.Get("Categories");
+
             if (ModelState.IsValid)
             {
-                
-                if (model.Image != null)
+
+                if(model.Image is not null)
                 {
                     model.ImagePath = await ImageUpload.UploadAsync(model.Image);
                 }
@@ -228,7 +223,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 if (result.IsValid)
                 {
-                    article.Video = new Video() { Path = await ImageUpload.UploadAsync(model.VideoPath) };   
                     article.EditedBy = user.UserName.ToString();
                     article.Status = true;
                     _articleManager.Update(article);

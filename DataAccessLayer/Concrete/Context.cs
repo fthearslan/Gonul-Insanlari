@@ -20,15 +20,7 @@ namespace DataAccessLayer.Concrete
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
-            builder.Entity<Video>()
-                .HasKey(x => x.VideoId);
-
-            builder.Entity<Video>()
-                .HasOne(v => v.Article)
-                .WithOne(a => a.Video)
-                .HasForeignKey<Video>(v => v.ArticleID);
-
+            
             builder.Entity<Article>()
                 .HasOne(a => a.AppUser)
                 .WithMany(u => u.Articles)
@@ -43,8 +35,6 @@ namespace DataAccessLayer.Concrete
         public DbSet<Comment> Comments { get; set; } = null!;
         public DbSet<Contact> Contacts { get; set; } = null!;
         public DbSet<NewsLetter> NewsLetters { get; set; } = null!;
-
-        public DbSet<Video> Videos { get; set; } = null!;
 
         public DbSet<Assignment> Assignments { get; set; } = null!;
 

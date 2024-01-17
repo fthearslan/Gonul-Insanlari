@@ -20,10 +20,9 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public string Content { get; set; } = null!;
         [Required(ErrorMessage = "Please, select an image for this article.")]
         public string? ImagePath { get; set; }
-      
-        public IFormFile? Image { get; set; }
 
-        public string VideoDirectory { get; set; }
+        public IFormFile? Image { get; set; }
+        public string? PathString { get; set; }
         public IFormFile? VideoPath { get; set; }
         public bool IsDraft { get; set; } = false;
     }

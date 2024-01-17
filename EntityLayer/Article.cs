@@ -24,11 +24,11 @@ namespace EntityLayer
         public bool? Status { get; set; }
         public bool? IsDraft { get; set; }
         public string ImagePath { get; set; } = null!;
-        public int CategoryID { get; set; } 
+        public int CategoryID { get; set; }
         public Category Category { get; set; } = null!;
         public List<Comment> Comments { get; set; } = null!;
         public int? AppUserID { get; set; }
-        public Video? Video { get; set; }
+        public string? VideoPath { get; set; }
         public AppUser? AppUser { get; set; }
 
 

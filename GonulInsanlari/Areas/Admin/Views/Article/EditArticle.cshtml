@@ -6,19 +6,14 @@
 }
 
 
-<link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
 <link href="~/inspinia-gh-pages/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
-<link href="~/inspinia-gh-pages/css/plugins/ladda/ladda-themeless.min.css" rel="stylesheet">
 <link href="~/css/fileupload.css" rel="stylesheet" />
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/jquery-validate/jquery.validate.min.js"></script>
 <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-<script src="~/inspinia-gh-pages/js/plugins/cropper/cropper.min.js"></script>
 
-<script src="~/inspinia-gh-pages/js/plugins/ladda/spin.min.js"></script>
-<script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.min.js"></script>
-<script src="~/inspinia-gh-pages/js/plugins/ladda/ladda.jquery.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
@@ -76,7 +71,7 @@
                                 <div class="col-sm-10">
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
-                                            <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
+                                            <button onclick="$('#fileUpload').trigger('click'); return false;" @* href="#" *@ class="btn btn-white " type="button">Upload</button>
                                             <input style="display:none" type="file"  accept="image/*" onchange="showImageName(this)" asp-for=Image id="fileUpload">
                                         </div>
 
@@ -101,13 +96,13 @@
 
 
                                 <div class="col-sm-10">
-                                    <div class="input-group m-b">
+                                    <div class="input-group m-b"> 
                                         <div class="input-group-prepend">
-                                            <button onclick="$('#videoupload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
+                                            <button onclick="$('#videoupload').trigger('click'); return false;" @*href="#"*@ class="btn btn-white " type="button">Upload</button>
                                             <input style="display:none" type="file" accept="video/*" onchange="showFileName(this)" asp-for=VideoPath id="videoupload">
                                         </div>
 
-                                        <input type="text" id="textbox2" class="form-control">
+                                        <input type="text" id="textbox2"  @* value="@ViewData["Video"]" *@ class="form-control">
 
 
 
@@ -157,12 +152,12 @@
 
 @section Script {
 
-    <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
+    
 
     <script>
 
         $(document).ready(function () {
-
+         
             // Bind normal buttons
             Ladda.bind('.ladda-button', { timeout: 2000 });
 
@@ -201,7 +196,7 @@
 
     </script>
     <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
-    <script src="sweetalert2.all.min.js"></script>
+ 
 
     <script>
         function showFileName(input) {
@@ -229,11 +224,7 @@
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
     </script>
-    <script>
-        window.onbeforeunload = function (event) {
-            event.returnValue = "Write something clever here..";
-        };
-    </script>
+    
 
     <script>
 

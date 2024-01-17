@@ -247,6 +247,9 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("VideoPath")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("ArticleID");
 
                     b.HasIndex("AppUserID");
@@ -563,32 +566,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("EntityLayer.Video", b =>
-                {
-                    b.Property<int>("VideoId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("VideoId"), 1L, 1);
-
-                    b.Property<int>("ArticleID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Path")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.HasKey("VideoId");
-
-                    b.HasIndex("ArticleID")
-                        .IsUnique();
-
-                    b.ToTable("Videos");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -776,17 +753,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("EntityLayer.Video", b =>
-                {
-                    b.HasOne("EntityLayer.Article", "Article")
-                        .WithOne("Video")
-                        .HasForeignKey("EntityLayer.Video", "ArticleID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("EntityLayer.AppRole", null)
@@ -858,8 +824,6 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Article", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Video");
                 });
 
             modelBuilder.Entity("EntityLayer.Category", b =>

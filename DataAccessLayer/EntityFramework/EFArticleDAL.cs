@@ -40,7 +40,6 @@ namespace DataAccessLayer.EntityFramework
                      .Where(a => a.ArticleID == id)
                      .Include(c => c.Category)
                      .Include(u => u.AppUser)
-                     .AsNoTrackingWithIdentityResolution()
                      .FirstOrDefault();
             };
 
@@ -70,7 +69,6 @@ namespace DataAccessLayer.EntityFramework
                 return c.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
-                    .Include(a => a.Video)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
 
@@ -108,18 +106,7 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
-        //public async Task InsertWithVideo(Article article)
-        //{
-
-        //    using (var c = new Context())
-        //    {
-
-        //        await c.Articles.AddAsync(article);
-        //        await c.SaveChangesAsync();
-
-        //    }
-
-        //}
+       
     }
 
 }

@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
 using EntityLayer;
+using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
+using GonulInsanlari.Models;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
@@ -10,9 +13,14 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         public ArticleProfile()
         {
             CreateMap<Article, ArticleCreateViewModel>();
-            CreateMap<ArticleCreateViewModel, Article>();
+
+            CreateMap<ArticleCreateViewModel, Article>()
+                .ForMember(art => art.VideoPath, opt => opt.MapFrom<VideoPathResolver>())
+                .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
+
             CreateMap<ArticleEditViewModel, Article>();
             CreateMap<Article, ArticleEditViewModel>();
+
 
             CreateMap<ArticleListViewModel, Article>();
             CreateMap<Article, ArticleListViewModel>()
