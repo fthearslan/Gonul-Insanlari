@@ -102,7 +102,7 @@
                                             <input style="display:none" type="file" accept="video/*" onchange="showFileName(this)" asp-for=VideoPath id="videoupload">
                                         </div>
 
-                                        <input type="text" id="textbox2"  @* value="@ViewData["Video"]" *@ class="form-control">
+                                        <input type="text" id="textbox2" asp-for="PathString" class="form-control">
 
 
 

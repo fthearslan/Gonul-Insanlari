@@ -1,6 +1,7 @@
 ﻿using EntityLayer;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,9 @@ namespace DataAccessLayer.Concrete
                 .HasOne(a => a.AppUser)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AppUserID);
+
+
+
         }
 
 

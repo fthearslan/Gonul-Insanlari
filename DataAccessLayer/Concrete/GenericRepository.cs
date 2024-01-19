@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class GenericRepository<T> : IRepository<T> where T : class
+    public class GenericRepository<T>: IRepository<T> where T : class
     {
         Context db = new Context();
         

@@ -18,7 +18,7 @@ namespace EntityLayer
         [StringLength(maximumLength: 50)]
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
-        public DateTime Created { get; set; } = DateTime.Now;
+        public  DateTime Created { get; set; } = DateTime.Now;
         public DateTime? Edited { get; set; }
         public string? EditedBy { get; set; }
         public bool? Status { get; set; }

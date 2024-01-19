@@ -14,8 +14,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
            
 
         }
+     
 
-       
+
 
 
     }

@@ -5,7 +5,7 @@ using GonulInsanlari.Models;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
 {
-    public class ImagePathResolver : IValueResolver<ArticleCreateViewModel, Article, string>
+    public class ImagePathResolver: IValueResolver<ArticleCreateViewModel, Article, string>
     {
         public string Resolve(ArticleCreateViewModel source, Article destination, string? destMember, ResolutionContext context)
         {

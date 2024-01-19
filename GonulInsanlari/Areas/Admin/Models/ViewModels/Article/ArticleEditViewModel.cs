@@ -14,6 +14,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         [Required]
         public int? CategoryID { get; set; }
 
+        public DateTime  Created { get; set; } 
 
         [Required]
         [StringLength(15000, MinimumLength = 500, ErrorMessage = "Too short for article.")]
@@ -22,6 +23,10 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public string? ImagePath { get; set; }
 
         public IFormFile? Image { get; set; }
+
+        /// <summary>
+        /// To display VideoPath in a textbox.
+        /// </summary>
         public string? PathString { get; set; }
         public IFormFile? VideoPath { get; set; }
         public bool IsDraft { get; set; } = false;

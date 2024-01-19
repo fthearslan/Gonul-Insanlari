@@ -22,12 +22,13 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         [Required(ErrorMessage = "Please, select an image for this article.")]
 
         public IFormFile ImagePath { get; set; } = null!;
+     
         public int? CategoryID { get; set; }
 
         public bool Status { get; set; } = true;
         public Category? Category { get; set; }
 
-        public IFormFile VideoPath { get; set; } = null!;
+        public IFormFile? VideoPath { get; set; }
 
         public bool IsDraft { get; set; } = false;
 

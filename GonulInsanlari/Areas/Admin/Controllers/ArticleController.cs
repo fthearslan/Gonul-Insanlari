@@ -38,7 +38,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area("Admin")]
-    [AllowAnonymous]
+  
     public class ArticleController : Controller
     {
         private readonly IMemoryCache _memoryCache;
@@ -129,7 +129,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
-                //article.ImagePath = await ImageUpload.UploadAsync(model.ImagePath);
                 article.AppUserID = user.Id;
 
                 var result = validator.Validate(article);
@@ -195,7 +194,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             Article article = _articleManager.GetByIdInclude(id);
             ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-            //ViewData["Video"] = model.PathString;
+            ViewData["Video"] = model.PathString;
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
             return View(model);
@@ -217,12 +216,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     model.ImagePath = await ImageUpload.UploadAsync(model.Image);
                 }
 
+                if(model.VideoPath is not null)
+                {
+                    model.PathString = await ImageUpload.UploadAsync(model.VideoPath);
+                }
+                
                 Article article = _mapper.Map<Article>(model);
+                article.VideoPath = await ImageUpload.UploadAsync(model.VideoPath);
 
                 var result = validator.Validate(article);
 
                 if (result.IsValid)
                 {
+                    
                     article.EditedBy = user.UserName.ToString();
                     article.Status = true;
                     _articleManager.Update(article);

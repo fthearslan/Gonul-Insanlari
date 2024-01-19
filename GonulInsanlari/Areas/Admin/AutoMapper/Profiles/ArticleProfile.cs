@@ -18,8 +18,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(art => art.VideoPath, opt => opt.MapFrom<VideoPathResolver>())
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
 
-            CreateMap<ArticleEditViewModel, Article>();
-            CreateMap<Article, ArticleEditViewModel>();
+            CreateMap<ArticleEditViewModel, Article>().ForMember(x => x.VideoPath, opt => opt.Ignore()).ForMember(art=>art.VideoPath,opt=>opt.MapFrom(mod=>mod.PathString));
+
+            CreateMap<Article, ArticleEditViewModel>().ForMember(x => x.VideoPath, opt => opt.Ignore())
+                .ForMember(mod=>mod.PathString,opt=>opt.MapFrom(art=>art.VideoPath));// article videopath===> vm Pathstring
 
 
             CreateMap<ArticleListViewModel, Article>();

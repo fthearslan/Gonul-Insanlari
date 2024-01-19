@@ -12,12 +12,23 @@
             <div class="ibox">
                 <div class="ibox-content" style="overflow-x:hidden">
                     <div style="margin-bottom:25px;" class="text-center article-title">
+                        @if(@Model.Edited is not null )
+                        {
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> Edited by @@@Model.EditedBy on @Model.Edited </span>
+
+                        }
+                        else
+                        {
                             <span class="text-muted"><i class="fa fa-clock-o"></i> @GetDate.GetCreateDate(Model.Created)</span>
+
+                        }
                         <h1 style="margin-bottom:40px;">
                             @Model.Title
                         </h1>
+                   
 
-
+                    
+                      
 
                         <div>
                             <p style="margin-top:50px;">
