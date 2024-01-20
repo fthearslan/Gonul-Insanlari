@@ -13,5 +13,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public DateTime? Edited { get; set; } 
         public string? EditedBy { get; set; }
         public bool IsDraft { get; set; }
+
+        public string? VideoPath { get; set; }
     }
 }

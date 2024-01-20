@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GonulInsanlari.Areas.Admin.Models.Tools;
+using GonulInsanlari.Models;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
@@ -14,7 +17,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         [Required]
         public int? CategoryID { get; set; }
 
-        public DateTime  Created { get; set; } 
+        public DateTime Created { get; set; }
 
         [Required]
         [StringLength(15000, MinimumLength = 500, ErrorMessage = "Too short for article.")]
@@ -24,11 +27,23 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 
         public IFormFile? Image { get; set; }
 
-        /// <summary>
-        /// To display VideoPath in a textbox.
-        /// </summary>
-        public string? PathString { get; set; }
-        public IFormFile? VideoPath { get; set; }
+        public string? VideoPath { get; set; }
         public bool IsDraft { get; set; } = false;
+
+
+
+        public void GetVideoUrl(string? Url)
+        {
+
+            VideoPath = GetUrl.GetVideoUrl(Url);
+
+        }
+
+        public async Task GetImage(IFormFile? image) 
+        {
+           
+         ImagePath = await ImageUpload.UploadAsync(image);
+
+        }
     }
 }

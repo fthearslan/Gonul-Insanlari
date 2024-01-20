@@ -1,4 +1,5 @@
-﻿using BussinessLayer.Concrete;
+﻿
+using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
@@ -48,7 +49,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
         CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
         ArticleValidator validator = new ArticleValidator();
-        Context db = new Context();
         public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper)
         {
             this._userManager = userManager;
@@ -128,6 +128,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
+                model.GetVideoUrl(model.VideoPath);  
                 Article article = _mapper.Map<Article>(model);
                 article.AppUserID = user.Id;
 
@@ -194,7 +195,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             Article article = _articleManager.GetByIdInclude(id);
             ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-            ViewData["Video"] = model.PathString;
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
             return View(model);
@@ -210,19 +210,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-
                 if(model.Image is not null)
-                {
-                    model.ImagePath = await ImageUpload.UploadAsync(model.Image);
-                }
+                await model.GetImage(model.Image);
 
-                if(model.VideoPath is not null)
-                {
-                    model.PathString = await ImageUpload.UploadAsync(model.VideoPath);
-                }
-                
+                model.GetVideoUrl(model.VideoPath);
+
                 Article article = _mapper.Map<Article>(model);
-                article.VideoPath = await ImageUpload.UploadAsync(model.VideoPath);
 
                 var result = validator.Validate(article);
 

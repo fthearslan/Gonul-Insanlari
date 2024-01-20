@@ -3,6 +3,7 @@ using System.Security.Policy;
 using GonulInsanlari.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
+using GonulInsanlari.Areas.Admin.Models.Tools;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
@@ -22,18 +23,28 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         [Required(ErrorMessage = "Please, select an image for this article.")]
 
         public IFormFile ImagePath { get; set; } = null!;
-     
+
         public int? CategoryID { get; set; }
 
         public bool Status { get; set; } = true;
         public Category? Category { get; set; }
 
-        public IFormFile? VideoPath { get; set; }
+        public string? VideoPath { get; set; }
 
         public bool IsDraft { get; set; } = false;
 
-    }
 
+        /// <summary>
+        /// To convert raw url.
+        /// </summary>
+        /// <param name="Url"></param>
+        public void GetVideoUrl(string? Url)
+        {
+
+                VideoPath = GetUrl.GetVideoUrl(Url);
+
+        }
+    }
 
 
 

@@ -2,7 +2,7 @@
 {
     public class ImageUpload
     {
-        public static async Task<string> UploadAsync(IFormFile file)
+        public static async Task<string> UploadAsync(IFormFile? file)
         {
             if (file != null)
             {

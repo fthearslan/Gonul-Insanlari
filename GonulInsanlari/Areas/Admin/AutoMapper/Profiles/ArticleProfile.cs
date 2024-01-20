@@ -12,24 +12,32 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
         public ArticleProfile()
         {
+
+            #region Create
             CreateMap<Article, ArticleCreateViewModel>();
-
             CreateMap<ArticleCreateViewModel, Article>()
-                .ForMember(art => art.VideoPath, opt => opt.MapFrom<VideoPathResolver>())
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
+            #endregion
+            
+            #region Edit
+            CreateMap<ArticleEditViewModel, Article>();
+            CreateMap<Article, ArticleEditViewModel>();
+            #endregion
 
-            CreateMap<ArticleEditViewModel, Article>().ForMember(x => x.VideoPath, opt => opt.Ignore()).ForMember(art=>art.VideoPath,opt=>opt.MapFrom(mod=>mod.PathString));
-
-            CreateMap<Article, ArticleEditViewModel>().ForMember(x => x.VideoPath, opt => opt.Ignore())
-                .ForMember(mod=>mod.PathString,opt=>opt.MapFrom(art=>art.VideoPath));// article videopath===> vm Pathstring
-
-
+            #region List
             CreateMap<ArticleListViewModel, Article>();
             CreateMap<Article, ArticleListViewModel>()
                 .ForMember(mod => mod.CommentCount, opt => opt.MapFrom(art => art.Comments.Count));
+            #endregion
+            
+            #region Details
             CreateMap<Article, ArticleDetailsViewModel>();
+            #endregion
 
+            #region All
             CreateMap<Article, ArticleAllViewModel>();
+            #endregion
+
         }
     }
 }
