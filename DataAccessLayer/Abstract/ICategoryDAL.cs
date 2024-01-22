@@ -1,4 +1,6 @@
-﻿using EntityLayer;
+﻿using DataAccessLayer.DTOs;
+using EntityLayer;
+using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +11,8 @@ namespace DataAccessLayer.Abstract
 {
     public interface ICategoryDAL : IRepository<Category>
     {
+       List<CategoryDto> GetList();
+
+
     }
 }

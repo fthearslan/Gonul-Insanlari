@@ -27,7 +27,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public int? CategoryID { get; set; }
 
         public bool Status { get; set; } = true;
-        public Category? Category { get; set; }
+        public EntityLayer.Category? Category { get; set; }
 
         public string? VideoPath { get; set; }
 

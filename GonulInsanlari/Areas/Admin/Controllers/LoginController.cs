@@ -3,6 +3,7 @@ using GonulInsanlari.Areas.Admin.Models.ViewModels.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Logging;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -11,11 +12,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class LoginController : Controller
     {
         SignInManager<AppUser> _signInManager;
+       
+        private readonly ILogger<LoginController> _logger;
 
-        public LoginController(SignInManager<AppUser> signInManager)
+        public LoginController(SignInManager<AppUser> signInManager, ILogger<LoginController> Logger)
         {
             _signInManager = signInManager;
-
+            _logger = Logger;
         }
 
 
@@ -29,12 +32,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> Login(SignInViewModel user)
         {
 
-
             if (ModelState.IsValid)
             {
                 var login = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, true);
                 if (login.Succeeded)
                 {
+                    _logger.LogInformation($"The user with username {user.Username} has logged in.");
                     return RedirectToAction("Index", "Dashboard", "Admin");
                 }
                 else
@@ -46,7 +49,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(user);
         }
 
-        
+
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.DTOs;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace BussinessLayer.Concrete
         public Category GetById(int id)
         {
             return _category.Get(x => x.CategoryID == id);
+        }
+
+        public List<CategoryDto> GetCategoriesWithArticle()
+        {
+            return _category.GetList();
+                            
         }
 
         public List<Category> List()

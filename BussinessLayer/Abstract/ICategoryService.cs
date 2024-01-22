@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Concrete;
+using DataAccessLayer.DTOs;
 using EntityLayer;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace BussinessLayer.Abstract
 {
     public interface ICategoryService:IGenericService<Category>
     {
+        List<CategoryDto> GetCategoriesWithArticle();
     }
 }
