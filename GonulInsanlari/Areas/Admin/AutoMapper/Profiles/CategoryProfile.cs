@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.DTOs;
+using EntityLayer;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
@@ -11,7 +12,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         {
             
             CreateMap<CategoryDto,CategoryListViewModel>();
-
+            CreateMap<CategoryCreateViewModel, Category>();
 
 
         }

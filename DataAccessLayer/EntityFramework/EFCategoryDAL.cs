@@ -28,7 +28,8 @@ namespace DataAccessLayer.EntityFramework
                     Status = x.Status,
                     ArticleCount = x.Articles.Count
 
-                }).AsNoTrackingWithIdentityResolution().ToList();
+                }).AsNoTrackingWithIdentityResolution()
+                .ToList();
 
 
             }
