@@ -6,6 +6,7 @@ using EntityLayer;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol;
 using System.Security.Policy;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
@@ -15,12 +16,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class CategoryController : Controller
     {
         private readonly IMapper _mapper;
+        private readonly ILogger<CategoryController> _logger;
+
         CategoryManager _manager = new CategoryManager(new EFCategoryDAL());
         CategoryValidator validator = new CategoryValidator();
 
-        public CategoryController(IMapper Mapper)
+        public CategoryController(IMapper Mapper,ILogger<CategoryController> logger)
         {
             _mapper = Mapper;
+            _logger= logger;
         }
         public IActionResult List()
         {
@@ -56,6 +60,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -73,11 +78,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
                     else
                     {
-                        foreach(var error in result.Errors)
+                        foreach (var error in result.Errors)
                         {
                             ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                         }
-                    
+
                     }
                     return View(model);
 
@@ -88,6 +93,59 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+       
+        [HttpGet]
+        public IActionResult EditCategory(int id)
+        {
+
+            var category = _manager.GetById(id);
+            if (category != null)
+            {
+
+
+                try
+                {
+                    var model = _mapper.Map<CategoryEditViewModel>(category);
+                    return View(model);
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError($"AutoMapping Exception has been thrown, please control {category.GetType()} profile.");
+                    return RedirectToAction("List"); // Error page will be placed here.
+                }
+                
+            }
+            return RedirectToAction("List");
+
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditCategory()
+        {
+
+
+
+            return View();
+        }
+
+
+
+
+
+        public IActionResult GetDetails(int id)
+        {
+
+            var category = _manager.GetById(id);
+
+            if (category is not null)
+            {
+                return View(category);
+            }
+
+            return RedirectToAction("List");
+
+        }
 
     }
 }

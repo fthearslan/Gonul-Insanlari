@@ -10,8 +10,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
         public string Name { get; set; }
 
         [Required]
-        [StringLength(30, ErrorMessage = "Description cannot contain more than 140 chrachters.")]
-        public string Description { get; set; }
+        [StringLength(maximumLength:140, ErrorMessage = "Description cannot contain less than 15 and more than 140 chrachters.", MinimumLength = 15)]
+        public string Description { get; set; } = null!;
 
         [Required]
         public IFormFile Image { get; set; } = null!;

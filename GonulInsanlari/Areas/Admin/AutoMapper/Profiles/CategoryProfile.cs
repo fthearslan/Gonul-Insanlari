@@ -10,10 +10,19 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
         public CategoryProfile()
         {
-            
+
+            #region List
+
             CreateMap<CategoryDto,CategoryListViewModel>();
             CreateMap<CategoryCreateViewModel, Category>();
 
+            #endregion
+
+            #region Edit
+
+            CreateMap<Category, CategoryEditViewModel>();
+
+            #endregion
 
         }
 

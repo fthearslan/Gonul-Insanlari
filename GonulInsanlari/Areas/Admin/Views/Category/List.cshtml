@@ -59,6 +59,7 @@
                                     {
                                         <td class="btn-group">
                                             <a class="btn-white btn btn-xs" href="/Admin/Category/GetDetails/@category.CategoryID">View</a>
+                                            <a class="btn-white btn btn-xs" href="/Admin/Category/EditCategory/@category.CategoryID">Edit</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@category.CategoryID)" id="btn_delete"><i class="fa fa-trash"></i></a>
                                         </td>
 
@@ -140,7 +141,7 @@
                     });
 
                     Swal.fire({
-                        title: "Deleted!",
+                        title: "Disabled!",
                         text: "The category has been disabled.",
                         icon: "success"
 
