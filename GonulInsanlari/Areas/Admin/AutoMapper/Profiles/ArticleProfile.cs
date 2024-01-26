@@ -32,6 +32,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             
             #region Details
             CreateMap<Article, ArticleDetailsViewModel>();
+            CreateMap<Article, ArticleByCategoryViewModel>().ForMember(a => a.AppUserName, opt => opt.MapFrom(art => art.AppUser.UserName));
             #endregion
 
             #region All

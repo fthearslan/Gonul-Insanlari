@@ -7,6 +7,13 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <Content Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <EmbeddedResource Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <None Remove="Areas\Admin\ViewComponents\Categories\**" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Compile Remove="Areas\Admin\Models\PrintPage.cs" />
 		<Compile Remove="Controllers\PrintControlller.cs" />
 	</ItemGroup>
@@ -43,7 +50,6 @@
 
 	<ItemGroup>
 		<Folder Include="Areas\Admin\Data\" />
-		<Folder Include="Areas\Admin\ViewComponents\Categories\" />
 		<Folder Include="Areas\Admin\Views\Notification\" />
 		<Folder Include="wwwroot\PdfReports\" />
 	</ItemGroup>

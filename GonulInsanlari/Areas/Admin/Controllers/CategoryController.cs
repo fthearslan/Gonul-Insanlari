@@ -18,13 +18,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly ILogger<CategoryController> _logger;
 
-        CategoryManager _manager = new CategoryManager(new EFCategoryDAL());
-        CategoryValidator validator = new CategoryValidator();
+        CategoryManager _manager = new(new EFCategoryDAL());
+        CategoryValidator validator = new();
 
-        public CategoryController(IMapper Mapper,ILogger<CategoryController> logger)
+        public CategoryController(IMapper Mapper, ILogger<CategoryController> logger)
         {
             _mapper = Mapper;
-            _logger= logger;
+            _logger = logger;
         }
         public IActionResult List()
         {
@@ -67,37 +67,47 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
 
                 await model.SetImagePath();
-                Category category = _mapper.Map<Category>(model);
-                if (category != null)
+
+                try
                 {
-                    var result = await validator.ValidateAsync(category);
-                    if (result.IsValid)
+                    Category category = _mapper.Map<Category>(model);
+                    if (category != null)
                     {
-                        _manager.Update(category);
-                        return RedirectToAction("List"); // GetDetails page is going to be placed here.
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
+                        var result = await validator.ValidateAsync(category);
+                        if (result.IsValid)
                         {
-                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                            _manager.Update(category);
+                            return RedirectToAction("List"); // GetDetails page is going to be placed here.
                         }
+                        else
+                        {
+                            foreach (var error in result.Errors)
+                            {
+                                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                            }
+
+                        }
+                        return View(model);
 
                     }
-                    return View(model);
 
                 }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError($"AutoMapping Exception has been thrown, please control Category profile.");
+                    return RedirectToAction("List"); // Error page will be placed here.
+                }
+
 
             }
             return View(model);
 
         }
 
-       
+
         [HttpGet]
         public IActionResult EditCategory(int id)
         {
-
             var category = _manager.GetById(id);
             if (category != null)
             {
@@ -113,7 +123,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     _logger.LogError($"AutoMapping Exception has been thrown, please control {category.GetType()} profile.");
                     return RedirectToAction("List"); // Error page will be placed here.
                 }
-                
+
             }
             return RedirectToAction("List");
 
@@ -121,27 +131,64 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult EditCategory()
+        public async Task<IActionResult> EditCategory(CategoryEditViewModel model)
         {
+            if (ModelState.IsValid)
+            {
 
+                if (model.Image is not null)
+                {
+                    await model.SetImagePath();
+                }
 
+                try
+                {
+                    Category category = _mapper.Map<Category>(model);
 
-            return View();
+                    var result = validator.Validate(category);
+                    if (result.IsValid)
+                    {
+                        _manager.Update(category);
+                        return RedirectToAction("List");
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                        }
+                    }
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError($"AutoMapping Exception has been thrown, please control Category profile.");
+
+                    return RedirectToAction("List"); // Error page will be placed here.
+                }
+
+            }
+            return View(model);
         }
-
-
-
-
 
         public IActionResult GetDetails(int id)
         {
 
-            var category = _manager.GetById(id);
-
-            if (category is not null)
+            var category = _manager.GetDetails(id);
+            if (category != null)
             {
-                return View(category);
+                try
+                {
+                    CategoryDetailViewModel model = _mapper.Map<CategoryDetailViewModel>(category);
+                    return View(model);
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError($"AutoMapping Exception has been thrown, please control {category.GetType()} profile.");
+                    return RedirectToAction("List");
+                }
+
             }
+
 
             return RedirectToAction("List");
 

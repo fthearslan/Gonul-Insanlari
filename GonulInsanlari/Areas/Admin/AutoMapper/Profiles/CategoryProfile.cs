@@ -21,8 +21,16 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region Edit
 
             CreateMap<Category, CategoryEditViewModel>();
+            CreateMap<CategoryEditViewModel, Category>();
 
             #endregion
+
+            #region Details
+
+            CreateMap<Category,CategoryDetailViewModel>();
+            #endregion
+
+
 
         }
 

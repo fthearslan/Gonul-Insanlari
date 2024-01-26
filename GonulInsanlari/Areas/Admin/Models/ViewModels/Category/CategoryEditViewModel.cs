@@ -15,11 +15,11 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
         [StringLength(maximumLength: 140, ErrorMessage = "Description cannot contain less than 15 and more than 140 chrachters.", MinimumLength = 15)]
         public string Description { get; set; }
 
-        [Required]
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public string? ImagePath { get; set; }
 
+        public bool Status => true;
 
         public async Task SetImagePath()
         {

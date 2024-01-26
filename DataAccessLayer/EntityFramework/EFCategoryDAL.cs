@@ -14,6 +14,22 @@ namespace DataAccessLayer.EntityFramework
 {
     public class EFCategoryDAL : GenericRepository<Category>, ICategoryDAL
     {
+        public Category GetDetails(int id)
+        {
+            using (var c = new Context())
+            {
+                return c.Categories.Where(c=>c.CategoryID==id).Select(c => new Category
+                {
+                    CategoryID = c.CategoryID,
+                    Name = c.Name,
+                    Description = c.Description,
+                    ImagePath = c.ImagePath,
+                }).AsNoTrackingWithIdentityResolution()
+                .FirstOrDefault();
+            }
+
+        }
+
         public List<CategoryDto> GetList()
         {
             using(var c= new Context()) 

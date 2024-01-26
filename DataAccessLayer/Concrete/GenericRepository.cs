@@ -39,12 +39,16 @@ namespace DataAccessLayer.Concrete
 
         public List<T> List()
         {
-            return _dbset.ToList();
+            return _dbset.
+                AsNoTrackingWithIdentityResolution()
+                .ToList();
         }
 
         public List<T> ListFilter(Expression<Func<T, bool>> filter)
         {
-            return _dbset.Where(filter).ToList();
+            return _dbset.Where(filter)
+                .AsNoTrackingWithIdentityResolution()
+                .ToList();
         }
 
         public void Update(T entity)

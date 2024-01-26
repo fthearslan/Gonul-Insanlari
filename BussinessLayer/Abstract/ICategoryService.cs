@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Concrete;
 using DataAccessLayer.DTOs;
 using EntityLayer;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace BussinessLayer.Abstract
     public interface ICategoryService:IGenericService<Category>
     {
         List<CategoryDto> GetCategoriesWithArticle();
+
+        Category GetDetails(int id);
     }
 }

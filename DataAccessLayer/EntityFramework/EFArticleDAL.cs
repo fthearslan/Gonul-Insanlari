@@ -106,7 +106,25 @@ namespace DataAccessLayer.EntityFramework
 
         }
 
-       
+        public List<Article> GetByCategory(int id)
+        {
+            using (var c = new Context())
+            {
+                return c.Articles
+                    .Where(a => a.CategoryID==id && a.IsDraft == false)
+                    .OrderByDescending(a => a.Created).Select(a => new Article
+                    {
+                        ArticleID=a.ArticleID,
+                        Title = a.Title,
+                        AppUser = a.AppUser,
+
+                    }).AsNoTrackingWithIdentityResolution()
+                    .ToList();
+                   
+            }
+
+
+        }
     }
 
 }

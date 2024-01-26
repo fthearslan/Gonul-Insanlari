@@ -18,8 +18,7 @@ namespace BussinessLayer.Abstract
         Article GetByIdInclude(int id);
         List<Article> GetAllWithoutDrafts();
 
-        //Task InserWithVideo(Article article);
-
+       List<Article> ListByCategory(int id);
 
     }
 }

@@ -176,7 +176,7 @@
     <script>
         $(document).ready(function () {
             $('#summernote').summernote();
-            $('div.note-editable').css({ 'min-height': 250 + 'px' });
+            $('div.note-editable').css({ 'min-height': 50 + 'px' });
         });
     </script>
  
@@ -211,7 +211,15 @@
         }
 
     </script>
+    <script>
+        $('.summernote').summernote({
+            toolbar: [
+                // [groupName, [list of button]]
+                ['style', ['bold', 'italic', 'underline', 'clear']],
 
+            ]
+        });
+    </script>
 
                                  
 }

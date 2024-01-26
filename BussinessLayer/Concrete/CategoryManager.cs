@@ -40,6 +40,11 @@ namespace BussinessLayer.Concrete
                             
         }
 
+        public Category GetDetails(int id)
+        {
+         return _category.GetDetails(id);
+        }
+
         public List<Category> List()
         {
             return _category.List();

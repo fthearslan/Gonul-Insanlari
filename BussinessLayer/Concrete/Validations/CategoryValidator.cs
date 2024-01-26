@@ -35,9 +35,6 @@ namespace BussinessLayer.Concrete.Validations
 
             #endregion
 
-
-
-
         }
     }
 }

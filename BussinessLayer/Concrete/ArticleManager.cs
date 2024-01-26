@@ -83,10 +83,10 @@ namespace BussinessLayer.Concrete
             return _article.GetAllWithoutDrafts();
         }
 
-        //public async Task InserWithVideo(Article article)
-        //{
-        //    await _article.InsertWithVideo(article);
+        public List<Article> ListByCategory(int id)
+        {
+            return _article.GetByCategory(id);
+        }
 
-        //}
     }
 }
