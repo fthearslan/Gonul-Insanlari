@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _announcement.Get(x => x.ID == id);
         }
 
+        public List<Announcement> GetForAdmins()
+        {
+          return  _announcement.GetForAdmins();
+        }
+
         public List<Announcement> List()
         {
             return _announcement.List();
@@ -40,7 +45,7 @@ namespace BussinessLayer.Concrete
 
         public List<Announcement> ListFilter()
         {
-            return _announcement.ListFilter(x => x.Status == true && x.ToPublish == false).OrderByDescending(x=>x.Created).ToList();
+            return _announcement.ListFilter(x => x.Status == true && x.IsForAdmins == true).OrderByDescending(x=>x.Created).ToList();
         }
 
         public void Update(Announcement entity)

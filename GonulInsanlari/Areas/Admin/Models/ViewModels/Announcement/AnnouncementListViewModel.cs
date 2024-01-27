@@ -1,0 +1,17 @@
+﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
+{
+    public class AnnouncementListViewModel
+    {
+        public int ID { get; set; }
+
+        public string Title { get; set; }
+        public string Subject { get; set; }
+
+        public DateTime Created { get; set; }
+
+        public string CreatedBy { get; set; }
+
+        public bool IsForAdmins { get; set; }
+
+    }
+}

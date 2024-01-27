@@ -9,5 +9,8 @@ namespace DataAccessLayer.Abstract
 {
 public interface IAnnouncementDAL:IRepository<Announcement>
     {
+
+
+        List<Announcement> GetForAdmins();
     }
 }

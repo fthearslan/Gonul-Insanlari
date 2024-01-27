@@ -9,5 +9,7 @@ namespace BussinessLayer.Abstract
 {
     public interface IAnnouncementService:IGenericService<Announcement>
     {
+
+        List<Announcement> GetForAdmins();
     }
 }

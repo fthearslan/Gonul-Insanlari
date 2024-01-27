@@ -15,10 +15,12 @@ namespace EntityLayer
         public string Title { get; set; }
         [StringLength(300)]
         public string Details { get; set; }
+        [StringLength(30)]
+        public string Subject { get; set; }
         public DateTime Created { get; set; }
         public bool Status { get; set; }
-        public bool ToPublish { get; set; }
-        public AppUser AppUser { get; set; }
+        public bool IsForAdmins { get; set; }
+        public AppUser CreatedBy { get; set; }
 
     }
 }
