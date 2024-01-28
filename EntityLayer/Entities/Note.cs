@@ -5,22 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer
+namespace EntityLayer.Entities
 {
-    public class Notification
+    public class Note
     {
-        [Key]
-        public int ID { get; set; }
-        [StringLength(75)]
+        public int Id { get; set; }
+        [StringLength(50)]
         public string Title { get; set; }
-        [StringLength(30)]
-        public string? Symbol { get; set; }
-        public string Type { get; set; }
-        [StringLength(150)]
         public string Content { get; set; }
-        public int? Value { get; set; }
         public DateTime Created { get; set; }
         public bool Status { get; set; }
-
+        public AppUser CreatedBy { get; set; }
     }
 }

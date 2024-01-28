@@ -1,6 +1,6 @@
 ﻿using BussinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
-using EntityLayer;
+using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer
+namespace EntityLayer.Entities
 {
     public class Message
     {
         [Key]
-        public int MessageID {  get; set; }
+        public int MessageID { get; set; }
 
         [StringLength(100)]
         public string Subject { get; set; }

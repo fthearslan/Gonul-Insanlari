@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240128204144_mig_announcement_datetime_defValue")]
+    partial class mig_announcement_datetime_defValue
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +24,7 @@ namespace DataAccessLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("EntityLayer.Entities.About", b =>
+            modelBuilder.Entity("EntityLayer.About", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -55,7 +57,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Abouts");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Announcement", b =>
+            modelBuilder.Entity("EntityLayer.Announcement", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -63,8 +65,10 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
@@ -97,7 +101,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Announcements");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.AppRole", b =>
+            modelBuilder.Entity("EntityLayer.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -127,7 +131,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetRoles", (string)null);
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.AppUser", b =>
+            modelBuilder.Entity("EntityLayer.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -210,7 +214,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Article", b =>
+            modelBuilder.Entity("EntityLayer.Article", b =>
                 {
                     b.Property<int>("ArticleID")
                         .ValueGeneratedOnAdd()
@@ -264,7 +268,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Articles");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Assignment", b =>
+            modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
                     b.Property<int>("AssignmentId")
                         .ValueGeneratedOnAdd()
@@ -309,7 +313,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Assignments");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Category", b =>
+            modelBuilder.Entity("EntityLayer.Category", b =>
                 {
                     b.Property<int>("CategoryID")
                         .ValueGeneratedOnAdd()
@@ -339,7 +343,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Comment", b =>
+            modelBuilder.Entity("EntityLayer.Comment", b =>
                 {
                     b.Property<int>("CommentID")
                         .ValueGeneratedOnAdd()
@@ -382,7 +386,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Comments");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Contact", b =>
+            modelBuilder.Entity("EntityLayer.Contact", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -424,7 +428,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Contacts");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Message", b =>
+            modelBuilder.Entity("EntityLayer.Message", b =>
                 {
                     b.Property<int>("MessageID")
                         .ValueGeneratedOnAdd()
@@ -469,7 +473,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.NewsLetter", b =>
+            modelBuilder.Entity("EntityLayer.NewsLetter", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -498,7 +502,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("NewsLetters");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Note", b =>
+            modelBuilder.Entity("EntityLayer.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -531,7 +535,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Notes");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Notification", b =>
+            modelBuilder.Entity("EntityLayer.Notification", b =>
                 {
                     b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
@@ -674,9 +678,9 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Announcement", b =>
+            modelBuilder.Entity("EntityLayer.Announcement", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", "CreatedBy")
+                    b.HasOne("EntityLayer.AppUser", "CreatedBy")
                         .WithMany("Announcements")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -685,13 +689,13 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("CreatedBy");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Article", b =>
+            modelBuilder.Entity("EntityLayer.Article", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", "AppUser")
+                    b.HasOne("EntityLayer.AppUser", "AppUser")
                         .WithMany("Articles")
                         .HasForeignKey("AppUserID");
 
-                    b.HasOne("EntityLayer.Entities.Category", "Category")
+                    b.HasOne("EntityLayer.Category", "Category")
                         .WithMany("Articles")
                         .HasForeignKey("CategoryID")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -702,13 +706,13 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Assignment", b =>
+            modelBuilder.Entity("EntityLayer.Assignment", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", "Receiver")
+                    b.HasOne("EntityLayer.AppUser", "Receiver")
                         .WithMany("AssignmentReceived")
                         .HasForeignKey("ReceiverId");
 
-                    b.HasOne("EntityLayer.Entities.AppUser", "Sender")
+                    b.HasOne("EntityLayer.AppUser", "Sender")
                         .WithMany("AssignmentsSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -719,24 +723,24 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Comment", b =>
+            modelBuilder.Entity("EntityLayer.Comment", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.Article", "Article")
+                    b.HasOne("EntityLayer.Article", "Article")
                         .WithMany("Comments")
                         .HasForeignKey("ArticleID");
 
                     b.Navigation("Article");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Message", b =>
+            modelBuilder.Entity("EntityLayer.Message", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", "Receiver")
+                    b.HasOne("EntityLayer.AppUser", "Receiver")
                         .WithMany("MessagesReceived")
                         .HasForeignKey("ReceiverId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Entities.AppUser", "Sender")
+                    b.HasOne("EntityLayer.AppUser", "Sender")
                         .WithMany("MessagesSent")
                         .HasForeignKey("SenderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -747,9 +751,9 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Note", b =>
+            modelBuilder.Entity("EntityLayer.Note", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", "CreatedBy")
+                    b.HasOne("EntityLayer.AppUser", "CreatedBy")
                         .WithMany("Notes")
                         .HasForeignKey("CreatedById")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -760,7 +764,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppRole", null)
+                    b.HasOne("EntityLayer.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -769,7 +773,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", null)
+                    b.HasOne("EntityLayer.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -778,7 +782,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", null)
+                    b.HasOne("EntityLayer.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -787,13 +791,13 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppRole", null)
+                    b.HasOne("EntityLayer.AppRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EntityLayer.Entities.AppUser", null)
+                    b.HasOne("EntityLayer.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -802,14 +806,14 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.HasOne("EntityLayer.Entities.AppUser", null)
+                    b.HasOne("EntityLayer.AppUser", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.AppUser", b =>
+            modelBuilder.Entity("EntityLayer.AppUser", b =>
                 {
                     b.Navigation("Announcements");
 
@@ -826,12 +830,12 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Notes");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Article", b =>
+            modelBuilder.Entity("EntityLayer.Article", b =>
                 {
                     b.Navigation("Comments");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Category", b =>
+            modelBuilder.Entity("EntityLayer.Category", b =>
                 {
                     b.Navigation("Articles");
                 });

@@ -1,7 +1,7 @@
 using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete;
-using EntityLayer;
+using EntityLayer.Entities;
 using FluentValidation.AspNetCore;
 using GonulInsanlari.Areas.Admin.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Authentication.Cookies;

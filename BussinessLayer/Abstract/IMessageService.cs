@@ -1,4 +1,4 @@
-﻿using EntityLayer;
+﻿using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BussinessLayer.Abstract
 {
-   public interface IMessageService : IGenericService<Message>
+    public interface IMessageService : IGenericService<Message>
     {
         List<Message> GetListWithSender(int id);
     }

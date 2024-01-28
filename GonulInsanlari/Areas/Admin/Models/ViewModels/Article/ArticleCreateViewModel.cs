@@ -1,5 +1,4 @@
-﻿using EntityLayer;
-using System.Security.Policy;
+﻿using System.Security.Policy;
 using GonulInsanlari.Models;
 using System.ComponentModel.DataAnnotations;
 using System.Drawing;
@@ -27,7 +26,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public int? CategoryID { get; set; }
 
         public bool Status { get; set; } = true;
-        public EntityLayer.Category? Category { get; set; }
+        public EntityLayer.Entities.Category? Category { get; set; }
 
         public string? VideoPath { get; set; }
 

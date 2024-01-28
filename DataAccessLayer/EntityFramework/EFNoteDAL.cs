@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using EntityLayer;
+using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.EntityFramework
 {
-  public class EFNoteDAL:GenericRepository<Note>,INoteDAL
+    public class EFNoteDAL:GenericRepository<Note>,INoteDAL
     {
     }
 }

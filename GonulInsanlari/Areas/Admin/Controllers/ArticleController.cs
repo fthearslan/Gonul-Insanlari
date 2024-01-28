@@ -3,7 +3,6 @@ using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
-using EntityLayer;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models;
 using GonulInsanlari.Models;
@@ -34,6 +33,7 @@ using JetBrains.Annotations;
 using Humanizer;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using EntityLayer.Entities;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {

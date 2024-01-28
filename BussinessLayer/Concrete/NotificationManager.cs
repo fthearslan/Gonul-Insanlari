@@ -1,6 +1,6 @@
 ﻿using BussinessLayer.Abstract;
 using DataAccessLayer.Abstract;
-using EntityLayer;
+using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

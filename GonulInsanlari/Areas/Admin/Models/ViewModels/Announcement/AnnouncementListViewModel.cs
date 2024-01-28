@@ -9,7 +9,7 @@
 
         public DateTime Created { get; set; }
 
-        public string CreatedBy { get; set; }
+        public string CreatedBy{ get; set; }
 
         public bool IsForAdmins { get; set; }
 

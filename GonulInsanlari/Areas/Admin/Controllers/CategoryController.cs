@@ -2,7 +2,7 @@
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.EntityFramework;
-using EntityLayer;
+using EntityLayer.Entities;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 using Microsoft.AspNetCore.Mvc;

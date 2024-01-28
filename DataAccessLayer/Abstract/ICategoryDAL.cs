@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.DTOs;
-using EntityLayer;
+using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;
 using System.Collections.Generic;

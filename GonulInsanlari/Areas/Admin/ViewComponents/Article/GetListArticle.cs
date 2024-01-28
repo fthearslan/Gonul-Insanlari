@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BussinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
-using EntityLayer;
+using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

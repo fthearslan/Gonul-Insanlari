@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.DTOs;
-using EntityLayer;
+using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles

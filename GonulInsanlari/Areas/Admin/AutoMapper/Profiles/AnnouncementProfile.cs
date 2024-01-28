@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EntityLayer;
+using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
@@ -18,7 +18,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #endregion
 
-
+            #region Create
+            CreateMap<AnnouncementCreateViewModel, Announcement>();
+            #endregion
 
         }
     }

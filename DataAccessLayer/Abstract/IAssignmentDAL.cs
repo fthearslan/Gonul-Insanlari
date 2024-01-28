@@ -1,4 +1,4 @@
-﻿using EntityLayer;
+﻿using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Abstract
 {
-public interface IAssignmentDAL:IRepository<Assignment>
+    public interface IAssignmentDAL:IRepository<Assignment>
     {
         List<Assignment> GetAssignmentsWithSender(int id);
     }

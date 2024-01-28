@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Concrete;
 using DataAccessLayer.DTOs;
-using EntityLayer;
+using EntityLayer.Entities;
 using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using BussinessLayer.Concrete;
 using DataAccessLayer.EntityFramework;
 using DataAccessLayer.Migrations;
-using EntityLayer;
+using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

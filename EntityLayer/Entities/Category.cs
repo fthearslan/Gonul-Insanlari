@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer
+namespace EntityLayer.Entities
 {
     public class Category
     {
         [Key]
         public int CategoryID { get; set; }
 
-        [StringLength(maximumLength:75)]
+        [StringLength(maximumLength: 75)]
         public string Name { get; set; }
 
-        [StringLength(maximumLength:150)]
+        [StringLength(maximumLength: 150)]
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public bool Status { get; set; }
         public List<Article> Articles { get; set; }
-       
+
     }
 }

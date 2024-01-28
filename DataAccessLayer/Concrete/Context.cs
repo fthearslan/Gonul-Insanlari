@@ -1,10 +1,11 @@
-﻿using EntityLayer;
+﻿using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,12 +23,16 @@ namespace DataAccessLayer.Concrete
         {
             base.OnModelCreating(builder);
             
-            builder.Entity<Article>()
-                .HasOne(a => a.AppUser)
-                .WithMany(u => u.Articles)
-                .HasForeignKey(a => a.AppUserID);
+            //builder.Entity<Article>()
+            //    .HasOne(a => a.AppUser)
+            //    .WithMany(u => u.Articles)
+            //    .HasForeignKey(a => a.AppUserID);
 
+            //builder.Entity<Announcement>()
+            //    .Property(x => x.Created)
+            //    .HasDefaultValueSql<DateTime?>("GETDATE()");
 
+            builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer
+namespace EntityLayer.Entities
 {
     public class Assignment
     {
@@ -19,7 +19,7 @@ namespace EntityLayer
         public bool IsCompleted { get; set; }
 
         public DateTime Created { get; set; }
-        public DateTime Due {  get; set; }
+        public DateTime Due { get; set; }
 
         public AppUser Sender { get; set; }
         public AppUser? Receiver { get; set; }

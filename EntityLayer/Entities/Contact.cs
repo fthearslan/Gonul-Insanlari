@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer
+namespace EntityLayer.Entities
 {
     public class Contact
     {
         [Key]
         public int ID { get; set; }
-        [StringLength(50)] 
+        [StringLength(50)]
         public string NameSurname { get; set; }
         [StringLength(50)]
         public string EmailAddress { get; set; }
