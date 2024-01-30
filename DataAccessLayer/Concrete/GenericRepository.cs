@@ -28,12 +28,24 @@ namespace DataAccessLayer.Concrete
 
         public T  Get(Expression<Func<T, bool>> filter)
         {
-            return   _dbset.SingleOrDefault(filter);
+            return  _dbset.SingleOrDefault(filter);
         }
 
         public void Insert(T entity)
         {
            _dbset.Add(entity);
+            db.SaveChanges();
+        }
+
+        public void InsertWithRelated(T entity)
+        {
+            var refs = db.Entry(entity).References.ToList();
+            if (refs.Count > 0)
+                foreach (var item in refs)
+                {
+                    item.EntityEntry.State = EntityState.Unchanged;
+                }
+            _dbset.Add(entity);
             db.SaveChanges();
         }
 

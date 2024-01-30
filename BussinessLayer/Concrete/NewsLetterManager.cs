@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _news.Get(x => x.ID == id);
         }
 
+        public void InsertWithRelated(NewsLetter entity)
+        {
+_news.InsertWithRelated(entity);
+        }
+
         public List<NewsLetter> List()
         {
             return _news.List();

@@ -25,11 +25,11 @@ namespace BussinessLayer.Concrete.Validations
             
             RuleFor(c => c.Description).NotEmpty().WithMessage("This field is required.");
             RuleFor(c => c.Description).MinimumLength(20).WithMessage("Too short for description.");
-            RuleFor(c => c.Description).MaximumLength(140).WithMessage("Too long for description.");
+            RuleFor(c => c.Description).MaximumLength(10000).WithMessage("Too long for description.");
             
             #endregion
 
-            #region ImagePath
+            #region Image
 
             RuleFor(c => c.ImagePath).NotEmpty().WithMessage("This field is required.");
 

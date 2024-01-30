@@ -38,6 +38,11 @@ namespace BussinessLayer.Concrete
           return  _announcement.GetForAdmins();
         }
 
+        public void InsertWithRelated(Announcement entity)
+        {
+            _announcement.InsertWithRelated(entity);
+        }
+
         public List<Announcement> List()
         {
             return _announcement.List();

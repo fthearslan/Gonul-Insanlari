@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _notify.Get(x => x.ID == id);
         }
 
+        public void InsertWithRelated(Notification entity)
+        {
+            _notify.InsertWithRelated(entity);
+        }
+
         public List<Notification> List()
         {
             return _notify.List();

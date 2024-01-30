@@ -38,6 +38,11 @@ namespace BussinessLayer.Concrete
             return _comment.Get(x => x.CommentID == id);
         }
 
+        public void InsertWithRelated(Comment entity)
+        {
+            _comment.InsertWithRelated(entity);
+        }
+
         public List<Comment> List()
         {
             return _comment.List();

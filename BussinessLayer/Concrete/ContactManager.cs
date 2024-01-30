@@ -35,6 +35,11 @@ namespace BussinessLayer.Concrete
             return _contact.Get(x => x.ID == id);
         }
 
+        public void InsertWithRelated(Contact entity)
+        {
+            _contact.InsertWithRelated(entity);
+        }
+
         public List<Contact> List()
         {
             return _contact.List();

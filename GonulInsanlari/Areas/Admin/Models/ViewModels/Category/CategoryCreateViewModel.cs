@@ -10,7 +10,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
         public string Name { get; set; }
 
         [Required]
-        [StringLength(maximumLength:140, ErrorMessage = "Description cannot contain less than 15 and more than 140 chrachters.", MinimumLength = 15)]
+        [StringLength(10000, ErrorMessage = "Too long for description.", MinimumLength = 15)]
         public string Description { get; set; } = null!;
 
         [Required]

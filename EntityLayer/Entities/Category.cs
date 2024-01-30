@@ -11,11 +11,7 @@ namespace EntityLayer.Entities
     {
         [Key]
         public int CategoryID { get; set; }
-
-        [StringLength(maximumLength: 75)]
         public string Name { get; set; }
-
-        [StringLength(maximumLength: 150)]
         public string Description { get; set; }
         public string ImagePath { get; set; }
         public bool Status { get; set; }

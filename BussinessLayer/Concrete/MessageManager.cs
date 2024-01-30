@@ -43,6 +43,11 @@ namespace BussinessLayer.Concrete
             return _message.GetListhWithSender(id);
         }
 
+        public void InsertWithRelated(Message entity)
+        {
+            _message.InsertWithRelated(entity);
+        }
+
         public List<Message> List()
         {
             return _message.List();

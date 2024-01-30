@@ -22,15 +22,6 @@ namespace DataAccessLayer.Concrete
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            
-            //builder.Entity<Article>()
-            //    .HasOne(a => a.AppUser)
-            //    .WithMany(u => u.Articles)
-            //    .HasForeignKey(a => a.AppUserID);
-
-            //builder.Entity<Announcement>()
-            //    .Property(x => x.Created)
-            //    .HasDefaultValueSql<DateTime?>("GETDATE()");
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

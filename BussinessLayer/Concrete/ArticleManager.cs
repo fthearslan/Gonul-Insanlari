@@ -88,5 +88,9 @@ namespace BussinessLayer.Concrete
             return _article.GetByCategory(id);
         }
 
+        public void InsertWithRelated(Article entity)
+        {
+            _article.InsertWithRelated(entity);
+        }
     }
 }

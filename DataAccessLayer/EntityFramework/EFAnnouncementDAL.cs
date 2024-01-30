@@ -4,6 +4,7 @@ using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +20,13 @@ namespace DataAccessLayer.EntityFramework
             
                 return c.Announcements
                     .Where(a=>a.IsForAdmins==true)
-                    .Include(a => a.CreatedBy)
+                    .Include(a => a.User)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
            
             } 
         
         }
+
     }
 }

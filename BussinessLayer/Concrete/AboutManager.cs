@@ -33,6 +33,11 @@ namespace BussinessLayer.Concrete
             return _about.Get(x => x.ID == id);
         }
 
+        public void InsertWithRelated(About entity)
+        {
+            _about.InsertWithRelated(entity);
+        }
+
         public List<About> List()
         {
             return _about.List();

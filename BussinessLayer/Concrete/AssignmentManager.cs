@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Abstract;
 using DataAccessLayer.Abstract;
+using DataAccessLayer.Migrations;
 using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -32,7 +33,7 @@ namespace BussinessLayer.Concrete
         public List<Assignment> GetAssignmentsByReceiver(int id)
         {
 
-            return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver==null && x.Status == true).OrderByDescending(x => x.Created).ToList();
+            return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver == null && x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
         public List<Assignment> GetAssignmentsWithSender(int id)
@@ -44,6 +45,11 @@ namespace BussinessLayer.Concrete
         public Assignment GetById(int id)
         {
             return _assignment.Get(x => x.AssignmentId == id);
+        }
+
+        public void InsertWithRelated(Assignment entity)
+        {
+            _assignment.InsertWithRelated(entity);
         }
 
         public List<Assignment> List()

@@ -38,6 +38,11 @@ namespace BussinessLayer.Concrete
             return _note.ListFilter(x => x.CreatedBy.Id == id && x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
+        public void InsertWithRelated(Note entity)
+        {
+            _note.InsertWithRelated(entity);
+        }
+
         public List<Note> List()
         {
             return _note.List();

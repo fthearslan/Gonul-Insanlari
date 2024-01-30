@@ -51,9 +51,10 @@
                                         </td>
                                         <td>@announcement.Subject</td>
                                         <td>@announcement.Created.ToString("dd-MMM-yyyy")</td>
-                                        <td>@@@announcement.CreatedBy</td>
+                                        <td>@@@announcement.User</td>
                                         <td class="btn-group">
                                             <a class="btn-white btn btn-xs" href="/Admin/Announcement/GetDetails/@announcement.ID">View</a>
+                                            <a class="btn-white btn btn-xs" href="/Admin/Announcement/EditAnnouncement/@announcement.ID">Edit</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@announcement.ID)" id="btn_delete" value="@announcement.ID"><i class="fa fa-trash"></i></a>
                                         </td>
 

@@ -14,5 +14,8 @@ namespace BussinessLayer.Abstract
         T GetById(int id);
         List<T> List();
         List<T> ListFilter();
+
+        void InsertWithRelated(T entity);
+
     }
 }

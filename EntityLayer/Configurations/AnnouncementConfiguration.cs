@@ -15,7 +15,11 @@ namespace EntityLayer.Configurations
         {
 
             builder.Property(x => x.Created)
-                .HasDefaultValueSql<DateTime?>("GETDATE()");
+                .HasDefaultValue(DateTime.Now);
+
+            builder.HasOne(a => a.User)
+                .WithMany(u => u.Announcements)
+                .HasForeignKey(a => a.UserId);
 
         }
     }

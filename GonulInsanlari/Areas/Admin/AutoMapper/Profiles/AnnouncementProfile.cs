@@ -13,8 +13,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             CreateMap<Announcement, AnnouncementListViewModel>()
                /* .ForMember(mod => mod.CreatedBy,opt=>opt.MapFrom(a=>a.CreatedBy.UserName))*/;
-
-
+            CreateMap<Announcement, AnnouncementEditViewModel>();
+            CreateMap<AnnouncementEditViewModel, Announcement>();
 
             #endregion
 

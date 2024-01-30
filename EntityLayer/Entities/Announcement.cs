@@ -13,14 +13,14 @@ namespace EntityLayer.Entities
         public int ID { get; set; }
         [StringLength(75)]
         public string Title { get; set; }
-        [StringLength(300)]
+        [StringLength(15000)]
         public string Details { get; set; }
         [StringLength(30)]
         public string Subject { get; set; }
         public DateTime? Created { get; set; }
         public bool Status { get; set; }
         public bool IsForAdmins { get; set; }
-        public AppUser CreatedBy { get; set; } = null!;
-
+        public int UserId { get; set; }
+        public AppUser? User { get; set; }
     }
 }

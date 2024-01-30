@@ -76,7 +76,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         var result = await validator.ValidateAsync(category);
                         if (result.IsValid)
                         {
-                            _manager.Update(category);
+                            _manager.Add(category);
                             return RedirectToAction("List"); // GetDetails page is going to be placed here.
                         }
                         else

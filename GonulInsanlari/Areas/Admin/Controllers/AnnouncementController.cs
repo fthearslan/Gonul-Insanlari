@@ -59,9 +59,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
-                if (user is not null)
-                    model.CreatedBy = user;
 
                 try
                 {
@@ -69,7 +66,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     var result = await _validator.ValidateAsync(entity);
                     if (result.IsValid)
                     {
-                        _manager.Add(entity);
+                        var user = await _userManager.GetUserAsync(HttpContext.User);
+                        if (user is not null)
+                            entity.User = user;
+                        _manager.InsertWithRelated(entity);
                         return RedirectToAction(nameof(List));
                     }
                     foreach(var error in result.Errors)
@@ -88,6 +88,59 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(model);
 
         }
+
+
+        [HttpGet]
+        public IActionResult EditAnnouncement(int id)
+        {
+            var announcement = _manager.GetById(id);
+            if (announcement != null)
+            {
+                try
+                {
+                    var model = _mapper.Map<AnnouncementEditViewModel>(announcement);
+                    return View(model);
+                }
+                catch (AutoMapperMappingException e)
+                {
+                    _logger.LogError("AutoMapper exception has been thrown on EditAnnouncement ActionMethod of AnnouncementController");
+                    return RedirectToAction(nameof(List));
+                }
+
+            }
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditAnnouncement(AnnouncementEditViewModel model)
+        {
+            if(ModelState.IsValid) 
+            {
+                
+                try
+                {
+                    Announcement entity = _mapper.Map<Announcement>(model);
+
+                    entity.User=await _userManager.GetUserAsync(HttpContext.User);
+                    _manager.Update(entity);
+                    
+                    return RedirectToAction(nameof(List));
+                }
+                catch (AutoMapperMappingException)
+                {
+
+                    _logger.LogError("AutoMapper exception has been thrown on EditAnnouncement ActionMethod of AnnouncementController");
+                    return View(model);
+                }
+            
+            
+            }
+
+            return View(model);
+        }
+
 
     }
 

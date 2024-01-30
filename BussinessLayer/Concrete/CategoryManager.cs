@@ -45,6 +45,11 @@ namespace BussinessLayer.Concrete
          return _category.GetDetails(id);
         }
 
+        public void InsertWithRelated(Category entity)
+        {
+            _category.InsertWithRelated(entity);
+        }
+
         public List<Category> List()
         {
             return _category.List();
