@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Configurations
+namespace DataAccessLayer.Configurations
 {
     public class ArticleConfiguration : IEntityTypeConfiguration<Article>
     {
@@ -17,6 +17,8 @@ namespace EntityLayer.Configurations
             builder.HasOne(a => a.AppUser)
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AppUserID);
+
+            builder.Property(a => a.Status).HasDefaultValue(true);
 
 
         }

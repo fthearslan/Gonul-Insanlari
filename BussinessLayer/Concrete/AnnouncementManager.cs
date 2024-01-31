@@ -38,6 +38,12 @@ namespace BussinessLayer.Concrete
           return  _announcement.GetForAdmins();
         }
 
+        public Announcement GetIncludedUser(int id)
+        {
+            return _announcement.GetIncludedUser(id);
+
+        }
+
         public void InsertWithRelated(Announcement entity)
         {
             _announcement.InsertWithRelated(entity);

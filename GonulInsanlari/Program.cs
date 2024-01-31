@@ -1,5 +1,6 @@
 using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
+using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
 using EntityLayer.Entities;
 using FluentValidation.AspNetCore;
@@ -26,7 +27,7 @@ builder.Services.AddMvc(config =>
 );
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
-builder.Services.AddMemoryCache();
+builder.Services.AddSingleton<IMemoryCache,MemoryCache>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddAuthentication(
 	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>

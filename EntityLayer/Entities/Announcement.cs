@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,5 +23,8 @@ namespace EntityLayer.Entities
         public bool IsForAdmins { get; set; }
         public int UserId { get; set; }
         public AppUser? User { get; set; }
+
+        public string? EditedBy { get; set; }
+
     }
 }

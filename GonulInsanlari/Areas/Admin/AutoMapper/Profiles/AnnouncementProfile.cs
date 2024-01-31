@@ -11,15 +11,22 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region List
 
-            CreateMap<Announcement, AnnouncementListViewModel>()
-               /* .ForMember(mod => mod.CreatedBy,opt=>opt.MapFrom(a=>a.CreatedBy.UserName))*/;
-            CreateMap<Announcement, AnnouncementEditViewModel>();
-            CreateMap<AnnouncementEditViewModel, Announcement>();
-
+            CreateMap<Announcement, AnnouncementListViewModel>();
+           
             #endregion
 
             #region Create
             CreateMap<AnnouncementCreateViewModel, Announcement>();
+            #endregion
+
+            #region Edit
+
+            CreateMap<Announcement, AnnouncementEditViewModel>();
+            CreateMap<AnnouncementEditViewModel, Announcement>()
+                .ForMember(an => an.User , opt => opt.Ignore())
+            .ForMember(an => an.Created, opt => opt.Ignore());
+
+
             #endregion
 
         }

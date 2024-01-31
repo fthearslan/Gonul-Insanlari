@@ -24,7 +24,7 @@ namespace DataAccessLayer.Concrete
             base.OnModelCreating(builder);
 
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-
+           
         }
 
 

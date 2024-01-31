@@ -39,7 +39,7 @@
 
                         <form id="form_id" asp-action="EditArticle" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
-
+                            <input type="hidden" asp-for="AppUserID"/>
                             <input type="hidden" asp-for="ArticleID" />
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
@@ -124,7 +124,7 @@
 
                                 <div style="margin-right:15px;margin-left:auto">
                                     <button id="btndraft" class="ladda-button ladda-button-demo btn btn-warning" name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
-                                    <button id="btn" type="button" onclick="fire()" class="ladda-button ladda-button-demo btn btn-primary" name="IsDraft" value="false" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
+                                    <button id="btn" type="button" onclick="fire()" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
                             </div>

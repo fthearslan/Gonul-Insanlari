@@ -45,15 +45,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly IMemoryCache _memoryCache;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
+        private readonly ILogger<ArticleController> _logger;
 
-        ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
-        CategoryManager _categoryManager = new CategoryManager(new EFCategoryDAL());
-        ArticleValidator validator = new ArticleValidator();
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper)
+        ArticleManager _articleManager = new(new EFArticleDAL());
+        CategoryManager _categoryManager = new(new EFCategoryDAL());
+        ArticleValidator validator = new();
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
             this._mapper = mapper;
+            _logger = logger;
         }
 
 
@@ -192,12 +194,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Value = x.CategoryID.ToString(),
                                                    Text = x.Name
                                                }).ToList();
-
-            Article article = _articleManager.GetByIdInclude(id);
-            ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
-            return View(model);
+
+            Article article = _articleManager.GetByIdInclude(id);
+
+            try
+            {
+                ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
+                return View(model);
+            }
+            catch(AutoMapperMappingException)
+            {
+                _logger.LogError("Mapping exception has been thrown while executing [GET] EditArticle() in ArticleController.");
+                return RedirectToAction(nameof(List)); 
+            }
+           
         }
 
         [HttpPost]
@@ -212,34 +224,39 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 if(model.Image is not null)
                 await model.GetImage(model.Image);
-
                 model.GetVideoUrl(model.VideoPath);
 
-                Article article = _mapper.Map<Article>(model);
-
-                var result = validator.Validate(article);
-
-                if (result.IsValid)
+                try
                 {
-                    
-                    article.EditedBy = user.UserName.ToString();
-                    article.Status = true;
-                    _articleManager.Update(article);
-                    return RedirectToAction("GetDetails", new { id = article.ArticleID });
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    Article article = _mapper.Map<Article>(model);
+                   
+                    var result = validator.Validate(article);
+                    if (result.IsValid)
                     {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                        article.EditedBy = user.UserName;
+                        _articleManager.Update(article);
+
+                        return RedirectToAction("GetDetails", new { id = article.ArticleID });
                     }
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                        }
+                        return View(model);
+                    }
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError("Mapping exception has been thrown while executing [POST] EditArticle() in ArticleController.");
                     return View(model);
                 }
+           
             }
-            else
-            {
+           
                 return View(model);
-            }
+            
         }
 
 

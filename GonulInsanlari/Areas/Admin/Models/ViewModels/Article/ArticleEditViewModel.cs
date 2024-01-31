@@ -30,8 +30,10 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
         public string? VideoPath { get; set; }
         public bool IsDraft { get; set; } = false;
 
+        public int AppUserID { get; set; }
 
 
+        public bool Status { get; set; } = true;
         public void GetVideoUrl(string? Url)
         {
 

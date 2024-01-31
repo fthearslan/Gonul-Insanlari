@@ -17,6 +17,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
         [MinLength(100, ErrorMessage = "Detail cannot contain less than 100 chrachters.")]
         public string Details { get; set; }
         public bool IsForAdmins { get; set; }
+
+        public DateTime Created => DateTime.Now;
          
     }
 }

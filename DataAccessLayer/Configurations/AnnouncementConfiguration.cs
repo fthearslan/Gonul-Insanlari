@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Configurations
+namespace DataAccessLayer.Configurations
 {
     public class AnnouncementConfiguration : IEntityTypeConfiguration<Announcement>
     {
@@ -15,11 +15,14 @@ namespace EntityLayer.Configurations
         {
 
             builder.Property(x => x.Created)
-                .HasDefaultValue(DateTime.Now);
+                .HasDefaultValueSql("GETDATE()");
 
             builder.HasOne(a => a.User)
                 .WithMany(u => u.Announcements)
                 .HasForeignKey(a => a.UserId);
+
+            builder.Property<DateTime?>("Edited").ValueGeneratedOnUpdate();
+        
 
         }
     }

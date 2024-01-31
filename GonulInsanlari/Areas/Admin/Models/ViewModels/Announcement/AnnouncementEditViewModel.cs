@@ -1,10 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EntityLayer.Entities;
+using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
 {
     public class AnnouncementEditViewModel
     {
 
+        public int ID { get; set; }
         [Required]
         [StringLength(maximumLength: 40, ErrorMessage = "Title cannot contain less than 5 and more than 40 chrachters.", MinimumLength = 5)]
         public string Title { get; set; }
@@ -17,6 +19,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
         [MinLength(100, ErrorMessage = "Detail cannot contain less than 100 chrachters.")]
         public string Details { get; set; }
         public bool IsForAdmins { get; set; }
+        public int UserId { get; set; }
+
 
     }
 }

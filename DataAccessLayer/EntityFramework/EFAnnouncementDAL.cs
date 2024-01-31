@@ -15,18 +15,31 @@ namespace DataAccessLayer.EntityFramework
     {
         public List<Announcement> GetForAdmins()
         {
-            using (var c= new Context())
+            using (var c = new Context())
             {
-            
+
                 return c.Announcements
-                    .Where(a=>a.IsForAdmins==true)
+                    .Where(a => a.IsForAdmins == true)
                     .Include(a => a.User)
+                    .OrderByDescending(c=>c.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
-           
-            } 
-        
+
+            }
+
         }
 
+        public Announcement GetIncludedUser(int id)
+        {
+            using var c = new Context();
+            {
+                return c.Announcements
+                      .Where(a => a.ID == id)
+                      .Include(a => a.User)
+                      .AsNoTrackingWithIdentityResolution()
+                      .FirstOrDefault();
+            }
+
+        }
     }
 }
