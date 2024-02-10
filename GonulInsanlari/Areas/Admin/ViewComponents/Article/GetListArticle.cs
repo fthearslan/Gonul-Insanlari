@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
+using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using Microsoft.AspNetCore.Identity;
@@ -10,13 +11,13 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
 {
     public class GetListArticle : ViewComponent
     {
-        ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
-        UserManager<AppUser> _userManager;
+
+        private readonly IArticleService _articleManager;
         IMapper _mapper;
-        public GetListArticle(UserManager<AppUser> userManager,IMapper mapper)
+        public GetListArticle(IMapper mapper, IArticleService manager)
         {
-            _userManager = userManager;
             _mapper = mapper;
+            _articleManager = manager;
         }
 
         public IViewComponentResult Invoke()

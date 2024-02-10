@@ -18,9 +18,9 @@ namespace BussinessLayer.Concrete
             _about = about;
         }
 
-        public void Add(About entity)
+        public async Task AddAsync(About entity)
         {
-            _about.Insert(entity);
+           await _about.InsertAsync(entity);
         }
 
         public void Delete(About entity)

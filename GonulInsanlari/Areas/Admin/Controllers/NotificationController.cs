@@ -1,13 +1,20 @@
-﻿using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+﻿using BussinessLayer.Abstract;
+using BussinessLayer.Concrete;
+using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area(nameof(Admin))]
     public class NotificationController : Controller
     {
-        NotificationManager manager = new NotificationManager(new EFNotificationDAL());
+        private readonly INotificationService _manager;
+
+        public NotificationController(INotificationService manager)
+        {
+            _manager = manager;
+        }
+
 
         public IActionResult Index()
         {
@@ -16,15 +23,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult GetDetails(int id)
         {
-            var notification= manager.GetById(id);
+            var notification = _manager.GetById(id);
             notification.Status = false;
-             manager.Update(notification);
+            _manager.Update(notification);
 
             switch (notification.Type)
             {
-                
+
                 case "Article":
-                    return RedirectToAction("GetDetailsByNotification", "Article",notification);
+                    return RedirectToAction("GetDetailsByNotification", "Article", notification);
                 case "Comment":
                     return RedirectToAction("GetDetails", "Comment");
                 case "Video":

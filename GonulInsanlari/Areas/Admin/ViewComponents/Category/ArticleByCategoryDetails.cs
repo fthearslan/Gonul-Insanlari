@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
@@ -12,14 +13,16 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Category
 {
     public class ArticleByCategoryDetails : ViewComponent
     {
+        private readonly IArticleService _manager;
         private readonly IMapper _mapper;
         ILogger<ArticleByCategoryDetails> _logger;
-        public ArticleByCategoryDetails(IMapper mapper,ILogger<ArticleByCategoryDetails> logger)
+        public ArticleByCategoryDetails(IMapper mapper,ILogger<ArticleByCategoryDetails> logger,IArticleService manager)
         {
             _mapper=mapper;
             _logger=logger;
+            _manager=manager;
         }
-        ArticleManager _manager = new ArticleManager(new EFArticleDAL());
+     
         public IViewComponentResult Invoke(int id)
         {
 

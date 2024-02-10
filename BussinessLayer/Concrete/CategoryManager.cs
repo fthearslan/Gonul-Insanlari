@@ -1,6 +1,6 @@
 ﻿using BussinessLayer.Abstract;
 using DataAccessLayer.Abstract;
-using DataAccessLayer.DTOs;
+using DataAccessLayer.Concrete.DTOs;
 using EntityLayer.Entities;
 using System;
 using System.Collections.Generic;
@@ -19,9 +19,9 @@ namespace BussinessLayer.Concrete
             _category = category;
         }
 
-        public void Add(Category entity)
+        public async Task AddAsync(Category entity)
         {
-            _category.Insert(entity);
+            await _category.InsertAsync(entity);
         }
 
         public void Delete(Category entity)
@@ -37,12 +37,12 @@ namespace BussinessLayer.Concrete
         public List<CategoryDto> GetCategoriesWithArticle()
         {
             return _category.GetList();
-                            
+
         }
 
         public Category GetDetails(int id)
         {
-         return _category.GetDetails(id);
+            return _category.GetDetails(id);
         }
 
         public void InsertWithRelated(Category entity)

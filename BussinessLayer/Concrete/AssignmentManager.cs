@@ -19,9 +19,9 @@ namespace BussinessLayer.Concrete
             _assignment = assignment;
         }
 
-        public void Add(Assignment entity)
+        public async Task AddAsync(Assignment entity)
         {
-            _assignment.Insert(entity);
+           await _assignment.InsertAsync(entity);
         }
 
         public void Delete(Assignment entity)
@@ -30,10 +30,14 @@ namespace BussinessLayer.Concrete
 
         }
 
+        //public List<Assignment> GetAssignmentsByReceiverDashboard(int id)
+        //{
+        //    return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver == null && x.Status == true).OrderByDescending(x => x.Created).ToList();
+        //}
+
         public List<Assignment> GetAssignmentsByReceiver(int id)
         {
-
-            return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver == null && x.Status == true).OrderByDescending(x => x.Created).ToList();
+            return  _assignment.GetAssignmentsWithReceiver(id);
         }
 
         public List<Assignment> GetAssignmentsWithSender(int id)

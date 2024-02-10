@@ -1,16 +1,22 @@
-﻿using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+﻿using BussinessLayer.Abstract;
+using BussinessLayer.Concrete;
+using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
 {
     public class GetAnnouncements:ViewComponent
     {
-        AnnouncementManager manager = new AnnouncementManager(new EFAnnouncementDAL());
+        private readonly IAnnouncementService _manager;
+
+        public GetAnnouncements(IAnnouncementService manager)
+        {
+            _manager = manager;
+        }
 
         public IViewComponentResult Invoke()
         {
-            var announcements = manager.ListFilter().Take(3).ToList();
+            var announcements = _manager.ListFilter().Take(3).ToList();
             return View(announcements);
         }
     }

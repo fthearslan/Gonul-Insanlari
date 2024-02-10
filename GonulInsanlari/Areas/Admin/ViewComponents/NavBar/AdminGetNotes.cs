@@ -1,5 +1,6 @@
-﻿using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+﻿using BussinessLayer.Abstract;
+using BussinessLayer.Concrete;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,20 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 {
     public class AdminGetNotes:ViewComponent
     {
-        NoteManager noteManager = new NoteManager(new EFNoteDAL());
+        private readonly INoteService _noteManager;
         UserManager<AppUser> userManager;
 
-        public AdminGetNotes(UserManager<AppUser> userManager)
+        public AdminGetNotes(UserManager<AppUser> userManager, INoteService noteManager)
         {
             this.userManager = userManager;
+            _noteManager=noteManager;
         }
 
         public IViewComponentResult Invoke()
         {
             var user = userManager.GetUserAsync(HttpContext.User).Result;
-            var notes = noteManager.GetListByUser(user.Id).Take(6).ToList();
-            var count = noteManager.GetListByUser(user.Id).Count;
+            var notes = _noteManager.GetListByUser(user.Id).Take(6).ToList();
+            var count = _noteManager.GetListByUser(user.Id).Count;
             ViewBag.Count = count;
             return View(notes);
         }

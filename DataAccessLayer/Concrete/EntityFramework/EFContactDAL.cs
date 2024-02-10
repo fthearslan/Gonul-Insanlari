@@ -7,10 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
-    public class EFAboutDAL:GenericRepository<About>,IAboutDAL
+    public class EFContactDAL : GenericRepository<Contact>, IContactDAL
     {
-
     }
 }

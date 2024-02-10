@@ -9,10 +9,11 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer.Concrete
 {
-    public class GenericRepository<T>: IRepository<T> where T : class
+    public class GenericRepository<T> : IRepository<T> where T : class
     {
-        Context db = new Context();
-        
+
+        private readonly Context db = new Context();
+
         DbSet<T> _dbset;
 
         public GenericRepository()
@@ -20,21 +21,22 @@ namespace DataAccessLayer.Concrete
             _dbset = db.Set<T>();
         }
 
+
         public void Delete(T entity)
         {
             _dbset.Remove(entity);
             db.SaveChanges();
         }
 
-        public T  Get(Expression<Func<T, bool>> filter)
+        public T Get(Expression<Func<T, bool>> filter)
         {
-            return  _dbset.SingleOrDefault(filter);
+            return _dbset.SingleOrDefault(filter);
         }
 
-        public void Insert(T entity)
+        public async Task InsertAsync(T entity)
         {
-           _dbset.Add(entity);
-            db.SaveChanges();
+            await _dbset.AddAsync(entity);
+            await db.SaveChangesAsync();
         }
 
         public void InsertWithRelated(T entity)

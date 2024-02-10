@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFArticleDAL : GenericRepository<Article>, IArticleDAL
     {
@@ -111,16 +111,16 @@ namespace DataAccessLayer.EntityFramework
             using (var c = new Context())
             {
                 return c.Articles
-                    .Where(a => a.CategoryID==id && a.IsDraft == false)
+                    .Where(a => a.CategoryID == id && a.IsDraft == false)
                     .OrderByDescending(a => a.Created).Select(a => new Article
                     {
-                        ArticleID=a.ArticleID,
+                        ArticleID = a.ArticleID,
                         Title = a.Title,
                         AppUser = a.AppUser,
 
                     }).AsNoTrackingWithIdentityResolution()
                     .ToList();
-                   
+
             }
 
 

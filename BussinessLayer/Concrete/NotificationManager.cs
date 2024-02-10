@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace BussinessLayer.Concrete
 {
@@ -18,9 +19,9 @@ namespace BussinessLayer.Concrete
             _notify = notify;
         }
 
-        public void Add(Notification entity)
+        public async Task AddAsync(Notification entity)
         {
-            _notify.Insert(entity);
+            await _notify.InsertAsync(entity);
         }
 
         public void Delete(Notification entity)

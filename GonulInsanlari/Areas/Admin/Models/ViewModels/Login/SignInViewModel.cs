@@ -2,7 +2,7 @@
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Login
 {
-    public class SignInViewModel
+    public record SignInViewModel
     {
         [Required(ErrorMessage = "Please, provide a username.")]
         public string Username { get; set; }

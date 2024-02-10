@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.DTOs
+namespace DataAccessLayer.Concrete.DTOs
 {
     public class CategoryDto
     {

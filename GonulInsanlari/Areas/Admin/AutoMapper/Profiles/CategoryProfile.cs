@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using DataAccessLayer.DTOs;
+using DataAccessLayer.Concrete.DTOs;
 using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 

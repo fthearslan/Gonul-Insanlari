@@ -6,7 +6,7 @@ using GonulInsanlari.Areas.Admin.Models.Tools;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
-    public class ArticleCreateViewModel
+    public record ArticleCreateViewModel
     {
 
         [Required]

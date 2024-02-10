@@ -1,6 +1,6 @@
 ﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
 {
-    public class AnnouncementListViewModel
+    public record struct AnnouncementListViewModel
     {
         public int ID { get; set; }
 

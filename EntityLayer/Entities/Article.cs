@@ -12,7 +12,7 @@ namespace EntityLayer.Entities
 {
     public class Article
     {
-
+       
         [Key]
         public int ArticleID { get; set; }
         [StringLength(maximumLength: 50)]

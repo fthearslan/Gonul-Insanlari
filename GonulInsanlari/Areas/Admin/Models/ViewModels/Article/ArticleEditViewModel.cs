@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
-    public class ArticleEditViewModel
+    public record ArticleEditViewModel
     {
 
 

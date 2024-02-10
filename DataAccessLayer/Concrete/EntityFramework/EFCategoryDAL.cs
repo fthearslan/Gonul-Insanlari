@@ -1,6 +1,6 @@
 ﻿using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.DTOs;
+using DataAccessLayer.Concrete.DTOs;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFCategoryDAL : GenericRepository<Category>, ICategoryDAL
     {
@@ -18,7 +18,7 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Categories.Where(c=>c.CategoryID==id).Select(c => new Category
+                return c.Categories.Where(c => c.CategoryID == id).Select(c => new Category
                 {
                     CategoryID = c.CategoryID,
                     Name = c.Name,
@@ -32,7 +32,7 @@ namespace DataAccessLayer.EntityFramework
 
         public List<CategoryDto> GetList()
         {
-            using(var c= new Context()) 
+            using (var c = new Context())
             {
 
 

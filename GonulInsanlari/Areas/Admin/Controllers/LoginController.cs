@@ -7,7 +7,7 @@ using Microsoft.Build.Logging;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area(nameof(Admin))]
     [AllowAnonymous]
     public class LoginController : Controller
     {
@@ -30,7 +30,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Login(SignInViewModel user)
-        {
+         {
 
             if (ModelState.IsValid)
             {

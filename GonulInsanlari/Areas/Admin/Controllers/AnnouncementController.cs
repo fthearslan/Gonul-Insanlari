@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
+using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,21 +15,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [Area(nameof(Admin))]
     public class AnnouncementController : Controller
     {
-        AnnouncementManager _manager = new(new EFAnnouncementDAL());
-        AnnouncementValidator _validator = new();
 
         private readonly IMemoryCache _memoryCache;
         private readonly IMapper _mapper;
         private readonly ILogger<AnnouncementController> _logger;
         private readonly UserManager<AppUser> _userManager;
-        
+        private readonly IAnnouncementService _manager;
+        private readonly AbstractValidator<Announcement> _validator;
 
-        public AnnouncementController(IMapper mapper, ILogger<AnnouncementController> logger, UserManager<AppUser> UserManager,IMemoryCache cache)
+        public AnnouncementController(IMapper mapper, ILogger<AnnouncementController> logger, UserManager<AppUser> UserManager, IMemoryCache cache, IAnnouncementService manager, AbstractValidator<Announcement> validator)
         {
             _mapper = mapper;
             _logger = logger;
             _userManager = UserManager;
             _memoryCache = cache;
+            _manager = manager;
+            _validator = validator;
         }
 
         public IActionResult List()

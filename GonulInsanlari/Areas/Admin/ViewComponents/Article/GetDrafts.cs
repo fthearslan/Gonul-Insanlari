@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using Microsoft.AspNetCore.Identity;
@@ -11,14 +11,15 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
 {
     public class GetDrafts : ViewComponent
     {
-        ArticleManager _articleManager = new ArticleManager(new EFArticleDAL());
+        private readonly IArticleService _articleManager;
         UserManager<AppUser> _userManager;
         IMapper _mapper;
 
-        public GetDrafts(UserManager<AppUser> userManager, IMapper mapper)
+        public GetDrafts(UserManager<AppUser> userManager, IMapper mapper,IArticleService manager)
         {
             _userManager = userManager;
             _mapper = mapper;
+            _articleManager = manager;
         }
 
         public IViewComponentResult Invoke()

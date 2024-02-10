@@ -18,9 +18,9 @@ namespace BussinessLayer.Concrete
             _comment = comment;
         }
 
-        public void Add(Comment entity)
+        public async Task AddAsync(Comment entity)
         {
-            _comment.Insert(entity);
+             await _comment.InsertAsync(entity);
         }
 
         public void Delete(Comment entity)

@@ -1,5 +1,6 @@
-﻿using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+﻿using BussinessLayer.Abstract;
+using BussinessLayer.Concrete;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,20 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 {
     public class GetMessages : ViewComponent
     {
-        MessageManager messageManager = new MessageManager(new EFMessageDAL());
+        private readonly IMessageService _messageManager;
         UserManager<AppUser> userManager;
 
-        public GetMessages(UserManager<AppUser> userManager)
+        public GetMessages(UserManager<AppUser> userManager,IMessageService messageManager)
         {
             this.userManager = userManager;
+            _messageManager = messageManager;
         }
 
         public IViewComponentResult Invoke()
         {
             var user = userManager.GetUserAsync(HttpContext.User).Result;
-            var messages = messageManager.GetListWithSender(user.Id).Take(3).ToList();
-            ViewBag.Count=messageManager.GetListWithSender(user.Id).Count;
+            var messages = _messageManager.GetListWithSender(user.Id).Take(3).ToList();
+            ViewBag.Count=_messageManager.GetListWithSender(user.Id).Count;
             if (messages.Count != ViewBag.Count)
             {
                 ViewBag.Rest = ViewBag.Count - messages.Count;

@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
-    public class EFContactDAL:GenericRepository<Contact>,IContactDAL
+    public class EFNewsLetterDAL : GenericRepository<NewsLetter>, INewsLetterDAL
     {
     }
 }

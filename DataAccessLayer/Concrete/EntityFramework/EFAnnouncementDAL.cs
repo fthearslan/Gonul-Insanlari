@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFAnnouncementDAL : GenericRepository<Announcement>, IAnnouncementDAL
     {
@@ -21,7 +21,7 @@ namespace DataAccessLayer.EntityFramework
                 return c.Announcements
                     .Where(a => a.IsForAdmins == true)
                     .Include(a => a.User)
-                    .OrderByDescending(c=>c.Created)
+                    .OrderByDescending(c => c.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
 

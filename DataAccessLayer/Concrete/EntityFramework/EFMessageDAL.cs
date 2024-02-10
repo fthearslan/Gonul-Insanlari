@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFMessageDAL : GenericRepository<Message>, IMessageDAL
     {
@@ -16,7 +16,7 @@ namespace DataAccessLayer.EntityFramework
         {
             using (var c = new Context())
             {
-                return c.Messages.Include(x=>x.Sender).Where(x=>x.Receiver.Id==id && x.IsDraft==false && x.Status==true && x.IsSeen==false).OrderByDescending(x=>x.Created).ToList();
+                return c.Messages.Include(x => x.Sender).Where(x => x.Receiver.Id == id && x.IsDraft == false && x.Status == true && x.IsSeen == false).OrderByDescending(x => x.Created).ToList();
             }
         }
     }

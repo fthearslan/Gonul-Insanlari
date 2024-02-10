@@ -18,9 +18,9 @@ namespace BussinessLayer.Concrete
             _message = message;
         }
 
-        public void Add(Message entity)
+        public async Task AddAsync(Message entity)
         {
-            _message.Insert(entity);
+             await _message.InsertAsync(entity);
         }
 
         public void Delete(Message entity)

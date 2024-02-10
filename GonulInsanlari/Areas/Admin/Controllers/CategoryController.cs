@@ -1,8 +1,13 @@
 ﻿using AutoMapper;
+using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.
+    
+    
+    EntityFramework;
 using EntityLayer.Entities;
+using FluentValidation;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 using Microsoft.AspNetCore.Mvc;
@@ -12,19 +17,20 @@ using System.Security.Policy;
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
-    [Area("Admin")]
+    [Area(nameof(Admin))]
     public class CategoryController : Controller
     {
         private readonly IMapper _mapper;
         private readonly ILogger<CategoryController> _logger;
+        private readonly ICategoryService _manager;
+        private readonly AbstractValidator<Category> _validator;
 
-        CategoryManager _manager = new(new EFCategoryDAL());
-        CategoryValidator validator = new();
-
-        public CategoryController(IMapper Mapper, ILogger<CategoryController> logger)
+        public CategoryController(IMapper Mapper, ILogger<CategoryController> logger, ICategoryService service, AbstractValidator<Category> validator)
         {
             _mapper = Mapper;
             _logger = logger;
+            _manager = service;
+            _validator = validator;
         }
         public IActionResult List()
         {
@@ -73,10 +79,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     Category category = _mapper.Map<Category>(model);
                     if (category != null)
                     {
-                        var result = await validator.ValidateAsync(category);
+                        var result = await _validator.ValidateAsync(category);
                         if (result.IsValid)
                         {
-                            _manager.Add(category);
+                           await _manager.AddAsync(category);
                             return RedirectToAction("List"); // GetDetails page is going to be placed here.
                         }
                         else
@@ -145,7 +151,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     Category category = _mapper.Map<Category>(model);
 
-                    var result = validator.Validate(category);
+                    var result = _validator.Validate(category);
                     if (result.IsValid)
                     {
                         _manager.Update(category);

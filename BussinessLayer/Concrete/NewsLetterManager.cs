@@ -17,12 +17,11 @@ namespace BussinessLayer.Concrete
         {
             _news = news;
         }
-
-        public void Add(NewsLetter entity)
+       
+        public async Task AddAsync(NewsLetter entity)
         {
-            _news.Insert(entity);
+            await _news.InsertAsync(entity);
         }
-
         public void Delete(NewsLetter entity)
         {
             _news.Delete(entity);

@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.Concrete;
-using DataAccessLayer.DTOs;
+using DataAccessLayer.Concrete.DTOs;
 using EntityLayer.Entities;
 using JetBrains.Annotations;
 using System;

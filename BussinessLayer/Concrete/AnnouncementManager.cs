@@ -18,9 +18,9 @@ namespace BussinessLayer.Concrete
             _announcement = announcement;
         }
 
-        public void Add(Announcement entity)
+        public async Task AddAsync(Announcement entity)
         {
-            _announcement.Insert(entity);
+         await _announcement.InsertAsync(entity);
         }
 
         public void Delete(Announcement entity)

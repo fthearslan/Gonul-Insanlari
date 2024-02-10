@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
 {
-    public class AnnouncementEditViewModel
+    public record struct AnnouncementEditViewModel
     {
 
         public int ID { get; set; }

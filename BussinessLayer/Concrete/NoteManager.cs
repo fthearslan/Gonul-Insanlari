@@ -17,12 +17,10 @@ namespace BussinessLayer.Concrete
         {
             _note = note;
         }
-
-        public void Add(Note entity)
+        public async Task AddAsync(Note entity)
         {
-            _note.Insert(entity);
+            await _note.InsertAsync(entity);
         }
-
         public void Delete(Note entity)
         {
             _note.Delete(entity);

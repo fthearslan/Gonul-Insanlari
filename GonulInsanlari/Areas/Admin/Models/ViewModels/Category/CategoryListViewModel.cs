@@ -4,7 +4,7 @@ using System.Security.Policy;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
 {
-    public class CategoryListViewModel
+    public record struct CategoryListViewModel
     {
         public int CategoryID { get; set; }
 

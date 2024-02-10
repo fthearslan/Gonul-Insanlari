@@ -2,7 +2,7 @@
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
-    public class ArticleDetailsViewModel
+    public record struct ArticleDetailsViewModel
     {
 
         public int ArticleID { get; set; }

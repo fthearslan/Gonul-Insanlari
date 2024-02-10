@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.DTOs;
+﻿using DataAccessLayer.Concrete.DTOs;
 using EntityLayer.Entities;
 using Microsoft.EntityFrameworkCore.Internal;
 using System;

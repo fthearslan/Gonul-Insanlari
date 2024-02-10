@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.EntityFramework
+namespace DataAccessLayer.Concrete.EntityFramework
 {
-    public class EFCommentDAL:GenericRepository<Comment>,ICommentDAL
+    public class EFNotificationDAL : GenericRepository<Notification>, INotificationDAL
     {
     }
 }

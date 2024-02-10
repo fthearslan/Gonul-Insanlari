@@ -1,22 +1,31 @@
 using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
+using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete;
+using DataAccessLayer.Concrete.Configurations;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Entities;
+using FluentValidation;
 using FluentValidation.AspNetCore;
 using GonulInsanlari.Areas.Admin.AutoMapper.Profiles;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Rotativa.AspNetCore;
+using System.Configuration;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
 builder.Services.AddSession();
+
 builder.Services.AddMvc(config =>
 {
 	var policy = new AuthorizationPolicyBuilder()
@@ -25,10 +34,17 @@ builder.Services.AddMvc(config =>
 	config.Filters.Add(new AuthorizeFilter(policy));
 }
 );
+
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+
+builder.Services.AddBussinessServices();
+builder.Services.AddValidators();
+
 builder.Services.AddSingleton<IMemoryCache,MemoryCache>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
+
 builder.Services.AddAuthentication(
 	CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {

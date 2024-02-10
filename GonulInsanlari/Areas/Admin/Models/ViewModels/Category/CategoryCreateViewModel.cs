@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
 {
-    public class CategoryCreateViewModel
+    public record CategoryCreateViewModel
     {
         [Required]
         [StringLength(30,ErrorMessage ="Name cannot contain more than 30 chrachters.")]

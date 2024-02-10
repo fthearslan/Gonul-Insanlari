@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
-    [Area("Admin")]
+    [Area(nameof(Admin))]
     public class DashboardController : Controller
     {
         UserManager<AppUser> _userManager;

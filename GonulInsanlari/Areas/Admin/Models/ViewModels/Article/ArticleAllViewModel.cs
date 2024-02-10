@@ -1,6 +1,6 @@
 ﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
-    public class ArticleAllViewModel
+    public record struct ArticleAllViewModel
     {
 
         public int ArticleID { get; set; }

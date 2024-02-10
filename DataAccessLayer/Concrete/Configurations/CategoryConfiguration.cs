@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessLayer.Configurations
+namespace DataAccessLayer.Concrete.Configurations
 {
 
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>

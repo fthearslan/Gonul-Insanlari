@@ -9,7 +9,8 @@ namespace DataAccessLayer.Abstract
 {
     public interface IRepository<T> where T : class
     {
-        void Insert(T entity);
+        
+        Task InsertAsync(T entity);
         void InsertWithRelated(T entity);
         void Delete(T entity);
         List<T> List();

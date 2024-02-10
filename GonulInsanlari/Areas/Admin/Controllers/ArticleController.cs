@@ -2,7 +2,7 @@
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models;
 using GonulInsanlari.Models;
@@ -34,11 +34,12 @@ using Humanizer;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using EntityLayer.Entities;
+using BussinessLayer.Abstract;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
-    [Area("Admin")]
+    [Area(nameof(Admin))]
   
     public class ArticleController : Controller
     {
@@ -46,16 +47,18 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<ArticleController> _logger;
-
-        ArticleManager _articleManager = new(new EFArticleDAL());
-        CategoryManager _categoryManager = new(new EFCategoryDAL());
-        ArticleValidator validator = new();
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger)
+        private readonly IArticleService _articleManager;
+        private readonly ICategoryService _categoryManager;
+      private readonly AbstractValidator<Article> _validator;   
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger,IArticleService articleManager,ICategoryService categoryManager,AbstractValidator<Article> validator)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
             this._mapper = mapper;
             _logger = logger;
+            _articleManager = articleManager;
+            _categoryManager = categoryManager;
+            _validator = validator;
         }
 
 
@@ -97,10 +100,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var article = _articleManager.GetDetailsByUser(id);
             if (article is not null)
             {
-                ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
-                return View(model);
+                try
+                {
+                    ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
+                    return View(model);
+
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError("AutoMapper exception has been thrown at GetDetails on ArticleController.");
+                    return View(nameof(List));
+                }
             }
-            // Not found page will be placed here.
+           
             return View();
         }
 
@@ -130,26 +142,37 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                model.GetVideoUrl(model.VideoPath);  
-                Article article = _mapper.Map<Article>(model);
-                article.AppUserID = user.Id;
-
-                var result = validator.Validate(article);
-
-                if (result.IsValid)
+                model.GetVideoUrl(model.VideoPath);
+                try
                 {
-                    _articleManager.Add(article);
-                    _memoryCache.Remove("Categories");
-                    return RedirectToAction("GetDetails", new { id = article.ArticleID });
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
+                    Article article = _mapper.Map<Article>(model);
+                    article.AppUserID = user.Id;
+
+
+                    var result = _validator.Validate(article);
+                    if (result.IsValid)
                     {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                       await _articleManager.AddAsync(article);
+                        _memoryCache.Remove("Categories");
+                        return RedirectToAction("GetDetails", new { id = article.ArticleID });
                     }
-                    return View(model);
+                    else
+                    {
+                        foreach (var error in result.Errors)
+                        {
+                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                        }
+                        return View(model);
+                    }
                 }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError("AutoMapper exception has been thrown at AddArticle on ArticleController.");
+                    return View(nameof(List));
+                }
+               
+
+              
             }
             else
             {
@@ -225,12 +248,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 if(model.Image is not null)
                 await model.GetImage(model.Image);
                 model.GetVideoUrl(model.VideoPath);
-
                 try
                 {
                     Article article = _mapper.Map<Article>(model);
                    
-                    var result = validator.Validate(article);
+                    var result = _validator.Validate(article);
                     if (result.IsValid)
                     {
                         article.EditedBy = user.UserName;

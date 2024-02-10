@@ -18,9 +18,10 @@ namespace BussinessLayer.Concrete
             _contact = contact;
         }
 
-        public void Add(Contact entity)
+      
+        public async Task AddAsync(Contact entity)
         {
-            _contact.Insert(entity);
+             await _contact.InsertAsync(entity);
 
         }
 

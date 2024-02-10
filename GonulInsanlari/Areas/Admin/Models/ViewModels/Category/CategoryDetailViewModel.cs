@@ -1,6 +1,6 @@
 ﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
 {
-    public class CategoryDetailViewModel
+    public record struct CategoryDetailViewModel
     {
         public int CategoryID { get; set; }
         public string? Name { get; set; }

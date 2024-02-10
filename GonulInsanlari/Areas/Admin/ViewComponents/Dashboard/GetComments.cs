@@ -1,16 +1,23 @@
-﻿using BussinessLayer.Concrete;
-using DataAccessLayer.EntityFramework;
+﻿using BussinessLayer.Abstract;
+using BussinessLayer.Concrete;
+using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
 {
     public class GetComments : ViewComponent
     {
-        CommentManager manager = new CommentManager(new EFCommentDAL());
+        private readonly ICommentService _manager;
+
+        public GetComments(ICommentService manager)
+        {
+            _manager = manager;
+        }
+
         public IViewComponentResult Invoke()
         {
-            var comments = manager.ListFilter().Take(5).ToList();
-            var count = manager.ListFilter().Count;
+            var comments = _manager.ListFilter().Take(5).ToList();
+            var count = _manager.ListFilter().Count;
             ViewBag.Count = count;
             return View(comments);
 
