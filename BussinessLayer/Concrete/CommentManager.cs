@@ -33,9 +33,9 @@ namespace BussinessLayer.Concrete
             return _comment.ListFilter(x => x.ArticleID == id);
         }
 
-        public Comment GetById(int id)
+        public async Task<Comment>GetByIdAsync(int id)
         {
-            return _comment.Get(x => x.CommentID == id);
+            return await  _comment.GetAsync(x => x.CommentID == id);
         }
 
         public void InsertWithRelated(Comment entity)

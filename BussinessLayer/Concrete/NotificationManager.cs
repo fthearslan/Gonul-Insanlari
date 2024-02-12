@@ -29,9 +29,9 @@ namespace BussinessLayer.Concrete
             _notify.Delete(entity);
         }
 
-        public Notification GetById(int id)
+        public async  Task<Notification> GetByIdAsync(int id)
         {
-            return _notify.Get(x => x.ID == id);
+            return await _notify.GetAsync(x => x.ID == id);
         }
 
         public void InsertWithRelated(Notification entity)

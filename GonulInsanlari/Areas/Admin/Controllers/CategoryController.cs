@@ -38,9 +38,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Delete(int id)
+        public async  Task<IActionResult> Delete(int id)
         {
-            var category = _manager.GetById(id);
+            var category = await _manager.GetByIdAsync(id);
             if (category is not null)
             {
                 if (category.Status == true)
@@ -112,9 +112,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public IActionResult EditCategory(int id)
+        public async  Task<IActionResult> EditCategory(int id)
         {
-            var category = _manager.GetById(id);
+            var category = await _manager.GetByIdAsync(id);
             if (category != null)
             {
 

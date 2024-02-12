@@ -28,9 +28,9 @@ namespace BussinessLayer.Concrete
             _about.Delete(entity);
         }
 
-        public About GetById(int id)
+        public async Task<About> GetByIdAsync(int id)
         {
-            return _about.Get(x => x.ID == id);
+            return await _about.GetAsync(x => x.ID == id);
         }
 
         public void InsertWithRelated(About entity)

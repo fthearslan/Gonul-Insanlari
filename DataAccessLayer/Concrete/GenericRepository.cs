@@ -28,9 +28,9 @@ namespace DataAccessLayer.Concrete
             db.SaveChanges();
         }
 
-        public T Get(Expression<Func<T, bool>> filter)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
-            return _dbset.SingleOrDefault(filter);
+            return await _dbset.SingleOrDefaultAsync(filter);
         }
 
         public async Task InsertAsync(T entity)

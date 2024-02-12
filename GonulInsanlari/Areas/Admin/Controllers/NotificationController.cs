@@ -21,9 +21,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View();
         }
 
-        public IActionResult GetDetails(int id)
+        public async Task<IActionResult> GetDetails(int id)
         {
-            var notification = _manager.GetById(id);
+            var notification = await _manager.GetByIdAsync(id);
             notification.Status = false;
             _manager.Update(notification);
 

@@ -29,9 +29,9 @@ namespace BussinessLayer.Concrete
             _category.Delete(entity);
         }
 
-        public Category GetById(int id)
+        public async Task<Category> GetByIdAsync(int id)
         {
-            return _category.Get(x => x.CategoryID == id);
+            return await _category.GetAsync(x => x.CategoryID == id);
         }
 
         public List<CategoryDto> GetCategoriesWithArticle()

@@ -27,9 +27,9 @@ namespace BussinessLayer.Concrete
             _news.Delete(entity);
         }
 
-        public NewsLetter GetById(int id)
+        public async  Task<NewsLetter> GetByIdAsync(int id)
         {
-            return _news.Get(x => x.ID == id);
+            return await  _news.GetAsync(x => x.ID == id);
         }
 
         public void InsertWithRelated(NewsLetter entity)

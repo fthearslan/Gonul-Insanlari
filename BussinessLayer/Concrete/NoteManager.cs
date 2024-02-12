@@ -26,9 +26,9 @@ namespace BussinessLayer.Concrete
             _note.Delete(entity);
         }
 
-        public Note GetById(int id)
+        public async Task<Note> GetByIdAsync(int id)
         {
-            return _note.Get(x => x.Id == id);
+            return await _note.GetAsync(x => x.Id == id);
         }
 
         public List<Note> GetListByUser(int id)

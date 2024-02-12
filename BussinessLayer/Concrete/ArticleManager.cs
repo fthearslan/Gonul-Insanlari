@@ -34,9 +34,9 @@ namespace BussinessLayer.Concrete
             return _article.GetAllIncludeDrafts().Where(x => x.Status == true).ToList();
         }
 
-        public Article GetById(int id)
+        public async Task<Article> GetByIdAsync(int id)
         {
-            return _article.Get(x => x.ArticleID == id);
+            return await _article.GetAsync(x => x.ArticleID == id);
         }
 
         public Article GetByIdInclude(int id)

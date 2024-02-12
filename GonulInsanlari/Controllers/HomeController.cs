@@ -3,6 +3,7 @@ using BussinessLayer.Concrete;
 using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Common;
 using System.Diagnostics;
 
 namespace GonulInsanlari.Controllers
@@ -12,14 +13,15 @@ namespace GonulInsanlari.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
+           
         }
 
         public IActionResult Index()
         {
-
             return View();
         }
 

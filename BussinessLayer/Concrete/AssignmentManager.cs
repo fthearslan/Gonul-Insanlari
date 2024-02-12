@@ -30,11 +30,7 @@ namespace BussinessLayer.Concrete
 
         }
 
-        //public List<Assignment> GetAssignmentsByReceiverDashboard(int id)
-        //{
-        //    return _assignment.ListFilter(x => x.Receiver.Id == id | x.Receiver == null && x.Status == true).OrderByDescending(x => x.Created).ToList();
-        //}
-
+      
         public List<Assignment> GetAssignmentsByReceiver(int id)
         {
             return  _assignment.GetAssignmentsWithReceiver(id);
@@ -46,9 +42,9 @@ namespace BussinessLayer.Concrete
         }
 
 
-        public Assignment GetById(int id)
+        public async Task<Assignment> GetByIdAsync(int id)
         {
-            return _assignment.Get(x => x.AssignmentId == id);
+            return await _assignment.GetAsync(x => x.AssignmentId == id);
         }
 
         public void InsertWithRelated(Assignment entity)

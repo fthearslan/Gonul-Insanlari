@@ -40,7 +40,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area(nameof(Admin))]
-  
+
     public class ArticleController : Controller
     {
         private readonly IMemoryCache _memoryCache;
@@ -49,8 +49,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly ILogger<ArticleController> _logger;
         private readonly IArticleService _articleManager;
         private readonly ICategoryService _categoryManager;
-      private readonly AbstractValidator<Article> _validator;   
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger,IArticleService articleManager,ICategoryService categoryManager,AbstractValidator<Article> validator)
+        private readonly AbstractValidator<Article> _validator;
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger, IArticleService articleManager, ICategoryService categoryManager, AbstractValidator<Article> validator)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
@@ -112,7 +112,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     return View(nameof(List));
                 }
             }
-           
+
             return View();
         }
 
@@ -152,7 +152,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     var result = _validator.Validate(article);
                     if (result.IsValid)
                     {
-                       await _articleManager.AddAsync(article);
+                        await _articleManager.AddAsync(article);
                         _memoryCache.Remove("Categories");
                         return RedirectToAction("GetDetails", new { id = article.ArticleID });
                     }
@@ -170,9 +170,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     _logger.LogError("AutoMapper exception has been thrown at AddArticle on ArticleController.");
                     return View(nameof(List));
                 }
-               
 
-              
+
+
             }
             else
             {
@@ -185,9 +185,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpGet]
 
-        public IActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            var article = _articleManager.GetById(id);
+            var article = await _articleManager.GetByIdAsync(id);
             if (article != null)
             {
                 if (article.IsDraft == true)
@@ -227,12 +227,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
                 return View(model);
             }
-            catch(AutoMapperMappingException)
+            catch (AutoMapperMappingException)
             {
                 _logger.LogError("Mapping exception has been thrown while executing [GET] EditArticle() in ArticleController.");
-                return RedirectToAction(nameof(List)); 
+                return RedirectToAction(nameof(List));
             }
-           
+
         }
 
         [HttpPost]
@@ -245,13 +245,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-                if(model.Image is not null)
-                await model.GetImage(model.Image);
+                if (model.Image is not null)
+                    await model.GetImage(model.Image);
                 model.GetVideoUrl(model.VideoPath);
                 try
                 {
                     Article article = _mapper.Map<Article>(model);
-                   
+
                     var result = _validator.Validate(article);
                     if (result.IsValid)
                     {
@@ -274,11 +274,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     _logger.LogError("Mapping exception has been thrown while executing [POST] EditArticle() in ArticleController.");
                     return View(model);
                 }
-           
+
             }
-           
-                return View(model);
-            
+
+            return View(model);
+
         }
 
 

@@ -28,9 +28,9 @@ namespace BussinessLayer.Concrete
             _announcement.Delete(entity);
         }
 
-        public Announcement GetById(int id)
+        public async Task<Announcement> GetByIdAsync(int id)
         {
-            return _announcement.Get(x => x.ID == id);
+            return await _announcement.GetAsync(x => x.ID == id);
         }
 
         public List<Announcement> GetForAdmins()

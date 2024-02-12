@@ -11,7 +11,7 @@ namespace BussinessLayer.Abstract
        Task AddAsync(T entity);
         void Update(T entity);
         void Delete(T entity);
-        T GetById(int id);
+        Task<T> GetByIdAsync(int id);
         List<T> List();
         List<T> ListFilter();
 

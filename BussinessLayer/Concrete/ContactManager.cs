@@ -30,10 +30,10 @@ namespace BussinessLayer.Concrete
             _contact.Delete(entity);
         }
 
-        public Contact GetById(int id)
+        public async Task<Contact> GetByIdAsync(int id)
         {
 
-            return _contact.Get(x => x.ID == id);
+            return  await _contact.GetAsync(x => x.ID == id);
         }
 
         public void InsertWithRelated(Contact entity)

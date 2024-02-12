@@ -28,9 +28,9 @@ namespace BussinessLayer.Concrete
             _message.Delete(entity);
         }
 
-        public Message GetById(int id)
+        public async Task<Message>  GetByIdAsync(int id)
         {
-            return _message.Get(x => x.MessageID == id);
+            return await  _message.GetAsync(x => x.MessageID == id);
         }
 
         public List<Message> GetByWriter(int id)
