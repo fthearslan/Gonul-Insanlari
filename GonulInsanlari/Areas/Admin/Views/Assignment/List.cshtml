@@ -1,0 +1,20 @@
+﻿@model List<Assignment>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+@foreach (var task in Model)
+{
+    <p>#@task.Title </p>
+    
+    <p>@task.Progress </p>
+    <p>@task.Publisher.UserName </p>
+
+    foreach (var item in task.UserAssignments)
+    {
+        <p>Bu taske bagli  @item.User.UserName </p>
+    }
+}
+

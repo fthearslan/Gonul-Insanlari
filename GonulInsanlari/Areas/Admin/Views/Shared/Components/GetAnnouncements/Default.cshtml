@@ -1,4 +1,4 @@
-﻿@model List<Announcement>
+﻿@model List<DashboardAnnouncementViewModel>
 
 <div class="col-lg-6">
     <div class="ibox ">
@@ -13,27 +13,29 @@
                 </a>
             </div>
         </div>
-        @foreach (var announce in Model)
+        @if (Model is not null)
         {
 
-            <div style="cursor:pointer" class="ibox-content ibox-heading myBox">
+
+            @foreach (var announce in Model)
+            {
+
+                <div style="cursor:pointer" class="ibox-content ibox-heading myBox">
+                    <h3>
+                        <i style="margin-right:15px;" class="fa fa-bullhorn fa-lg"></i>@announce.Title - @announce.Subject
+                    </h3>
+
+                    <small class="float-right text-navy">@GetDate.GetCreateDate(@announce.Created)</small>
+                    <a href="/Admin/Announcement/GetDetails/@announce.ID"></a>
+
+                </div>
+            }
+        }else{
+            <div class="ibox-content ibox-heading">
                 <h3>
-                    <i style="margin-right:15px;" class="fa fa-bullhorn fa-lg"></i>@announce.Title
+                   There is no announcement yet.
                 </h3>
-                @if (announce.Details.Length >= 90)
-                {
-                   @*  <small>@announce.Details.Substring(0,announce.Details.Substring(0,100).LastIndexOf(" "))...</small> *@
-                   <p>@announce.Details.Substring(0,50)...</p>
-                }
-                else
-                {
-                    <p>@announce.Details</p>
-
-                }
-                <a @* style="text-decoration-color:inherit" *@ href="/Admin/Announcement/Details/@announce.ID"></a>
-
             </div>
-
         }
     </div>
 

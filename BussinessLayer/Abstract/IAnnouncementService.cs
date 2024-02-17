@@ -9,7 +9,8 @@ namespace BussinessLayer.Abstract
 {
     public interface IAnnouncementService:IGenericService<Announcement>
     {
-        List<Announcement> GetForAdmins();
-        Announcement GetIncludedUser(int id);
+        Task<List<Announcement>> GetForAdminAsync();
+        List<Announcement> GetForAdmin();
+        Task<Announcement> GetWithUserAsync(int id);
     }
 }

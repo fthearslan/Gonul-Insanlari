@@ -19,10 +19,8 @@ namespace EntityLayer.Entities
         public List<Article> Articles { get; set; }
 
         public List<Announcement> Announcements { get; set; }
-        [InverseProperty("Sender")]
-        public List<Assignment> AssignmentsSent { get; set; }
-        [InverseProperty("Receiver")]
-        public List<Assignment> AssignmentReceived { get; set; }
+
+        public List<UserAssignment>? UserAssignments { get; set; }
 
         [InverseProperty("Sender")]
         public List<Message> MessagesSent { get; set; }
@@ -30,5 +28,6 @@ namespace EntityLayer.Entities
         public List<Message> MessagesReceived { get; set; }
         public List<Note> Notes { get; set; }
 
+        
     }
 }

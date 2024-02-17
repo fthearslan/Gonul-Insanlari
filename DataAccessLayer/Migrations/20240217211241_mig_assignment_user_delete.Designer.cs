@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240217211241_mig_assignment_user_delete")]
+    partial class mig_assignment_user_delete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -297,9 +299,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Progress")
                         .HasColumnType("int");
 
-                    b.Property<int>("PublisherId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
@@ -309,8 +308,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("AssignmentId");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("Assignments");
                 });
@@ -577,21 +574,6 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("Notifications");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.UserAssignment", b =>
-                {
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AssignmentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "AssignmentId");
-
-                    b.HasIndex("AssignmentId");
-
-                    b.ToTable("UserAssignment");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
@@ -723,17 +705,6 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("EntityLayer.Entities.Assignment", b =>
-                {
-                    b.HasOne("EntityLayer.Entities.AppUser", "Publisher")
-                        .WithMany()
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Publisher");
-                });
-
             modelBuilder.Entity("EntityLayer.Entities.Comment", b =>
                 {
                     b.HasOne("EntityLayer.Entities.Article", "Article")
@@ -771,25 +742,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired();
 
                     b.Navigation("CreatedBy");
-                });
-
-            modelBuilder.Entity("EntityLayer.Entities.UserAssignment", b =>
-                {
-                    b.HasOne("EntityLayer.Entities.Assignment", "Assignment")
-                        .WithMany("UserAssignments")
-                        .HasForeignKey("AssignmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("EntityLayer.Entities.AppUser", "User")
-                        .WithMany("UserAssignments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Assignment");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -854,18 +806,11 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("MessagesSent");
 
                     b.Navigation("Notes");
-
-                    b.Navigation("UserAssignments");
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.Article", b =>
                 {
                     b.Navigation("Comments");
-                });
-
-            modelBuilder.Entity("EntityLayer.Entities.Assignment", b =>
-                {
-                    b.Navigation("UserAssignments");
                 });
 
             modelBuilder.Entity("EntityLayer.Entities.Category", b =>

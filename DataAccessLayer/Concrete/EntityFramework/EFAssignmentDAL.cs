@@ -18,22 +18,24 @@ namespace DataAccessLayer.Concrete.EntityFramework
             {
 
                 return  c.Assignments
-                 .Where(a => a.Receiver.Id == id && a.Status == true | a.Receiver == null && a.Status == true | a.Sender.Id == id && true)
-                 .Include(a => a.Sender)
-                 .Include(a => a.Receiver)
-                 .OrderByDescending(x => x.Created)
+                .Where(a=>a.AssignmentId==id && a.Status==true && a.Progress!=Assignment.ProgressStatus.Cancelled)
+                .Include(a=>a.UserAssignments)
+                .Include(a=>a.Publisher)
+                .OrderByDescending(x => x.Created)
                  .AsNoTrackingWithIdentityResolution()
                  .ToList();
             }
         }
 
-        public List<Assignment> GetAssignmentsWithSender(int id)
+        public List<Assignment> GetAssignmentsWithSender(int publisherId)
         {
             using (var c = new Context())
             {
                 return c.Assignments
-                    .Include(x => x.Sender)
-                    .Where(x => x.Receiver.Id == id | x.Sender.Id==id && x.Status == true && x.IsCompleted == false)
+                    .Include(a=>a.Publisher)
+                    .Include(a=>a.UserAssignments)
+                    .ThenInclude(a=>a.User)
+                    .Where(a=>a.Publisher.Id==publisherId && a.Status == true && a.Progress != Assignment.ProgressStatus.Cancelled)
                     .OrderByDescending(x => x.Created)
                     .Take(6)
                     .ToList();

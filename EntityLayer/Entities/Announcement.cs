@@ -26,5 +26,6 @@ namespace EntityLayer.Entities
 
         public string? EditedBy { get; set; }
 
+      
     }
 }

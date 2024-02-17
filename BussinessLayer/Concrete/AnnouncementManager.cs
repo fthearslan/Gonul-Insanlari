@@ -33,14 +33,19 @@ namespace BussinessLayer.Concrete
             return await _announcement.GetAsync(x => x.ID == id);
         }
 
-        public List<Announcement> GetForAdmins()
+        public List<Announcement> GetForAdmin()
         {
-          return  _announcement.GetForAdmins();
+            return _announcement.GetForAdmin();
         }
 
-        public Announcement GetIncludedUser(int id)
+        public async Task<List<Announcement>> GetForAdminAsync()
         {
-            return _announcement.GetIncludedUser(id);
+          return await  _announcement.GetForAdminAsync();
+        }
+
+        public async  Task<Announcement> GetWithUserAsync(int id)
+        {
+            return await _announcement.GetWithUserAsync(id);
 
         }
 

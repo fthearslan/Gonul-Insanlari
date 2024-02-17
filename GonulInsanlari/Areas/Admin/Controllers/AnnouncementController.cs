@@ -9,6 +9,8 @@ using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+using System.Dynamic;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -33,9 +35,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _validator = validator;
         }
 
-        public IActionResult List()
+        public async Task<IActionResult> List()
         {
-            var list = _manager.GetForAdmins();
+            var list = await _manager.GetForAdminAsync();
             if (list.Count > 0)
             {
 
@@ -53,6 +55,26 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 }
             }
             return View();
+        }
+
+
+        public async Task<IActionResult> GetDetails(int id)
+        {
+            var announcement = await _manager.GetWithUserAsync(id);
+            if (announcement != null)
+                try
+                {
+                    var model = _mapper.Map<AnnouncementDetailsViewModel>(announcement);
+                    return View(model);
+                }
+                catch (AutoMapperMappingException)
+                {
+                    _logger.LogError("Mappign exception has been thrown at Admin/Announcement/GetDetails");
+                }
+            
+                return RedirectToAction(nameof(List));
+
+
         }
 
         [HttpGet]
@@ -99,9 +121,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [HttpGet]
-        public IActionResult EditAnnouncement(int id)
+        public async Task<IActionResult> EditAnnouncement(int id)
         {
-            var announcement = _manager.GetIncludedUser(id);
+            var announcement = await _manager.GetWithUserAsync(id);
             if (announcement != null)
             {
 
@@ -113,7 +135,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 catch (AutoMapperMappingException)
                 {
                     _logger.LogError("AutoMapper exception has been thrown on EditAnnouncement ActionMethod of AnnouncementController");
-                 
+
                     return RedirectToAction(nameof(List));
                 }
 
@@ -135,7 +157,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                     var user = await _userManager.GetUserAsync(HttpContext.User);
                     entity.EditedBy = user.UserName;
-                    
+
                     _manager.Update(entity);
                     return RedirectToAction(nameof(List));
                 }

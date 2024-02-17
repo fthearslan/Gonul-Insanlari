@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EntityLayer.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
+using Microsoft.AspNetCore.Identity;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
@@ -28,6 +29,20 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
 
             #endregion
+
+            #region Details
+
+            CreateMap<Announcement, AnnouncementDetailsViewModel>()
+                .ForMember(mod => mod.AppUser, opt => opt.MapFrom(an => an.User.UserName));
+          
+
+            #endregion
+
+            #region Dashboard
+            CreateMap<Announcement, DashboardAnnouncementViewModel>(); 
+
+            #endregion
+
 
         }
     }

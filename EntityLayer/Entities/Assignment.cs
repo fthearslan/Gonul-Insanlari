@@ -9,20 +9,33 @@ namespace EntityLayer.Entities
 {
     public class Assignment
     {
+        public Assignment()
+        {
+            Progress = ProgressStatus.Published;
+        }
+
         [Key]
         public int AssignmentId { get; set; }
         [StringLength(100)]
-        public string Title { get; set; }
+        public string Title { get; set; } = null!;
         [StringLength(1000)]
-        public string Content { get; set; }
+        public string Content { get; set; } = null!;
         public bool Status { get; set; }
-        public bool IsCompleted { get; set; }
-
+        public ProgressStatus Progress { get; set; }
         public DateTime Created { get; set; }
         public DateTime Due { get; set; }
+        public List<UserAssignment> UserAssignments { get; set; } = null!;
+        public AppUser Publisher { get; set; } = null!;
 
-        public AppUser Sender { get; set; }
-        public AppUser? Receiver { get; set; }
+        public enum ProgressStatus
+        {
+            Published,
+            InProgress,
+            Done,
+            Cancelled,
+        }
+
 
     }
+
 }

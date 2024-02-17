@@ -9,9 +9,10 @@ namespace DataAccessLayer.Abstract
 {
     public interface IAnnouncementDAL:IRepository<Announcement>
     {
-        List<Announcement> GetForAdmins();
+        Task<List<Announcement>> GetForAdminAsync();
+        List<Announcement> GetForAdmin();
 
-        Announcement GetIncludedUser(int id);
+        Task<Announcement> GetWithUserAsync(int id);
 
     }
 }

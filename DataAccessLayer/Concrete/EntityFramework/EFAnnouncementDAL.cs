@@ -13,7 +13,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFAnnouncementDAL : GenericRepository<Announcement>, IAnnouncementDAL
     {
-        public List<Announcement> GetForAdmins()
+        public List<Announcement> GetForAdmin()
         {
             using (var c = new Context())
             {
@@ -24,20 +24,34 @@ namespace DataAccessLayer.Concrete.EntityFramework
                     .OrderByDescending(c => c.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();
+            }
+        }
+
+        public async  Task<List<Announcement>> GetForAdminAsync()
+        {
+            using (var c = new Context())
+            {
+
+                return await  c.Announcements
+                    .Where(a => a.IsForAdmins == true)
+                    .Include(a => a.User)
+                    .OrderByDescending(c => c.Created)
+                    .AsNoTrackingWithIdentityResolution()
+                    .ToListAsync();
 
             }
 
         }
 
-        public Announcement GetIncludedUser(int id)
+        public async Task<Announcement> GetWithUserAsync(int id)
         {
             using var c = new Context();
             {
-                return c.Announcements
+                return await c.Announcements
                       .Where(a => a.ID == id)
                       .Include(a => a.User)
                       .AsNoTrackingWithIdentityResolution()
-                      .FirstOrDefault();
+                      .FirstOrDefaultAsync();
             }
 
         }

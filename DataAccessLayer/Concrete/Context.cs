@@ -21,16 +21,12 @@ namespace DataAccessLayer.Concrete
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\SQLEXPRESS;database=GoDb;integrated security=true; TrustServerCertificate=true;");
-
-
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-           
         }
 
 
@@ -48,7 +44,6 @@ namespace DataAccessLayer.Concrete
 
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Note> Notes { get; set; } = null!;
-
 
 
     }
