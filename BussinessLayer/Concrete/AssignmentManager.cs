@@ -31,14 +31,14 @@ namespace BussinessLayer.Concrete
         }
 
       
-        public List<Assignment> GetAssignmentsByReceiver(int id)
+        public List<Assignment> GetList(int id)
         {
-            return  _assignment.GetAssignmentsWithReceiver(id);
+            return  _assignment.GetList(id);
         }
 
-        public List<Assignment> GetAssignmentsWithSender(int id)
+        public List<Assignment> GetAssignmentBar(int id)
         {
-            return _assignment.GetAssignmentsWithSender(id);
+            return _assignment.GetAssignmentBar(id);
         }
 
 

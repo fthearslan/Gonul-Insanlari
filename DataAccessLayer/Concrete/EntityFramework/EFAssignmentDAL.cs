@@ -12,33 +12,41 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFAssignmentDAL : GenericRepository<Assignment>, IAssignmentDAL
     {
-        public List<Assignment> GetAssignmentsWithReceiver(int id)
+        public List<Assignment> GetList(int id)
         {
             using (var c = new Context())
             {
 
-                return  c.Assignments
-                .Where(a=>a.AssignmentId==id && a.Status==true && a.Progress!=Assignment.ProgressStatus.Cancelled)
-                .Include(a=>a.UserAssignments)
-                .Include(a=>a.Publisher)
+                return c.Assignments
+                .Where(a => a.AssignmentId == id)
                 .OrderByDescending(x => x.Created)
                  .AsNoTrackingWithIdentityResolution()
                  .ToList();
             }
         }
 
-        public List<Assignment> GetAssignmentsWithSender(int publisherId)
+        public List<Assignment> GetAssignmentBar(int userId)
         {
             using (var c = new Context())
             {
-                return c.Assignments
-                    .Include(a=>a.Publisher)
-                    .Include(a=>a.UserAssignments)
-                    .ThenInclude(a=>a.User)
-                    .Where(a=>a.Publisher.Id==publisherId && a.Status == true && a.Progress != Assignment.ProgressStatus.Cancelled)
-                    .OrderByDescending(x => x.Created)
-                    .Take(6)
-                    .ToList();
+                
+
+                return c.UserAssignment
+                          .Where(u => u.UserId == userId && u.Assignment.Progress == Assignment.ProgressStatus.InProgress)
+                     .Include(u => u.Assignment)
+                       .OrderByDescending(x => x.Assignment.Created)
+                       .Select(a => new Assignment()
+                       {
+                           AssignmentId = a.AssignmentId,
+                           Content = a.Assignment.Content,
+                           Due=a.Assignment.Due,
+                           Created= a.Assignment.Created,
+                           Title=a.Assignment.Title,
+
+                   }).AsNoTrackingWithIdentityResolution()
+                   .Take(6)
+                   .ToList();
+                 
             }
         }
     }

@@ -34,7 +34,8 @@
                                 </div>
                                 <div class="media-body">
                                     <h4>@announce.Title</h4>
-                                   @announce.Details.Substring(0,30)
+                               @*     @announce.Details.Substring(0,30) *@
+                                    @announce.Details.Substring(0,announce.Details.Substring(0,100).LastIndexOf(" "))...
                                     <br>
                                     <small class="text-muted">@* @GetDate.GetCreateDate(announce.Created) *@</small>
                                 </div>

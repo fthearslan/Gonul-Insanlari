@@ -9,7 +9,8 @@ namespace DataAccessLayer.Abstract
 {
     public interface IAssignmentDAL:IRepository<Assignment>
     {
-        List<Assignment> GetAssignmentsWithSender(int id);
-       List<Assignment> GetAssignmentsWithReceiver(int id);
+        List<Assignment> GetAssignmentBar(int id);
+
+       List<Assignment> GetList(int id);
     }
 }

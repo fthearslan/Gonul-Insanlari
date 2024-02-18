@@ -44,6 +44,7 @@ namespace DataAccessLayer.Concrete
 
         public DbSet<Notification> Notifications { get; set; } = null!;
         public DbSet<Note> Notes { get; set; } = null!;
+        public DbSet<UserAssignment> UserAssignment { get; set; } = null!; 
 
 
     }

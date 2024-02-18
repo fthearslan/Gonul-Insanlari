@@ -23,7 +23,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         public IViewComponentResult Invoke()
         {
             var user =  _userManager.GetUserAsync(HttpContext.User).Result;
-            var assignments =  _manager.GetAssignmentsByReceiver(user.Id);
+            var assignments =  _manager.GetList(user.Id);
             return View(assignments);
 
         }

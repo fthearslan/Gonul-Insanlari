@@ -25,9 +25,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult List()
         {
-            var assingments = _manager.GetAssignmentsWithSender(4);
-            
-            return View(assingments);
+         
+            return View();
         }
     }
 }

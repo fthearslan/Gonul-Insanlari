@@ -9,9 +9,7 @@ namespace BussinessLayer.Abstract
 {
     public interface IAssignmentService:IGenericService<Assignment>
     {
-        List<Assignment> GetAssignmentsWithSender(int id);
-        //List<Assignment> GetAssignmentsByReceiverDashboard(int id);
-
-        List<Assignment> GetAssignmentsByReceiver(int id);
+        List<Assignment> GetAssignmentBar(int publisherId);
+        List<Assignment> GetList(int id);
     }
 }
