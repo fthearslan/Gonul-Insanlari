@@ -1,4 +1,4 @@
-﻿@model List<Assignment>
+﻿@model List<AssignmentDashboardViewModel>
 
 <div class="col-lg-6">
     <div class="ibox ">
@@ -23,22 +23,12 @@
                                 <th style="width: 1%" class="text-center">#</th>
                                 <th>Title</th>
                                 <th class="text-center">Due</th>
-                                <th class="text-center">Status</th>
+                                <th class="text-center">Progress</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var assign in Model)
                             {
-                                string Status;
-
-                                if (assign.Progress == Assignment.ProgressStatus.Done)
-                                {
-                                    Status = "Done";
-                                }
-                                else
-                                {
-                                    Status = "Progressing";
-                                }
 
                                 <tr>
                                     <td class="text-center">#</td>
@@ -50,7 +40,7 @@
                                         </a>
                                     </td>
                                     <td class="text-center small">@assign.Due.ToString("MMM-dd-yyy")</td>
-                                    <td class="text-center"><span class="label label-primary">@Status</span></td>
+                                    <td class="text-center"><span class="label label-primary">In Progress</span></td>
                                 </tr>
                             }
                         </tbody>

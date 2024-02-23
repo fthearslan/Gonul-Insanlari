@@ -11,6 +11,8 @@ namespace DataAccessLayer.Abstract
     {
         List<Assignment> GetAssignmentBar(int id);
 
-       List<Assignment> GetList(int id);
+       List<Assignment> GetListDashboard();
+
+        Task PublishAsync(Assignment assignment);
     }
 }

@@ -11,21 +11,25 @@ namespace EntityLayer.Entities
     {
         public Assignment()
         {
+            UserAssignments = new();
             Progress = ProgressStatus.Published;
+            Publisher = new();
         }
 
         [Key]
         public int AssignmentId { get; set; }
         [StringLength(100)]
         public string Title { get; set; } = null!;
-        [StringLength(1000)]
+        [StringLength(25000)]
         public string Content { get; set; } = null!;
         public bool Status { get; set; }
         public ProgressStatus Progress { get; set; }
         public DateTime Created { get; set; }
+        public DateTime StartDate { get; set; }
         public DateTime Due { get; set; }
         public List<UserAssignment> UserAssignments { get; set; } = null!;
         public AppUser Publisher { get; set; } = null!;
+
 
         public enum ProgressStatus
         {

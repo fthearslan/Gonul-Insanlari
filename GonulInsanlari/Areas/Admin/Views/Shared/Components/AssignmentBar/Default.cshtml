@@ -12,7 +12,7 @@
             <a href="Admin/Assignment/GetDetails/@assignment.AssignmentId">
                 <div class="small float-right m-t-xs">@GetDate.GetCreateDate(assignment.Created)</div>
                 <h4>@assignment.Title</h4>
-                    @assignment.Content.Substring(0,assignment.Content.Substring(0,100).LastIndexOf(" "))...
+                @assignment.Content.Substring(0,100);
 
                 <div style="margin-top:4px;" class="small">@assignment.Due.Subtract(assignment.Created).Days days left</div>
                     <div class="progress progress-mini">

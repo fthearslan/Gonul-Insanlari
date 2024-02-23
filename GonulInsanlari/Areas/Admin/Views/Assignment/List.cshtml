@@ -5,16 +5,75 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-@foreach (var task in Model)
-{
-    <p>#@task.Title </p>
-    
-    <p>@task.Progress </p>
-    <p>@task.Publisher.UserName </p>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a class="nav-link active" data-toggle="tab" href="#tabs-1">InProgress</a></li>
+            <li><a class="nav-link " data-toggle="tab" href="#tabs-2">Search</a></li>
 
-    foreach (var item in task.UserAssignments)
-    {
-        <p>Bu taske bagli  @item.User.UserName </p>
-    }
-}
+        </ul>
+        <div class="tab-content">
+        
+            <div role="tabpanel" id="tabs-1" class="tab-pane active">
+                <div class="panel-body">
+                    <div class="row">
+                       @foreach (var task in Model)
+                            {
+                            <div class="col-lg-4">
 
+                                <div class="ibox">
+                                    <div class="ibox-title">
+                                        <span class="label label-primary float-right">NEW</span>
+                                        <h5>IT-01 - Design Team</h5>
+                                    </div>
+                                    <div class="ibox-content">
+                                        <div class="team-members">
+                                        @foreach(var member in task.UserAssignments)
+                                        {
+                                                <a href="#"><img alt="member" class="rounded-circle" src="~/Images/@member.User.ImagePath"></a>
+                                        }
+                                        </div>
+                                  
+                                    <h4>Info about Design Team</h4>
+                                    <p>
+                                        It is a long established fact that a reader will be distracted by the readable content
+                                        of a page when looking at its layout. The point of using Lorem Ipsum is that it has.
+                                    </p>
+                                    <div>
+                                        <span>Status of current project:</span>
+                                        <div class="stat-percent">48%</div>
+                                        <div class="progress progress-mini">
+                                            <div style="width: 48%;" class="progress-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="row  m-t-sm">
+                                        <div class="col-sm-4">
+                                            <div class="font-bold">PROJECTS</div>
+                                            12
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="font-bold">RANKING</div>
+                                            4th
+                                        </div>
+                                        <div class="col-sm-4 text-right">
+                                            <div class="font-bold">BUDGET</div>
+                                            $200,913 <i class="fa fa-level-up text-navy"></i>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+            <div role="tabpanel" id="tabs-2" class="tab-pane">
+                <div class="panel-body">
+                 
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

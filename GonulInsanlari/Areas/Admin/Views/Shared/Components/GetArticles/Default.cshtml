@@ -33,7 +33,7 @@
                           
                             <td><small>#</small></td>
                             <td><a href="/Admin/Article/GetDetails/@article.ArticleID">@article.Title</a></td>
-                            <td><span class="label label-info">@article.Category.Name</span></td>
+                            <td><span class="label label-info">@article.Category.Name</span><a href="/Admin/Category/GetDetails/@article.CategoryID"></a></td>
                             <td ><i style="padding-right:5px;" class="fa fa-clock-o"></i>@GetDate.GetCreateDate(article.Created)</td>
                         </tr>
                         

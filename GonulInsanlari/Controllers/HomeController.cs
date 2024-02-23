@@ -24,7 +24,13 @@ namespace GonulInsanlari.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Index(List<string> strings) 
+        {
 
+            return View();
+        
+        }
         public IActionResult Privacy()
         {
             return View();

@@ -38,6 +38,7 @@ namespace DataAccessLayer.Concrete.Configurations
             Services.AddScoped<AbstractValidator<Article>, ArticleValidator>();
             Services.AddScoped<AbstractValidator<Category>, CategoryValidator>();
             Services.AddScoped<AbstractValidator<Announcement>, AnnouncementValidator>();
+            Services.AddScoped<AbstractValidator<Assignment>,AssignmentValidator>();
 
             return Services;
 

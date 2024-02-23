@@ -10,6 +10,7 @@ namespace BussinessLayer.Abstract
     public interface IAssignmentService:IGenericService<Assignment>
     {
         List<Assignment> GetAssignmentBar(int publisherId);
-        List<Assignment> GetList(int id);
+        List<Assignment> GetListDashboard();
+        Task PublishAsync(Assignment assignment);
     }
 }

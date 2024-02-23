@@ -12,15 +12,21 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFAssignmentDAL : GenericRepository<Assignment>, IAssignmentDAL
     {
-        public List<Assignment> GetList(int id)
+        public List<Assignment> GetListDashboard()
         {
             using (var c = new Context())
             {
 
                 return c.Assignments
-                .Where(a => a.AssignmentId == id)
-                .OrderByDescending(x => x.Created)
-                 .AsNoTrackingWithIdentityResolution()
+                .Where(a => a.Status == true && a.Progress == Assignment.ProgressStatus.InProgress)
+                  .OrderByDescending(x => x.Created)
+                .Select(x => new Assignment()
+                {
+                    AssignmentId = x.AssignmentId,
+                    Due = x.Due,
+                    Title = x.Title,
+                    Progress = x.Progress,
+                }).AsNoTrackingWithIdentityResolution()
                  .ToList();
             }
         }
@@ -29,7 +35,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
         {
             using (var c = new Context())
             {
-                
+
 
                 return c.UserAssignment
                           .Where(u => u.UserId == userId && u.Assignment.Progress == Assignment.ProgressStatus.InProgress)
@@ -39,15 +45,27 @@ namespace DataAccessLayer.Concrete.EntityFramework
                        {
                            AssignmentId = a.AssignmentId,
                            Content = a.Assignment.Content,
-                           Due=a.Assignment.Due,
-                           Created= a.Assignment.Created,
-                           Title=a.Assignment.Title,
+                           Due = a.Assignment.Due,
+                           Created = a.Assignment.Created,
+                           Title = a.Assignment.Title,
 
-                   }).AsNoTrackingWithIdentityResolution()
+                       }).AsNoTrackingWithIdentityResolution()
                    .Take(6)
                    .ToList();
-                 
+
             }
+        }
+
+        public async Task PublishAsync(Assignment assignment)
+        {
+
+            using (var c = new Context())
+            {
+                c.Entry(assignment.Publisher).State = EntityState.Unchanged;
+                await c.Assignments.AddAsync(assignment);
+                await c.SaveChangesAsync();
+            }
+
         }
     }
 }

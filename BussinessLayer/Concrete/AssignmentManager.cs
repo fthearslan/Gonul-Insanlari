@@ -21,7 +21,7 @@ namespace BussinessLayer.Concrete
 
         public async Task AddAsync(Assignment entity)
         {
-           await _assignment.InsertAsync(entity);
+            await _assignment.InsertAsync(entity);
         }
 
         public void Delete(Assignment entity)
@@ -30,10 +30,10 @@ namespace BussinessLayer.Concrete
 
         }
 
-      
-        public List<Assignment> GetList(int id)
+
+        public List<Assignment> GetListDashboard()
         {
-            return  _assignment.GetList(id);
+            return _assignment.GetListDashboard();
         }
 
         public List<Assignment> GetAssignmentBar(int id)
@@ -65,6 +65,11 @@ namespace BussinessLayer.Concrete
         public void Update(Assignment entity)
         {
             _assignment.Update(entity);
+        }
+
+        public async Task PublishAsync(Assignment assignment)
+        {
+            await _assignment.PublishAsync(assignment);
         }
     }
 }
