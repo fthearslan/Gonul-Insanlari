@@ -20,7 +20,7 @@ namespace DataAccessLayer.Concrete
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\SQLEXPRESS;database=GoDb;integrated security=true; TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\MSSQLSERVER01;database=GoDb;integrated security=true; TrustServerCertificate=true;");
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

@@ -42,6 +42,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 var assignment = db.Assignments
                     .Include(a => a.UserAssignments)
+                    .ThenInclude(ua=>ua.User)
                     .Where(a => a.Progress == Assignment.ProgressStatus.InProgress).ToList();
                 return View(assignment);
 
@@ -83,25 +84,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 try
                 {
                     task = _mapper.Map<Assignment>(model);
+
                 }
                 catch (AutoMapperMappingException ex)
                 {
+
                     _logger.LogError($"{ex.Message} on AssignmentController.");
                     return View(); // => Error Page...
+
                 }
 
                 task.Publisher = user;
-
-                foreach (var id in model.Users)
-                {
-                    task.UserAssignments.Add(new UserAssignment()
-                    {
-                        AssignmentId = task.AssignmentId,
-                        Assignment = task,
-                        UserId = id
-
-                    });
-                }
 
                 var result = _validator.Validate(task);
 

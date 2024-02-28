@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240228210353_mig_subtask")]
+    partial class mig_subtask
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -582,11 +584,7 @@ namespace DataAccessLayer.Migrations
 
             modelBuilder.Entity("EntityLayer.Entities.SubTask", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("AssignmentId")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -598,8 +596,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AssignmentId");
 
                     b.ToTable("SubTask");
                 });
@@ -804,7 +800,7 @@ namespace DataAccessLayer.Migrations
                 {
                     b.HasOne("EntityLayer.Entities.Assignment", "Assignment")
                         .WithMany("SubTasks")
-                        .HasForeignKey("AssignmentId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

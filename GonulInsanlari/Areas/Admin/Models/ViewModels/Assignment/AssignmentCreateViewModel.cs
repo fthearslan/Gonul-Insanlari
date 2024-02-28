@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EntityLayer.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.Runtime.InteropServices;
+using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
 {
@@ -21,5 +24,34 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
         [Required]
         public List<int> Users { get; set; } = null!;
 
+ 
+        List<string> _subTasks;
+       
+        [Required]
+        public List<string> SubTasks
+        {
+            get
+            {
+                return _subTasks;
+            }
+            set
+            {
+                List<string> strings = new List<string>();
+
+                foreach (var item in value)
+                {
+                    foreach (var obj in item.Split(','))
+                        strings.Add(obj);
+                };
+
+                _subTasks = strings;
+            }
+
+        }
+
+       
     }
+
+
+
 }
