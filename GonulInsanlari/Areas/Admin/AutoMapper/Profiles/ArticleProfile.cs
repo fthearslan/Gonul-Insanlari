@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using GonulInsanlari.Models;

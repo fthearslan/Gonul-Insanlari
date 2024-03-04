@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using BussinessLayer.Abstract;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Humanizer;
@@ -38,15 +38,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult List()
         {
-            using (Context db = new Context())
-            {
-                var assignment = db.Assignments
-                    .Include(a => a.UserAssignments)
-                    .ThenInclude(ua=>ua.User)
-                    .Where(a => a.Progress == Assignment.ProgressStatus.InProgress).ToList();
-                return View(assignment);
+            var tasks = _manager.GetWhere(x => x.Progress == Assignment.ProgressStatus.InProgress)
+                            .ToList();
 
-            };
+            return View(tasks);
+
         }
 
         [HttpGet]

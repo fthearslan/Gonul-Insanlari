@@ -19,12 +19,13 @@
                     <div class="row">
                        @foreach (var task in Model)
                             {
+
                             <div class="col-lg-4">
 
                                 <div class="ibox">
                                     <div class="ibox-title">
-                                        <span class="label label-primary float-right">NEW</span>
-                                        <h5>IT-01 - Design Team</h5>
+                                        <span class="label label-primary float-right">In Progress</span>
+                                        <h5>@task.Title</h5>
                                     </div>
                                     <div class="ibox-content">
                                         <div class="team-members">
@@ -34,31 +35,34 @@
                                         }
                                         </div>
                                   
-                                    <h4>Info about Design Team</h4>
+                                    <h4>Description</h4>
                                     <p>
-                                        It is a long established fact that a reader will be distracted by the readable content
-                                        of a page when looking at its layout. The point of using Lorem Ipsum is that it has.
+                                    @task.Content.Substring(50)    
                                     </p>
                                     <div>
                                         <span>Status of current project:</span>
-                                        <div class="stat-percent">48%</div>
+                                        <div class="stat-percent">@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks)%</div>
                                         <div class="progress progress-mini">
-                                            <div style="width: 48%;" class="progress-bar"></div>
+                                            <div style="width:@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks)%;" class="progress-bar"></div>
                                         </div>
                                     </div>
                                     <div class="row  m-t-sm">
-                                        <div class="col-sm-4">
-                                            <div class="font-bold">PROJECTS</div>
-                                            12
+                                        <div class="col-sm-3">
+                                            <div class="font-bold">Publisher</div>
+                                            @@@task.Publisher.UserName
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="font-bold">RANKING</div>
-                                            4th
+                                        <div class="col-sm-3">
+                                            <div class="font-bold">Users</div>
+                                            @task.UserAssignments.Count
                                         </div>
-                                        <div class="col-sm-4 text-right">
-                                            <div class="font-bold">BUDGET</div>
-                                            $200,913 <i class="fa fa-level-up text-navy"></i>
+                                        <div class="col-sm-3 text-right">
+                                            <div class="font-bold">Sub-Tasks</div>
+                                            @task.SubTasks.Count <i class="fa fa-level-up text-navy"></i>
                                         </div>
+                                            <div class="col-sm-3 text-right">
+                                                <div class="font-bold">Published at</div>
+                                                @GetDate.GetCreateDate(@task.Created) <i class="fa fa-level-up text-navy"></i>
+                                            </div>
                                     </div>
 
                                 </div>

@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using BussinessLayer.Abstract;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Mvc;
 using System.Dynamic;

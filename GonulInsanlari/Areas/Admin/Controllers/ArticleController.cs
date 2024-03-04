@@ -33,8 +33,8 @@ using JetBrains.Annotations;
 using Humanizer;
 using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using EntityLayer.Entities;
-using BussinessLayer.Abstract;
+using BussinessLayer.Abstract.Services;
+using EntityLayer.Concrete.Entities;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {

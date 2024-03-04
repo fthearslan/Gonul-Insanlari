@@ -1,6 +1,6 @@
-﻿using DataAccessLayer.Abstract;
-using DataAccessLayer.Concrete;
-using EntityLayer.Entities;
+﻿using DataAccessLayer.Abstract.SubRepositories;
+using DataAccessLayer.Concrete.Repositories;
+using EntityLayer.Concrete.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

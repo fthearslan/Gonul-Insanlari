@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Migrations;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 

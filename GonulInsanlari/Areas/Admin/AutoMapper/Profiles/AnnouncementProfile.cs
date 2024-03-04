@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Identity;
 

@@ -1,4 +1,5 @@
-﻿using EntityLayer.Entities;
+﻿using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment.CustomAttributes;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.InteropServices;
 using X.PagedList;
@@ -27,7 +28,8 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
  
         List<string> _subTasks;
        
-        [Required]
+        [Required,ListStringLength(200,ErrorMessage ="Tasks must contain between 10 and 200 charachters.",MinimumLength =10)]
+        
         public List<string> SubTasks
         {
             get

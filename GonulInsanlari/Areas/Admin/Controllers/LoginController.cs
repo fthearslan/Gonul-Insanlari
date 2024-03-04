@@ -1,4 +1,4 @@
-﻿using EntityLayer.Entities;
+﻿using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Login;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

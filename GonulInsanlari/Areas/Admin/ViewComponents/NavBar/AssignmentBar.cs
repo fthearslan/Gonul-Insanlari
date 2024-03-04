@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using BussinessLayer.Abstract;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
-using DataAccessLayer.Concrete.Configurations;
 using DataAccessLayer.Concrete.EntityFramework;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
+using EntityLayer.Concrete.Configurations;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

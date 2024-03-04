@@ -1,4 +1,4 @@
-﻿using EntityLayer.Entities;
+﻿using EntityLayer.Concrete.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

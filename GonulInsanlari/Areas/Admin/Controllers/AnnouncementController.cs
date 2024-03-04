@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
-using BussinessLayer.Abstract;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete.EntityFramework;
-using EntityLayer.Entities;
+using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Identity;

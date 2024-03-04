@@ -1,24 +1,25 @@
-﻿using DataAccessLayer.Abstract;
-using DataAccessLayer.Concrete;
-using DataAccessLayer.Concrete.DTOs;
-using EntityLayer.Entities;
+﻿using DataAccessLayer.Abstract.SubRepositories;
+using DataAccessLayer.Concrete.DTOs.Category;
+using DataAccessLayer.Concrete.Repositories;
+using DataAccessLayer.Concrete.Providers;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using EntityLayer.Concrete.Entities;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFCategoryDAL : GenericRepository<Category>, ICategoryDAL
     {
+       
         public Category GetDetails(int id)
         {
-            using (var c = new Context())
+            using (var db= new Context())
             {
-                return c.Categories.Where(c => c.CategoryID == id).Select(c => new Category
+                return db.Categories.Where(c => c.CategoryID == id).Select(c => new Category
                 {
                     CategoryID = c.CategoryID,
                     Name = c.Name,
@@ -32,11 +33,11 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         public List<CategoryDto> GetList()
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
 
 
-                return c.Categories.Select(x => new CategoryDto
+                return db.Categories.Select(x => new CategoryDto
                 {
 
                     CategoryID = x.CategoryID,

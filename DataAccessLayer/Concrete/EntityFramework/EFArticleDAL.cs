@@ -1,6 +1,6 @@
-﻿using DataAccessLayer.Abstract;
-using DataAccessLayer.Concrete;
-using EntityLayer.Entities;
+﻿using DataAccessLayer.Abstract.SubRepositories;
+using DataAccessLayer.Concrete.Repositories;
+using DataAccessLayer.Concrete.Providers;
 using Microsoft.AspNetCore.DataProtection.XmlEncryption;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -10,6 +10,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EntityLayer.Concrete.Entities;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
@@ -17,9 +18,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
     {
         public List<Article> GetAllIncludeDrafts()
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return  db.Articles
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
                     .Include(a => a.Comments)
@@ -33,10 +34,10 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public Article GetByIdInclude(int id)
         {
 
-            using (var c = new Context())
+            using (var db = new Context())
             {
 
-                return c.Articles
+                return db.Articles
                      .Where(a => a.ArticleID == id)
                      .Include(c => c.Category)
                      .Include(u => u.AppUser)
@@ -48,9 +49,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public List<Article> GetDraftsByUser(int userId)
         {
 
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return db.Articles
                     .Where(a => a.IsDraft == true)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
@@ -64,9 +65,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         public Article GetDetailsByUser(int id)
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return db.Articles
                     .Where(x => x.ArticleID == id && x.Status == true)
                     .Include(a => a.AppUser)
                     .AsNoTrackingWithIdentityResolution()
@@ -78,9 +79,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         public List<Article> ListReleased()
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return db.Articles
                     .Where(x => x.Status == true && x.IsDraft == false)
                     .Include(a => a.Category)
                     .Include(a => a.Comments)
@@ -93,9 +94,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         public List<Article> GetAllWithoutDrafts()
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return db.Articles
                     .Where(a => a.IsDraft == false)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
@@ -108,9 +109,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         public List<Article> GetByCategory(int id)
         {
-            using (var c = new Context())
+            using (var db = new Context())
             {
-                return c.Articles
+                return db.Articles
                     .Where(a => a.CategoryID == id && a.IsDraft == false)
                     .OrderByDescending(a => a.Created).Select(a => new Article
                     {

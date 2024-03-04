@@ -1,4 +1,8 @@
-﻿namespace GonulInsanlari.Areas.Admin.Models.Tools
+﻿using EntityLayer.Concrete.Entities;
+using JetBrains.Annotations;
+using System.Runtime.CompilerServices;
+
+namespace GonulInsanlari.Areas.Admin.Models.Tools
 {
     public static class ProgressBarWidth
     {
@@ -11,6 +15,22 @@
             return width;
 
         }
+
+        public static int GetWidthBySubTasks(List<SubTask> subTasks)
+        {
+            if(subTasks.Count>0)
+            {
+                var all = subTasks.Count;
+                var done = subTasks.Where(s => s.Progress == SubTasksProgress.Done).Count();
+                decimal width = (done * 100) / all;
+                return (int)Math.Round(width, 0);
+
+            }
+            return 0;
+        }
+
+      
+
 
     }
 }

@@ -1,5 +1,4 @@
-﻿using EntityLayer.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
 {
