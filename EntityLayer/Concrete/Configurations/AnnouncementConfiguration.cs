@@ -13,16 +13,11 @@ namespace EntityLayer.Concrete.Configurations
     {
         public void Configure(EntityTypeBuilder<Announcement> builder)
         {
-
-            builder.Property(x => x.Created)
-                .HasDefaultValueSql("GETDATE()");
+            builder.HasKey(a => a.Id); 
 
             builder.HasOne(a => a.User)
                 .WithMany(u => u.Announcements)
                 .HasForeignKey(a => a.UserId);
-
-            builder.Property<DateTime?>("Edited").ValueGeneratedOnUpdate();
-
 
         }
     }

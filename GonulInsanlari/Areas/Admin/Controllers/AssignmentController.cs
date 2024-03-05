@@ -13,6 +13,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using X.PagedList;
+
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -36,12 +38,23 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _validator = Validator;
         }
 
-        public IActionResult List()
+        public async Task<IActionResult> List(int pageNumber = 1)
         {
-            var tasks = _manager.GetWhere(x => x.Progress == Assignment.ProgressStatus.InProgress)
-                            .ToList();
 
-            return View(tasks);
+            var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
+
+            List<AssignmentInProgressListViewModel> model = new();
+            
+            try
+            {
+                 model = _mapper.Map<List<AssignmentInProgressListViewModel>>(tasks);
+            }
+            catch (AutoMapperMappingException)
+            {
+                return View();// Error Page
+            }
+                return View(await model.ToPagedListAsync(pageNumber, 9));
+
 
         }
 

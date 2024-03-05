@@ -69,18 +69,18 @@
 
                                 }
 
-                                int id = article.ArticleID;
+                                int id = article.Id;
                                 
                                 <tr>
-                                    <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@article.ArticleID"></a><strong>#</strong> @article.Title</td>
+                                    <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@article.Id"></a><strong>#</strong> @article.Title</td>
                                     <td><span style="cursor:pointer" class="label label-primary myBox"><a href="#categorypage"></a>@article.Category.Name</span></td>
                                     <td>@article.Created.ToString("dd-MMM-yyyy")</td>
                                     <td><span class="@color">@text</span></td>
                                     <td><span class="@draftcolor"> @drafttext</span></td>
                                     <td>@@@article.AppUser.UserName</td>
                                     <td class="btn-group">
-                                        <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@article.ArticleID">View</a>
-                                        <a class="btn-warning btn btn-xs" href="/Admin/Article/EditArticle/@article.ArticleID">Edit</a>
+                                        <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@article.Id">View</a>
+                                        <a class="btn-warning btn btn-xs" href="/Admin/Article/EditArticle/@article.Id">Edit</a>
                                         <a class="btn-danger btn btn-xs" onclick="fire(@id)"  href="#"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>

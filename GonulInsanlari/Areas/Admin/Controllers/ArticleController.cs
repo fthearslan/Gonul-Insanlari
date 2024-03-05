@@ -122,7 +122,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
                                                {
-                                                   Value = x.CategoryID.ToString(),
+                                                   Value = x.Id.ToString(),
                                                    Text = x.Name,
                                                }).ToList();
             ViewData["Categories"] = categories;
@@ -154,7 +154,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     {
                         await _articleManager.AddAsync(article);
                         _memoryCache.Remove("Categories");
-                        return RedirectToAction("GetDetails", new { id = article.ArticleID });
+                        return RedirectToAction("GetDetails", new { id = article.Id });
                     }
                     else
                     {
@@ -214,7 +214,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
                                                {
-                                                   Value = x.CategoryID.ToString(),
+                                                   Value = x.Id.ToString(),
                                                    Text = x.Name
                                                }).ToList();
             ViewData["Categories"] = categories;
@@ -258,7 +258,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         article.EditedBy = user.UserName;
                         _articleManager.Update(article);
 
-                        return RedirectToAction("GetDetails", new { id = article.ArticleID });
+                        return RedirectToAction("GetDetails", new { id = article.Id });
                     }
                     else
                     {

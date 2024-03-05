@@ -46,7 +46,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Assignment> GetByIdAsync(int id)
         {
-            return await _assignment.GetAsync(x => x.AssignmentId == id);
+            return await _assignment.GetAsync(x => x.Id == id);
         }
 
         public void InsertWithRelated(Assignment entity)
@@ -79,6 +79,9 @@ namespace BussinessLayer.Concrete.Managers
             return _assignment.GetWhere(filter);
         }
 
-
+        public Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress)
+        {
+            return _assignment.GetByProgress(progress);
+        }
     }
 }

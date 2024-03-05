@@ -18,7 +18,7 @@ namespace GonulInsanlari.Areas.Admin.Models.Tools
 
         public static int GetWidthBySubTasks(List<SubTask> subTasks)
         {
-            if(subTasks.Count>0)
+            if (subTasks.Count > 0)
             {
                 var all = subTasks.Count;
                 var done = subTasks.Where(s => s.Progress == SubTasksProgress.Done).Count();
@@ -28,8 +28,20 @@ namespace GonulInsanlari.Areas.Admin.Models.Tools
             }
             return 0;
         }
+        public static int GetWidthBySubTasks(int _tasksAll, int _tasksDone)
+        {
+            if (_tasksAll > 0)
+            {
 
-      
+                decimal width = (_tasksDone * 100) / _tasksAll;
+                return (int)Math.Round(width, 0);
+
+            }
+
+            return 0;
+        }
+
+
 
 
     }

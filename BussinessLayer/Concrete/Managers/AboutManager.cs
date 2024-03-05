@@ -31,7 +31,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<About> GetByIdAsync(int id)
         {
-            return await _about.GetAsync(x => x.ID == id);
+            return await _about.GetAsync(x => x.Id == id);
         }
 
         public IQueryable<About> GetWhere(Expression<Func<About, bool>> filter)

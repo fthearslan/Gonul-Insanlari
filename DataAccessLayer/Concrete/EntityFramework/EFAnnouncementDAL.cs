@@ -39,7 +39,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
         {
             using var db = new Context();
             return await db.Announcements
-                  .Where(a => a.ID == id)
+                  .Where(a => a.Id == id)
                   .Include(a => a.User)
                   .AsNoTrackingWithIdentityResolution()
                   .FirstOrDefaultAsync();

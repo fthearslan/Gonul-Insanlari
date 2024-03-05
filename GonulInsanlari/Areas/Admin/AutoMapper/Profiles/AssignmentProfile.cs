@@ -12,7 +12,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         {
             #region Dashboard
 
-            CreateMap<Assignment, AssignmentBarViewModel>();
+            CreateMap<Assignment, AssignmentBarViewModel>()
+                .ForMember(dest => dest.SubTasks, opt => opt.MapFrom(src => src.SubTasks.Count))
+                .ForMember(dest => dest.SubTasksDone, opt => opt.MapFrom(src => src.SubTasks.Where(s => s.Progress == SubTasksProgress.Done).Count()));
+
             CreateMap<Assignment, AssignmentDashboardViewModel>();
 
             #endregion
@@ -27,6 +30,14 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #endregion
 
+            #region List
+
+            CreateMap<Assignment, AssignmentInProgressListViewModel>()
+                .ForMember(dest => dest.SubTasks, opt => opt.MapFrom(src => src.SubTasks.Count))
+                .ForMember(dest => dest.SubTasksDone, opt => opt.MapFrom(src => src.SubTasks.Where(s => s.Progress == SubTasksProgress.Done).Count()))
+                .ForMember(dest=>dest.UserImagePaths,opt=>opt.MapFrom<AssignmentUserImagePathResolver>());
+
+            #endregion
         }
     }
 }

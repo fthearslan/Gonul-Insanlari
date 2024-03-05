@@ -38,7 +38,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
             {
 
                 return db.Articles
-                     .Where(a => a.ArticleID == id)
+                     .Where(a => a.Id == id)
                      .Include(c => c.Category)
                      .Include(u => u.AppUser)
                      .FirstOrDefault();
@@ -68,7 +68,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
             using (var db = new Context())
             {
                 return db.Articles
-                    .Where(x => x.ArticleID == id && x.Status == true)
+                    .Where(x => x.Id == id && x.Status == true)
                     .Include(a => a.AppUser)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();
@@ -115,7 +115,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                     .Where(a => a.CategoryID == id && a.IsDraft == false)
                     .OrderByDescending(a => a.Created).Select(a => new Article
                     {
-                        ArticleID = a.ArticleID,
+                        Id = a.Id,
                         Title = a.Title,
                         AppUser = a.AppUser,
 

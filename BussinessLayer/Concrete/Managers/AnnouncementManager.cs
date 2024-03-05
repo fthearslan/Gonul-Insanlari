@@ -31,7 +31,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Announcement> GetByIdAsync(int id)
         {
-            return await _announcement.GetAsync(x => x.ID == id);
+            return await _announcement.GetAsync(x => x.Id == id);
         }
 
         public List<Announcement> GetForAdmin()

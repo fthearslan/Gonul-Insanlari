@@ -37,7 +37,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Article> GetByIdAsync(int id)
         {
-            return await _article.GetAsync(x => x.ArticleID == id);
+            return await _article.GetAsync(x => x.Id == id);
         }
 
         public Article GetByIdInclude(int id)

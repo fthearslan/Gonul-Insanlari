@@ -8,10 +8,13 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
     {
         public List<UserAssignment> Resolve(AssignmentCreateViewModel source, Assignment destination, List<UserAssignment> destMember, ResolutionContext context)
         {
+
+
+
             foreach (var userId in source.Users)
                 destination.UserAssignments.Add(new UserAssignment()
                 {
-                    AssignmentId = destination.AssignmentId,
+                    AssignmentId = destination.Id,
                     Assignment =destination,
                     UserId = userId,
                     

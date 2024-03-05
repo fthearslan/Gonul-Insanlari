@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityLayer.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class Contact
+    public class Contact:BaseEntity
     {
-        [Key]
-        public int ID { get; set; }
         [StringLength(50)]
         public string NameSurname { get; set; }
         [StringLength(50)]
@@ -19,10 +18,7 @@ namespace EntityLayer.Concrete.Entities
         public string Content { get; set; }
         [StringLength(50)]
         public string Subject { get; set; }
-        public DateTime Created { get; set; }
         public bool IsSeen { get; set; }
-        public bool Status { get; set; }
-
 
     }
 }

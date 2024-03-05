@@ -23,7 +23,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
               .OrderByDescending(x => x.Created)
             .Select(x => new Assignment()
             {
-                AssignmentId = x.AssignmentId,
+                Id = x.Id,
                 Due = x.Due,
                 Title = x.Title,
                 Progress = x.Progress,
@@ -41,11 +41,12 @@ namespace DataAccessLayer.Concrete.EntityFramework
                    .OrderByDescending(x => x.Assignment.Created)
                    .Select(a => new Assignment()
                    {
-                       AssignmentId = a.AssignmentId,
+                       Id = a.AssignmentId,
                        Content = a.Assignment.Content,
                        Due = a.Assignment.Due,
-                       Created = a.Assignment.Created,
                        Title = a.Assignment.Title,
+                       SubTasks = a.Assignment.SubTasks,
+                       Created = a.Assignment.Created
 
                    }).AsNoTrackingWithIdentityResolution()
                .Take(6)
@@ -63,6 +64,15 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         }
 
+        public async Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress)
+        {
+            using var db = new Context();
+            return await db.Assignments
+                   .Where(a => a.Progress == progress)
+                .AsNoTrackingWithIdentityResolution()
+                .ToListAsync();
+        }
 
+       
     }
 }

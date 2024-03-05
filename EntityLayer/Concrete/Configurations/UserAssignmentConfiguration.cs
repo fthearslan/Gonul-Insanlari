@@ -23,6 +23,9 @@ namespace EntityLayer.Concrete.Configurations
                 .WithMany(a => a.UserAssignments)
                 .HasForeignKey(ua => ua.AssignmentId);
 
+            builder.Navigation(ua => ua.User).AutoInclude();
+            builder.Navigation(ua => ua.Assignment).AutoInclude();
+
         }
     }
 }

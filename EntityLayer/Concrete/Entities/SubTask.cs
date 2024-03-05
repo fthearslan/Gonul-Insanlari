@@ -12,7 +12,8 @@ namespace EntityLayer.Concrete.Entities
     {
         public SubTask()
         {
-            Id = Guid.NewGuid();
+            Id = Guid.NewGuid();    
+            Progress = 0;
         }
         public Guid Id { get; set; }
 

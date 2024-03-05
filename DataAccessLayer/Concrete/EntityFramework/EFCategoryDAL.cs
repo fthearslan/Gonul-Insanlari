@@ -19,9 +19,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
         {
             using (var db= new Context())
             {
-                return db.Categories.Where(c => c.CategoryID == id).Select(c => new Category
+                return db.Categories.Where(c => c.Id == id).Select(c => new Category
                 {
-                    CategoryID = c.CategoryID,
+                    Id = c.Id,
                     Name = c.Name,
                     Description = c.Description,
                     ImagePath = c.ImagePath,
@@ -40,7 +40,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                 return db.Categories.Select(x => new CategoryDto
                 {
 
-                    CategoryID = x.CategoryID,
+                    CategoryID = x.Id,
                     Name = x.Name,
                     Status = x.Status,
                     ArticleCount = x.Articles.Count

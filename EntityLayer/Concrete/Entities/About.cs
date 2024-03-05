@@ -8,10 +8,8 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class About:BaseEntity
+    public class About : BaseEntity
     {
-        [Key]
-        public int ID { get; set; }
 
         [StringLength(75)]
         public string Title { get; set; }

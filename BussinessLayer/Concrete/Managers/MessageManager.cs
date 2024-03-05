@@ -31,7 +31,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Message> GetByIdAsync(int id)
         {
-            return await _message.GetAsync(x => x.MessageID == id);
+            return await _message.GetAsync(x => x.Id == id);
         }
 
         public List<Message> GetByWriter(int id)

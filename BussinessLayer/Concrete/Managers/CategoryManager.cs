@@ -32,7 +32,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Category> GetByIdAsync(int id)
         {
-            return await _category.GetAsync(x => x.CategoryID == id);
+            return await _category.GetAsync(x => x.Id == id);
         }
 
         public List<CategoryDto> GetCategoriesWithArticle()

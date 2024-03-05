@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EntityLayer.Abstract;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
@@ -10,18 +11,14 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class Article
+    public class Article:BaseEntity
     {
 
-        [Key]
-        public int ArticleID { get; set; }
+    
         [StringLength(maximumLength: 50)]
         public string Title { get; set; } = null!;
         public string Content { get; set; } = null!;
-        public DateTime Created { get; set; } = DateTime.Now;
-        public DateTime? Edited { get; set; }
         public string? EditedBy { get; set; }
-        public bool? Status { get; set; }
         public bool? IsDraft { get; set; }
         public string ImagePath { get; set; } = null!;
         public int CategoryID { get; set; }

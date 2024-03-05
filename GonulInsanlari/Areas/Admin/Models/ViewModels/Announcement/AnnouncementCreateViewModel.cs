@@ -2,7 +2,7 @@
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement
 {
-    public record struct AnnouncementCreateViewModel
+    public record  AnnouncementCreateViewModel
     {
         [Required]
         [StringLength(maximumLength: 40, ErrorMessage = "Title cannot contain less than 5 and more than 40 chrachters.", MinimumLength = 5)]

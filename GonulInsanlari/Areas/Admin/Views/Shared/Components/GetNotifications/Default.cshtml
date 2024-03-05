@@ -7,7 +7,7 @@
     <ul style="width:350px;" class="dropdown-menu dropdown-alerts">
         @foreach(var notify in Model){
         <li>
-                <a href="/Admin/Notification/GetDetails/@notify.ID" class="dropdown-item">
+                <a href="/Admin/Notification/GetDetails/@notify.Id" class="dropdown-item">
                 <div>
                         @if (notify.Title.Length >= 20)
                         {

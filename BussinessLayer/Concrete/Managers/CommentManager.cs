@@ -36,7 +36,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<Comment> GetByIdAsync(int id)
         {
-            return await _comment.GetAsync(x => x.CommentID == id);
+            return await _comment.GetAsync(x => x.Id == id);
         }
 
         public IQueryable<Comment> GetWhere(Expression<Func<Comment, bool>> filter)

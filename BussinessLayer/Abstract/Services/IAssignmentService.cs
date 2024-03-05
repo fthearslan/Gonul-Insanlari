@@ -11,6 +11,8 @@ namespace BussinessLayer.Abstract.Services
     public interface IAssignmentService : IGenericService<Assignment>
     {
         List<Assignment> GetAssignmentBar(int publisherId);
+        Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress);
+
         List<Assignment> GetListDashboard();
         Task PublishAsync(Assignment assignment);
     }

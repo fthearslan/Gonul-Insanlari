@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240304101933_mig_baseEntity_Modified")]
+    partial class mig_baseEntity_Modified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -44,9 +46,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<string>("ImagePath")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
@@ -82,9 +81,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<bool>("IsForAdmins")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
 
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
@@ -253,9 +249,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool?>("IsDraft")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("Status")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
@@ -295,9 +288,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("Due")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("Progress")
@@ -344,9 +334,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(75)
@@ -384,9 +371,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<bool>("IsApproved")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("NameSurname")
                         .IsRequired()
@@ -426,9 +410,6 @@ namespace DataAccessLayer.Migrations
 
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
-
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("NameSurname")
                         .IsRequired()
@@ -470,9 +451,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool>("IsSeen")
                         .HasColumnType("bit");
 
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("ReceiverId")
                         .HasColumnType("int");
 
@@ -511,9 +489,6 @@ namespace DataAccessLayer.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -548,9 +523,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("CreatedById")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("Modified")
-                        .HasColumnType("datetime2");
-
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
@@ -580,9 +552,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<DateTime>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
                     b.Property<bool?>("Status")

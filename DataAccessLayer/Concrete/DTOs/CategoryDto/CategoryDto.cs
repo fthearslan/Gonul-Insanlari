@@ -12,7 +12,7 @@ namespace DataAccessLayer.Concrete.DTOs.Category
 
         public string? Name { get; set; }
 
-        public bool Status { get; set; }
+        public bool? Status { get; set; }
 
         public int ArticleCount { get; set; }
 

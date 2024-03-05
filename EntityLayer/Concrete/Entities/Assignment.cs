@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EntityLayer.Abstract;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class Assignment
+    public class Assignment:BaseEntity
     {
         public Assignment()
         {
@@ -18,15 +19,12 @@ namespace EntityLayer.Concrete.Entities
             SubTasks = new List<SubTask>();
         }
 
-        [Key]
-        public int AssignmentId { get; set; }
+       
         [StringLength(100)]
         public string Title { get; set; } = null!;
         [StringLength(10000)]
         public string Content { get; set; } = null!;
-        public bool Status { get; set; }
         public ProgressStatus Progress { get; set; }
-        public DateTime Created { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime Due { get; set; }
         public List<UserAssignment> UserAssignments { get; set; } = null!;
@@ -47,7 +45,7 @@ namespace EntityLayer.Concrete.Entities
             foreach (var userId in userList)
                 Task.UserAssignments.Add(new UserAssignment()
                 {
-                    AssignmentId = Task.AssignmentId,
+                    AssignmentId = Task.Id,
                     Assignment = Task,
                     UserId = userId
 

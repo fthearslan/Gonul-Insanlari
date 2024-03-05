@@ -30,7 +30,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<NewsLetter> GetByIdAsync(int id)
         {
-            return await _news.GetAsync(x => x.ID == id);
+            return await _news.GetAsync(x => x.Id == id);
         }
 
         public IQueryable<NewsLetter> GetWhere(Expression<Func<NewsLetter, bool>> filter)
@@ -50,7 +50,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public List<NewsLetter> ListFilter()
         {
-            return _news.ListFilter(x => x.Status == "True");
+            return _news.ListFilter(x => x.Status == true);
         }
 
         public void Update(NewsLetter entity)
