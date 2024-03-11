@@ -17,7 +17,6 @@ namespace DataAccessLayer.Abstract.SubRepositories
         List<Article> GetAllIncludeDrafts();
         List<Article> GetDraftsByUser(int userId);
         Article GetByIdInclude(int id);
-
         List<Article> GetByCategory(int id);
     }
 }

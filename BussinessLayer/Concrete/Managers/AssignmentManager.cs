@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Abstract.SubRepositories;
+using DataAccessLayer.Concrete.DTOs.Assignment;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -79,9 +80,14 @@ namespace BussinessLayer.Concrete.Managers
             return _assignment.GetWhere(filter);
         }
 
-        public Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress)
+        public Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress)
         {
             return _assignment.GetByProgress(progress);
+        }
+
+        public List<AssignmentListDto> GetAll()
+        {
+            return _assignment.GetAll();
         }
     }
 }

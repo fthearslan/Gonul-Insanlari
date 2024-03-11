@@ -1,4 +1,5 @@
 ﻿using DataAccessLayer.Abstract.Repositories;
+using DataAccessLayer.Concrete.DTOs.Assignment;
 using EntityLayer.Concrete.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,14 @@ namespace DataAccessLayer.Abstract.SubRepositories
     {
         List<Assignment> GetAssignmentBar(int id);
 
-        Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress);
+        Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress);
 
         List<Assignment> GetListDashboard();
 
         Task PublishAsync(Assignment assignment);
+
+        List<AssignmentListDto> GetAll();
+
+        
     }
 }

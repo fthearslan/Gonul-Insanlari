@@ -1,0 +1,54 @@
+﻿@model List<AssignmentListViewModel>
+
+<link href="~/inspinia-gh-pages/css/plugins/footable/footable.core.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+<div class="table-responsive">
+    <table id="dataTable" class="table table-striped">
+
+        <thead>
+
+            <tr>
+
+                <th>#</th>
+                <th> Title</th>
+                <th>Published by</th>
+                <th>SubTasks</th>
+                <th>Users</th>
+                <th>Progress</th>
+                <th>Created</th>
+                <th></th>
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            @foreach (var task in Model)
+            {
+
+                <tr>
+
+                    <td>#</td>
+                    <td>@task.Title</td>
+                    <td>@task.Publisher</td>
+                    <td>@task.SubTasks</td>
+                    <td>@task.UserCount</td>
+                    <td><span class="label label-primary">@task.Progress</span></td>
+                    <td>@GetDate.GetCreateDate(@task.Created)</td>
+                    <td class="btn-group">
+                        <a class="btn-white btn btn-xs" href="/Admin/Assignment/GetDetails/@task.Id">View</a>
+                        <a class="btn-danger btn btn-xs" onclick="fire(@task.Id)" id="btn_delete" value="@task.Id" href="/Admin/Assignment/Delete/@task.Id"><i class="fa fa-trash"></i></a>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>

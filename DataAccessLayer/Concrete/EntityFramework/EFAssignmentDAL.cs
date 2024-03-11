@@ -9,6 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
+using DataAccessLayer.Concrete.DTOs.Assignment;
+using System.Globalization;
+using AutoMapper;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
@@ -64,15 +67,46 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         }
 
-        public async Task<List<Assignment>> GetByProgress(Assignment.ProgressStatus progress)
+        public async Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress)
         {
             using var db = new Context();
             return await db.Assignments
                    .Where(a => a.Progress == progress)
+                   .Select(a => new AssignmentByProgressDto()
+                   {
+                       Id = a.Id,
+                       Title = a.Title,
+                       Content = a.Content,
+                       Created = a.Created,
+                       Publisher = a.Publisher.UserName,
+                       SubTasks = a.SubTasks.Count,
+                       SubTasksDone = a.SubTasks.Where(s => s.Progress == SubTasksProgress.Done).Count(),
+                       UserImagePaths = a.UserAssignments.Select(x => x.User.ImagePath).ToList()
+                   })
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
         }
 
-       
+        public List<AssignmentListDto> GetAll()
+        {
+            using var db = new Context();
+
+            return db.Assignments
+            .IgnoreAutoIncludes()
+            .Select(a => new AssignmentListDto()
+            {
+                Id = a.Id,
+                Title = a.Title,
+                Created = a.Created,
+                Publisher = a.Publisher.Name,
+                SubTasks = a.SubTasks.Count,
+                Progress=a.Progress.ToString(),
+                UserCount=a.UserAssignments.Count,
+            
+            })
+            .OrderByDescending(x => x.Created)
+            .ToList();
+
+        }
     }
 }

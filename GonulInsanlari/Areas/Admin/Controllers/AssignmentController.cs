@@ -11,6 +11,7 @@ using MessagePack.Resolvers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using X.PagedList;
@@ -40,21 +41,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public async Task<IActionResult> List(int pageNumber = 1)
         {
-
             var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
 
-            List<AssignmentInProgressListViewModel> model = new();
-            
+            List<AssignmentByProgressListViewModel> model = new();
+
             try
             {
-                 model = _mapper.Map<List<AssignmentInProgressListViewModel>>(tasks);
+                model = _mapper.Map<List<AssignmentByProgressListViewModel>>(tasks);
             }
             catch (AutoMapperMappingException)
             {
-                return View();// Error Page
+                return View(); // Error Page
             }
-                return View(await model.ToPagedListAsync(pageNumber, 9));
 
+            return View(await model.ToPagedListAsync(pageNumber, 9));
 
         }
 
@@ -122,6 +122,33 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View();
 
         }
+
+        public async Task<IActionResult> GetDetails(int id)
+        {
+            var task = await _manager.GetByIdAsync(id);
+            if (task != null)
+            {
+
+                AssignmentDetailsViewModel model = new();
+
+                try
+                {
+                    model = _mapper.Map<AssignmentDetailsViewModel>(task); ;
+                }
+                catch (AutoMapperMappingException ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return RedirectToAction(); // Error Page...
+                }
+
+                return View(model); // Error Page...
+
+            }
+
+            return View();
+        
+        }
+
 
     }
 }

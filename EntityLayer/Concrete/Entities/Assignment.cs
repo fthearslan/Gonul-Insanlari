@@ -8,18 +8,20 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class Assignment:BaseEntity
+    public class Assignment : BaseEntity
     {
         public Assignment()
         {
             UserAssignments = new();
+
             Progress = ProgressStatus.Published;
+
             Publisher = new();
 
             SubTasks = new List<SubTask>();
         }
 
-       
+
         [StringLength(100)]
         public string Title { get; set; } = null!;
         [StringLength(10000)]

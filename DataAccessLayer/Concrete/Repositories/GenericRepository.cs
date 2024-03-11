@@ -14,15 +14,12 @@ namespace DataAccessLayer.Concrete.Repositories
 {
     public class GenericRepository<T> : IRepository<T> where T :BaseEntity
     {
-
         Context db = new Context();
-
 
         DbSet<T> _dbset;
 
         public GenericRepository()
         {
-
             _dbset = db.Set<T>();
         }
 
@@ -35,9 +32,7 @@ namespace DataAccessLayer.Concrete.Repositories
 
         public async Task<T> GetAsync(Expression<Func<T, bool>> filter)
         {
-
             return await _dbset.SingleOrDefaultAsync(filter);
-
         }
 
         public async Task InsertAsync(T entity)
@@ -81,14 +76,9 @@ namespace DataAccessLayer.Concrete.Repositories
 
         public IQueryable<T> GetWhere(Expression<Func<T, bool>> filter)
         {
-
             return _dbset.Where(filter);
-
         }
 
-        public virtual void Test()
-        {
-            Console.WriteLine("x");
-        }
+     
     }
 }

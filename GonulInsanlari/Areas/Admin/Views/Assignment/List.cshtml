@@ -1,4 +1,4 @@
-﻿@model IPagedList<AssignmentInProgressListViewModel>
+﻿@model IPagedList<AssignmentByProgressListViewModel>
 
 @{
     ViewData["Title"] = "List";
@@ -24,15 +24,16 @@
                         <div class="col-lg-4">
 
                             <div class="ibox">
-                                <div class="ibox-title">
+                                <div style="cursor:pointer" class="ibox-title myBox">
                                     <span class="label label-primary float-right">In Progress</span>
                                     <h5># @task.Title</h5>
+                                    <a href="/Admin/Assignment/GetDetails/@task.Id"></a>
                                 </div>
                                 <div class="ibox-content">
                                     <div class="team-members">
-                                        @foreach (var member in task.UserImagePaths)
+                                        @foreach (var member in task.UserImagePaths.Take(5))
                                         {
-                                            <a href="#"><img alt="member" class="rounded-circle" src="~/Images/@member"></a>
+                                            <a href="#userProfile"><img alt="member" class="rounded-circle" src="~/Images/@member"></a>
                                         }
                                     </div>
 
@@ -55,7 +56,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="font-bold">Users</div>
-
+                                            @task.UserImagePaths.Count
                                         </div>
                                         <div class="col-sm-3 text-right">
                                             <div class="font-bold">Sub-Tasks</div>
@@ -80,7 +81,51 @@
         </div>
         <div role="tabpanel" id="tabs-2" class="tab-pane">
             <div class="panel-body">
+
+                @await Component.InvokeAsync("GetAssignmentsAll")
+
             </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
+
+
+@section Script{
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+                },
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+
+    </script>
+    <script>
+
+        $(".myBox").click(function () {
+            window.location = $(this).find("a").attr("href");
+            return false;
+        });
+
+    </script>
+         }

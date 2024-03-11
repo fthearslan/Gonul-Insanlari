@@ -1,0 +1,37 @@
+﻿@model AssignmentDetailsViewModel
+@{
+    ViewData["Title"] = "GetDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h1>Get Details</h1>
+
+<p>@Model.Id</p>
+<p>@Model.Title</p>
+<p>@Model.Content</p>
+<p>@Model.Publisher</p>
+
+**********************************
+
+@if (Model.SubTasks != null )
+{
+
+    @foreach (var subtask in Model.SubTasks)
+    {
+        <p> @subtask.Id / @subtask.Description / @subtask.Progress </p>
+
+    }
+
+}
+
+
+***********************************
+@if (Model.Users != null)
+{
+    @foreach (var user in Model.Users)
+    {
+        <p>
+            @user.Key.ToString() / @user.Value.ToString()
+        </p>
+    }
+}

@@ -4,9 +4,9 @@ using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
 {
-    public class AssignmentUserImagePathResolver : IValueResolver<Assignment, AssignmentInProgressListViewModel, List<string>>
+    public record AssignmentUserImagePathResolver : IValueResolver<Assignment, AssignmentByProgressListViewModel, List<string>>
     {
-        public List<string> Resolve(Assignment source, AssignmentInProgressListViewModel destination, List<string> destMember, ResolutionContext context)
+        public List<string> Resolve(Assignment source, AssignmentByProgressListViewModel destination, List<string> destMember, ResolutionContext context)
         {
 
             List<string> userImagePaths = new();

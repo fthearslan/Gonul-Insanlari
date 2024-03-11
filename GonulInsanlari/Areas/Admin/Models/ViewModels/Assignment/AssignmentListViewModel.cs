@@ -13,12 +13,26 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
 
         public DateTime Created { get; set; }
 
+        public int SubTasks { get; set; }
+
+        public string Progress { get; set; }
+    
+        public int UserCount { get; set; }
+    
     }
 
-    public record AssignmentInProgressListViewModel : AssignmentListViewModel
+    public record AssignmentByProgressListViewModel
     {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Publisher { get; set; }
+
+        public DateTime Created { get; set; }
 
         public int SubTasks { get; set; }
+
 
         public int SubTasksDone { get; set; }
 
@@ -28,8 +42,16 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
         public List<string> UserImagePaths { get; set; }
     }
 
-    public record AssignmentBarViewModel : AssignmentListViewModel
+    public record AssignmentBarViewModel 
     {
+        public int Id { get; set; }
+
+        public string Title { get; set; }
+
+        public string Publisher { get; set; }
+
+        public DateTime Created { get; set; }
+
         public int SubTasks { get; set; }
 
         public int SubTasksDone { get; set; }

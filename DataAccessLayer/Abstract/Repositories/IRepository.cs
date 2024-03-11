@@ -11,7 +11,6 @@ namespace DataAccessLayer.Abstract.Repositories
 {
     public interface IRepository<T> where T : BaseEntity
     {
-
         Task InsertAsync(T entity);
         void InsertWithRelated(T entity);
         void Delete(T entity);
@@ -20,7 +19,6 @@ namespace DataAccessLayer.Abstract.Repositories
         List<T> ListFilter(Expression<Func<T, bool>> filter);
         Task<T> GetAsync(Expression<Func<T, bool>> filter);
         void Update(T entity);
-        void Test();
-
+       
     }
 }

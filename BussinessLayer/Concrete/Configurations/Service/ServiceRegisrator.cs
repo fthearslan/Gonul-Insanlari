@@ -1,4 +1,5 @@
-﻿using BussinessLayer.Abstract.Services;
+﻿using AutoMapper;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete.Managers;
 using BussinessLayer.Concrete.Validations.FluentValidation;
 using DataAccessLayer.Concrete.EntityFramework;
@@ -7,6 +8,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +19,7 @@ namespace BussinessLayer.Concrete.Configurations.Service
 {
     public static class ServiceRegisrations
     {
+
         public static IServiceCollection AddBussinessServices(this IServiceCollection Services)
         {
             Services.AddScoped<ICategoryService>(x => new CategoryManager(new EFCategoryDAL()));
