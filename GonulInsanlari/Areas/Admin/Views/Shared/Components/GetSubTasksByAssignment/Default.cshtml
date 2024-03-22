@@ -1,0 +1,79 @@
+﻿@model List<SubTaskViewModel>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Progress</th>
+            <th>Description</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subtask in Model)
+        {
+            string id = subtask.Id.ToString();
+            
+            <tr>
+                <td>
+                    <select id="@id" onchange="TaskonChange('@id')" class="btn btn-primary btn-xs">
+                        <option selected disabled hidden>@subtask.Progress</option>
+                        <option  value="Pending"  class="btn btn-primary btn-sm">Pending</option>
+                        <option value="InProgress" class="btn btn-primary btn-sm">InProgress</option>
+                        <option value="Done" class="btn btn-primary btn-sm">Done</option>
+                    </select>
+
+                </td>
+
+                <td>
+                    <p>
+                        @subtask.Description
+                    </p>
+                </td>
+                <td>
+                    <a class="btn-danger btn btn-xs" onclick="deleteTask('@id')" href="#"><i class="fa fa-trash"></i></a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary btn-xs" href="#"><i class="fa fa-plus"></i> Add</a>
+
+@section Script{
+    <script>
+        function deleteTask(id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    $.ajax({
+                        type: "POST",
+                        url: "/Admin/Assignment/Delete/" + id,
+
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The assignment has been deleted.",
+                        icon: "success"
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+
+
+            });
+
+        }
+    </script>
+}
+

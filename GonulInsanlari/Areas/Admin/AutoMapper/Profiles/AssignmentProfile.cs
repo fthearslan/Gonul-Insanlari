@@ -44,10 +44,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region Details 
 
             CreateMap<Assignment, AssignmentDetailsViewModel>()
-                .ForMember(dest => dest.Users, opt => opt.MapFrom<AssignmentUserListResolver>())
-                .ForMember(dest => dest.SubTasks, opt => opt.MapFrom<AssignmentSubTaskResolver>());
+                .ForMember(dest => dest.Users, opt => opt.MapFrom<AssignmentUserListResolver>());
+            
 
-
+      
             #endregion 
         }
     }

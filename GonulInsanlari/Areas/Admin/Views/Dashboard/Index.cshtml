@@ -3,6 +3,10 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+
+
 @await Component.InvokeAsync("DashboardStatictic")
 <div class="row">
     @await Component.InvokeAsync("DashboardContacts")
@@ -27,3 +31,31 @@
 
 <script src="~/inspinia-gh-pages/js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
+
+@section Script{
+    <script src="~/lib/jquery.toast.min.js"></script>
+    <script>
+        
+
+        $(document).ready(function () {
+     
+            $.toast({
+                heading: 'Welcome again.',
+                text: 'This is administration panel of Gonul Insanlari.',
+                showHideTransition: 'slide',
+                position: 'top-center',
+               
+            })
+
+
+        }
+        );
+
+
+
+    </script>
+
+
+
+
+}

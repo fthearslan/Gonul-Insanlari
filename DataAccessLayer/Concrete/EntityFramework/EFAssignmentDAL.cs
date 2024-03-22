@@ -98,7 +98,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                 Id = a.Id,
                 Title = a.Title,
                 Created = a.Created,
-                Publisher = a.Publisher.Name,
+                Publisher = a.Publisher.UserName,
                 SubTasks = a.SubTasks.Count,
                 Progress=a.Progress.ToString(),
                 UserCount=a.UserAssignments.Count,

@@ -1,17 +1,14 @@
-﻿using AutoMapper;
+﻿
+using AutoMapper;
 using BussinessLayer.Abstract.Services;
-using BussinessLayer.Concrete;
-using BussinessLayer.Concrete.Validations;
-using DataAccessLayer.Concrete;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
-using Humanizer;
-using MessagePack.Resolvers;
+using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.CodeAnalysis.Operations;
+using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using X.PagedList;
@@ -128,6 +125,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var task = await _manager.GetByIdAsync(id);
             if (task != null)
             {
+                ViewData["SubTasksAll"] = task.SubTasks?.Count;
+                ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
 
                 AssignmentDetailsViewModel model = new();
 
@@ -146,9 +145,129 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
 
             return View();
-        
+
         }
 
 
+        [HttpPost]
+        public async Task ChangeProgress(AssingmentProgressChangeViewModel obj)
+        {
+            var task = await _manager.GetByIdAsync(obj.TaskId);
+
+            SubTask? subtask = task.SubTasks.Find(s => s.Id.ToString() == obj.SubTaskId);
+
+            if (subtask != null)
+
+                switch (obj.Progress)
+                {
+                    case "Pending":
+
+                        subtask.Progress = SubTasksProgress.Pending;
+
+                        break;
+
+                    case "InProgress":
+
+                        subtask.Progress = SubTasksProgress.InProgress;
+                        break;
+
+                    case "Done":
+
+                        subtask.Progress = SubTasksProgress.Done;
+                        break;
+
+                }
+
+            _manager.Update(task);
+
+        }
+
+        [HttpPost]
+        public async Task RemoveUser(int assignmentId, int userId)
+        {
+            var assignment = await _manager.GetByIdAsync(assignmentId);
+
+            var user = assignment?.UserAssignments?.Find(a => a.UserId == userId);
+
+            if (user != null)
+            {
+                assignment?.UserAssignments?.Remove(user);
+
+                _manager.Update(assignment);
+            }
+
+        }
+
+        [HttpPost]
+        public async Task RemoveSubTask(int assignmentId, Guid subtaskId)
+        {
+
+            Assignment? assignment = await _manager.GetByIdAsync(assignmentId);
+
+            SubTask? subtask = assignment.SubTasks.Find(s => s.Id == subtaskId);
+
+            if (subtask != null)
+                assignment.SubTasks.Remove(subtask);
+
+            _manager.Update(assignment);
+
+
+        }
+
+        [HttpPost]
+        public async Task AddUser(int taskId, int userId)
+        {
+
+            var assignment = await _manager.GetByIdAsync(taskId);
+
+            if (assignment != null)
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (user != null)
+                {
+                    assignment.UserAssignments.Add(new()
+                    {
+                        User = user,
+                        UserId = userId,
+                    });
+
+                    assignment.Modified = DateTime.Now;
+                    _manager.Update(assignment);
+                }
+
+            }
+
+        }
+
+        //[HttpGet]
+        //public JsonResult GetValue(int taskId)
+        //{
+
+
+        //    var assignment = _manager.GetByIdAsync(taskId).Result;
+
+        //    List<AddUserToTaskVIewModel> model = new List<AddUserToTaskVIewModel>();
+
+        //    foreach(var user in assignment.UserAssignments)
+        //    {
+        //        model.Add(new()
+        //        {
+        //            Id = user.UserId,
+        //            ImagePath = user.User.ImagePath,
+        //            UserName = user.User.UserName,
+        //        });
+
+        //    }
+
+        //    return Json(model);
+
+
+
+        //}
+
     }
+
+
+
 }

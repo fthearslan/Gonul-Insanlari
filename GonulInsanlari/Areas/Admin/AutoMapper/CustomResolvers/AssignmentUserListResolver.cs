@@ -4,14 +4,14 @@ using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
 {
-    public class AssignmentUserListResolver : IValueResolver<Assignment, AssignmentDetailsViewModel, Dictionary<int,string>>
+    public class AssignmentUserListResolver : IValueResolver<Assignment, AssignmentDetailsViewModel, List<(int,string,string)?>>
     {
-        public Dictionary<int, string> Resolve(Assignment source, AssignmentDetailsViewModel destination, Dictionary<int, string> destMember, ResolutionContext context)
+     
+        public List<(int, string, string)?> Resolve(Assignment source, AssignmentDetailsViewModel destination, List<(int, string, string)?> destMember, ResolutionContext context)
         {
-
             foreach (var obj in source.UserAssignments)
             {
-                destination.Users.Add(obj.UserId,obj.User.Name);
+                destination?.Users?.Add((obj.UserId, obj.User.UserName, obj.User.ImagePath));
             }
 
             return destination.Users;

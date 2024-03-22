@@ -2,29 +2,28 @@
 
 namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
 {
-    public record AssignmentDetailsViewModel
+    public class AssignmentDetailsViewModel
     {
         public AssignmentDetailsViewModel()
         {
-            SubTasks = new();
             Users = new();
         }
 
         public int Id { get; set; }
 
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
-        public string Publisher { get; set; }
+        public string? Publisher { get; set; }
 
-        public Dictionary<int, string> Users { get; set; }
-
-        public List<SubTaskViewModel> SubTasks { get; set; }
-
+        public List<(int,string,string)?> Users { get; set; }
+        public DateTime Modified { get; set; }
         public DateTime Created { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime Due { get; set; }
+
+        public string? Progress { get; set; }
 
     }
 
@@ -32,9 +31,9 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment
     {
 
         public Guid Id { get; set; }
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
-        public string Progress { get; set; }
+        public string? Progress { get; set; }
     }
 
 

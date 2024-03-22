@@ -35,6 +35,11 @@
                                         {
                                             <a href="#userProfile"><img alt="member" class="rounded-circle" src="~/Images/@member"></a>
                                         }
+                                        @if (task.UserImagePaths.Count > 5)
+                                        {
+                                            int count = task.UserImagePaths.Count - 5;
+                                            <i class="fa fa-plus"></i> @count
+                                        }
                                     </div>
 
                                     <h4>Description</h4>

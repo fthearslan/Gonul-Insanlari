@@ -4,34 +4,336 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Get Details</h1>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+<link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
 
-<p>@Model.Id</p>
-<p>@Model.Title</p>
-<p>@Model.Content</p>
-<p>@Model.Publisher</p>
+<div class="ibox">
+    <div class="ibox-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="m-b-md">
+                    <a href="#" class="btn btn-white btn-xs float-right"></a>
+                    <h2>@Model.Title</h2>
+                </div>
 
-**********************************
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-6">
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right"><dt>Status:</dt> </div>
+                    <div class="col-sm-8 text-sm-left"><dd class="mb-1"><span class="label label-primary">@Model.Progress</span></dd></div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right"><dt>Published by:</dt> </div>
+                    <div class="col-sm-8 text-sm-left"><dd class="mb-1"> @@@Model.Publisher </dd> </div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right"><dt>SubTasks:</dt> </div>
+                    <div class="col-sm-8 text-sm-left"> <dd class="mb-1"> @ViewData["SubTasksAll"]</dd></div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right"><dt>Start Date: </dt> </div>
+                    <div class="col-sm-8 text-sm-left"> <dd class="mb-1"><a href="#" class="text-navy"> @Model.StartDate</a> </dd></div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right"> <dt>Due:</dt></div>
+                    <div class="col-sm-8 text-sm-left"> <dd class="mb-1">@Model.Due</dd></div>
+                </dl>
 
-@if (Model.SubTasks != null )
-{
+            </div>
+            <div class="col-lg-6" id="cluster_info">
 
-    @foreach (var subtask in Model.SubTasks)
-    {
-        <p> @subtask.Id / @subtask.Description / @subtask.Progress </p>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right">
+                        <dt>Last Updated:</dt>
+                    </div>
+                    <div class="col-sm-8 text-sm-left">
+                        <dd class="mb-1">@Model.Modified</dd>
+                    </div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right">
+                        <dt>Created:</dt>
+                    </div>
+                    <div class="col-sm-8 text-sm-left">
+                        <dd class="mb-1">@Model.Created</dd>
+                    </div>
+                </dl>
+                <dl class="row mb-0">
+                    <div class="col-sm-4 text-sm-right">
+                        <dt>Participants:</dt>
+                    </div>
+                    <div class="col-sm-8 text-sm-left">
+                        <dd class="project-people mb-1">
+                            @foreach (var img in Model.Users.Take(5))
+                            {
+                                <a href="#userProfile/@img.Value.Item1"><img alt="member" class="rounded-circle" src="~/Images/@img.Value.Item3"></a>
+                            }
+                            @if (Model.Users.Count > 5)
+                            {
+                                int count = Model.Users.Count - 5;
+                                <i class="fa fa-plus"></i> @count
+                            }
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <dl class="row mb-0">
+                    <div class="col-sm-2 text-sm-right">
+                        <dt>Completed:</dt>
+                    </div>
+                    <div class="col-sm-10 text-sm-left">
+                        <dd>
+                            <div class="progress m-b-1">
 
+                                <div style="width:@ProgressBarWidth.GetWidthBySubTasks( (int)ViewData["SubTasksAll"],  (int)ViewData["SubTasksDone"])%;" class="progress-bar progress-bar-striped progress-bar-animated"></div>
+                            </div>
+                            <small>Project completed in <strong>@ProgressBarWidth.GetWidthBySubTasks( (int)ViewData["SubTasksAll"],  (int)ViewData["SubTasksDone"])%</strong></small>
+                        </dd>
+                    </div>
+                </dl>
+            </div>
+        </div>
+        <div class="row m-t-sm">
+            <div class="col-lg-12">
+                <div class="panel blank-panel">
+                    <div class="panel-heading">
+                        <div class="panel-options">
+                            <ul class="nav nav-tabs">
+                                <li><a class="nav-link active" href="#tab-1" data-toggle="tab">Tasks</a></li>
+                                <li><a class="nav-link" href="#tab-2" data-toggle="tab">Last activity</a></li>
+                                <li><a class="nav-link" href="#tab-3" data-toggle="tab">Users</a></li>
+                                <li><a class="nav-link" href="#tab-4" data-toggle="tab">Attachments</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="panel-body">
+
+                        <div class="tab-content">
+
+                            <!--  SubTasks  -->
+
+                            <div class="tab-pane active" id="tab-1">
+
+                                @await Component.InvokeAsync("GetSubTasksByAssignment",new { assignmentId = Model.Id})
+                            </div>
+
+                            <!--  / SubTasks  -->
+                            <!--  LastActivity  -->
+
+                            <div class="tab-pane " id="tab-2">
+                            </div>
+
+
+                            <!--  / LastActivity  -->
+
+                            <div class="tab-pane" id="tab-3">
+
+                                @await Component.InvokeAsync("GetUsersByAssignment",new { assignmentId = Model.Id})
+
+                            </div>
+
+                            <div class="tab-pane" id="tab-4">
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Script{
+
+
+    @* <script src="sweetalert2.all.min.js"></script> *@
+
+    <script src="~/lib/jquery.toast.min.js"></script>
+
+    <script>
+
+
+
+        function TaskonChange(id) {
+
+            var text = $('#' + id + ' option:selected').text();
+
+            var data = {
+                Progress: text,
+                SubTaskId: id,
+                TaskId: @Model.Id
+                                            };
+
+
+
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("ChangeProgress", "Assignment")',
+                data: { obj: data },
+                success: function (result) {
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Progress has been successfully changed.',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+                    })
+                }
+            })
+
+        };
+
+    </script>
+    <script>
+        function deleteTask(id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    var AssignmentId = @Model.Id;
+                    var subtaskID = id;
+                    $.ajax({
+                        type: "POST",
+                        data: { assignmentId: AssignmentId, subtaskId: subtaskID },
+                        url: "/Admin/Assignment/RemoveSubTask/",
+
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The task has been deleted.",
+                        icon: "success"
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+
+
+            });
+
+        }
+    </script>
+    <script>
+        function deleteUser(id) {
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    var AssignmentId = @Model.Id;
+                    var userID = id;
+                    $.ajax({
+                        type: "POST",
+                        data: { assignmentId: AssignmentId, userId: userID },
+                        url: "/Admin/Assignment/RemoveUser/",
+
+                    });
+                    Swal.fire({
+                        title: "Deleted!",
+                        text: "The user has been removed.",
+                        icon: "success"
+                    }).then(function () {
+                        window.location.reload();
+                    });
+                }
+
+
+            });
+
+        }
+    </script>
+    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+        });
+    </script>
+    <script src="~/inspinia-gh-pages/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <script>
+        function AddUser(id) {
+
+            var TaskId = @Model.Id;
+
+            $.ajax({
+                type: "POST",
+                data: { taskId: TaskId, userId: id },
+                url: "/Admin/Assignment/AddUser",
+                success: function (result) {
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Users has been successfully added.',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+
+                    })
+
+
+                }
+            });
+
+
+
+
+
+
+
+        }
+    </script>
+<script>
+    function Reload(){
+            window.location.reload();
     }
 
-}
+</script>
+  @*   <script>
+        function GetJson(id) {
+            $.get('/Admin/Assignment/GetValue', { taskId: id }, function (data) {
+                var html_to_append = '';
+                $.each(data, function (i, item) {
+                    html_to_append +=
+                        '<tr>' +
+                        '<td class="client-avatar"><img alt="image" src="~/Images/' + item.ImagePath + '"></td>' +
+                        '<td><a href="#userProfile/' + item.Id + '" class="client-link">' + item.UserName + '</a></td>' +
+                        '<td>Admin</td>' +
+                        '<td><a href="#" onclick="AddUser(' + item.Id + ')" class="btn btn-primary">Add</a></td>' +
+                        '</tr>';
 
+                });
+                $("#table1").html(html_to_append);
+            });
 
-***********************************
-@if (Model.Users != null)
-{
-    @foreach (var user in Model.Users)
-    {
-        <p>
-            @user.Key.ToString() / @user.Value.ToString()
-        </p>
-    }
+        }
+
+    </script> *@
+
 }
