@@ -69,7 +69,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseStatusCodePagesWithReExecute("/Error/ErrorPage", "?code={0}");
+app.UseStatusCodePagesWithReExecute("/Admin/Error/SomethingWentWrong", "?code={0}");
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

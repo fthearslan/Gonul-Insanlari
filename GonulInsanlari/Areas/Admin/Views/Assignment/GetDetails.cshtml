@@ -152,10 +152,15 @@
         </div>
     </div>
 </div>
+
+
+
 @section Script{
 
 
-    @* <script src="sweetalert2.all.min.js"></script> *@
+    @*   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script> *@
+
+
 
     <script src="~/lib/jquery.toast.min.js"></script>
 
@@ -171,7 +176,7 @@
                 Progress: text,
                 SubTaskId: id,
                 TaskId: @Model.Id
-                                            };
+                                                                                            };
 
 
 
@@ -296,7 +301,11 @@
                         icon: 'success'
 
                     })
+                    $("#tabletr").hide();
 
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 3000);
 
                 }
             });
@@ -309,13 +318,112 @@
 
         }
     </script>
-<script>
-    function Reload(){
+    <script>
+        function Reload() {
             window.location.reload();
-    }
+        }
 
-</script>
-  @*   <script>
+    </script>
+
+    <script>
+        function addSubtask() {
+
+            var subtask = {
+                TaskId: @Model.Id,
+                SubTaskDescription: $('#description').val(),
+            };
+
+            if ($("#description").val().trim().length < 1) 
+            {
+                $.toast({
+                    heading: 'Error',
+                    text: 'Field is required!',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                })
+                return;
+            }
+
+            if ($("#description").val().length < 5) {
+                $.toast({
+                    heading: 'Error',
+                    text: 'Too short!',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                })
+                return;
+            }
+
+
+            $.ajax({
+                type: "POST",
+                data: { model: subtask },
+                url: "/Admin/Assignment/AddSubTask",
+                success: function (result) {
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Subtask has been added succesfully.',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+
+                    })
+
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 3000);
+                }
+            });
+
+
+
+
+
+
+
+        }
+    </script>
+    <script src="js/plugins/validate/jquery.validate.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#description").validate({
+                rules: {
+
+                    desc: {
+                        required: true,
+                        minlength: 5
+                    }
+
+                }
+
+
+            });
+    </script>
+    <script>
+    
+        function invalidAccess(){
+
+            $.toast({
+                heading: 'Invalid Access!',
+                text: 'You can not change the progress of this task.',
+                showHideTransition: 'slide',
+                position: 'top-right',
+                icon: 'error'
+
+            });
+        }
+    
+    
+    
+    
+    </script>
+    @*   <script>
         function GetJson(id) {
             $.get('/Admin/Assignment/GetValue', { taskId: id }, function (data) {
                 var html_to_append = '';

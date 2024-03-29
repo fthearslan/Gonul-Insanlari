@@ -89,5 +89,10 @@ namespace BussinessLayer.Concrete.Managers
         {
             return _assignment.GetAll();
         }
+
+        public void AddSubTask(SubTask task)
+        {
+             _assignment.AddSubTask(task);
+        }
     }
 }

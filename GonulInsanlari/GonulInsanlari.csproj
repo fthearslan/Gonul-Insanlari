@@ -52,6 +52,7 @@
 		<Folder Include="Areas\Admin\Data\" />
 		<Folder Include="Areas\Admin\Views\Notification\" />
 		<Folder Include="wwwroot\Files\" />
+		<Folder Include="wwwroot\CustomJs\" />
 		<Folder Include="wwwroot\PdfReports\" />
 	</ItemGroup>
 

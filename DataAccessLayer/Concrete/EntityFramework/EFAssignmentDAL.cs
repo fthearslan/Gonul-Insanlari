@@ -12,6 +12,7 @@ using EntityLayer.Concrete.Entities;
 using DataAccessLayer.Concrete.DTOs.Assignment;
 using System.Globalization;
 using AutoMapper;
+using System.Threading.Tasks.Sources;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
@@ -100,12 +101,25 @@ namespace DataAccessLayer.Concrete.EntityFramework
                 Created = a.Created,
                 Publisher = a.Publisher.UserName,
                 SubTasks = a.SubTasks.Count,
-                Progress=a.Progress.ToString(),
-                UserCount=a.UserAssignments.Count,
-            
+                Progress = a.Progress.ToString(),
+                UserCount = a.UserAssignments.Count,
+
             })
             .OrderByDescending(x => x.Created)
             .ToList();
+
+        }
+
+        public void AddSubTask(SubTask task)
+        {
+            using var c = new Context();
+            {
+                c.Entry(task.Assignment).State = EntityState.Unchanged;
+                c.Entry(task.Assignment.Publisher).State = EntityState.Unchanged;
+                c.SubTask.Add(task);
+                c.SaveChanges();
+
+            }
 
         }
     }

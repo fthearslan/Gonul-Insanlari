@@ -23,6 +23,8 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         List<AssignmentListDto> GetAll();
 
+        void AddSubTask(SubTask task);
+
         
     }
 }

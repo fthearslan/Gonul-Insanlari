@@ -47,6 +47,6 @@ namespace DataAccessLayer.Concrete.Providers
         public DbSet<Note> Notes { get; set; } = null!;
         public DbSet<UserAssignment> UserAssignment { get; set; } = null!;
 
-
+        public DbSet<SubTask> SubTask { get; set; } = null!;
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Logging;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -14,7 +15,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         SignInManager<AppUser> _signInManager;
        
         private readonly ILogger<LoginController> _logger;
-
+   
         public LoginController(SignInManager<AppUser> signInManager, ILogger<LoginController> Logger)
         {
             _signInManager = signInManager;

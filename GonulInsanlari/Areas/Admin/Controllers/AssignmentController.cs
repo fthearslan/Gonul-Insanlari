@@ -8,6 +8,7 @@ using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -127,7 +128,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 ViewData["SubTasksAll"] = task.SubTasks?.Count;
                 ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
-
+                
                 AssignmentDetailsViewModel model = new();
 
                 try
@@ -137,14 +138,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 catch (AutoMapperMappingException ex)
                 {
                     _logger.LogError(ex.Message);
-                    return RedirectToAction(); // Error Page...
+                    return NotFound();
+
                 }
 
-                return View(model); // Error Page...
+                return View(model);
 
             }
 
-            return View();
+            return NotFound();
+
 
         }
 
@@ -193,7 +196,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 assignment?.UserAssignments?.Remove(user);
 
-                _manager.Update(assignment);
+                if (assignment != null)
+                    _manager.Update(assignment);
             }
 
         }
@@ -240,34 +244,70 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-        //[HttpGet]
-        //public JsonResult GetValue(int taskId)
-        //{
+        [HttpPost]
+
+        public async Task AddSubTask(SubTaskCreateViewModel model)
+        {
+            ViewData["Error"] = "Error was thrown!";
+            if (ModelState.IsValid)
+            {
+                Assignment task = await _manager.GetByIdAsync(model.TaskId);
+
+                SubTask subTask = new() { Assignment = task, Description = model.SubTaskDescription };
+
+                task.SubTasks.Add(subTask);
+
+                var result = _validator.Validate(task, opt => opt.IncludeRuleSets("SubTask"));
+
+                if (result.IsValid)
+                    _manager.AddSubTask(subTask);
+
+                else
+                {
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
 
 
-        //    var assignment = _manager.GetByIdAsync(taskId).Result;
-
-        //    List<AddUserToTaskVIewModel> model = new List<AddUserToTaskVIewModel>();
-
-        //    foreach(var user in assignment.UserAssignments)
-        //    {
-        //        model.Add(new()
-        //        {
-        //            Id = user.UserId,
-        //            ImagePath = user.User.ImagePath,
-        //            UserName = user.User.UserName,
-        //        });
-
-        //    }
-
-        //    return Json(model);
-
-
-
-        //}
+            }
+        }
 
     }
 
 
+    #region JsonResult GetValue
+
+    //[HttpGet]
+    //public JsonResult GetValue(int taskId)
+    //{
+
+
+    //    var assignment = _manager.GetByIdAsync(taskId).Result;
+
+    //    List<AddUserToTaskVIewModel> model = new List<AddUserToTaskVIewModel>();
+
+    //    foreach(var user in assignment.UserAssignments)
+    //    {
+    //        model.Add(new()
+    //        {
+    //            Id = user.UserId,
+    //            ImagePath = user.User.ImagePath,
+    //            UserName = user.User.UserName,
+    //        });
+
+    //    }
+
+    //    return Json(model);
+
+
+
+    //}
+
+    #endregion
+
+
 
 }
+
+
+
