@@ -2,7 +2,7 @@
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 
-namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
+namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers
 {
     public class AssignmentUserResolver : IValueResolver<AssignmentCreateViewModel, Assignment, List<UserAssignment>>
     {
@@ -15,9 +15,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
                 destination.UserAssignments.Add(new UserAssignment()
                 {
                     AssignmentId = destination.Id,
-                    Assignment =destination,
+                    Assignment = destination,
                     UserId = userId,
-                    
+
 
                 });
 

@@ -2,7 +2,7 @@
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 
-namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
+namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers
 {
     public record AssignmentUserImagePathResolver : IValueResolver<Assignment, AssignmentByProgressListViewModel, List<string>>
     {
@@ -17,8 +17,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
             }
 
             return userImagePaths;
-           
-       
+
+
         }
     }
 }

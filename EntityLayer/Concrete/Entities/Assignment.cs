@@ -1,4 +1,5 @@
 ﻿using EntityLayer.Abstract;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -18,7 +19,10 @@ namespace EntityLayer.Concrete.Entities
 
             Publisher = new();
 
-            SubTasks = new List<SubTask>();
+            SubTasks = new();
+
+            Attachments = new();
+
         }
 
 
@@ -32,14 +36,7 @@ namespace EntityLayer.Concrete.Entities
         public List<UserAssignment> UserAssignments { get; set; } = null!;
         public AppUser Publisher { get; set; } = null!;
 
-
-        public enum ProgressStatus
-        {
-            Published,
-            InProgress,
-            Done,
-            Cancelled,
-        }
+        public List<TaskAttachment> Attachments { get; set; }
 
         public List<SubTask> SubTasks { get; set; } = null!;
         public static List<UserAssignment> operator +(Assignment Task, List<int> userList)
@@ -54,6 +51,14 @@ namespace EntityLayer.Concrete.Entities
                 });
 
             return Task.UserAssignments;
+        }
+
+        public enum ProgressStatus
+        {
+            Published,
+            InProgress,
+            Done,
+            Cancelled,
         }
 
     }

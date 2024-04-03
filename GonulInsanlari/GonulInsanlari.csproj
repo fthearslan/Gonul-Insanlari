@@ -58,6 +58,8 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<None Include="wwwroot\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
+		<None Include="wwwroot\bootstrap-datetimepicker\js\demo.js" />
 	</ItemGroup>
 
 	<ItemGroup>

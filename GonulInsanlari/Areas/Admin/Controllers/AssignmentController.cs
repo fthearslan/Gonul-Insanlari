@@ -1,11 +1,14 @@
 ﻿
+
 using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
+using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
@@ -20,6 +23,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [Area(nameof(Admin))]
     public class AssignmentController : Controller
     {
+
+        #region DI Services 
+
         private readonly IAssignmentService _manager;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
@@ -37,24 +43,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _validator = Validator;
         }
 
-        public async Task<IActionResult> List(int pageNumber = 1)
-        {
-            var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
+        #endregion
 
-            List<AssignmentByProgressListViewModel> model = new();
-
-            try
-            {
-                model = _mapper.Map<List<AssignmentByProgressListViewModel>>(tasks);
-            }
-            catch (AutoMapperMappingException)
-            {
-                return View(); // Error Page
-            }
-
-            return View(await model.ToPagedListAsync(pageNumber, 9));
-
-        }
+        #region Create 
 
         [HttpGet]
         public IActionResult Add()
@@ -78,18 +69,21 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         }
+
         [HttpPost]
         public async Task<IActionResult> Add(AssignmentCreateViewModel model)
         {
             ViewData["Users"] = _cache.Get("UserList");
+
             if (ModelState.IsValid)
             {
-                var user = await _userManager.GetUserAsync(HttpContext.User);
+
 
                 Assignment task = new();
 
                 try
                 {
+
                     task = _mapper.Map<Assignment>(model);
 
                 }
@@ -97,11 +91,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
 
                     _logger.LogError($"{ex.Message} on AssignmentController.");
-                    return View(); // => Error Page...
-
+                    return BadRequest();
                 }
 
-                task.Publisher = user;
+                task.Publisher = await _userManager.GetUserAsync(HttpContext.User);
 
                 var result = _validator.Validate(task);
 
@@ -121,6 +114,131 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        [HttpPost]
+        public async Task AddUser(int taskId, int userId)
+        {
+
+            var assignment = await _manager.GetByIdAsync(taskId);
+
+            if (assignment != null)
+            {
+                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+
+                if (user != null)
+                {
+                    assignment.UserAssignments.Add(new()
+                    {
+                        User = user,
+                        UserId = userId,
+                    });
+
+                    assignment.Modified = DateTime.Now;
+                    _manager.Update(assignment);
+                }
+
+            }
+
+        }
+
+        [HttpPost]
+        public async Task AddSubTask(SubTaskCreateViewModel model)
+        {
+            ViewData["Error"] = "Error was thrown!";
+            if (ModelState.IsValid)
+            {
+                Assignment task = await _manager.GetByIdAsync(model.TaskId);
+
+                SubTask subTask = new() { Assignment = task, Description = model.SubTaskDescription };
+
+                task.SubTasks.Add(subTask);
+
+                var result = _validator.Validate(task, opt => opt.IncludeRuleSets("SubTask"));
+
+                if (result.IsValid)
+                    _manager.AddSubTask(subTask);
+
+                else
+                {
+                    foreach (var error in result.Errors)
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                }
+
+
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddAttachment(AddAttachmentViewModel model)
+        {
+
+            if (await ImageUpload.CheckFileSizeAsync(model.Attachments))
+            {
+
+                var assignment = await _manager.GetByIdAsync(model.TaskId);
+
+                var filePaths = await ImageUpload.UploadFileAsync(model.Attachments);
+                foreach (var filePath in filePaths)
+                {
+                    assignment?.Attachments.Add(new() { Path = filePath, Assignment = assignment });
+                }
+
+                _manager.Update(assignment);
+
+                return Json(new
+                {
+                    success = true,
+                    responseMessage = "Files have been successfully uploaded."
+                });
+
+            }
+
+            return Json(new
+            {
+                success = false,
+                responseMessage = "Error has occured while uploading files!"
+
+            });
+
+
+        }
+
+        [NonAction]
+        public IEnumerable<TaskAttachment> GetAttachments(List<string> paths, Assignment task)
+        {
+
+            foreach (var path in paths)
+            {
+
+                yield return new TaskAttachment(task) { Path = path };
+
+            }
+
+
+        }
+
+
+        #endregion
+
+        #region Read
+
+        public async Task<IActionResult> List(int pageNumber = 1)
+        {
+            var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
+
+            List<AssignmentByProgressListViewModel> model = new();
+
+            try
+            {
+                model = _mapper.Map<List<AssignmentByProgressListViewModel>>(tasks);
+            }
+            catch (AutoMapperMappingException)
+            {
+                return View(); // Error Page
+            }
+
+            return View(await model.ToPagedListAsync(pageNumber, 9));
+
+        }
         public async Task<IActionResult> GetDetails(int id)
         {
             var task = await _manager.GetByIdAsync(id);
@@ -128,18 +246,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 ViewData["SubTasksAll"] = task.SubTasks?.Count;
                 ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
-                
+
                 AssignmentDetailsViewModel model = new();
 
                 try
                 {
-                    model = _mapper.Map<AssignmentDetailsViewModel>(task); ;
+                    model = _mapper.Map<AssignmentDetailsViewModel>(task);
                 }
                 catch (AutoMapperMappingException ex)
                 {
                     _logger.LogError(ex.Message);
-                    return NotFound();
-
+                    return BadRequest();
                 }
 
                 return View(model);
@@ -151,6 +268,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        #endregion
+
+        #region Update 
 
         [HttpPost]
         public async Task ChangeProgress(AssingmentProgressChangeViewModel obj)
@@ -185,6 +305,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        #endregion
+
+        #region Delete
+
         [HttpPost]
         public async Task RemoveUser(int assignmentId, int userId)
         {
@@ -218,92 +342,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-        [HttpPost]
-        public async Task AddUser(int taskId, int userId)
-        {
-
-            var assignment = await _manager.GetByIdAsync(taskId);
-
-            if (assignment != null)
-            {
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
-
-                if (user != null)
-                {
-                    assignment.UserAssignments.Add(new()
-                    {
-                        User = user,
-                        UserId = userId,
-                    });
-
-                    assignment.Modified = DateTime.Now;
-                    _manager.Update(assignment);
-                }
-
-            }
-
-        }
-
-        [HttpPost]
-
-        public async Task AddSubTask(SubTaskCreateViewModel model)
-        {
-            ViewData["Error"] = "Error was thrown!";
-            if (ModelState.IsValid)
-            {
-                Assignment task = await _manager.GetByIdAsync(model.TaskId);
-
-                SubTask subTask = new() { Assignment = task, Description = model.SubTaskDescription };
-
-                task.SubTasks.Add(subTask);
-
-                var result = _validator.Validate(task, opt => opt.IncludeRuleSets("SubTask"));
-
-                if (result.IsValid)
-                    _manager.AddSubTask(subTask);
-
-                else
-                {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
+        #endregion
 
 
-            }
-        }
+
+
+
+
+
+
 
     }
 
 
-    #region JsonResult GetValue
-
-    //[HttpGet]
-    //public JsonResult GetValue(int taskId)
-    //{
-
-
-    //    var assignment = _manager.GetByIdAsync(taskId).Result;
-
-    //    List<AddUserToTaskVIewModel> model = new List<AddUserToTaskVIewModel>();
-
-    //    foreach(var user in assignment.UserAssignments)
-    //    {
-    //        model.Add(new()
-    //        {
-    //            Id = user.UserId,
-    //            ImagePath = user.User.ImagePath,
-    //            UserName = user.User.UserName,
-    //        });
-
-    //    }
-
-    //    return Json(model);
-
-
-
-    //}
-
-    #endregion
 
 
 

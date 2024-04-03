@@ -2,7 +2,7 @@
 using DataAccessLayer.Concrete.DTOs.Assignment;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
+using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.Build.Framework;
 
@@ -25,7 +25,6 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region Add
 
             CreateMap<AssignmentCreateViewModel, Assignment>()
-                .ForMember(a => a.SubTasks, opt => opt.MapFrom<SubTaskResolver>())
                 .ForMember(a => a.UserAssignments, opt => opt.MapFrom<AssignmentUserResolver>());
 
 
@@ -45,10 +44,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             CreateMap<Assignment, AssignmentDetailsViewModel>()
                 .ForMember(dest => dest.Users, opt => opt.MapFrom<AssignmentUserListResolver>());
-            
 
-      
-            #endregion 
+
+
+            #endregion
         }
     }
 }
