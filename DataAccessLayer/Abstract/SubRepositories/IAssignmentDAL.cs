@@ -1,6 +1,7 @@
 ﻿using DataAccessLayer.Abstract.Repositories;
 using DataAccessLayer.Concrete.DTOs.Assignment;
 using EntityLayer.Concrete.Entities;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -24,6 +25,11 @@ namespace DataAccessLayer.Abstract.SubRepositories
         List<AssignmentListDto> GetAll();
 
         void AddSubTask(SubTask task);
+
+       Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
+
+
+     
 
         
     }

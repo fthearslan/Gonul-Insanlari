@@ -13,11 +13,20 @@ using DataAccessLayer.Concrete.DTOs.Assignment;
 using System.Globalization;
 using AutoMapper;
 using System.Threading.Tasks.Sources;
+using System.Data;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Reflection;
+using EntityLayer.Abstract;
+using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using AutoMapper.Internal;
+using System.Dynamic;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFAssignmentDAL : GenericRepository<Assignment>, IAssignmentDAL
     {
+
 
         public List<Assignment> GetListDashboard()
         {
@@ -122,5 +131,31 @@ namespace DataAccessLayer.Concrete.EntityFramework
             }
 
         }
+
+        public async Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments)
+        {
+            if (taskAttachments is null)
+                return false;
+
+            using var c = new Context();
+            {
+                foreach (var attachment in taskAttachments)
+                    c.Entry(attachment.Assignment).State = EntityState.Modified;
+
+                await c.TaskAttachment.AddRangeAsync(taskAttachments);
+
+                if (await c.SaveChangesAsync() > 0)
+                    return true;
+                else
+                    return false;
+
+            }
+        }
+
+
+
+
     }
+
+
 }

@@ -18,7 +18,7 @@
 
 
             <tr>
-                @if (ViewBag.userExist)
+                @if (ViewBag.userExist | ViewBag.isPublisher)
                 {
                     <td>
                         <select id="@id" onchange="TaskonChange('@id')" class="btn btn-primary btn-xs">
@@ -49,8 +49,10 @@
     </tbody>
 </table>
 
-<a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal4"><i class="fa fa-plus"></i> Add</a>
-
+@if (ViewBag.userExist | ViewBag.isPublisher)
+{
+    <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal4"><i class="fa fa-plus"></i> Add</a>
+}
 
 
 <div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">

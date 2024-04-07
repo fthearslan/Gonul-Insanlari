@@ -19,6 +19,7 @@ using Microsoft.Extensions.Caching.Memory;
 using Rotativa.AspNetCore;
 using System.Configuration;
 using System.Reflection;
+using GonulInsanlari.Areas.Admin.Models.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,7 +47,7 @@ builder.Services.AddBussinessServices();
 builder.Services.AddValidators();
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
-
+builder.Services.AddScoped<ResponseModel>();
 
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>

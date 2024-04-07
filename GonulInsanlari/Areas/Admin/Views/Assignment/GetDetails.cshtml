@@ -7,6 +7,12 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+<script src="https://unpkg.com/dropzone@5/dist/min/dropzone.min.js"></script>
+<link rel="stylesheet"
+      href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"
+      type="text/css" />
+
+
 
 <div class="ibox">
     <div class="ibox-content">
@@ -143,31 +149,10 @@
                             <!--  Attachments  -->
 
                             <div class="tab-pane" id="tab-4">
-                                <div class="form-group row" id="FILES">
-                                    <label class="col-sm-2 col-form-label">Attachment</label>
+
+                                @await Component.InvokeAsync("GetAttachmentByAssignment",new {taskId= Model.Id});
 
 
-
-                                    <div class="col-sm-10">
-                                        <div class="input-group m-b">
-                                            <div class="input-group-prepend">
-                                                <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
-                                                <input style="display:none" type="file" accept="audio/*,image/*" id="fileUpload" multiple>
-                                            </div>
-
-                                            <input type="text" id="textbox1" class="form-control">
-
-
-                                        </div>
-
-
-                                    </div>
-
-
-
-
-                                </div>
-                                <a href="#" class="btn btn-primary" id="GetResult" onclick="AddAttachments()"> Get Result</a>
                             </div>
 
                             <!-- / Attachments  -->
@@ -205,7 +190,7 @@
                 Progress: text,
                 SubTaskId: id,
                 TaskId: @Model.Id
-                                                                                                            };
+                                                                                                                    };
 
 
 
@@ -458,17 +443,12 @@
         function AddAttachments() {
 
 
-            var obj = {
-
-                TaskId: @Model.Id,
-                Attachments: $("fileUpload").prop('files'),
-
-            };
+           var file= jQuery("input[type=file]").val();
 
             $.ajax({
                 type: 'POST',
                 url: '@Url.Action("AddAttachment", "Assignment")',
-                data: { model: obj },
+                data: { fileupload:file },
                 success: function (result) {
 
                     if (result.success) {
@@ -500,6 +480,59 @@
             })
         }
 
+    </script>
+
+
+
+    <script>
+        function uploadFiles(inputId) {
+            
+            var id = @Model.Id;
+            var input = document.getElementById(inputId);
+            var files = input.files;
+            var formData = new FormData();
+
+            for (var i = 0; i != files.length; i++) {
+                formData.append("Attachments", files[i]);
+            }
+
+
+            formData.append("TaskId",id);
+            $.ajax(
+                {
+                    url: "/Admin/Assignment/AddAttachment",
+                    data:  formData ,
+                    processData: false,
+                    contentType: false,
+                    type: "POST",
+                    success: function (result) {
+                        if (result.success) {
+                            $.toast({
+                                heading: 'Success',
+                                text: result.responseMessage,
+                                showHideTransition: 'slide',
+                                position: 'top-right',
+                                icon: 'success'
+                            })
+                        }
+                        else {
+
+
+
+                            $.toast({
+                                heading: 'Error',
+                                text: result.responseMessage,
+                                showHideTransition: 'slide',
+                                position: 'top-right',
+                                icon: 'error'
+                            })
+
+                        }
+
+                    }
+                }
+            );
+        }
     </script>
 
 }

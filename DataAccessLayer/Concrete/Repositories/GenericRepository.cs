@@ -9,10 +9,11 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using EntityLayer.Abstract;
+using System.Data;
 
 namespace DataAccessLayer.Concrete.Repositories
 {
-    public class GenericRepository<T> : IRepository<T> where T :BaseEntity
+    public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
         Context db = new Context();
 
@@ -69,6 +70,8 @@ namespace DataAccessLayer.Concrete.Repositories
 
         public void Update(T entity)
         {
+            entity.Modified = DateTime.Now;
+
             _dbset.Update(entity);
             db.SaveChanges();
         }

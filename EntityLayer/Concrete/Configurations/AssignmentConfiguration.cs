@@ -20,6 +20,8 @@ namespace EntityLayer.Concrete.Configurations
                 .AutoInclude();
             builder.Navigation(a => a.SubTasks)
                 .AutoInclude();
+            builder.Navigation(a=>a.Attachments)
+                .AutoInclude();
         }
     }
 }

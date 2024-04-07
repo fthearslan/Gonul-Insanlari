@@ -1,10 +1,12 @@
 ﻿using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
+    [Authorize]
     public class DashboardController : Controller
     {
         UserManager<AppUser> _userManager;

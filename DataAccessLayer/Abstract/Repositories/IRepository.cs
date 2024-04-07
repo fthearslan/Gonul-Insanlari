@@ -1,7 +1,10 @@
 ﻿using EntityLayer.Abstract;
 using EntityLayer.Concrete.Entities;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -19,6 +22,10 @@ namespace DataAccessLayer.Abstract.Repositories
         List<T> ListFilter(Expression<Func<T, bool>> filter);
         Task<T> GetAsync(Expression<Func<T, bool>> filter);
         void Update(T entity);
+
+
+
+        
        
     }
-}
+}  

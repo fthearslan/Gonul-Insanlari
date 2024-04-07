@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
+using GonulInsanlari.Areas.Admin.Controllers;
 using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace GonulInsanlari.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return RedirectToAction("Login","Login",new {area="Admin"});
         }
         [HttpPost]
         public IActionResult Index(List<string> strings) 

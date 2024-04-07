@@ -2,8 +2,11 @@
 
 using AutoMapper;
 using BussinessLayer.Abstract.Services;
+using DataAccessLayer.Concrete.EntityFramework;
+using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Models;
@@ -12,6 +15,7 @@ using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
@@ -32,8 +36,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly ILogger<AssignmentController> _logger;
         private readonly UserManager<AppUser> _userManager;
         private readonly AbstractValidator<Assignment> _validator;
-
-        public AssignmentController(IAssignmentService manager, IMapper mapper, ILogger<AssignmentController> logger, UserManager<AppUser> userManager, IMemoryCache cache, AbstractValidator<Assignment> Validator)
+        private ResponseModel _response;
+        public AssignmentController(IAssignmentService manager, IMapper mapper, ILogger<AssignmentController> logger, UserManager<AppUser> userManager, IMemoryCache cache, AbstractValidator<Assignment> Validator, ResponseModel response)
         {
             _manager = manager;
             _mapper = mapper;
@@ -41,6 +45,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _userManager = userManager;
             _cache = cache;
             _validator = Validator;
+            _response = response;
         }
 
         #endregion
@@ -177,45 +182,40 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var assignment = await _manager.GetByIdAsync(model.TaskId);
 
                 var filePaths = await ImageUpload.UploadFileAsync(model.Attachments);
+
+                List<TaskAttachment> attachments = new List<TaskAttachment>();
+
                 foreach (var filePath in filePaths)
+                    attachments.Add(new() { Path = filePath, Assignment = assignment });
+
+
+                if (await _manager.AddAttachmentsAsync(attachments))
                 {
-                    assignment?.Attachments.Add(new() { Path = filePath, Assignment = assignment });
+                    _response.success = true;
+                    _response.responseMessage = "Files have been successfully uploaded.";
+                }
+                else
+                {
+                    _response.success = false;
+                    _response.responseMessage = "Error has occured while uploading files!";
                 }
 
-                _manager.Update(assignment);
-
-                return Json(new
-                {
-                    success = true,
-                    responseMessage = "Files have been successfully uploaded."
-                });
+            }
+            else
+            {
+                _response.success = false;
+                _response.responseMessage = "Please check file sizes!";
 
             }
 
             return Json(new
             {
-                success = false,
-                responseMessage = "Error has occured while uploading files!"
+                success = _response.success,
+                responseMessage = _response.responseMessage,
 
             });
 
-
         }
-
-        [NonAction]
-        public IEnumerable<TaskAttachment> GetAttachments(List<string> paths, Assignment task)
-        {
-
-            foreach (var path in paths)
-            {
-
-                yield return new TaskAttachment(task) { Path = path };
-
-            }
-
-
-        }
-
 
         #endregion
 

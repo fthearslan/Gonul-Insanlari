@@ -33,7 +33,7 @@ namespace BussinessLayer.Concrete.Configurations.Service
             Services.AddScoped<INotificationService>(x => new NotificationManager(new EFNotificationDAL()));
             Services.AddScoped<IMessageService>(x => new MessageManager(new EFMessageDAL()));
             Services.AddScoped<INewsLetterService>(x => new NewsLetterManager(new EFNewsLetterDAL()));
-
+       
             return Services;
         }
 

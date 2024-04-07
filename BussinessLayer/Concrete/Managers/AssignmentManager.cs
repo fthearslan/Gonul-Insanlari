@@ -80,9 +80,9 @@ namespace BussinessLayer.Concrete.Managers
             return _assignment.GetWhere(filter);
         }
 
-        public Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress)
+        public async Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress)
         {
-            return _assignment.GetByProgress(progress);
+           return await _assignment.GetByProgress(progress);
         }
 
         public List<AssignmentListDto> GetAll()
@@ -93,6 +93,13 @@ namespace BussinessLayer.Concrete.Managers
         public void AddSubTask(SubTask task)
         {
              _assignment.AddSubTask(task);
+        }
+
+        public async Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments)
+        {
+
+            return await _assignment.AddAttachmentsAsync(taskAttachments);
+
         }
     }
 }

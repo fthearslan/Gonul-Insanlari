@@ -30,8 +30,10 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 
             var task = _manager.GetByIdAsync(assignmentId).Result;
 
-            ViewBag.userExist = task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId) | task.Publisher.Id.ToString() == _currentUserId;
+            ViewBag.userExist = task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId);
+            ViewBag.isPublisher=(task.Publisher.Id.ToString() == _currentUserId) ;
 
+            
             List<SubTaskViewModel> model = new();
 
             foreach (var subtask in task.SubTasks)

@@ -17,7 +17,8 @@ namespace BussinessLayer.Abstract.Services
         List<AssignmentListDto> GetAll();
         List<Assignment> GetListDashboard();
         Task PublishAsync(Assignment assignment);
+        void AddSubTask(SubTask task);
+        Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
 
-       void AddSubTask(SubTask task);
     }
 }

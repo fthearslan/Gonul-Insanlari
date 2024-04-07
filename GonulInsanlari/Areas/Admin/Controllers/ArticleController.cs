@@ -40,7 +40,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area(nameof(Admin))]
-
+    [Authorize]
     public class ArticleController : Controller
     {
         private readonly IMemoryCache _memoryCache;

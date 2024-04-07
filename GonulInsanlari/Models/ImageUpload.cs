@@ -22,7 +22,7 @@ namespace GonulInsanlari.Models
         }
 
 
-        public static async Task<List<string>> UploadFileAsync(IFormFileCollection? files)
+        public static async Task<List<string>> UploadFileAsync(IList<IFormFile>? files)
         {
 
             if (files != null)
@@ -34,7 +34,10 @@ namespace GonulInsanlari.Models
                     var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", file.FileName);
 
                     if (System.IO.File.Exists(path))
+                    {
                         Paths.Add(file.FileName);
+                        return Paths;
+                    }
 
                     var stream = new FileStream(path, FileMode.Create);
                     await file.CopyToAsync(stream);
@@ -49,7 +52,7 @@ namespace GonulInsanlari.Models
         }
 
 
-        public static async Task<bool> CheckFileSizeAsync(IFormFileCollection? files)
+        public static async Task<bool> CheckFileSizeAsync(IList<IFormFile>? files)
         {
             if (files != null && files.Count > 0)
                 return true;
