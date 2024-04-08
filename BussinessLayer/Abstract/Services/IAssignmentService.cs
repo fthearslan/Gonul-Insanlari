@@ -19,6 +19,7 @@ namespace BussinessLayer.Abstract.Services
         Task PublishAsync(Assignment assignment);
         void AddSubTask(SubTask task);
         Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
+        bool IsUser(Assignment task, string _currentUserId);
 
     }
 }

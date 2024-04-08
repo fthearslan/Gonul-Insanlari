@@ -3,6 +3,7 @@ using EntityLayer.Concrete.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Threading.Tasks;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 {
@@ -25,9 +26,8 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 
             foreach (var user in _userManager.Users.ToList())
             {
-                if (!assignment.UserAssignments.Any(x => x.UserId == user.Id))
-                    if (assignment.Publisher.Id != user.Id)
 
+                if(!_manager.IsUser(assignment,user.Id.ToString()))
                         model.Add(new()
                         {
                             Id = user.Id,
@@ -36,9 +36,10 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
                         });
 
             }
+          
 
             ViewData["assignmentId"] = assignmentId;
-
+            
             return View(model);
 
         }

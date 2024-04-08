@@ -7,7 +7,7 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
 {
     public record ArticleEditViewModel
     {
-        public int ArticleID { get; set; }
+        public int Id{ get; set; }
         [Required]
         [StringLength(50, MinimumLength = 3, ErrorMessage = "Title cannot contain less than 3 charachters.")]
         public string Title { get; set; } = null!;

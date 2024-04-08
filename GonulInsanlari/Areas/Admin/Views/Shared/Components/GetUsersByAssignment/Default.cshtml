@@ -20,8 +20,10 @@
                         <td><a href="#userProfile/@user.Item1" class="client-link">@user.Item2</a></td>
                         <td>Admin</td>
                         <td>
+                            @if (ViewBag.userExists)
+                            {
                             <a class="btn-danger btn btn-xs" onclick="deleteUser(@user.Item1)" href="#"><i class="fa fa-trash"></i></a>
-
+                            }
                         </td>
                     </tr>
                 }

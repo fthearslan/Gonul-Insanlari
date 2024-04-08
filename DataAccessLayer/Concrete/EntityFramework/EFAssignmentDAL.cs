@@ -21,6 +21,11 @@ using EntityLayer.Abstract;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using AutoMapper.Internal;
 using System.Dynamic;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Http;
+using System.Reflection.Metadata.Ecma335;
+using AutoMapper.Configuration.Conventions;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
@@ -153,7 +158,13 @@ namespace DataAccessLayer.Concrete.EntityFramework
         }
 
 
+        public bool IsUser(Assignment task, string _currentUserId)
+        {
 
+       return task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId
+            || a.Assignment.Publisher.Id.ToString() == _currentUserId);
+
+        }
 
     }
 

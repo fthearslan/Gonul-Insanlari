@@ -18,7 +18,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             CreateMap<ArticleCreateViewModel, Article>()
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
             #endregion
-            
+
             #region Edit
             CreateMap<ArticleEditViewModel, Article>();
             CreateMap<Article, ArticleEditViewModel>();
@@ -27,9 +27,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region List
             CreateMap<ArticleListViewModel, Article>();
             CreateMap<Article, ArticleListViewModel>()
-                .ForMember(mod => mod.CommentCount, opt => opt.MapFrom(art => art.Comments.Count));
+                .ForMember(mod => mod.CommentCount, opt => opt.MapFrom(art => art.Comments.Count))
+                .ForMember(mod => mod.UserImagePath, opt => opt.MapFrom(art => art.AppUser.ImagePath));
             #endregion
-            
+
             #region Details
             CreateMap<Article, ArticleDetailsViewModel>();
             CreateMap<Article, ArticleByCategoryViewModel>().ForMember(a => a.AppUserName, opt => opt.MapFrom(art => art.AppUser.UserName));

@@ -11,13 +11,13 @@
                 <div class="ibox-content" style="overflow-x:hidden">
                     <div style="margin-bottom:25px;" class="text-center article-title">
 
-                    
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> @GetDate.GetCreateDate(Model.Created)</span>
 
-                       
+                        <span class="text-muted"><i class="fa fa-clock-o"></i> @GetDate.GetCreateDate(Model.Created)</span>
+
+
 
                         <h1 style="margin-bottom:40px;">
-                          <i class="fa fa-bullhorn"></i>  @Model.Title
+                            <i class="fa fa-bullhorn"></i>  @Model.Title
                         </h1>
 
                         <div>
@@ -25,16 +25,17 @@
                                 @Html.Raw(@Model.Details)
 
                             </p>
-                       
-                           
-                             <h5 style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser</h5>
+
+
+                            <h5 style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser</h5>
 
 
                             <a style="margin-right:0;margin-left:5px;margin-top:15px;" class="btn btn-default float-right" href="javascript:window.print()"><i class="fa fa-print"></i>Print</a>
 
+                            @if (ViewBag.IsUser)
+                            {
                                 <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Announcement/EditAnnouncement/@Model.Id"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
-
-                            
+                            }
 
 
                         </div>

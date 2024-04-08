@@ -13,9 +13,9 @@
                 <div class="ibox-content" style="overflow-x:hidden">
                     <div style="margin-bottom:25px;" class="text-center article-title">
 
-                        @if(@Model.Edited is not null )
+                        @if(@Model.Modified is not null )
                         {
-                            <span class="text-muted"><i class="fa fa-clock-o"></i> Edited by @@@Model.EditedBy on @Model.Edited </span>
+                            <span class="text-muted"><i class="fa fa-clock-o"></i> Edited by @@@Model.EditedBy on @Model.Modified </span>
 
                         }
                         else
@@ -38,6 +38,7 @@
                                 @Html.Raw(@Model.Content)
 
                             </p>
+
                             @if (Model.IsDraft == false)
                             {
                                 <h5 style="padding-top:20px;" class="float-left">Published by @@@Model.AppUser</h5>
@@ -50,12 +51,12 @@
                                 <hr>
 
 
-                                @await Component.InvokeAsync("GetCommentsByArticle",Model.ArticleID)
+                                @await Component.InvokeAsync("GetCommentsByArticle",Model.Id)
 
                             }
                             else
                             {
-                                <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Article/EditArticle/@Model.ArticleID"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+                                <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Article/EditArticle/@Model.Id"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
 
                             }
 

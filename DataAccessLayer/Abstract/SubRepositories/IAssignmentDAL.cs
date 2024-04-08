@@ -1,12 +1,14 @@
 ﻿using DataAccessLayer.Abstract.Repositories;
 using DataAccessLayer.Concrete.DTOs.Assignment;
 using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore.Update.Internal;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,11 +28,14 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         void AddSubTask(SubTask task);
 
-       Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
+        Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
 
 
-     
+        bool IsUser(Assignment task,string _currentUserId);
 
-        
+
+
+
+
     }
 }

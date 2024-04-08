@@ -40,7 +40,7 @@
                         <form id="form_id" asp-action="EditArticle" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
                             <input type="hidden" asp-for="AppUserID"/>
-                            <input type="hidden" asp-for="ArticleID" />
+                            <input type="hidden" asp-for="Id" />
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
                                 <div class="col-sm-10">

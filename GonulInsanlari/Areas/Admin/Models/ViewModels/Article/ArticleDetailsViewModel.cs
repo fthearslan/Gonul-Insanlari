@@ -5,12 +5,12 @@ namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Article
     public record struct ArticleDetailsViewModel
     {
 
-        public int ArticleID { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Content { get; set; }
         public string AppUser { get; set; }
         public DateTime Created { get; set; }
-        public DateTime? Edited { get; set; } 
+        public DateTime? Modified { get; set; } 
         public string? EditedBy { get; set; }
         public bool IsDraft { get; set; }
 

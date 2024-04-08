@@ -18,7 +18,8 @@
 
 
             <tr>
-                @if (ViewBag.userExist | ViewBag.isPublisher)
+
+                @if (ViewBag.userExists)
                 {
                     <td>
                         <select id="@id" onchange="TaskonChange('@id')" class="btn btn-primary btn-xs">
@@ -40,16 +41,18 @@
                         @subtask.Description
                     </p>
                 </td>
-                <td>
-                    <a class="btn-danger btn btn-xs" onclick="deleteTask('@id')" href="#"><i class="fa fa-trash"></i></a>
-                </td>
 
+                <td>
+                    @if (ViewBag.userExists)
+                    {
+                        <a class="btn-danger btn btn-xs" onclick="deleteTask('@id')" href="#"><i class="fa fa-trash"></i></a>
+                    }
+                </td>
             </tr>
         }
     </tbody>
 </table>
-
-@if (ViewBag.userExist | ViewBag.isPublisher)
+@if (ViewBag.userExists)
 {
     <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal4"><i class="fa fa-plus"></i> Add</a>
 }

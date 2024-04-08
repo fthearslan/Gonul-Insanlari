@@ -10,6 +10,7 @@ using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch.Internal;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +26,7 @@ using X.PagedList;
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
+    [Authorize]
     public class AssignmentController : Controller
     {
 
@@ -233,7 +235,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             catch (AutoMapperMappingException)
             {
-                return View(); // Error Page
+                 return BadRequest();
             }
 
             return View(await model.ToPagedListAsync(pageNumber, 9));
@@ -244,8 +246,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var task = await _manager.GetByIdAsync(id);
             if (task != null)
             {
-                ViewData["SubTasksAll"] = task.SubTasks?.Count;
-                ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
 
                 AssignmentDetailsViewModel model = new();
 
@@ -258,6 +258,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     _logger.LogError(ex.Message);
                     return BadRequest();
                 }
+
+                ViewData["SubTasksAll"] = task.SubTasks?.Count;
+                ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
+
+                ViewBag.userExists = _manager.IsUser(task, _userManager.GetUserId(HttpContext.User));
+
 
                 return View(model);
 
@@ -343,13 +349,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         #endregion
-
-
-
-
-
-
-
 
 
     }

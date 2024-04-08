@@ -76,6 +76,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public void Update(Article entity)
         {
+            entity.Modified = DateTime.Now;
             _article.Update(entity);
         }
 

@@ -65,9 +65,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased();
+
             List<ArticleListViewModel> model = _mapper.Map<List<ArticleListViewModel>>(articles);
+
             return View(await model.ToPagedListAsync(pageNumber, 12));
         }
+
         [HttpGet("{Value}")]
         public IActionResult GetDetailsByNotification([FromRoute] int? value)
         {
@@ -98,8 +101,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public IActionResult GetDetails(int id)
         {
             var article = _articleManager.GetDetailsByUser(id);
+
             if (article is not null)
-            {
                 try
                 {
                     ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
@@ -109,11 +112,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 catch (AutoMapperMappingException)
                 {
                     _logger.LogError("AutoMapper exception has been thrown at GetDetails on ArticleController.");
-                    return View(nameof(List));
+                    return BadRequest();
                 }
-            }
 
-            return View();
+            return NotFound();
         }
 
         [HttpGet]
@@ -181,8 +183,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-
-
         [HttpGet]
 
         public async Task<ActionResult> Delete(int id)
@@ -210,6 +210,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult EditArticle(int id)
         {
+            Article article = _articleManager.GetByIdInclude(id);
+           
+            if(article is null)
+                return NotFound();
 
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
@@ -217,10 +221,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Value = x.Id.ToString(),
                                                    Text = x.Name
                                                }).ToList();
+
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
-
-            Article article = _articleManager.GetByIdInclude(id);
 
             try
             {
@@ -230,9 +233,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             catch (AutoMapperMappingException)
             {
                 _logger.LogError("Mapping exception has been thrown while executing [GET] EditArticle() in ArticleController.");
-                return RedirectToAction(nameof(List));
+                return BadRequest();
             }
-
+           
         }
 
         [HttpPost]

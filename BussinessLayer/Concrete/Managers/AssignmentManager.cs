@@ -101,5 +101,11 @@ namespace BussinessLayer.Concrete.Managers
             return await _assignment.AddAttachmentsAsync(taskAttachments);
 
         }
+
+        public bool IsUser(Assignment task, string _currentUserId)
+        {
+            return _assignment.IsUser(task, _currentUserId);
+
+        }
     }
 }

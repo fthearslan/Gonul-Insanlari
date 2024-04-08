@@ -14,7 +14,6 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
     public class GetSubTasksByAssignment : ViewComponent
     {
 
-
         private readonly IAssignmentService _manager;
         private readonly UserManager<AppUser> _userManager;
         public GetSubTasksByAssignment(IAssignmentService manager, IMemoryCache cache, UserManager<AppUser> userManager)
@@ -26,13 +25,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
         public IViewComponentResult Invoke(int assignmentId)
         {
 
-            var _currentUserId = _userManager.GetUserId(HttpContext.User);
-
             var task = _manager.GetByIdAsync(assignmentId).Result;
-
-            ViewBag.userExist = task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId);
-            ViewBag.isPublisher=(task.Publisher.Id.ToString() == _currentUserId) ;
-
             
             List<SubTaskViewModel> model = new();
 

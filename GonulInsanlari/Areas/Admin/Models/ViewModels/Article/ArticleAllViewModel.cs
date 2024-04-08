@@ -3,7 +3,7 @@
     public record struct ArticleAllViewModel
     {
 
-        public int ArticleID { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public  EntityLayer.Concrete.Entities.Category Category { get; set; }
         public string AppUser { get; set; }
