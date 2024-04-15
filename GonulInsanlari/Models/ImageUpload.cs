@@ -1,5 +1,6 @@
 ﻿using EntityLayer.Concrete.Entities;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using System.Runtime.InteropServices;
 
 namespace GonulInsanlari.Models
 {
@@ -36,7 +37,7 @@ namespace GonulInsanlari.Models
                     if (System.IO.File.Exists(path))
                     {
                         Paths.Add(file.FileName);
-                        return Paths;
+                        continue;
                     }
 
                     var stream = new FileStream(path, FileMode.Create);
@@ -52,12 +53,22 @@ namespace GonulInsanlari.Models
         }
 
 
-        public static async Task<bool> CheckFileSizeAsync(IList<IFormFile>? files)
+        public static bool CheckFileSizeAsync(IList<IFormFile>? files)
         {
+            const int maxfileSize = 2 * 1024 * 1024;
             if (files != null && files.Count > 0)
+            {
+                foreach(var file in files)
+                {
+
+                    if (file.Length > maxfileSize)
+                        return false;
+                }
                 return true;
+            }
 
             return false;
+
         }
     }
 }

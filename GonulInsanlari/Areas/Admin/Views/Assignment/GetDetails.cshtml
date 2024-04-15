@@ -195,7 +195,7 @@
                 Progress: text,
                 SubTaskId: id,
                 TaskId: @Model.Id
-                                                                                                                                                    };
+                                                                                                                                                                                    };
 
 
 
@@ -398,11 +398,6 @@
             });
 
 
-
-
-
-
-
         }
     </script>
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
@@ -442,50 +437,7 @@
 
     </script>
 
-    <script>
 
-
-        function AddAttachments() {
-
-
-            var file = jQuery("input[type=file]").val();
-
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("AddAttachment", "Assignment")',
-                data: { fileupload: file },
-                success: function (result) {
-
-                    if (result.success) {
-                        $.toast({
-                            heading: 'Success',
-                            text: result.responseMessage,
-                            showHideTransition: 'slide',
-                            position: 'top-right',
-                            icon: 'success'
-                        })
-                    }
-                    else {
-
-
-
-                        $.toast({
-                            heading: 'Error',
-                            text: result.responseMessage,
-                            showHideTransition: 'slide',
-                            position: 'top-right',
-                            icon: 'error'
-                        })
-
-                    }
-
-
-                }
-
-            })
-        }
-
-    </script>
 
 
 
@@ -519,10 +471,36 @@
                                 position: 'top-right',
                                 icon: 'success'
                             })
+
+                            var obj = result.data;
+
+                            $.each(obj, function () {
+                                var html = '<div class="file-box">' +
+
+                                    '<div class="file">' +
+
+                                    '<a href="Admin/Assignment/DownloadFile/' + obj.id + '" >' +
+
+                                    '<span class="corner"></span>' +
+
+                                    '<div class="icon">' +
+                                    '<i class="fa fa-file"></i>' +
+                                    '</div>' +
+                                    '<div class="file-name">'
+                                    + obj.path+
+
+                                    '<br />' +
+                                    '<small> Added: ' + obj.date + '</small>' +
+                                    '</div>' +
+                                    '</a>' +
+                                    '</div>' +
+                                    '</div>';
+
+                                $("#mydiv1").append(html);
+
+                            });
                         }
                         else {
-
-
 
                             $.toast({
                                 heading: 'Error',
@@ -539,5 +517,5 @@
             );
         }
     </script>
-
+  
 }

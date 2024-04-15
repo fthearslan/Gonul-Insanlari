@@ -67,7 +67,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public List<Announcement> ListFilter()
         {
-            return _announcement.ListFilter(x => x.Status == true && x.IsForAdmins == true).OrderByDescending(x => x.Created).ToList();
+            return _announcement.ListFilter(x => x.IsForAdmins == true).OrderByDescending(x => x.Created).ToList();
         }
 
         public void Update(Announcement entity)

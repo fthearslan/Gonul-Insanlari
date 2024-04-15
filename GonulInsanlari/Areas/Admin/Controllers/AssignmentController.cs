@@ -1,12 +1,11 @@
-﻿
-
-using AutoMapper;
+﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Concrete.EntityFramework;
 using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.Tools;
+using GonulInsanlari.Areas.Admin.Models.ViewModels;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Models;
@@ -20,6 +19,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Identity;
 using X.PagedList;
 
 
@@ -177,15 +177,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         public async Task<JsonResult> AddAttachment(AddAttachmentViewModel model)
         {
+            List<TaskAttachment> attachments = new List<TaskAttachment>();
 
-            if (await ImageUpload.CheckFileSizeAsync(model.Attachments))
+
+            List<AttachmentResponseModel> response = new List<AttachmentResponseModel>();
+
+
+
+            if (ImageUpload.CheckFileSizeAsync(model.Attachments))
             {
 
                 var assignment = await _manager.GetByIdAsync(model.TaskId);
 
                 var filePaths = await ImageUpload.UploadFileAsync(model.Attachments);
 
-                List<TaskAttachment> attachments = new List<TaskAttachment>();
 
                 foreach (var filePath in filePaths)
                     attachments.Add(new() { Path = filePath, Assignment = assignment });
@@ -195,6 +200,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     _response.success = true;
                     _response.responseMessage = "Files have been successfully uploaded.";
+                    foreach(var at in attachments)
+                    {
+                        response.Add(new()
+                        {
+                            Id = at.Id,
+                            Path = at.Path,
+                            CreatedDate = at.CreatedDate,
+                        });
+
+                    }
+
                 }
                 else
                 {
@@ -214,8 +230,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 success = _response.success,
                 responseMessage = _response.responseMessage,
+                data = response,
 
+                //new
+                //{
+                //    id = attachments.SingleOrDefault().Id,
+                //    title = attachments.FirstOrDefault().Path,
+                //    date = attachments.FirstOrDefault().CreatedDate,
+                //}
             });
+
 
         }
 

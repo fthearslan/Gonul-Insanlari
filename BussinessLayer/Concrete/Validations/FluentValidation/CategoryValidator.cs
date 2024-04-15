@@ -24,7 +24,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation
             #region Description
 
             RuleFor(c => c.Description).NotEmpty().WithMessage("This field is required.");
-            RuleFor(c => c.Description).MinimumLength(20).WithMessage("Too short for description.");
+            RuleFor(c => c.Description).MinimumLength(100).WithMessage("Too short for description.");
             RuleFor(c => c.Description).MaximumLength(10000).WithMessage("Too long for description.");
 
             #endregion

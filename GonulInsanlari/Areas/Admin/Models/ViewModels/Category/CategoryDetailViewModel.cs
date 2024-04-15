@@ -1,8 +1,11 @@
-﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
+﻿using System.Diagnostics;
+
+namespace GonulInsanlari.Areas.Admin.Models.ViewModels.Category
 {
-    public record struct CategoryDetailViewModel
+    [DebuggerDisplay("Id={Id},Name ={Name,nq}")]
+    public record  CategoryDetailViewModel
     {
-        public int CategoryID { get; set; }
+        public int Id { get; set; }
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? ImagePath { get; set; }

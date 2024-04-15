@@ -16,35 +16,34 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Category
         private readonly IArticleService _manager;
         private readonly IMapper _mapper;
         ILogger<ArticleByCategoryDetails> _logger;
-        public ArticleByCategoryDetails(IMapper mapper,ILogger<ArticleByCategoryDetails> logger,IArticleService manager)
+        public ArticleByCategoryDetails(IMapper mapper, ILogger<ArticleByCategoryDetails> logger, IArticleService manager)
         {
-            _mapper=mapper;
-            _logger=logger;
-            _manager=manager;
+            _mapper = mapper;
+            _logger = logger;
+            _manager = manager;
         }
-     
+
         public IViewComponentResult Invoke(int id)
         {
+            List<ArticleByCategoryViewModel> model = new();
 
             var list = _manager.ListByCategory(id);
-            if (list != null)
-            {
+            if (list.Any())
                 try
                 {
-                    List<ArticleByCategoryViewModel> model = _mapper.Map<List<ArticleByCategoryViewModel>>(list);
-                    return View(model);
-
+                    model = _mapper.Map<List<ArticleByCategoryViewModel>>(list);
                 }
-                catch (AutoMapperMappingException)
+                catch (AutoMapperMappingException ex)
                 {
-                    _logger.LogError("Mapping exception has been trown at ArticleByCategoryDetails ViewComponent, please check.");
+                    _logger.LogError(ex.Message);
                 }
-            
-            }
-            return View();
+
+            return View(model);
+
+
 
         }
-      
+
 
     }
 }
