@@ -11,10 +11,11 @@ namespace EntityLayer.Concrete.Entities
     {
         public TaskAttachment()
         {
-
+            Assignment = new Assignment();
         }
         public TaskAttachment(Assignment task)
         {
+            Assignment = new Assignment();
             Assignment = task;
         }
 

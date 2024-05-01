@@ -1,0 +1,10 @@
+﻿@model List<TaskLogListVievModel>
+
+@foreach (var log in Model)
+{
+    <p> @log.Description</p>
+    <p>@log.Createdby </p>
+    <p>@log.CreatedDate </p>
+    <p>@log.CreatedByImage </p>
+
+}

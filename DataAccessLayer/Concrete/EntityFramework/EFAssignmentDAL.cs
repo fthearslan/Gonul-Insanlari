@@ -77,6 +77,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
             using var db = new Context();
 
             db.Entry(assignment.Publisher).State = EntityState.Unchanged;
+
+
+
             await db.Assignments.AddAsync(assignment);
             await db.SaveChangesAsync();
 
@@ -130,6 +133,12 @@ namespace DataAccessLayer.Concrete.EntityFramework
             {
                 c.Entry(task.Assignment).State = EntityState.Unchanged;
                 c.Entry(task.Assignment.Publisher).State = EntityState.Unchanged;
+                foreach (var log in task.Assignment.Logs)
+                {
+                    c.Entry(log).State = EntityState.Added;
+
+                }
+
                 c.SubTask.Add(task);
                 c.SaveChanges();
 
@@ -161,12 +170,79 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public bool IsUser(Assignment task, string _currentUserId)
         {
 
-       return task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId
-            || a.Assignment.Publisher.Id.ToString() == _currentUserId);
+            return task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId
+                 || a.Assignment.Publisher.Id.ToString() == _currentUserId);
 
         }
 
+        public async Task<bool> DeleteAttachmentAsync(string _path, int _taskId)
+        {
+            using (var c = new Context())
+            {
+
+                var attachmentToDelete = await c.TaskAttachment
+                    .Include(x => x.Assignment)
+                    .ThenInclude(x => x.Attachments)
+                    .FirstOrDefaultAsync(x => x.Path == _path && x.Assignment.Id == _taskId);
+
+                if (attachmentToDelete is not null)
+                {
+
+                    var attachmentsCount = c.TaskAttachment.Where(x => x.Path == _path).Count();
+
+                    if (attachmentsCount == 1)
+                    {
+                        c.TaskAttachment.Remove(attachmentToDelete);
+
+                        await c.SaveChangesAsync();
+
+                        return true;
+                    }
+                    if (attachmentsCount > 1)
+                    {
+                        attachmentToDelete.Assignment.Attachments.Remove(attachmentToDelete);
+
+                        await c.SaveChangesAsync();
+
+                        return true;
+                    }
+
+                }
+
+
+                return false;
+
+            }
+        }
+
+        public async Task LogAsync(TaskLog log)
+        {
+
+            using (var c = new Context())
+            {
+                c.Attach(log.Assignment);
+                await c.TaskLogs.AddAsync(log);
+
+            }
+
+
+        }
+
+        public async Task<List<TaskLog>> GetLogsByTaskAsync(int _taskId)
+        {
+
+            using (var c = new Context())
+            {
+               return  await c.TaskLogs
+                    .Where(x => x.Assignment.Id == _taskId)
+                    .Include(x=>x.Assignment)
+                    .ToListAsync();
+
+            }
+
+        }
     }
-
-
 }
+
+
+

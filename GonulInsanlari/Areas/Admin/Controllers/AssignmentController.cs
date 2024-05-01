@@ -5,8 +5,8 @@ using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.Tools;
-using GonulInsanlari.Areas.Admin.Models.ViewModels;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
+using GonulInsanlari.Areas.Admin.Models.ViewModels.TaskAttachment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -30,6 +30,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class AssignmentController : Controller
     {
 
+
         #region DI Services 
 
         private readonly IAssignmentService _manager;
@@ -39,7 +40,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly UserManager<AppUser> _userManager;
         private readonly AbstractValidator<Assignment> _validator;
         private ResponseModel _response;
-        public AssignmentController(IAssignmentService manager, IMapper mapper, ILogger<AssignmentController> logger, UserManager<AppUser> userManager, IMemoryCache cache, AbstractValidator<Assignment> Validator, ResponseModel response)
+        private readonly IHttpContextAccessor? _contextAccessor;
+
+        AppUser _currentUser = new();
+        public AssignmentController(IAssignmentService manager, IMapper mapper, ILogger<AssignmentController> logger, UserManager<AppUser> userManager, IMemoryCache cache, AbstractValidator<Assignment> Validator, ResponseModel response, IHttpContextAccessor contextAccessor)
         {
             _manager = manager;
             _mapper = mapper;
@@ -48,9 +52,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _cache = cache;
             _validator = Validator;
             _response = response;
+            _contextAccessor = contextAccessor;
+            _currentUser = _userManager.GetUserAsync(_contextAccessor?.HttpContext?.User).Result;
+
         }
 
         #endregion
+
 
         #region Create 
 
@@ -107,7 +115,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 if (result.IsValid)
                 {
+                    task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher.UserName });
+
                     await _manager.PublishAsync(task);
+
                     return RedirectToAction(nameof(List));
                 }
                 else
@@ -127,6 +138,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             var assignment = await _manager.GetByIdAsync(taskId);
 
+
             if (assignment != null)
             {
                 var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
@@ -140,7 +152,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     });
 
                     assignment.Modified = DateTime.Now;
+
+                    await _manager.LogAsync(new($"User named {user.UserName} were addded by {_currentUser.UserName}") { CreatedBy = _currentUser.UserName });
                     _manager.Update(assignment);
+
                 }
 
             }
@@ -162,7 +177,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var result = _validator.Validate(task, opt => opt.IncludeRuleSets("SubTask"));
 
                 if (result.IsValid)
+                {
+                    subTask.Assignment.Logs.Add(new($"New subtask were added by {_currentUser.UserName}") { CreatedBy = _currentUser.UserName });
                     _manager.AddSubTask(subTask);
+
+                }
 
                 else
                 {
@@ -192,6 +211,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var filePaths = await ImageUpload.UploadFileAsync(model.Attachments);
 
 
+                foreach (var path in filePaths)
+                {
+                    if (assignment.Attachments.Any(x => x.Path == path))
+                        continue;
+
+                }
+
                 foreach (var filePath in filePaths)
                     attachments.Add(new() { Path = filePath, Assignment = assignment });
 
@@ -200,7 +226,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     _response.success = true;
                     _response.responseMessage = "Files have been successfully uploaded.";
-                    foreach(var at in attachments)
+                    foreach (var at in attachments)
                     {
                         response.Add(new()
                         {
@@ -232,12 +258,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 responseMessage = _response.responseMessage,
                 data = response,
 
-                //new
-                //{
-                //    id = attachments.SingleOrDefault().Id,
-                //    title = attachments.FirstOrDefault().Path,
-                //    date = attachments.FirstOrDefault().CreatedDate,
-                //}
             });
 
 
@@ -259,7 +279,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             catch (AutoMapperMappingException)
             {
-                 return BadRequest();
+                return BadRequest();
             }
 
             return View(await model.ToPagedListAsync(pageNumber, 9));
@@ -368,6 +388,37 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 assignment.SubTasks.Remove(subtask);
 
             _manager.Update(assignment);
+
+
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteAttachment(AttachmentDeleteViewModel model)
+        {
+
+            if (await _manager.DeleteAttachmentAsync(model.Path, model.TaskId))
+            {
+                _response.success = true;
+                _response.responseMessage = "File has been successfully deleted.";
+
+            }
+            else
+            {
+                _response.success = false;
+                _response.responseMessage = "An error has occcured while deleting the file.";
+
+            }
+
+            return Json(new
+            {
+                success = _response.success,
+                responseMessage = _response.responseMessage,
+
+            });
+
+
+
+
 
 
         }

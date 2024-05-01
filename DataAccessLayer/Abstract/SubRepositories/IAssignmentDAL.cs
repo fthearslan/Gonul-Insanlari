@@ -30,12 +30,14 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments);
 
+        bool IsUser(Assignment task, string _currentUserId);
 
-        bool IsUser(Assignment task,string _currentUserId);
+        Task<bool> DeleteAttachmentAsync(string _path, int _taskId);
+
+        Task LogAsync(TaskLog log);
 
 
-
-
+        Task<List<TaskLog>> GetLogsByTaskAsync(int _taskId);
 
     }
 }

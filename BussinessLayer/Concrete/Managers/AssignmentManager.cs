@@ -82,7 +82,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<List<AssignmentByProgressDto>> GetByProgress(Assignment.ProgressStatus progress)
         {
-           return await _assignment.GetByProgress(progress);
+            return await _assignment.GetByProgress(progress);
         }
 
         public List<AssignmentListDto> GetAll()
@@ -92,7 +92,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public void AddSubTask(SubTask task)
         {
-             _assignment.AddSubTask(task);
+            _assignment.AddSubTask(task);
         }
 
         public async Task<bool> AddAttachmentsAsync(List<TaskAttachment> taskAttachments)
@@ -105,6 +105,23 @@ namespace BussinessLayer.Concrete.Managers
         public bool IsUser(Assignment task, string _currentUserId)
         {
             return _assignment.IsUser(task, _currentUserId);
+
+        }
+
+        public async Task<bool> DeleteAttachmentAsync(string _path, int _taskId)
+        {
+            return await _assignment.DeleteAttachmentAsync(_path, _taskId);
+        }
+
+        public async Task LogAsync(TaskLog log)
+        {
+            await _assignment.LogAsync(log);
+
+        }
+
+        public async Task<List<TaskLog>> GetLogsByTaskAsync(int _taskId)
+        {
+            return await _assignment.GetLogsByTaskAsync(_taskId);
 
         }
     }

@@ -48,7 +48,10 @@ namespace DataAccessLayer.Concrete.Providers
         public DbSet<UserAssignment> UserAssignment { get; set; } = null!;
 
         public DbSet<SubTask> SubTask { get; set; } = null!;
-    
-    public DbSet<TaskAttachment> TaskAttachment { get; set; } = null!;
+
+        public DbSet<TaskAttachment> TaskAttachment { get; set; } = null!;
+        public DbSet<TaskLog> TaskLogs { get; set; } = null!;
+
+
     }
 }

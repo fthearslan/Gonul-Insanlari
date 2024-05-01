@@ -23,6 +23,7 @@ namespace EntityLayer.Concrete.Entities
 
             Attachments = new();
 
+            Logs = new();
         }
 
 
@@ -37,6 +38,8 @@ namespace EntityLayer.Concrete.Entities
         public AppUser Publisher { get; set; } = null!;
 
         public List<TaskAttachment> Attachments { get; set; }
+
+        public List<TaskLog> Logs { get; set; }
 
         public List<SubTask> SubTasks { get; set; } = null!;
         public static List<UserAssignment> operator +(Assignment Task, List<int> userList)

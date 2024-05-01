@@ -29,7 +29,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
                 {
 
                     files.Add((attachment.Path, attachment.CreatedDate));
-
+                    
                 }
 
 

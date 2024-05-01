@@ -137,6 +137,9 @@
                             <!--  LastActivity  -->
 
                             <div class="tab-pane " id="tab-2">
+
+                                @await Component.InvokeAsync("AssignmentGetTaskLogs",new { _taskId = Model.Id })
+
                             </div>
 
 
@@ -154,7 +157,7 @@
 
                             <div class="tab-pane" id="tab-4">
 
-                                @await Component.InvokeAsync("GetAttachmentByAssignment",new {taskId= Model.Id});
+                                @await Component.InvokeAsync("GetAttachmentByAssignment",new {taskId= Model.Id})
 
 
                             </div>
@@ -195,7 +198,7 @@
                 Progress: text,
                 SubTaskId: id,
                 TaskId: @Model.Id
-                                                                                                                                                                                    };
+                                                                                                                                                                                                    };
 
 
 
@@ -417,6 +420,7 @@
 
 
             });
+        
     </script>
     <script>
 
@@ -436,10 +440,6 @@
 
 
     </script>
-
-
-
-
 
     <script>
         function uploadFiles(inputId) {
@@ -474,12 +474,14 @@
 
                             var obj = result.data;
 
-                            $.each(obj, function () {
+
+                            for (let i = 0; i < obj.length; i++) {
+
                                 var html = '<div class="file-box">' +
 
                                     '<div class="file">' +
 
-                                    '<a href="Admin/Assignment/DownloadFile/' + obj.id + '" >' +
+                                    '<a href="Admin/Assignment/DownloadFile/' + obj[i].id + '" >' +
 
                                     '<span class="corner"></span>' +
 
@@ -487,10 +489,10 @@
                                     '<i class="fa fa-file"></i>' +
                                     '</div>' +
                                     '<div class="file-name">'
-                                    + obj.path+
+                                    + obj[i].path +
 
                                     '<br />' +
-                                    '<small> Added: ' + obj.date + '</small>' +
+                                    '<small> Added: ' + obj[i].createdDate + '</small>' +
                                     '</div>' +
                                     '</a>' +
                                     '</div>' +
@@ -498,7 +500,9 @@
 
                                 $("#mydiv1").append(html);
 
-                            });
+
+                            }
+
                         }
                         else {
 
@@ -518,4 +522,61 @@
         }
     </script>
   
+    <script>
+        function DeleteAttachment(input) {
+
+
+            var model = {
+                Path: input,
+                TaskId: @Model.Id,
+            };
+            var arr =input.split('.');
+            var id = "#" + arr[0];
+         
+
+            $.ajax({
+                type: "POST",
+                data: { model: model },
+                url: " /Admin/Assignment/DeleteAttachment",
+                success: function (result) {
+                    if (result.success) {
+                        $.toast({
+                            heading: 'Success',
+                            text: result.responseMessage,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'success'
+
+                        })
+
+                        $(id).hide();
+
+
+
+
+                        // setTimeout(function () {
+                        //     window.location.reload();
+                        // }, 3000);
+
+
+                    } else {
+                        $.toast({
+                            heading: 'Error',
+                            text: result.responseMessage,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        })
+                    }
+
+
+
+                }
+            });
+
+
+
+        }
+    </script>
 }

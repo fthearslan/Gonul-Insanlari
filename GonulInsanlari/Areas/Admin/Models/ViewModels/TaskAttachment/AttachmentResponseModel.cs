@@ -1,4 +1,4 @@
-﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels
+﻿namespace GonulInsanlari.Areas.Admin.Models.ViewModels.TaskAttachment
 {
     public record AttachmentResponseModel
     {
