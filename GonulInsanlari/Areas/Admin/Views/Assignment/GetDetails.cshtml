@@ -367,7 +367,7 @@
                 return;
             }
 
-            if ($("#description").val().length < 5) {
+            if ($("#description").val().length < 15) {
                 $.toast({
                     heading: 'Error',
                     text: 'Too short!',
@@ -378,6 +378,8 @@
                 })
                 return;
             }
+
+            
 
 
             $.ajax({
@@ -529,6 +531,7 @@
             var model = {
                 Path: input,
                 TaskId: @Model.Id,
+
             };
             var arr =input.split('.');
             var id = "#" + arr[0];
@@ -553,10 +556,6 @@
 
 
 
-
-                        // setTimeout(function () {
-                        //     window.location.reload();
-                        // }, 3000);
 
 
                     } else {

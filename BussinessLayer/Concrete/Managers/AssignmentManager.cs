@@ -124,5 +124,11 @@ namespace BussinessLayer.Concrete.Managers
             return await _assignment.GetLogsByTaskAsync(_taskId);
 
         }
+
+        public async Task LogAsync(TaskLog log, int _userId)
+        {
+            await _assignment.LogAsync(log, _userId);
+
+        }
     }
 }

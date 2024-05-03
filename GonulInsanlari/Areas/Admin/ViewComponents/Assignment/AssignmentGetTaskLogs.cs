@@ -26,8 +26,11 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
                 {
                     Id = log.Id,
                     Description = log.Description,
-                    Createdby = log.CreatedBy,
-                    CreatedDate = log.CreatedDate,
+                    Createdby = log?.CreatedBy?.UserName,
+                    CreatedDate = log?.CreatedDate,
+                    CreatedByImage=log?.CreatedBy?.ImagePath,
+                    AttachmentTitle=log?.Attachment?.Path
+                    
                 });
             }
 

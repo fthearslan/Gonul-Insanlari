@@ -36,6 +36,7 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         Task LogAsync(TaskLog log);
 
+        Task LogAsync(TaskLog log,int _userId);
 
         Task<List<TaskLog>> GetLogsByTaskAsync(int _taskId);
 

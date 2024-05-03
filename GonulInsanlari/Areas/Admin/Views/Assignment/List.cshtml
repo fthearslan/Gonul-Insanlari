@@ -80,7 +80,7 @@
                     }
 
                 </div>
-                @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
+                @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List","Assignment",new { pageNumber}))
 
             </div>
         </div>

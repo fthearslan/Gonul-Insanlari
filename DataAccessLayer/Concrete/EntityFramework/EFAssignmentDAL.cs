@@ -220,8 +220,12 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
             using (var c = new Context())
             {
+
                 c.Attach(log.Assignment);
+             
                 await c.TaskLogs.AddAsync(log);
+
+                await c.SaveChangesAsync();
 
             }
 
@@ -233,13 +237,33 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
             using (var c = new Context())
             {
-               return  await c.TaskLogs
-                    .Where(x => x.Assignment.Id == _taskId)
-                    .Include(x=>x.Assignment)
-                    .ToListAsync();
+                return await c.TaskLogs
+                     .Where(x => x.Assignment.Id == _taskId)
+                     .Include(x => x.Assignment)
+                     .OrderByDescending(x => x.CreatedDate)
+                     .ToListAsync();
 
             }
 
+        }
+
+        public async Task LogAsync(TaskLog log, int _userId)
+        {
+
+            using (var c = new Context())
+            {
+
+                c.Attach(log.Assignment);
+                
+                var user = await c.Users.FirstOrDefaultAsync(x => x.Id == _userId);
+             
+                log.CreatedBy = user;
+                
+                await c.TaskLogs.AddAsync(log);
+
+                await c.SaveChangesAsync();
+
+            }
         }
     }
 }

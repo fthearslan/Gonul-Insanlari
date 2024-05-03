@@ -2,6 +2,7 @@
 using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Concrete.EntityFramework;
 using DataAccessLayer.Concrete.Providers;
+using EntityLayer.Concrete.Configurations;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Models.Tools;
@@ -115,7 +116,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 if (result.IsValid)
                 {
-                    task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher.UserName });
+                    task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher });
 
                     await _manager.PublishAsync(task);
 
@@ -153,8 +154,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                     assignment.Modified = DateTime.Now;
 
-                    await _manager.LogAsync(new($"User named {user.UserName} were addded by {_currentUser.UserName}") { CreatedBy = _currentUser.UserName });
-                    _manager.Update(assignment);
+                    await _manager.LogAsync(new($"User named {user.UserName} were addded by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
+
 
                 }
 
@@ -178,7 +179,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 if (result.IsValid)
                 {
-                    subTask.Assignment.Logs.Add(new($"New subtask were added by {_currentUser.UserName}") { CreatedBy = _currentUser.UserName });
+                    subTask.Assignment.Logs.Add(new($"New subtask '{subTask.Description.Substring(0, 15)}...' were added by {_currentUser.UserName}") { CreatedBy = _currentUser });
                     _manager.AddSubTask(subTask);
 
                 }
@@ -224,8 +225,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 if (await _manager.AddAttachmentsAsync(attachments))
                 {
+                    if (attachments.Count > 1)
+                        await _manager.LogAsync(new($"The files were uploaded by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
+
+                    if (attachments.Count == 1)
+                        await _manager.LogAsync(new($"The file {attachments.First().Path} were uploaded by {_currentUser.UserName}") { Assignment = assignment, Attachment = attachments.First() }, _currentUser.Id);
+
                     _response.success = true;
                     _response.responseMessage = "Files have been successfully uploaded.";
+
                     foreach (var at in attachments)
                     {
                         response.Add(new()
@@ -351,7 +359,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 }
 
+
+            await _manager.LogAsync(new($"{_currentUser.UserName} changed the progress of subtask '{subtask?.Description.Substring(0, 15)}...' to {subtask?.Progress.ToString()}.")
+            { Assignment = task },
+            _currentUser.Id);
             _manager.Update(task);
+
+
+
 
         }
 
@@ -371,7 +386,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 assignment?.UserAssignments?.Remove(user);
 
                 if (assignment != null)
+                {
+
+                    await _manager.LogAsync(new($"User named {user?.User?.UserName} deleted by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
+
                     _manager.Update(assignment);
+
+
+                }
             }
 
         }
@@ -385,9 +407,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             SubTask? subtask = assignment.SubTasks.Find(s => s.Id == subtaskId);
 
             if (subtask != null)
+            {
                 assignment.SubTasks.Remove(subtask);
 
-            _manager.Update(assignment);
+                await _manager.LogAsync(new($"Subtask  '{subtask.Description.Substring(0, 15)}...' deleted by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
+                _manager.Update(assignment);
+
+            }
 
 
         }
@@ -396,10 +422,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<JsonResult> DeleteAttachment(AttachmentDeleteViewModel model)
         {
 
+
             if (await _manager.DeleteAttachmentAsync(model.Path, model.TaskId))
             {
+
+                Assignment? task = await _manager.GetByIdAsync(model.TaskId);
+
+                if (task is not null)
+                    await _manager.LogAsync(new($"File named {model.Path} were deleted by {_currentUser.UserName}") { Assignment = task }, _currentUser.Id);
+
+
                 _response.success = true;
                 _response.responseMessage = "File has been successfully deleted.";
+
 
             }
             else
@@ -415,9 +450,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 responseMessage = _response.responseMessage,
 
             });
-
-
-
 
 
 

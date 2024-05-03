@@ -1,10 +1,56 @@
 ﻿@model List<TaskLogListVievModel>
 
-@foreach (var log in Model)
-{
-    <p> @log.Description</p>
-    <p>@log.Createdby </p>
-    <p>@log.CreatedDate </p>
-    <p>@log.CreatedByImage </p>
 
-}
+    <table class="table table-striped">
+        <thead>
+            <tr>
+
+                <th><i class="fa fa-info-circle" aria-hidden="true"></i></th>
+                <th>Info</th>
+                <th>Date</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var log in Model)
+        {
+            <tr>
+
+                <td class="client-avatar"><img alt="image" src="~/Images/@log.CreatedByImage"> </td>
+
+               
+             @*    <td>
+                
+                 
+                    
+                </td>
+ *@
+                @if (log.AttachmentTitle is not null)
+                {
+                    <td>
+                        <div>
+                            @log.Description
+
+                        </div>
+                        <div>
+                        <i class="fa fa-file"></i>
+                        <a href="#tab-4" data-toggle="tab"><small>@log.AttachmentTitle</small></a>
+                        </div>
+
+                    </td>
+                }
+                else
+                {
+                    <td>@log.Description</td>
+                }
+
+                <td>@log.CreatedDate</td>
+            </tr>
+        }
+
+        </tbody>
+    </table>
+
+
+   
+

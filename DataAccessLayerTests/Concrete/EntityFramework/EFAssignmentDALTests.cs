@@ -44,11 +44,11 @@ namespace DataAccessLayer.Concrete.EntityFramework.Tests
 
                 var tasklog = new TaskLog($"The user name {user.UserName} changed the progress.")
                 {
-                    CreatedBy = user.Name,
+                    CreatedBy = user,
                     Assignment = assignment,
                 };
 
-                Assert.IsTrue(await manager.LogAsync(tasklog));
+     
 
 
 

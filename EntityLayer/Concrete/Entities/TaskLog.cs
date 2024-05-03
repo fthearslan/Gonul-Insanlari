@@ -22,13 +22,17 @@ namespace EntityLayer.Concrete.Entities
 
         public string Description { get; set; } = null!;
 
-        public string CreatedBy { get; set; } = null!;
+        public AppUser? CreatedBy { get; set; } = null!;
 
         public DateTime? CreatedDate { get; set; } = DateTime.Now;
 
         public TaskAttachment? Attachment { get; set; }
 
         public Assignment Assignment { get; set; } = null!;
+
+        public string? ImagePath { get; set; }
+
+     
 
 
     }

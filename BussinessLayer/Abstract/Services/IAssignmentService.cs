@@ -24,6 +24,7 @@ namespace BussinessLayer.Abstract.Services
         Task<bool> DeleteAttachmentAsync(string _path, int _taskId);
 
         Task LogAsync(TaskLog log);
+        Task LogAsync(TaskLog log, int _userId);
         Task<List<TaskLog>> GetLogsByTaskAsync(int _taskId);
 
     }

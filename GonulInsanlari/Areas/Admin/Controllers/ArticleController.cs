@@ -71,32 +71,32 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(await model.ToPagedListAsync(pageNumber, 12));
         }
 
-        [HttpGet("{Value}")]
-        public IActionResult GetDetailsByNotification([FromRoute] int? value)
-        {
+        //[HttpGet("{Value}")]
+        //public IActionResult GetDetailsByNotification([FromRoute] int? value)
+        //{
 
-            if (value != null)
-            {
+        //    if (value != null)
+        //    {
 
-                int id = (int)value;
-                var article = _articleManager.GetDetailsByUser(id);
-                if (article != null)
-                {
-                    return View(article);
-                }
-                else
-                {
-                    return View("List");
+        //        int id = (int)value;
+        //        var article = _articleManager.GetDetailsByUser(id);
+        //        if (article != null)
+        //        {
+        //            return View(article);
+        //        }
+        //        else
+        //        {
+        //            return View("List");
 
-                }
-            }
+        //        }
+        //    }
 
-            else
-            {
-                return View("List");
-            }
+        //    else
+        //    {
+        //        return View("List");
+        //    }
 
-        }
+        //}
 
         public IActionResult GetDetails(int id)
         {
