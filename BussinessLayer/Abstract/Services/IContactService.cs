@@ -9,5 +9,8 @@ namespace BussinessLayer.Abstract.Services
 {
     public interface IContactService : IGenericService<Contact>
     {
+
+        Task<List<Contact>> GetInbox();
+
     }
 }

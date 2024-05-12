@@ -37,6 +37,13 @@ namespace BussinessLayer.Concrete.Managers
             return await _contact.GetAsync(x => x.Id == id);
         }
 
+        public async Task<List<Contact>> GetInbox()
+        {
+
+            return await _contact.GetInbox();
+
+        }
+
         public IQueryable<Contact> GetWhere(Expression<Func<Contact, bool>> filter)
         {
 

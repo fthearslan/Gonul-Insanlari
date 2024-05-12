@@ -10,5 +10,9 @@ namespace DataAccessLayer.Abstract.SubRepositories
 {
     public interface IContactDAL : IRepository<Contact>
     {
+
+        Task<List<Contact>> GetInbox();
+
+
     }
 }
