@@ -44,14 +44,14 @@
                                  string label= (article.Status==true) ? "label label-primary" : "label label-danger" ;
                                     string text = (article.Status == true) ? "Enabled" : "Disabled";
                                     <tr>
-                                        <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@article.Id"></a># @article.Title</td>
+                                        <td style="cursor:pointer" class="myBox"><a href="/articles/details/@article.Id"></a># @article.Title</td>
                                         <td><span style="cursor:pointer" class="label label-primary myBox"><a href="#categorypage"></a>@article.Category.Name</span></td>
                                         <td>@article.Created.ToString("dd-MMM-yyyy")</td>
                                         <td>@@@article.AppUser</td>
                                         <td><span class="@label">@text</span></td>
                                         <td class="btn-group">
-                                            <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@article.Id">View</a>
-                                            <a class="btn-danger btn btn-xs" onclick="fire(@id)" id="btn_delete" value="@article.Id" href="/Admin/Article/Delete/@article.Id"><i class="fa fa-trash"></i></a>
+                                            <a class="btn-white btn btn-xs" href="/articles/details/@article.Id">View</a>
+                                            <a class="btn-danger btn btn-xs" onclick="fire(@id)" id="btn_delete" value="@article.Id" ><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
                                 }

@@ -30,5 +30,20 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
 
         }
+
+        public async Task<List<Contact>> SearchByAsync(string search)
+        {
+
+            using (var c = new Context())
+            {
+                return await c.Contacts
+                    .Where(x => x.Subject.Contains(search) || x.NameSurname.Contains(search) || x.EmailAddress.Contains(search))
+                    .OrderBy(x => x.Subject.Contains(search))
+                    .AsNoTrackingWithIdentityResolution()
+                    .ToListAsync();
+
+            }
+
+        }
     }
 }

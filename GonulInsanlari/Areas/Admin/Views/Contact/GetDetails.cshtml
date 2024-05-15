@@ -1,8 +1,56 @@
-﻿
+﻿@model ContactDetailsViewModel
 @{
     ViewData["Title"] = "GetDetails";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Get Details</h1>
 
+<div class="row">
+    @* @await Html.PartialAsync("Categories") *@
+    @await Component.InvokeAsync("ContactFolders")
+
+
+    <div class="col-lg-9 animated fadeInRight">
+        <div class="mail-box-header">
+            <div class="float-right tooltip-demo">
+                <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
+                <a href="javascript:window.print()" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
+                <button type="button" onclick="DeleteSingle('@Model.Id')" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
+            </div>
+            <h2>
+                @Model.Subject
+
+            </h2>
+            <div class="mail-tools tooltip-demo m-t-md">
+
+
+                <h3>
+                    <span class="font-normal">@Model.NameSurname</span>
+                </h3>
+                <h5>
+                    <span class="float-right font-normal">@Model.Created</span>
+                    <span class="font-normal">From: </span>@Model.EmailAddress
+                </h5>
+            </div>
+        </div>
+        <div class="mail-box">
+
+
+            <div class="mail-body">
+
+                @Html.Raw(Model.Content)
+
+            </div>
+            <div class="clearfix"></div>
+
+
+        </div>
+    </div>
+
+</div>
+
+@section Script{
+    <script src="~/js/contact.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                }

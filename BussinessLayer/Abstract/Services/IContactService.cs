@@ -11,6 +11,7 @@ namespace BussinessLayer.Abstract.Services
     {
 
         Task<List<Contact>> GetInbox();
+        Task<List<Contact>> SearchByAsync(string search);
 
     }
 }

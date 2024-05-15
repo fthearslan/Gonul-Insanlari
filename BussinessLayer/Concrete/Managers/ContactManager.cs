@@ -65,6 +65,12 @@ namespace BussinessLayer.Concrete.Managers
             return _contact.ListFilter(x => x.Status == true && x.IsSeen == false).OrderByDescending(x => x.Created).ToList();
         }
 
+        public async Task<List<Contact>> SearchByAsync(string search)
+        {
+            return await _contact.SearchByAsync(search);
+
+        }
+
         public void Update(Contact entity)
         {
             _contact.Update(entity);

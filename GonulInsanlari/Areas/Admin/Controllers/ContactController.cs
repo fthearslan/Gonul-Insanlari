@@ -5,12 +5,15 @@ using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Contact;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
+    [Route("mail")]
     public class ContactController : Controller
     {
         private readonly IContactService _manager;
@@ -26,6 +29,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _response = response;
         }
 
+        #region Create 
+
+
+        #endregion
+
+        #region Read
+
+        [Route("inbox")]
         public async Task<IActionResult> Inbox(int pageNumber = 1)
         {
             List<Contact> contacts = await _manager.GetInbox();
@@ -41,16 +52,37 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return BadRequest();
             }
 
-            ViewData["Count"] = model.Count;
+            ViewData["Count"] = contacts.Count;
 
-            return View(await model.ToPagedListAsync(pageNumber, 15));
+
+            return View(await model.ToPagedListAsync(pageNumber, 20));
         }
 
-        public PartialViewResult Categories()
+        [Route("detail/{id}")]
+        public async Task<IActionResult> GetDetails(int id)
         {
-            return PartialView();
+            Contact contact = await _manager.GetByIdAsync(id);
+
+            if (contact is not null)
+                try
+                {
+                    var model = _mapper.Map<ContactDetailsViewModel>(contact);
+                    return View(model);
+
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return BadRequest();
+                }
+
+
+            return NotFound();
+
         }
 
+        [Route("refresh")]
         [HttpPost]
         public async Task<IActionResult> Refresh()
         {
@@ -69,14 +101,49 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
 
-            return Json(model.ToPagedList());
+            return Json(model.Take(20));
         }
 
-        public IActionResult GetDetails()
+        [Route("search")]
+        [HttpPost]
+        public async Task<IActionResult> Search(string search)
         {
-            return View();
+
+            List<Contact> result = await _manager.SearchByAsync(search);
+
+            if (result is not null)
+            {
+                List<ContactInboxViewModel> model = new();
+
+                try
+                {
+                    model = _mapper.Map<List<ContactInboxViewModel>>(result);
+                }
+                catch (AutoMapperMappingException ex)
+                {
+                    _logger.LogError(ex.Message);
+
+                    return BadRequest();
+                }
+
+                model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+                return Json(model);
+
+
+            }
+
+            return Json(null);
+
         }
 
+
+
+        #endregion
+
+        #region Update
+
+        [Route("markasread")]
         [HttpPost]
         public async Task<IActionResult> MarkAsRead(List<int>? ids)
         {
@@ -128,6 +195,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             });
         }
 
+
+        #endregion
+
+        #region Delete
+
+        [Route("delete")]
         [HttpPost]
         public async Task<IActionResult> Delete(List<int>? ids)
         {
@@ -180,6 +253,45 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         }
+
+        [Route("delete/{id}")]
+        [HttpPost]
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var contacttoDelete = await _manager.GetByIdAsync(id);
+
+            if (contacttoDelete is not null)
+            {
+                if (contacttoDelete.Status == true)
+                {
+                    contacttoDelete.Status = false;
+
+                    _manager.Update(contacttoDelete);
+
+                }
+                else
+                {
+                    _manager.Delete(contacttoDelete);
+
+                }
+
+            }
+            return RedirectToAction(nameof(Inbox));
+
+
+        }
+        #endregion
+
+        #region Partial
+        public PartialViewResult Categories()
+        {
+
+            return PartialView();
+        }
+
+        #endregion
+
 
     }
 }

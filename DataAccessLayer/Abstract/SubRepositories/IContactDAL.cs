@@ -13,6 +13,7 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         Task<List<Contact>> GetInbox();
 
+        Task<List<Contact>> SearchByAsync(string search);
 
     }
 }

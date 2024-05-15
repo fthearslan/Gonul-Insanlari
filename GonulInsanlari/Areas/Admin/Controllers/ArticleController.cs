@@ -40,6 +40,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area(nameof(Admin))]
+    [Route("articles")]
     [Authorize]
     public class ArticleController : Controller
     {
@@ -61,7 +62,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _validator = validator;
         }
 
-
+        [Route("list")]
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased();
@@ -71,7 +72,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(await model.ToPagedListAsync(pageNumber, 12));
         }
 
-        
+        [Route("details/{id}")]
         public IActionResult GetDetails(int id)
         {
             var article = _articleManager.GetDetailsByUser(id);
@@ -92,6 +93,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return NotFound();
         }
 
+        [Route("add")]
         [HttpGet]
         public IActionResult AddArticle()
         {
@@ -107,6 +109,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View();
         }
 
+        [Route("add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
@@ -157,8 +160,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
         }
 
-        [HttpGet]
-
+        [Route("delete/{id:int}")]
+        [HttpPost]
         public async Task<ActionResult> Delete(int id)
         {
             var article = await _articleManager.GetByIdAsync(id);
@@ -167,7 +170,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 if (article.IsDraft == true)
                 {
                     _articleManager.Delete(article);
-                    return RedirectToAction("GetDrafts");
+                    return RedirectToAction(nameof(List));
 
                 }
                 else
@@ -175,12 +178,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     article.Status = false;
                     _articleManager.Update(article);
                 }
+             
 
             }
-            return RedirectToAction("GetAllAsList");
-
+            return RedirectToAction(nameof(List));
         }
 
+
+        [Route("edit/{id}")]
         [HttpGet]
         public IActionResult EditArticle(int id)
         {
@@ -211,7 +216,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
            
         }
-
+        
+        
+        [Route("edit/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditArticle(ArticleEditViewModel model)

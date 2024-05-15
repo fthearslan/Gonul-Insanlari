@@ -10,25 +10,28 @@
 
 
 <div class="row">
-    @await Html.PartialAsync("Categories")
+    @*   @await Html.PartialAsync("Categories") *@
+
+    @await Component.InvokeAsync("ContactFolders")
+
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
 
             <form method="get" action="index.html" class="float-right mail-search">
                 <div class="input-group">
-                    <input type="text" class="form-control form-control-sm" name="search" placeholder="Search email">
+                    <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search email">
                     <div class="input-group-btn">
-                        <button type="submit" class="btn btn-sm btn-primary">
+                        <button type="button" onclick="Search();" class="btn btn-sm btn-primary">
                             Search
                         </button>
                     </div>
                 </div>
             </form>
             <h2>
-               Inbox(@ViewData["Count"])
+                Inbox(@ViewData["Count"])
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
-        
+
                 <button onclick="Refresh();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
                 <button onclick="markAsRead();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
                 <button onclick="Delete();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
@@ -43,9 +46,9 @@
                     @foreach (var contact in Model)
                     {
                         string isSeen = contact.IsSeen == true ? "read" : "unread";
-                         
-                        <tr id="@contact.Id" class="@isSeen click" data-href="/Admin/Contact/GetDetails/@contact.Id" style="cursor:pointer">
-                           
+
+                        <tr id="@contact.Id" class="@isSeen click" data-href="/mail/detail/@contact.Id" style="cursor:pointer">
+
                             <td class="check-mail">
                                 <input type="checkbox" class="i-checks" value="@contact.Id">
                             </td>
@@ -83,7 +86,13 @@
 
 @section Script{
 
+
+      
     <script src="~/js/contact.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
     <script src="~/lib/jquery.toast.min.js"></script>
+
+
+
+
                             }
