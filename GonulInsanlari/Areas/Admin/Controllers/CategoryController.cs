@@ -2,10 +2,7 @@
 using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
-using DataAccessLayer.Concrete.
-
-
-    EntityFramework;
+using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using FluentValidation.Results;
@@ -18,6 +15,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area(nameof(Admin))]
+    [Route("categories")]
     public class CategoryController : Controller
     {
         private readonly IMapper _mapper;
@@ -32,6 +30,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _manager = service;
             _validator = validator;
         }
+
+        [Route("list")]
         public IActionResult List()
         {
             try
@@ -46,6 +46,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
 
         }
+
+        [Route("delete/{id}")]
 
         public async Task<IActionResult> Delete(int id)
         {
@@ -65,32 +67,23 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 }
 
             return BadRequest();
-
-            //    if (category is not null)
-            //    {
-            //        if (category.Status == true)
-            //        {
-            //            category.Status = false;
-            //            _manager.Update(category);
-            //            return RedirectToAction(nameof(List));
-            //        }
-
-            //        if (category.Status == false)
-            //            _manager.Delete(category);
-            //        return RedirectToAction(nameof(List));
-            //    }
-            //    return RedirectToAction(nameof(List));
+           
         }
 
 
         [HttpGet]
+        [Route("add")]
+
         public IActionResult AddCategory()
         {
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("add")]
+
         public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -136,7 +129,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-
+        [Route("edit/{id}")]
         [HttpGet]
         public async Task<IActionResult> EditCategory(int id)
         {
@@ -159,6 +152,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("edit/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditCategory(CategoryEditViewModel model)
         {
@@ -196,7 +190,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
             return View(model);
         }
-
+        [Route("details/{id}")]
         public IActionResult GetDetails(int id)
         {
             var category = _manager.GetDetails(id);

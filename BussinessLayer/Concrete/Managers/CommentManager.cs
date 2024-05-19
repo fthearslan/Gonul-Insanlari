@@ -29,14 +29,25 @@ namespace BussinessLayer.Concrete.Managers
             _comment.Delete(entity);
         }
 
+        public async Task<List<Comment>> GetAllAsync()
+        {
+            return await _comment.GetAllAsync();
+        }
+
         public List<Comment> GetByArticle(int id)
         {
             return _comment.ListFilter(x => x.ArticleID == id);
         }
 
+        public async Task<List<Comment>> GetByArticleAsync(int articleId)
+        {
+            return await _comment.GetByArticleAsync(articleId);
+
+        }
+
         public async Task<Comment> GetByIdAsync(int id)
         {
-            return await _comment.GetAsync(x => x.Id == id);
+            return await _comment.GetByIdAsync(id);
         }
 
         public IQueryable<Comment> GetWhere(Expression<Func<Comment, bool>> filter)

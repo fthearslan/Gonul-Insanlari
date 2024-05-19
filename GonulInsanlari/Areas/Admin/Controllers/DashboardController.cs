@@ -7,6 +7,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
     [Authorize]
+    [Route("home")]
     public class DashboardController : Controller
     {
         UserManager<AppUser> _userManager;
@@ -15,6 +16,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             _userManager = userManager;
         }
+        [Route("dashboard",Name ="dashboard")]
 
         public IActionResult Index()
         {

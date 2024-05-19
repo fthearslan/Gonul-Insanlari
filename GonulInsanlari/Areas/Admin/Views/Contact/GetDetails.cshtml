@@ -13,8 +13,19 @@
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
             <div class="float-right tooltip-demo">
-                <a href="mail_compose.html" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
+                @if (!Model.IsSent && !Model.IsDraft && Model.Status)
+                {
+                    <a href="/mail/reply/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
+
+                }
+
+                @if (!Model.Status)
+                {
+                    <a href="/mail/recover/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Recover this mail"><i class="fa fa-undo"></i> Recover</a>
+
+                }
                 <a href="javascript:window.print()" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
+
                 <button type="button" onclick="DeleteSingle('@Model.Id')" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
             </div>
             <h2>
@@ -24,8 +35,17 @@
             <div class="mail-tools tooltip-demo m-t-md">
 
 
+
                 <h3>
-                    <span class="font-normal">@Model.NameSurname</span>
+                    @if (Model.To is not null)
+                    {
+                        <span class="font-normal">@Model.To</span>
+                    }
+                    else
+                    {
+                        <span class="font-normal">To: Administration </span>
+
+                    }
                 </h3>
                 <h5>
                     <span class="float-right font-normal">@Model.Created</span>

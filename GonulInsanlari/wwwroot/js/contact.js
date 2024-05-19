@@ -27,15 +27,57 @@ function Refresh() {
 
                 var html = '<tr id="' + result[i].id + '" class="' + cls + '" style="cursor:pointer">' +
                     '<td class="check-mail">' +
-                    '<input type="checkbox" class="i-checks" value="'+ result[i].id +'">' +
+                    '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
                     ' </td>' +
-                    '<td onclick="Send(' + result[i].id +')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
-                    '<td onclick="Send(' + result[i].id +')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
-                    '<td onclick="Send(' + result[i].id +')" class=""> </td>' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
 
                     '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + icon + ' ' + result[i].id + '" > </i></td >' +
 
-                    '<td onclick="Send(' + result[i].id +')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
+                    '<td onclick="Send(' + result[i].id + ')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
+                    '</tr>';
+
+
+
+
+                $("#mails").append(html);
+
+
+            }
+
+        }
+    });
+};
+
+function RefreshSentBox() {
+
+    $('#mails').empty();
+
+    var status = $("#status").val();
+
+    $.ajax({
+        type: "POST",
+        url: "/mail/refreshsentbox",
+        data: { status: status },
+        success: function (result) {
+
+
+            for (let i = 0; i < result.length; i++) {
+
+
+
+                var html = '<tr id="' + result[i].id + '" class="read click" style="cursor:pointer">' +
+                    '<td class="check-mail">' +
+                    '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
+                    ' </td>' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
+
+                    '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + result[i].id + '" > </i></td >' +
+
+                    '<td onclick="Send(' + result[i].id + ')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
                     '</tr>';
 
 
@@ -52,9 +94,10 @@ function Refresh() {
 
 
 
+
 function Send(id) {
 
-  /*  window.location = "/Admin/Contact/GetDetails/" + id;*/
+    /*  window.location = "/Admin/Contact/GetDetails/" + id;*/
     window.location = "/mail/detail/" + id;
 }
 
@@ -107,7 +150,7 @@ function markAsRead() {
     }
     );
 
-  
+
 
 }
 
@@ -142,7 +185,7 @@ function Delete() {
 
 
                 }
-                
+
 
             }
             else {
@@ -181,7 +224,7 @@ function DeleteSingle(id) {
 
             $.ajax({
                 type: "POST",
-                url: "/mail/delete/"+ id,
+                url: "/mail/delete/" + id,
                 success: function () {
 
                     window.location.replace("/mail/inbox");
@@ -221,16 +264,19 @@ jQuery(document).ready(function ($) {
 // New timeout variable
 let timeout = null;
 document.getElementById('searchbar').addEventListener('keyup', function (e) {
-    
+
+
     // Clear existing timeout      
     clearTimeout(timeout);
 
     // Reset the timeout to start again
     timeout = setTimeout(function () {
+
+
         Search()
 
     }, 500);
-   
+
 });
 
 
@@ -238,12 +284,21 @@ function Search() {
 
     $('#mails').empty();
 
+    var isSent = $("#isSent").val();
+    var isdraft = $("#isdraft").val();
+    var isTrash = $("#status").val();
+    if (isTrash == "trash") {
+        var IsToDelete = Boolean(true);
+
+    }
+
     let value = document.getElementById('searchbar').value
+
 
     $.ajax({
         type: "POST",
         url: "/mail/search",
-        data: { search: value },
+        data: { search: value, isSent: isSent, isdraft: isdraft, isTodelete: IsToDelete },
         success: function (result) {
 
             for (let i = 0; i < result.length; i++) {
@@ -258,6 +313,14 @@ function Search() {
                     icon = "fa fa-eye";
 
                 }
+                if (result[i].isSent) {
+                    cls = "read";
+                    icon = "";
+                } if (result[i].isDraft) {
+                    cls = "read";
+                    icon = "";
+                }
+                
 
                 var html = '<tr id="' + result[i].id + '" class="' + cls + '" style="cursor:pointer">' +
                     '<td class="check-mail">' +
@@ -284,7 +347,7 @@ function Search() {
     });
 
 
-   
+
 
 
 }

@@ -4,9 +4,11 @@ using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Contact;
 using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Runtime.CompilerServices;
 using X.PagedList;
 
@@ -19,17 +21,39 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly IContactService _manager;
         private readonly IMapper _mapper;
         private readonly ILogger<ContactController> _logger;
+        private readonly UserManager<AppUser> _userManager;
+
         ResponseModel _response;
 
-        public ContactController(IContactService manager, IMapper mapper, ILogger<ContactController> logger, ResponseModel response)
+        public ContactController(IContactService manager, IMapper mapper, ILogger<ContactController> logger, ResponseModel response, UserManager<AppUser> userManager)
         {
             _manager = manager;
             _mapper = mapper;
             _logger = logger;
             _response = response;
+            _userManager = userManager;
         }
 
         #region Create 
+
+        [Route("reply/{contactId}")]
+        [HttpGet]
+        public async Task<IActionResult> Reply(int contactId)
+        {
+
+            Contact contact = await _manager.GetByIdAsync(contactId);
+
+            return View(contact);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Reply(Contact model)
+        {
+
+            return View();
+        }
+
 
 
         #endregion
@@ -39,11 +63,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("inbox")]
         public async Task<IActionResult> Inbox(int pageNumber = 1)
         {
-            List<Contact> contacts = await _manager.GetInbox();
-            List<ContactInboxViewModel> model = new();
+            List<Contact> contacts = await _manager.GetInboxAsync();
+            List<ContactListViewModel> model = new();
             try
             {
-                model = _mapper.Map<List<ContactInboxViewModel>>(contacts);
+                model = _mapper.Map<List<ContactListViewModel>>(contacts);
 
             }
             catch (Exception ex)
@@ -57,6 +81,68 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             return View(await model.ToPagedListAsync(pageNumber, 20));
         }
+
+
+        [Route("sentbox")]
+        public async Task<IActionResult> SentBox(int pageNumber = 1)
+        {
+            string _userId = _userManager.GetUserId(HttpContext.User);
+
+            List<Contact> contacts = await _manager.GetSentboxAsync(_userId);
+            List<ContactListViewModel> model = new();
+
+            if (contacts is not null)
+                try
+                {
+                    model = _mapper.Map<List<ContactListViewModel>>(contacts);
+
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex.Message);
+                    return BadRequest();
+
+
+                }
+
+            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+            ViewData["Count"] = model.Count;
+
+            return View(await model.ToPagedListAsync(pageNumber, 20));
+
+        }
+
+        [Route("drafts")]
+        public async Task<IActionResult> Drafts(int pageNumber = 1)
+        {
+
+            string _userId = _userManager.GetUserId(HttpContext.User);
+
+            List<Contact> drafts = await _manager.GetDraftsAsync(_userId);
+
+            List<ContactListViewModel> model = new();
+            try
+            {
+                model = _mapper.Map<List<ContactListViewModel>>(drafts);
+
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+
+            ViewData["Count"] = model.Count;
+
+            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+            return View(await model.ToPagedListAsync(pageNumber, 20));
+
+        }
+
+
 
         [Route("detail/{id}")]
         public async Task<IActionResult> GetDetails(int id)
@@ -86,11 +172,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         public async Task<IActionResult> Refresh()
         {
-            List<Contact> contacts = await _manager.GetInbox();
-            List<ContactInboxViewModel> model = new();
+            List<Contact> contacts = await _manager.GetInboxAsync();
+
+            List<ContactListViewModel> model = new();
             try
             {
-                model = _mapper.Map<List<ContactInboxViewModel>>(contacts);
+                model = _mapper.Map<List<ContactListViewModel>>(contacts);
 
             }
             catch (Exception ex)
@@ -104,20 +191,102 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return Json(model.Take(20));
         }
 
-        [Route("search")]
+
+        [Route("refreshsentbox")]
         [HttpPost]
-        public async Task<IActionResult> Search(string search)
+        public async Task<IActionResult> RefreshSent(string status)
         {
 
-            List<Contact> result = await _manager.SearchByAsync(search);
+
+            string userId = _userManager.GetUserId(HttpContext.User);
+            List<Contact> contacts = new();
+
+            switch (status)
+            {
+                case "sent":
+                    contacts = await _manager.GetSentboxAsync(userId);
+                    break;
+                case "trash":
+                    contacts = await _manager.GetTrashAsync();
+                    break;
+                case "draft":
+                    contacts = await _manager.GetDraftsAsync(userId);
+                    break;
+            }
+
+
+
+
+
+
+            List<ContactListViewModel> model = new();
+
+            try
+            {
+                model = _mapper.Map<List<ContactListViewModel>>(contacts);
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+
+            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+            return Json(model.Take(20));
+        }
+
+
+        [Route("trash")]
+        public async Task<IActionResult> GetTrash(int pageNumber = 1)
+        {
+
+            List<Contact> contactsToDelete = await _manager.GetTrashAsync();
+
+            List<ContactListViewModel> model = new();
+
+            try
+            {
+                model = _mapper.Map<List<ContactListViewModel>>(contactsToDelete);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex.Message);
+                return BadRequest();
+            }
+
+            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+            ViewData["Count"] = model.Count;
+
+            return View(await model.ToPagedListAsync(pageNumber, 20));
+
+        }
+
+
+
+
+        [Route("search")]
+        [HttpPost]
+        public async Task<IActionResult> Search(string search, bool isSent, bool isdraft, bool isTodelete)
+        {
+            List<Contact> result = new();
+
+
+            string _senderId = _userManager.GetUserId(HttpContext.User);
+
+                result = await _manager.SearchByAsync(search, _senderId, isdraft, isTodelete, isSent);
+
 
             if (result is not null)
             {
-                List<ContactInboxViewModel> model = new();
+                List<ContactListViewModel> model = new();
 
                 try
                 {
-                    model = _mapper.Map<List<ContactInboxViewModel>>(result);
+                    model = _mapper.Map<List<ContactListViewModel>>(result);
                 }
                 catch (AutoMapperMappingException ex)
                 {

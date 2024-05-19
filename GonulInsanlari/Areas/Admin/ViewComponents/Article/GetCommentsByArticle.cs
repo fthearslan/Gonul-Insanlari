@@ -16,7 +16,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
 
         public IViewComponentResult Invoke(int id)
         {
-            var comments = _manager.GetByArticle(id);
+            var comments = _manager.GetByArticleAsync(id).Result;
             if (comments?.Count==0)
             {
                 TempData["Warning"] = "There is no comment for this article.";

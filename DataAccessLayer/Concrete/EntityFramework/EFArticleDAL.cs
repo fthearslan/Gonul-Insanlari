@@ -68,7 +68,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
             using (var db = new Context())
             {
                 return db.Articles
-                    .Where(x => x.Id == id && x.Status == true)
+                    .Where(x => x.Id == id)
                     .Include(a => a.AppUser)
                     .AsNoTrackingWithIdentityResolution()
                     .FirstOrDefault();

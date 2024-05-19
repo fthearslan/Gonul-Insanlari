@@ -10,6 +10,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
     [AllowAnonymous]
+    [Route("login")]
     public class LoginController : Controller
     {
         SignInManager<AppUser> _signInManager;
@@ -22,14 +23,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _logger = Logger;
         }
 
-
         [HttpGet]
+        [Route("admin")]
+
         public IActionResult Login()
         {
             return View();
         }
 
         [HttpPost]
+        [Route("admin")]
+
         public async Task<IActionResult> Login(SignInViewModel user)
          {
 
@@ -39,7 +43,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 if (login.Succeeded)
                 {
                     _logger.LogInformation($"The user with username {user.Username} has logged in.");
+                   
                     return RedirectToAction("Index", "Dashboard", "Admin");
+
                 }
                 else
                 {
@@ -50,7 +56,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(user);
         }
 
-
+        [Route("logout")]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

@@ -1,0 +1,88 @@
+﻿@model List<CommentListViewModel>
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<h2 style="margin-bottom:30px;">Comments</h2>
+
+<div class="ibox-content">
+    <div class="table-responsive">
+        <table id="dataTable" class="table table-striped">
+
+            <thead>
+
+                <tr>
+
+                    <th>Name Surname</th>
+                    <th>Content</th>
+                    <th>Approved</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+                @foreach (var comment in Model)
+                {
+                    string labelStatus = (comment.Status == true) ? "label label-primary" : "label label-danger";
+                    string labelIsApproved = (comment.IsApproved == true) ? "label label-primary" : "label label-danger";
+
+                    <tr class="click" data-href="/comments/detail/@comment.Id" style="cursor:pointer">
+                        <td>@comment.NameSurname</td>
+                        <td>@comment.Content...</td>
+                        <td><span class="@labelIsApproved">@comment.IsApproved</span></td>
+                        <td><span class="@labelStatus">@comment.Status</span></td>
+                        <td>@comment.Created</td>
+                        <td class="btn-group">
+                            <a class="btn-white btn btn-xs" href="/comments/detail/@comment.Id">View</a>
+                            <a class="btn-danger btn btn-xs" onclick="fireDelete('@comment.Id')" id="btn_delete" value="@comment.Id" href="#"><i class="fa fa-trash"></i></a>
+                        </td>
+                    </tr>
+
+                }
+
+            </tbody>
+
+        </table>
+    </div>
+</div>
+
+
+@section Script{
+
+    <script src="~/js/comment.js"></script>
+
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
+  
+
+    <script>
+
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+                },
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+
+    </script>
+
+         }

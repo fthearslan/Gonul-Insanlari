@@ -12,7 +12,12 @@
 
         public string Subject { get; set; }
 
+        public bool IsSent { get; set; }
+        public bool IsDraft { get; set; }
+        public bool Status { get; set; }
+        public string? To { get; set; }
 
         public DateTime Created { get; set; }
+
     }
 }

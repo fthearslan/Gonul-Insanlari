@@ -1,16 +1,18 @@
 ﻿@model IPagedList<ContactListViewModel>
 
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "Drafts";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+
 <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
 
 
 <div class="row">
-    @*   @await Html.PartialAsync("Categories") *@
+
 
     @await Component.InvokeAsync("ContactFolders")
 
@@ -19,9 +21,11 @@
 
             <form method="get" action="index.html" class="float-right mail-search">
                 <input id="isSent" value="false" hidden />
-                <input id="isdraft" value="false" hidden />
-                <div class="input-group">
+                <input id="isdraft" value="true" hidden />
+                <input id="status" value="draft" hidden />
 
+
+                <div class="input-group">
                     <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search email">
                     <div class="input-group-btn">
                         <button type="button" onclick="Search();" class="btn btn-sm btn-primary">
@@ -31,12 +35,11 @@
                 </div>
             </form>
             <h2>
-                Inbox(@ViewData["Count"])
+               Drafts(@ViewData["Count"])
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
 
-                <button onclick="Refresh();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
-                <button onclick="markAsRead();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
+                <button onclick="RefreshSentBox();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
                 <button onclick="Delete();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
 
             </div>
@@ -48,9 +51,8 @@
 
                     @foreach (var contact in Model)
                     {
-                        string isSeen = contact.IsSeen == true ? "read" : "unread";
 
-                        <tr id="@contact.Id" class="@isSeen click" data-href="/mail/detail/@contact.Id" style="cursor:pointer">
+                        <tr id="@contact.Id" class="read click" data-href="/mail/detail/@contact.Id" style="cursor:pointer">
 
                             <td class="check-mail">
                                 <input type="checkbox" class="i-checks" value="@contact.Id">
@@ -58,15 +60,12 @@
                             <td class="mail-ontact"><a href="">@contact.NameSurname</a></td>
                             <td class="mail-subject"><a href="mail_detail.html">@contact.Subject - @contact.Content.Substring(0,30)...</a></td>
 
-                            @if (contact.IsSeen)
-                            {
-                                <td class=""></td>
-                            }
-                            else
-                            {
 
-                                <td class=""><i class="fa fa-eye @contact.Id"></i></td>
-                            }
+                            <td class=""></td>
+
+
+
+
 
                             <td class="text-right mail-date">@GetDate.GetCreateDate(contact.Created)</td>
                         </tr>
@@ -81,7 +80,7 @@
 
         </div>
 
-        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("Inbox",new { pageNumber}))
+        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("Drafts",new { pageNumber}))
 
     </div>
 </div>
@@ -90,7 +89,7 @@
 @section Script{
 
 
-      
+
     <script src="~/js/contact.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
     <script src="~/lib/jquery.toast.min.js"></script>

@@ -52,7 +52,7 @@ builder.Services.AddScoped<ResponseModel>();
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
-    x.LoginPath = "/Admin/Login/Login";
+    x.LoginPath = "/login/admin";
 
 }
 

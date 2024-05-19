@@ -42,7 +42,7 @@
                                 string text = (category.Status == true) ? "Enabled" : "Disabled";
                                 <tr>
                                     <td style="cursor:pointer" class="myBox">
-                                        <a href="/Admin/Category/GetDetails/@category.CategoryID"></a>
+                                        <a href="/categories/details/@category.CategoryID"></a>
                                         # @category.Name
                                     </td>
                                     <td><span class="@label">@text</span></td>
@@ -51,16 +51,16 @@
                                     @if (category.Status == true)
                                     {
                                         <td class="btn-group">
-                                            <a class="btn-white btn btn-xs" href="/Admin/Category/GetDetails/@category.CategoryID">View</a>
-                                            <a class="btn-white btn btn-xs" href="/Admin/Category/EditCategory/@category.CategoryID">Edit</a>
+                                            <a class="btn-white btn btn-xs" href="/categories/details/@category.CategoryID">View</a>
+                                            <a class="btn-white btn btn-xs" href="/categories/edit/@category.CategoryID">Edit</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedisable(@category.CategoryID)" id="btn_delete" value="@category.CategoryID"><i class="fa fa-trash"></i></a>
                                         </td>
                                     }
                                     else
                                     {
                                         <td class="btn-group">
-                                            <a class="btn-white btn btn-xs" href="/Admin/Category/GetDetails/@category.CategoryID">View</a>
-                                            <a class="btn-white btn btn-xs" href="/Admin/Category/EditCategory/@category.CategoryID">Edit</a>
+                                            <a class="btn-white btn btn-xs" href="/categories/details/@category.CategoryID">View</a>
+                                            <a class="btn-white btn btn-xs" href="/categories/edit/@category.CategoryID">Edit</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@category.CategoryID)" id="btn_delete"><i class="fa fa-trash"></i></a>
                                         </td>
 
@@ -78,7 +78,7 @@
             
         </div>
         <div style="margin-right:15px;margin-left:auto">
-            <a href="/Admin/Category/AddCategory" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
+            <a href="/categories/add" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
         </div>
     </div>
 
@@ -135,7 +135,7 @@
 
                     $.ajax({
                         type: "POST",
-                        url: "/Admin/Category/Delete/" + id,
+                        url: "/categories/delete/" + id,
 
 
 
@@ -175,7 +175,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "/Admin/Category/Delete/" + id,
+                        url: "/categories/delete/" + id,
 
 
 

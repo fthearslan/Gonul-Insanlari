@@ -46,15 +46,15 @@
 
                                     <tr>
                                         <td style="cursor:pointer" class="myBox">
-                                            <a href="/Admin/Announcement/GetDetails/@announcement.Id"></a>
+                                            <a href="/announcements/details/@announcement.Id"></a>
                                             <i style="margin-right:3px;" class="fa fa-bullhorn"></i> @announcement.Title
                                         </td>
                                         <td>@announcement.Subject</td>
                                         <td>@announcement.Created.ToString("dd-MMM-yyyy")</td>
                                         <td>@@@announcement.User</td>
                                         <td class="btn-group">
-                                            <a class="btn-white btn btn-xs" href="/Admin/Announcement/GetDetails/@announcement.Id">View</a>
-                                            <a class="btn-white btn btn-xs" href="/Admin/Announcement/EditAnnouncement/@announcement.Id">Edit</a>
+                                            <a class="btn-white btn btn-xs" href="/announcements/details/@announcement.Id">View</a>
+                                            <a class="btn-white btn btn-xs" href="/announcements/edit/@announcement.Id">Edit</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@announcement.Id)" Id="btn_delete" value="@announcement.Id"><i class="fa fa-trash"></i></a>
                                         </td>
 
@@ -138,7 +138,7 @@
                 if (result.isConfirmed) {
                     $.ajax({
                         type: "POST",
-                        url: "/Admin/Announcement/Delete/" + id,
+                        url: "/announcements/delete/" + id,
 
 
 

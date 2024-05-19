@@ -9,6 +9,8 @@ namespace BussinessLayer.Abstract.Services
 {
     public interface ICommentService : IGenericService<Comment>
     {
-        List<Comment> GetByArticle(int id);
+        Task<List<Comment>> GetAllAsync();
+
+        Task<List<Comment>> GetByArticleAsync(int articleId);
     }
 }

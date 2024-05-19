@@ -12,7 +12,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
         public ContactProfile()
         {
-            CreateMap<Contact, ContactInboxViewModel>()
+            CreateMap<Contact, ContactListViewModel>()
                 .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.Content.Substring(0, 30)));
 
 

@@ -15,6 +15,7 @@ using System.Reflection.Metadata.Ecma335;
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
+    [Route("announcements")]
     public class AnnouncementController : Controller
     {
 
@@ -34,6 +35,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _manager = manager;
             _validator = validator;
         }
+
+        [Route("list")]
 
         public async Task<IActionResult> List()
         {
@@ -55,6 +58,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        [Route("details/{id}")]
 
         public async Task<IActionResult> GetDetails(int id)
         {
@@ -82,13 +86,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         }
-
+        
+        [Route("add")]
         [HttpGet]
         public IActionResult AddAnnouncement()
         {
             return View();
         }
-
+        
+        [Route("add")]
         [HttpPost]
         public async Task<IActionResult> AddAnnouncement(AnnouncementCreateViewModel model)
         {
@@ -124,7 +130,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-
+        [Route("edit/{id}")]
         [HttpGet]
         public async Task<IActionResult> EditAnnouncement(int id)
         {
@@ -147,6 +153,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("edit/{id}")]
         public async Task<IActionResult> EditAnnouncement(AnnouncementEditViewModel model)
         {
             if (ModelState.IsValid)

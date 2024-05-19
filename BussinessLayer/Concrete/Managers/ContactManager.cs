@@ -37,11 +37,29 @@ namespace BussinessLayer.Concrete.Managers
             return await _contact.GetAsync(x => x.Id == id);
         }
 
-        public async Task<List<Contact>> GetInbox()
+        public async Task<List<Contact>> GetDraftsAsync(string _senderId)
         {
 
-            return await _contact.GetInbox();
+            return await _contact.GetDraftsAsync(_senderId);
+        }
 
+        public async Task<List<Contact>> GetInboxAsync()
+        {
+
+            return await _contact.GetInboxAsync();
+
+        }
+
+        public async Task<List<Contact>> GetSentboxAsync(string senderId)
+        {
+            return await _contact.GetSentboxAsync(senderId);
+
+        }
+
+        public async Task<List<Contact>> GetTrashAsync()
+        {
+
+            return await _contact.GetTrashAsync();
         }
 
         public IQueryable<Contact> GetWhere(Expression<Func<Contact, bool>> filter)
@@ -68,6 +86,13 @@ namespace BussinessLayer.Concrete.Managers
         public async Task<List<Contact>> SearchByAsync(string search)
         {
             return await _contact.SearchByAsync(search);
+
+        }
+
+        public async Task<List<Contact>> SearchByAsync(string search, string senderId, bool isdraft, bool isTodelete, bool isSent)
+        {
+
+            return await _contact.SearchByAsync(search, senderId, isdraft, isTodelete,isSent);
 
         }
 
