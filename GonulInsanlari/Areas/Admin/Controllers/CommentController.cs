@@ -203,6 +203,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     case "save":
                         comment.Progress = CommentProgress.Pending;
                         comment.Status = true;
+                        _manager.Update(comment);
                         break;
                 }
 

@@ -88,12 +88,53 @@ function SearchComments() {
 
                 var labelstatus = "";
                 
+                var actionValueFirst = "";
+                var actionValueSec = "";
+                var btnFirstText = "";
+                var btnSecText = "";
 
-              
+                var btnFirstcls = "";
+                var btnSeccls = "";
+
                 if (result[i].status == true) {
                     labelstatus = "text-navy"
                 } else {
                     labelstatus = "text-danger"
+                }
+
+                switch (CommentProgress) {
+                    case "Pending":
+                        actionValueFirst = "approve";
+                        btnFirstText = " Approve";
+                        btnSecText = " Reject";
+                        btnFirstcls = "fa fa-thumbs-up";
+                        btnSeccls = "fa fa-thumbs-down";
+                        actionValueSec = "reject";
+                        break;
+                    case "Approved":
+                        actionValueFirst = "";
+                        actionValueSec = "reject";
+                        btnFirstText = " Unknown";
+                        btnSecText = " Reject";
+                        btnFirstcls = "fa fa-thumbs-up";
+                        btnSeccls = "fa fa-thumbs-down";
+                        break;
+                    case "Rejected":
+                        actionValueFirst = "approve";
+                        actionValueSec = "disable";
+                        btnFirstText = " Approve";
+                        btnSecText = " Disable";
+                        btnFirstcls = "fa fa-thumbs-up";
+                        btnSeccls = "fa fa-trash";
+                        break;
+                    case "Disabled":
+                        actionValueFirst = "save";
+                        actionValueSec = "delete";
+                        btnFirstText = " Save";
+                        btnSecText = " Delete";
+                        btnFirstcls = "fa fa-repeat";
+                        btnSeccls = "fa fa-trash";
+                        break;
                 }
 
 
@@ -116,9 +157,9 @@ function SearchComments() {
                     '<div class="social-body">' +
                     '<p>' + result[i].content + '</p>' +
                     '<div class="btn-group">' +
-                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve</button>' +
+                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="' + actionValueFirst + '" class="btn btn-primary btn-xs"><i class="'+btnFirstcls+'"></i>' + btnFirstText + '</button>' +
                     '<a href="/articles/details/' + result[i].articleID + '" class="btn btn-warning btn-xs"><i class="fa fa-file"></i> Go to Article</a>' +
-                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject </button>' +
+                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="' + actionValueSec + '" class="btn btn-danger btn-xs"><i class="' + btnSeccls + '"></i>' + btnSecText + '</button>' +
                     '</div>' +
                     '</div>' +
                     '</div>';
