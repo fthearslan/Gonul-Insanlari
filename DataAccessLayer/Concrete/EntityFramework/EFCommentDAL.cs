@@ -13,14 +13,14 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFCommentDAL : GenericRepository<Comment>, ICommentDAL
     {
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment>> GetAllAsync(CommentProgress progress, bool status)
         {
 
             using (var c = new Context())
             {
                 return await c.Comments
+                    .Where(x => x.Progress==progress && x.Status == status)
                     .OrderByDescending(x => x.Created)
-                    .OrderByDescending(x => x.IsApproved)
                     .OrderByDescending(x => x.Status)
                     .AsNoTrackingWithIdentityResolution()
                     .ToListAsync();
@@ -58,5 +58,23 @@ namespace DataAccessLayer.Concrete.EntityFramework
             };
 
         }
+
+
+        public async Task<List<Comment>> SearchByAsync(string search, CommentProgress progress, bool status)
+        {
+
+            using (var c = new Context())
+            {
+                return await c.Comments
+                    .Where(x => x.NameSurname.Contains(search))
+                    .Where(x => x.Progress==progress && x.Status == status)
+                    .OrderByDescending(x => x.NameSurname.Contains(search))
+                    .OrderByDescending(x => x.Created)
+                    .AsNoTrackingWithIdentityResolution()
+                    .ToListAsync();
+            }
+
+       }
+
     }
 }

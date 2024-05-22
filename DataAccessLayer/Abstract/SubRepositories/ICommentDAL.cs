@@ -13,9 +13,12 @@ namespace DataAccessLayer.Abstract.SubRepositories
     public interface ICommentDAL : IRepository<Comment>
     {
 
-        Task<List<Comment>> GetAllAsync();
+        Task<List<Comment>> GetAllAsync(CommentProgress progress,bool status);
 
         Task<Comment> GetByIdAsync(int _commentId);
         Task<List<Comment>> GetByArticleAsync(int _articleId);
+
+        Task<List<Comment>> SearchByAsync(string search,CommentProgress progress,bool status);
+
     }
 }

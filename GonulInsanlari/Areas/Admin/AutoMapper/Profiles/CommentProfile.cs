@@ -9,12 +9,12 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         public CommentProfile()
         {
 
-            CreateMap<Comment,CommentListViewModel>()
-                .ForMember(dest=>dest.Content,opt=>opt.MapFrom(src=>src.Content.Substring(0,10)));
+            CreateMap<Comment, CommentListViewModel>();
+                
 
+            CreateMap<Article, CommentsByArtcleViewModel>()
+                .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.Comments.Count));
 
-
-            
 
         }
     }

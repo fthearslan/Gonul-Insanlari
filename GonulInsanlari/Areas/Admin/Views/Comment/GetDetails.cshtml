@@ -1,0 +1,13 @@
+﻿@model List<Comment>
+@{
+    ViewData["Title"] = "GetDetails";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@foreach(var item in Model)
+{
+    <p>@item.NameSurname =>  @item.Content</p>
+
+}

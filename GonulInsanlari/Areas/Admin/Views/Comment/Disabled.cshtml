@@ -1,20 +1,24 @@
 ﻿@model IPagedList<CommentListViewModel>
+
+
 @{
-    ViewData["Title"] = "List";
+    ViewData["Title"] = "Disabled";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
+
+
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<link href="~/inspinia-gh-pages/css/plugins/footable/footable.core.css" rel="stylesheet">
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
 <h2 style="margin-bottom:30px;"><i class="fa fa-comments"></i> Comments</h2>
 
 <div class="tabs-container">
     <ul class="nav nav-tabs" role="tablist">
-        <li><a class="nav-link active" data-toggle="tab" href="#tabs-1">Pending</a></li>
+        <li><a class="nav-link" href="/comments/list">Pending</a></li>
         <li><a class="nav-link" href="/comments/list/approved">Approved</a></li>
-        <li><a class="nav-link" data-toggle="tab" href="/comments/list/rejected">Rejected</a></li>
-        <li><a class="nav-link" href="/comments/list/disabled">Disabled</a></li>
+        <li><a class="nav-link" href="/comments/list/rejected">Rejected</a></li>
+        <li><a class="nav-link active" data-toggle="tab" href="/comments/list/disabled">Disabled</a></li>
         <li><a class="nav-link" data-toggle="tab" href="#tabs-2"><i class="fa fa-search"></i> By Article</a></li>
 
     </ul>
@@ -22,26 +26,26 @@
 
         <div role="tabpanel" id="tabs-1" class="tab-pane active">
 
-            <div  class="panel-body">
+            <div class="panel-body">
                 <div class="input-group" style="margin-bottom:15px;">
-                    <input id="progress" value="Pending" hidden/>
-                    <input id="Status" value="true" hidden/>
+                    <input id="progress" value="Disabled" hidden />
+                    <input id="Status" value="false" hidden />
 
                     <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search comment...">
                     <div style="margin-left:5px;" class="input-group-btn">
-                        <button  type="button" onclick="SearchComments();" class="btn btn-sm btn-primary">
+                        <button type="button" onclick="SearchComments();" class="btn btn-sm btn-primary">
                             Search
                         </button>
                     </div>
-                    </div>
-              
-              
-             <div id="panel" class="col-lg-12">
+                </div>
+
+
+                <div id="panel" class="col-lg-12">
                     @foreach (var comment in Model)
                     {
                         string labelStatus = (comment.Status == true) ? "text-navy" : "text-danger";
-                      
-                       
+
+
 
                         <div id="@comment.Id" class="social-feed-box">
 
@@ -68,9 +72,9 @@
                                 </p>
 
                                 <div class="btn-group">
-                                    <button onclick="approveOrReject('@comment.Id',this.value)"  value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve</button>
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="save" class="btn btn-primary btn-xs"><i class="fa fa-repeat"></i> Save </button>
                                     <a href="/articles/details/@comment.ArticleID" class="btn btn-warning btn-xs"><i class="fa fa-file"></i> Go to Article</a>
-                                    <button onclick="approveOrReject('@comment.Id',this.value)"  value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject </button>
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="delete" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
 
                                 </div>
                             </div>
@@ -78,12 +82,12 @@
                         </div>
 
                     }
-                    @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List","Comment",new { pageNumber}))
+                    @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("Disabled","Comment",new { pageNumber}))
 
-             </div>
-           
-                   
-            
+                </div>
+
+
+
             </div>
         </div>
         <div role="tabpanel" id="tabs-2" class="tab-pane">
@@ -109,43 +113,7 @@
 
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
-    <script src="/_framework/aspnetcore-browser-refresh.js"></script>
-
-    
-
-
-  @*   <script>
-
-        $(document).ready(function () {
-            $("#dataTable").dataTable({
-                "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
-                },
-                "searching": true,
-                "ordering": true,
-                "paging": true,
-                "pagingType": "full_numbers",
-                "pageLength": 10,
-                "responsive": true,
-                "columnDefs": [{
-                    "targets": 3,
-                    "orderable": false
-                }]
-            });
-        });
-
-    </script>
-
-    <script src="~/inspinia-gh-pages/js/plugins/footable/footable.all.min.js"></script>
-
-    <script>
-        $(document).ready(function () {
-
-            $('.footable').footable();
-            $('.footable2').footable();
-
-        });
-
-    </script> *@
 
          }
+
+

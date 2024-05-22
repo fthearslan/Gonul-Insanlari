@@ -29,9 +29,9 @@ namespace BussinessLayer.Concrete.Managers
             _comment.Delete(entity);
         }
 
-        public async Task<List<Comment>> GetAllAsync()
+        public async Task<List<Comment>> GetAllAsync(CommentProgress progress, bool status)
         {
-            return await _comment.GetAllAsync();
+            return await _comment.GetAllAsync(progress, status);
         }
 
         public List<Comment> GetByArticle(int id)
@@ -69,6 +69,12 @@ namespace BussinessLayer.Concrete.Managers
         public List<Comment> ListFilter()
         {
             return _comment.ListFilter(x => x.Status == true).OrderByDescending(x => x.Created).ToList();
+        }
+
+        public async Task<List<Comment>> SearchAsync(string search, CommentProgress progress, bool status)
+        {
+            return await _comment.SearchByAsync(search, progress, status);
+
         }
 
         public void Update(Comment entity)

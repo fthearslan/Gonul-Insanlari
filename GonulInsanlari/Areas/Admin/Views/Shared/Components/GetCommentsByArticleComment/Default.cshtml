@@ -1,0 +1,41 @@
+﻿@model List<CommentsByArtcleViewModel>
+
+<div class="table-responsive">
+    <table id="dataTable" class="table table-striped">
+
+        <thead>
+
+            <tr>
+
+                <th>Title</th>
+                <th>Comments</th>
+                <th>Status</th>
+                <th>Created</th>
+                <th>Action</th>
+
+
+            </tr>
+
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+                string labelStatus = (item.Status == true) ? "label label-primary" : "label label-danger";
+           
+                <tr class="click" data-href="#" style="cursor:pointer">
+                    <td>@item.Title</td>
+                    <td>@item.CommentCount</td>
+                    <td><span class="@labelStatus">@item.Status</span></td>
+                    <td>@item.Created</td>
+                    <td class="btn-group">
+                        <a class="btn-white btn btn-xs" href="/comments/details/@item.Id">View</a>
+                    </td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+</div>
