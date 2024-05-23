@@ -13,7 +13,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region List
 
-            CreateMap<CategoryDto,CategoryListViewModel>();
+            CreateMap<CategoryDto, CategoryListViewModel>();
             CreateMap<CategoryCreateViewModel, Category>();
 
             #endregion

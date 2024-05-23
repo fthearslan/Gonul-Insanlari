@@ -20,6 +20,7 @@ using Rotativa.AspNetCore;
 using System.Configuration;
 using System.Reflection;
 using GonulInsanlari.Areas.Admin.Models.Tools;
+using GonulInsanlari.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -38,7 +39,6 @@ builder.Services.AddMvc(config =>
 }
 );
 builder.Services.AddDbContext<Context>();
-
 
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
@@ -65,12 +65,13 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler();
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-
 app.UseStatusCodePagesWithReExecute("/Admin/Error/ErrorPage", "?code={0}");
+app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 

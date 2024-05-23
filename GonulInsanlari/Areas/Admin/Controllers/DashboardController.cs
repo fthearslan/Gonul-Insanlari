@@ -17,7 +17,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _userManager = userManager;
         }
         [Route("dashboard",Name ="dashboard")]
-
         public IActionResult Index()
         {
             return View();

@@ -8,6 +8,7 @@ using FluentValidation;
 using FluentValidation.Results;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NuGet.Protocol;
 using System.Security.Policy;
 
@@ -34,21 +35,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("list")]
         public IActionResult List()
         {
-            try
-            {
-                List<CategoryListViewModel> model = _mapper.Map<List<CategoryListViewModel>>(_manager.GetCategoriesWithArticle());
-                return View(model);
-            }
-            catch (AutoMapperMappingException ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
-
+            List<CategoryListViewModel> model
+           = _mapper.Map<List<CategoryListViewModel>>(_manager.GetCategoriesWithArticle());
+         
+            return View(model);
         }
 
         [Route("delete/{id}")]
-
         public async Task<IActionResult> Delete(int id)
         {
             var category = await _manager.GetByIdAsync(id);
