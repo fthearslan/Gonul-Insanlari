@@ -24,7 +24,7 @@ namespace GonulInsanlari.Middlewares
             catch (Exception ex)
             {
 
-                _logger.LogError($"Something went wrong...  {ex.Message}");
+                _logger.LogError($"Something went wrong... and serilog is working...  {ex.Message}");
 
                 if (_context.Response.StatusCode != 404)
                     _context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;

@@ -10,24 +10,34 @@ namespace EntityLayer.Concrete.Entities
 {
     public class AppUser : IdentityUser<int>
     {
+        public AppUser()
+        {
+            UserLogin = new();
+        }
 
-        public string Name { get; set; }
-        public string Surname { get; set; }
-        public string ImagePath { get; set; }
-        public bool Status { get; set; }
+        public string Name { get; set; } = null!;
+        public string Surname { get; set; }=null!;
+        
+        public int Age { get; set; } 
+        public string ImagePath { get; set; } = null!;
 
-        public List<Article> Articles { get; set; }
+        public string AboutMe { get; set; } = null!;
+        public bool Status { get; set; } 
 
-        public List<Announcement> Announcements { get; set; }
+        public DateTime Registered { get; set; } = DateTime.Now;
+        public List<Article> Articles { get; set; } = null!;
 
-        public List<UserAssignment>? UserAssignments { get; set; }
+        public List<Announcement> Announcements { get; set; } = null!;
+
+        public List<UserAssignment>? UserAssignments { get; set; } = null!;
 
         [InverseProperty("Sender")]
-        public List<Message> MessagesSent { get; set; }
+        public List<Message> MessagesSent { get; set; } = null!;
         [InverseProperty("Receiver")]
-        public List<Message> MessagesReceived { get; set; }
-        public List<Note> Notes { get; set; }
+        public List<Message> MessagesReceived { get; set; } = null!;
+        public List<Note> Notes { get; set; } = null!;
 
+        public List<UserLogin> UserLogin { get; set; }
 
     }
 }

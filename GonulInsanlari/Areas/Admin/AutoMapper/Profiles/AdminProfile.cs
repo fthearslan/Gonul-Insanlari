@@ -10,7 +10,11 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         {
 
             CreateMap<AppUser, AdminProfileViewModel>()
-                .ForMember(dest => dest.Roles, opt => opt.Ignore());
+                .ForMember(dest => dest.Roles, opt => opt.Ignore())
+                .ForMember(dest => dest.Age, opt => opt.MapFrom(src=>src.Age));
+
+            CreateMap<AppUser, AdminEditViewModel>()
+                .ForMember(dest => dest.Password, opt =>opt.MapFrom(src=>src.PasswordHash));
 
         }
     }

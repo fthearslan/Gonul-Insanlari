@@ -21,6 +21,7 @@ using System.Configuration;
 using System.Reflection;
 using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
+
+
 
 builder.Services.AddMvc(config =>
 {
@@ -58,7 +61,12 @@ builder.Services.AddAuthentication(
 
     );
 
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
+builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 

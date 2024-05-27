@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Areas.Admin.Models.ViewModels.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +13,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [Route("admin/u")]
     public class AdminController : Controller
     {
-
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
         private readonly ILogger<AdminController> _logger;
@@ -30,30 +30,34 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             AppUser user = await _userManager.GetUserAsync(HttpContext.User);
 
-            IList<string> userRoles =await _userManager.GetRolesAsync(user);
-            
-           
+            IList<string> userRoles = await _userManager.GetRolesAsync(user);
+
             if (user is not null)
             {
-                AdminProfileViewModel model = new();
+                AdminProfileViewModel model = _mapper.Map<AdminProfileViewModel>(user);
+                model.Roles = userRoles.ToList();
 
-                try
-                {
-                    model = _mapper.Map<AdminProfileViewModel>(user);
-                    model.Roles = userRoles.ToList();
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-
-                    return BadRequest();
-                }
+                ViewData["DayPassed"] = DateTime.Now.Subtract(model.Registered).Days;
 
                 return View(model);
 
             }
-
             return BadRequest();
         }
+
+        [HttpGet]
+        [Route("edit")]
+        public async Task<IActionResult> EditProfile()
+        {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+            AdminEditViewModel model = _mapper.Map<AdminEditViewModel>(user);
+
+            return Json(model);
+
+        }
+
+
+
     }
 }

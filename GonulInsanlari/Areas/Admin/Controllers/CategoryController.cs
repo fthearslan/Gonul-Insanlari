@@ -35,9 +35,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("list")]
         public IActionResult List()
         {
+
             List<CategoryListViewModel> model
            = _mapper.Map<List<CategoryListViewModel>>(_manager.GetCategoriesWithArticle());
-         
+
             return View(model);
         }
 
@@ -60,7 +61,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 }
 
             return BadRequest();
-           
+
         }
 
 
@@ -81,43 +82,30 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 await model.SetImagePath();
 
-                try
+                Category category = _mapper.Map<Category>(model);
+
+                if (category != null)
                 {
-                    Category category = _mapper.Map<Category>(model);
-
-                    if (category != null)
+                    var result = await _validator.ValidateAsync(category);
+                    if (result.IsValid)
                     {
-                        var result = await _validator.ValidateAsync(category);
-                        if (result.IsValid)
+                        await _manager.AddAsync(category);
+                        return RedirectToAction("GetDetails", new { id = category.Id });
+                    }
+                    else
+                    {
+                        foreach (var error in result.Errors)
                         {
-                            await _manager.AddAsync(category);
-                            return RedirectToAction("GetDetails", new {id=category.Id});
+                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                         }
-                        else
-                        {
-                            foreach (var error in result.Errors)
-                            {
-                                ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                            }
-
-                        }
-                        return View(model);
 
                     }
-
                 }
-                catch (AutoMapperMappingException ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-
-                }
-
 
             }
+
             return View(model);
 
         }
@@ -129,17 +117,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var category = await _manager.GetByIdAsync(id);
 
             if (category != null)
-                try
-                {
-                    var model = _mapper.Map<CategoryEditViewModel>(category);
-                    return View(model);
-                }
-                catch (AutoMapperMappingException ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-                }
+            {
+                var model = _mapper.Map<CategoryEditViewModel>(category);
+                return View(model);
 
+            }
             return NotFound();
 
         }
@@ -151,21 +133,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 if (model.Image is not null)
                     await model.SetImagePath();
 
-                Category category = new();
-
-                try
-                {
-                    category = _mapper.Map<Category>(model);
-                }
-                catch (AutoMapperMappingException ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-                }
+                Category category = _mapper.Map<Category>(model);
 
                 var result = _validator.Validate(category);
                 if (result.IsValid)
@@ -180,7 +151,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
                     }
                 }
+
             }
+            
             return View(model);
         }
         [Route("details/{id}")]
@@ -189,18 +162,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var category = _manager.GetDetails(id);
 
             if (category != null)
-                try
-                {
-                    CategoryDetailViewModel model = _mapper.Map<CategoryDetailViewModel>(category);
-                    return View(model);
-                }
-                catch (AutoMapperMappingException ex)
-                {
+            {
+                CategoryDetailViewModel model = _mapper.Map<CategoryDetailViewModel>(category);
+                return View(model);
 
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-
-                }
+            }
 
             return NotFound();
 

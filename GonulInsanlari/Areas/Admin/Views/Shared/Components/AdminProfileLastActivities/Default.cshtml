@@ -1,0 +1,45 @@
+﻿@model List<(string,string)>
+
+<div class="ibox-content">
+    <h3>Last Activities</h3>
+
+    <div class="activity-stream">
+
+        @foreach (var item in Model)
+        {
+            string icon = item.Item2 switch
+            {
+                "Login" => "fa fa-sign-in",
+                "Logout" => "fa fa-sign-out",
+                _ =>  "fa fa-sign-in"
+            };
+
+            <div class="stream">
+                <div class="stream-badge">
+                    <i class="@icon"></i>
+                </div>
+                <div class="stream-panel">
+                    @item.Item1
+                </div>
+            </div>
+
+        }
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

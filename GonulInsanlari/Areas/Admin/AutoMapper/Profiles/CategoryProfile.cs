@@ -27,7 +27,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region Details
 
-            CreateMap<Category,CategoryDetailViewModel>();
+            CreateMap<Category, CategoryDetailViewModel>();
             #endregion
 
 

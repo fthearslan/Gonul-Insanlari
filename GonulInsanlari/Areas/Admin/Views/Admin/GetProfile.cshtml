@@ -4,6 +4,7 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row m-b-lg m-t-lg">
         <div class="col-md-6">
@@ -27,7 +28,6 @@
 
                         </h4>
                         <h5>
-                            <a href="#" class="btn btn-w-m btn-link"><i class="fa fa-pencil-square-o"></i> Edit Profile</a>
                         </h5>
                     </div>
                 </div>
@@ -40,32 +40,50 @@
         </div>
 
         <div class="col-lg-12">
-            <div class="ibox">
-                <div class="ibox-content">
-                    <h3>About @Model.UserName</h3>
+            <div class="row">
+                <div class="col-lg">
+                    <div class="ibox">
+                        <div class="ibox-content">
+                            <div class="row">
+                                <address style="margin-right:5px;margin-left:20px;">
+                                    <strong>Full Name</strong><br>
+                                    @Model.Name @Model.Surname<br>
+                                    <br />
+                                    <strong>Age</strong><br>
+                                    @Model.Age<br>
+                                    <br />
 
-                    <p class="small">
-                        There are many variations of passages of Lorem Ipsum available, but the majority have
-                        suffered alteration in some form, by injected humour, or randomised words which don't.
-                        <br />
-                        <br />
-                        If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't
-                        anything embarrassing
-                    </p>
+                                    <strong>Phone Number</strong><br>
+                                   @Model.PhoneNumber<br>
+                                    <br />
 
-                    <p class="small font-bold">
-                        <span><i class="fa fa-circle text-navy"></i> Online status</span>
-                    </p>
+                                    <strong>Email</strong><br>
+                                    <a href="mailto:#">@Model.Email</a><br>
+                                    <br />
 
+                                </address>
+                                <address style="margin-right:auto; margin-left:auto;">
+                                    <strong>Social Media</strong><br>
+                                    @@fthearslan12<br>
+                                    <br />
+                                    <a href="#" style="color:black" data-toggle="modal" data-target="#myModal5" onclick="getuserInfo();"><i class="fa fa-pencil-square-o"></i> Edit</a>
+
+                                </address>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="col-lg">
+                    <div class="ibox-content">
+                    </div>
                 </div>
             </div>
 
+
             <div class="ibox">
-                <div class="ibox-content">
-                    <h3>Last Activities</h3>
-
-
-                </div>
+                @await Component.InvokeAsync("AdminProfileLastActivities",new {userId = Model.Id })
             </div>
 
         </div>
@@ -75,3 +93,123 @@
     </div>
 
 </div>
+
+<div class="modal inmodal fade" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">Edit Personal Information</h4>
+            </div>
+            <div class="modal-body">
+                <div class="ibox-content">
+                    <div class="row">
+                        <div class="col-lg">
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Name</label>
+
+                                <div><input id="name" type="text" name="Name" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Username</label>
+
+                                <div><input id="username" type="text" name="Username" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Age</label>
+
+                                <div><input id="age" type="number" name="Age" class="form-control"></div>
+
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Password</label>
+
+                                <div><input id="password" type="password" name="Password" class="form-control"></div>
+
+                            </div>
+
+
+
+
+                        </div>
+
+
+                        <div class="col-lg">
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Surname</label>
+
+                                <div><input id="surname" type="text" name="Surname" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Email</label>
+
+                                <div><input id="email" type="text" name="Email" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Phone Number</label>
+
+                                <div><input id="phonenumber" type="text" name="Phone" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label"> Confirm Password</label>
+
+                                <div><input id="passwordconfirm" type="password" name="PasswordConfirm" class="form-control"></div>
+
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">About me</label>
+
+                                <div>
+                                    <textarea id="about" type="text" name="About" class="form-control">
+
+                            </textarea>
+                                </div>
+
+                            </div>
+
+                        </div>
+             
+
+
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary"> Save </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+
+    <script src="~/js/admin.js"></script>
+
+        }
