@@ -3,8 +3,8 @@ using DataAccessLayer.Concrete.DTOs.Assignment;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.Build.Framework;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {

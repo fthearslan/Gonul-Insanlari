@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.Tools;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Comment;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
 using System.Runtime.InteropServices;
+using ViewModelLayer.Models.Tools;
+using ViewModelLayer.ViewModels.Comment;
 using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers

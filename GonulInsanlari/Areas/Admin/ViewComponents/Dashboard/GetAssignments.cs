@@ -4,9 +4,9 @@ using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
 {

@@ -6,31 +6,69 @@ using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using FluentValidation.Results;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using NuGet.Protocol;
 using System.Security.Policy;
+using ViewModelLayer.ViewModels.Category;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
-
     [Area(nameof(Admin))]
     [Route("categories")]
     public class CategoryController : Controller
     {
-        private readonly IMapper _mapper;
-        private readonly ILogger<CategoryController> _logger;
-        private readonly ICategoryService _manager;
-        private readonly AbstractValidator<Category> _validator;
 
-        public CategoryController(IMapper Mapper, ILogger<CategoryController> logger, ICategoryService service, AbstractValidator<Category> validator)
+        #region DI Services
+
+        private readonly IMapper _mapper;
+        private readonly ICategoryService _manager;
+
+        public CategoryController(IMapper Mapper, ICategoryService service)
         {
             _mapper = Mapper;
-            _logger = logger;
             _manager = service;
-            _validator = validator;
         }
+
+
+        #endregion
+
+        #region CREATE
+
+
+        [HttpGet]
+        [Route("add")]
+        public IActionResult AddCategory()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Route("add")]
+        public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                await model.SetImagePath();
+
+                Category category = _mapper.Map<Category>(model);
+
+                await _manager.AddAsync(category);
+
+                return RedirectToAction("GetDetails", new { id = category.Id });
+
+            }
+
+            return View(model);
+
+        }
+
+        #endregion
+
+        #region READ
 
         [Route("list")]
         public IActionResult List()
@@ -42,73 +80,27 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(model);
         }
 
-        [Route("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
+        [Route("details/{id}")]
+        public IActionResult GetDetails(int id)
         {
-            var category = await _manager.GetByIdAsync(id);
-            if (category is not null)
-                switch (category.Status)
-                {
-                    case true:
-                        category.Status = false;
-                        _manager.Update(category);
-                        return RedirectToAction(nameof(List));
+            var category = _manager.GetDetails(id);
 
-                    case false:
-                        _manager.Delete(category);
-                        return RedirectToAction(nameof(List));
-
-                }
-
-            return BadRequest();
-
-        }
-
-
-        [HttpGet]
-        [Route("add")]
-
-        public IActionResult AddCategory()
-        {
-            return View();
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Route("add")]
-
-        public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)
-        {
-            if (ModelState.IsValid)
+            if (category != null)
             {
-                await model.SetImagePath();
-
-                Category category = _mapper.Map<Category>(model);
-
-                if (category != null)
-                {
-                    var result = await _validator.ValidateAsync(category);
-                    if (result.IsValid)
-                    {
-                        await _manager.AddAsync(category);
-                        return RedirectToAction("GetDetails", new { id = category.Id });
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                        }
-
-                    }
-                }
+                CategoryDetailViewModel model = _mapper.Map<CategoryDetailViewModel>(category);
+                return View(model);
 
             }
 
-            return View(model);
+            return NotFound();
 
         }
+
+
+        #endregion
+
+        #region UPDATE
+
 
         [Route("edit/{id}")]
         [HttpGet]
@@ -138,39 +130,45 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 Category category = _mapper.Map<Category>(model);
 
-                var result = _validator.Validate(category);
-                if (result.IsValid)
-                {
-                    _manager.Update(category);
-                    return RedirectToAction("GetDetails", category.Id);
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                    }
-                }
+                _manager.Update(category);
+
+                return RedirectToAction("GetDetails", new { id = category.Id });
 
             }
-            
+
             return View(model);
         }
-        [Route("details/{id}")]
-        public IActionResult GetDetails(int id)
+
+
+        #endregion
+
+        #region DELETE
+
+        [Route("delete/{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var category = _manager.GetDetails(id);
+            var category = await _manager.GetByIdAsync(id);
+            if (category is not null)
+                switch (category.Status)
+                {
+                    case true:
+                        category.Status = false;
+                        _manager.Update(category);
+                        return RedirectToAction(nameof(List));
 
-            if (category != null)
-            {
-                CategoryDetailViewModel model = _mapper.Map<CategoryDetailViewModel>(category);
-                return View(model);
+                    case false:
+                        _manager.Delete(category);
+                        return RedirectToAction(nameof(List));
 
-            }
+                }
 
-            return NotFound();
+            return BadRequest();
 
         }
+
+
+        #endregion
+
 
     }
 }

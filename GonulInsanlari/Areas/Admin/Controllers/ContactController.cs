@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.Tools;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Contact;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using System.Runtime.CompilerServices;
+using ViewModelLayer.Models.Tools;
+using ViewModelLayer.ViewModels.Contact;
 using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers

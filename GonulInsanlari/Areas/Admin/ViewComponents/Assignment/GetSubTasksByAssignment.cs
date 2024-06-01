@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Permissions;
 using System.Security.Policy;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 {

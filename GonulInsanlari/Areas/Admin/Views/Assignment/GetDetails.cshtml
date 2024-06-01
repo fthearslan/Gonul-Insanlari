@@ -204,7 +204,7 @@
 
             $.ajax({
                 type: 'POST',
-                url: '@Url.Action("ChangeProgress", "Assignment")',
+                url: '/assignments/changeProgress',
                 data: { obj: data },
                 success: function (result) {
                     $.toast({
@@ -240,7 +240,7 @@
                     $.ajax({
                         type: "POST",
                         data: { assignmentId: AssignmentId, subtaskId: subtaskID },
-                        url: "/Admin/Assignment/RemoveSubTask/",
+                        url: "/assignments/remove/subtask/",
 
                     });
                     Swal.fire({
@@ -277,7 +277,7 @@
                     $.ajax({
                         type: "POST",
                         data: { assignmentId: AssignmentId, userId: userID },
-                        url: "/Admin/Assignment/RemoveUser/",
+                        url: "/assignments/remove/user",
 
                     });
                     Swal.fire({
@@ -313,7 +313,7 @@
             $.ajax({
                 type: "POST",
                 data: { taskId: TaskId, userId: id },
-                url: "/Admin/Assignment/AddUser",
+                url: "/assignments/add/user",
                 success: function (result) {
                     $.toast({
                         heading: 'Success',
@@ -385,7 +385,7 @@
             $.ajax({
                 type: "POST",
                 data: { model: subtask },
-                url: "/Admin/Assignment/AddSubTask",
+                url: "/assignments/add/subtask",
                 success: function (result) {
                     $.toast({
                         heading: 'Success',
@@ -459,7 +459,7 @@
             formData.append("TaskId", id);
             $.ajax(
                 {
-                    url: "/Admin/Assignment/AddAttachment",
+                    url: "/assignments/add/file",
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -540,7 +540,7 @@
             $.ajax({
                 type: "POST",
                 data: { model: model },
-                url: " /Admin/Assignment/DeleteAttachment",
+                url: " /assignments/remove/file",
                 success: function (result) {
                     if (result.success) {
                         $.toast({

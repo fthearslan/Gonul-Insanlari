@@ -1,11 +1,11 @@
 ﻿using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Login;
 using GonulInsanlari.Extensions.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Logging;
 using Microsoft.Extensions.Caching.Memory;
+using ViewModelLayer.ViewModels.Login;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {

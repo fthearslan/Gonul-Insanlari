@@ -5,9 +5,6 @@ using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Configurations;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
-using GonulInsanlari.Areas.Admin.Models.Tools;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.TaskAttachment;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -21,6 +18,9 @@ using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Identity;
+using ViewModelLayer.Models.Tools;
+using ViewModelLayer.ViewModels.Assignment;
+using ViewModelLayer.ViewModels.TaskAttachment;
 using X.PagedList;
 
 
@@ -28,30 +28,26 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
     [Area(nameof(Admin))]
     [Authorize]
+    [Route("assignments")]
     public class AssignmentController : Controller
     {
-
 
         #region DI Services 
 
         private readonly IAssignmentService _manager;
         private readonly IMapper _mapper;
         private readonly IMemoryCache _cache;
-        private readonly ILogger<AssignmentController> _logger;
         private readonly UserManager<AppUser> _userManager;
-        private readonly AbstractValidator<Assignment> _validator;
         private ResponseModel _response;
         private readonly IHttpContextAccessor? _contextAccessor;
 
         AppUser _currentUser = new();
-        public AssignmentController(IAssignmentService manager, IMapper mapper, ILogger<AssignmentController> logger, UserManager<AppUser> userManager, IMemoryCache cache, AbstractValidator<Assignment> Validator, ResponseModel response, IHttpContextAccessor contextAccessor)
+        public AssignmentController(IAssignmentService manager, IMapper mapper,UserManager<AppUser> userManager, IMemoryCache cache, ResponseModel response, IHttpContextAccessor contextAccessor)
         {
             _manager = manager;
             _mapper = mapper;
-            _logger = logger;
             _userManager = userManager;
             _cache = cache;
-            _validator = Validator;
             _response = response;
             _contextAccessor = contextAccessor;
             _currentUser = _userManager.GetUserAsync(_contextAccessor?.HttpContext?.User).Result;
@@ -60,10 +56,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #endregion
 
-
-        #region Create 
+        #region CREATE
 
         [HttpGet]
+        [Route("add")]
         public IActionResult Add()
         {
 
@@ -87,6 +83,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("add")]
         public async Task<IActionResult> Add(AssignmentCreateViewModel model)
         {
             ViewData["Users"] = _cache.Get("UserList");
@@ -94,46 +91,24 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-
-                Assignment task = new();
-
-                try
-                {
-
-                    task = _mapper.Map<Assignment>(model);
-
-                }
-                catch (AutoMapperMappingException ex)
-                {
-
-                    _logger.LogError($"{ex.Message} on AssignmentController.");
-                    return BadRequest();
-                }
+                Assignment task = _mapper.Map<Assignment>(model);
 
                 task.Publisher = await _userManager.GetUserAsync(HttpContext.User);
+                task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher });
 
-                var result = _validator.Validate(task);
+                await _manager.PublishAsync(task);
 
-                if (result.IsValid)
-                {
-                    task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher });
+                return RedirectToAction(nameof(List));
 
-                    await _manager.PublishAsync(task);
-
-                    return RedirectToAction(nameof(List));
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
             }
 
-            return View();
+            return View(model);
 
         }
 
         [HttpPost]
+        [Route("add/user")]
+
         public async Task AddUser(int taskId, int userId)
         {
 
@@ -164,9 +139,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("add/subtask")]
+
         public async Task AddSubTask(SubTaskCreateViewModel model)
         {
-            ViewData["Error"] = "Error was thrown!";
+
             if (ModelState.IsValid)
             {
                 Assignment task = await _manager.GetByIdAsync(model.TaskId);
@@ -175,26 +152,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 task.SubTasks.Add(subTask);
 
-                var result = _validator.Validate(task, opt => opt.IncludeRuleSets("SubTask"));
-
-                if (result.IsValid)
-                {
-                    subTask.Assignment.Logs.Add(new($"New subtask '{subTask.Description.Substring(0, 15)}...' were added by {_currentUser.UserName}") { CreatedBy = _currentUser });
-                    _manager.AddSubTask(subTask);
-
-                }
-
-                else
-                {
-                    foreach (var error in result.Errors)
-                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                }
-
+                subTask.Assignment.Logs.Add(new($"New subtask '{subTask.Description.Substring(0, 15)}...' were added by {_currentUser.UserName}") { CreatedBy = _currentUser });
+                _manager.AddSubTask(subTask);
 
             }
         }
 
         [HttpPost]
+        [Route("add/file")]
+
         public async Task<JsonResult> AddAttachment(AddAttachmentViewModel model)
         {
             List<TaskAttachment> attachments = new List<TaskAttachment>();
@@ -273,49 +239,33 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #endregion
 
-        #region Read
+        #region READ
 
+        [Route("list")]
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
 
-            List<AssignmentByProgressListViewModel> model = new();
-
-            try
-            {
-                model = _mapper.Map<List<AssignmentByProgressListViewModel>>(tasks);
-            }
-            catch (AutoMapperMappingException)
-            {
-                return BadRequest();
-            }
+            List<AssignmentByProgressListViewModel> model = _mapper.Map<List<AssignmentByProgressListViewModel>>(tasks);
 
             return View(await model.ToPagedListAsync(pageNumber, 9));
 
         }
+
+        [Route("details/{id}")]
         public async Task<IActionResult> GetDetails(int id)
         {
             var task = await _manager.GetByIdAsync(id);
+
             if (task != null)
             {
 
-                AssignmentDetailsViewModel model = new();
-
-                try
-                {
-                    model = _mapper.Map<AssignmentDetailsViewModel>(task);
-                }
-                catch (AutoMapperMappingException ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-                }
+                AssignmentDetailsViewModel model = _mapper.Map<AssignmentDetailsViewModel>(task);
 
                 ViewData["SubTasksAll"] = task.SubTasks?.Count;
                 ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
 
                 ViewBag.userExists = _manager.IsUser(task, _userManager.GetUserId(HttpContext.User));
-
 
                 return View(model);
 
@@ -328,9 +278,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #endregion
 
-        #region Update 
+        #region UPDATE
 
         [HttpPost]
+        [Route("changeProgress")]
         public async Task ChangeProgress(AssingmentProgressChangeViewModel obj)
         {
             var task = await _manager.GetByIdAsync(obj.TaskId);
@@ -372,9 +323,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #endregion
 
-        #region Delete
+        #region DELETE
 
         [HttpPost]
+
+        [Route("remove/user")]
+
         public async Task RemoveUser(int assignmentId, int userId)
         {
             var assignment = await _manager.GetByIdAsync(assignmentId);
@@ -399,6 +353,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("remove/subtask")]
+
         public async Task RemoveSubTask(int assignmentId, Guid subtaskId)
         {
 
@@ -419,6 +375,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [Route("remove/file")]
+
         public async Task<JsonResult> DeleteAttachment(AttachmentDeleteViewModel model)
         {
 

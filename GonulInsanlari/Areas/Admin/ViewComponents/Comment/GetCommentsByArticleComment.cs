@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Comment;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.Comment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Comment
 {

@@ -4,9 +4,9 @@ using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using EntityLayer.Concrete.Configurations;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 {

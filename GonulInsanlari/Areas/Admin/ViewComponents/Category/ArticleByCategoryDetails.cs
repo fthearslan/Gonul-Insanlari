@@ -4,10 +4,9 @@ using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
 using Humanizer;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.Article;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Category
 {

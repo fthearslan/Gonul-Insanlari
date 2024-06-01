@@ -1,9 +1,9 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using GonulInsanlari.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using ViewModelLayer.ViewModels.Article;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
@@ -16,7 +16,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region Create
             CreateMap<Article, ArticleCreateViewModel>();
             CreateMap<ArticleCreateViewModel, Article>()
-                .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
+                .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>())
+                ;
             #endregion
 
             #region Edit

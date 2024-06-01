@@ -1,6 +1,6 @@
 ﻿using BussinessLayer.Abstract.Services;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment.TaskLogs;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.Assignment.TaskLogs;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 {

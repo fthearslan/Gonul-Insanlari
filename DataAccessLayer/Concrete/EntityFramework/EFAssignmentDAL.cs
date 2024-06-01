@@ -193,6 +193,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                     if (attachmentsCount == 1)
                     {
                         c.TaskAttachment.Remove(attachmentToDelete);
+                        
 
                         await c.SaveChangesAsync();
 

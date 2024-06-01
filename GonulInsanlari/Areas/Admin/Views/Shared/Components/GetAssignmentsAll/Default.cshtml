@@ -41,8 +41,8 @@
                     <td><span class="label label-primary">@task.Progress</span></td>
                     <td>@GetDate.GetCreateDate(@task.Created)</td>
                     <td class="btn-group">
-                        <a class="btn-white btn btn-xs" href="/Admin/Assignment/GetDetails/@task.Id">View</a>
-                        <a class="btn-danger btn btn-xs" onclick="fire(@task.Id)" id="btn_delete" value="@task.Id" href="/Admin/Assignment/Delete/@task.Id"><i class="fa fa-trash"></i></a>
+                        <a class="btn-white btn btn-xs" href="/assignments/details/@task.Id">View</a>
+                        <a class="btn-danger btn btn-xs" onclick="fire(@task.Id)" id="btn_delete" value="@task.Id" href="/assignments/delete/@task.Id"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
 

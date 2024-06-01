@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Admin;
+using ViewModelLayer.ViewModels.Admin;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
@@ -13,8 +13,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(dest => dest.Roles, opt => opt.Ignore())
                 .ForMember(dest => dest.Age, opt => opt.MapFrom(src=>src.Age));
 
-            CreateMap<AppUser, AdminEditViewModel>()
-                .ForMember(dest => dest.Password, opt =>opt.MapFrom(src=>src.PasswordHash));
+            CreateMap<AppUser, AdminEditViewModel>();
+              
 
         }
     }

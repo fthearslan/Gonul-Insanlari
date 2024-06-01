@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Comment;
+using ViewModelLayer.ViewModels.Comment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {

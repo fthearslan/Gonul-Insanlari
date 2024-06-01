@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Announcement;
 using Microsoft.AspNetCore.Identity;
+using ViewModelLayer.ViewModels.Announcement;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {

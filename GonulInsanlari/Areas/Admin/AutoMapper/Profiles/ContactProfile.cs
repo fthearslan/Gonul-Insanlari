@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.Tools;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Contact;
 using Microsoft.Build.Framework;
+using ViewModelLayer.ViewModels.Contact;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {

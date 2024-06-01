@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Concrete.DTOs.Category;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Category;
+using ViewModelLayer.ViewModels.Category;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers
 {

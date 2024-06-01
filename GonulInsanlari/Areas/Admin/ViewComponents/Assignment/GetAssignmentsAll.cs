@@ -2,9 +2,9 @@
 using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Concrete.DTOs.Assignment;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Assignment;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 {

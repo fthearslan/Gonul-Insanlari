@@ -2,9 +2,11 @@
 using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete.Managers;
 using BussinessLayer.Concrete.Validations.FluentValidation;
+using BussinessLayer.Concrete.Validations.FluentValidation.Admin;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -12,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,12 +42,9 @@ namespace BussinessLayer.Concrete.Configurations.Service
 
         public static IServiceCollection AddValidators(this IServiceCollection Services)
         {
-            Services.AddScoped<AbstractValidator<Article>, ArticleValidator>();
-            Services.AddScoped<AbstractValidator<Category>, CategoryValidator>();
-            Services.AddScoped<AbstractValidator<Announcement>, AnnouncementValidator>();
-            Services.AddScoped<AbstractValidator<Assignment>, AssignmentValidator>();
-
-            return Services;
+            Services.AddFluentValidationAutoValidation();
+            Services.AddValidatorsFromAssemblyContaining<EditAdminValidator>();
+                return Services;
 
         }
 

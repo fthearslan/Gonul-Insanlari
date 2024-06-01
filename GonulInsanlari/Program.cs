@@ -19,9 +19,9 @@ using Microsoft.Extensions.Caching.Memory;
 using Rotativa.AspNetCore;
 using System.Configuration;
 using System.Reflection;
-using GonulInsanlari.Areas.Admin.Models.Tools;
 using GonulInsanlari.Middlewares;
 using Serilog;
+using ViewModelLayer.Models.Tools;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,10 +1,8 @@
-﻿
-using BussinessLayer.Concrete;
+﻿using BussinessLayer.Concrete;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using FluentValidation.Results;
-using GonulInsanlari.Areas.Admin.Models;
 using GonulInsanlari.Models;
 using Humanizer.Localisation.TimeToClockNotation;
 using Microsoft.AspNetCore.Authorization;
@@ -27,7 +25,6 @@ using System.Runtime.CompilerServices;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Newtonsoft.Json;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
 using AutoMapper;
 using JetBrains.Annotations;
 using Humanizer;
@@ -35,6 +32,9 @@ using System.Runtime.Serialization;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
+using ViewModelLayer.ViewModels.Article;
+using BussinessLayer.Concrete.Validations.FluentValidation;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -44,54 +44,32 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     [Authorize]
     public class ArticleController : Controller
     {
+
+        #region DI Services
+
         private readonly IMemoryCache _memoryCache;
         private readonly UserManager<AppUser> _userManager;
         private readonly IMapper _mapper;
-        private readonly ILogger<ArticleController> _logger;
         private readonly IArticleService _articleManager;
         private readonly ICategoryService _categoryManager;
-        private readonly AbstractValidator<Article> _validator;
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger, IArticleService articleManager, ICategoryService categoryManager, AbstractValidator<Article> validator)
+
+
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger, IArticleService articleManager, ICategoryService categoryManager)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
             this._mapper = mapper;
-            _logger = logger;
             _articleManager = articleManager;
             _categoryManager = categoryManager;
-            _validator = validator;
+
         }
 
-        [Route("list")]
-        public async Task<IActionResult> List(int pageNumber = 1)
-        {
-            var articles = _articleManager.ListReleased();
 
-            List<ArticleListViewModel> model = _mapper.Map<List<ArticleListViewModel>>(articles);
+        #endregion
 
-            return View(await model.ToPagedListAsync(pageNumber, 12));
-        }
 
-        [Route("details/{id}")]
-        public IActionResult GetDetails(int id)
-        {
-            var article = _articleManager.GetDetailsByUser(id);
+        #region Create
 
-            if (article is not null)
-                try
-                {
-                    ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
-                    return View(model);
-
-                }
-                catch (AutoMapperMappingException)
-                {
-                    _logger.LogError("AutoMapper exception has been thrown at GetDetails on ArticleController.");
-                    return BadRequest();
-                }
-
-            return NotFound();
-        }
 
         [Route("add")]
         [HttpGet]
@@ -109,6 +87,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View();
         }
 
+
+
         [Route("add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -119,70 +99,65 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
+            model.GetVideoUrl(model.VideoPath);
+
             if (ModelState.IsValid)
             {
-                model.GetVideoUrl(model.VideoPath);
-                try
-                {
-                    Article article = _mapper.Map<Article>(model);
-                    article.AppUserID = user.Id;
+                Article article = _mapper.Map<Article>(model);
+                article.AppUserID = user.Id;
 
+                await _articleManager.AddAsync(article);
 
-                    var result = _validator.Validate(article);
-                    if (result.IsValid)
-                    {
-                        await _articleManager.AddAsync(article);
-                        _memoryCache.Remove("Categories");
-                        return RedirectToAction("GetDetails", new { id = article.Id });
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                        }
-                        return View(model);
-                    }
-                }
-                catch (AutoMapperMappingException)
-                {
-                    _logger.LogError("AutoMapper exception has been thrown at AddArticle on ArticleController.");
-                    return View(nameof(List));
-                }
+                _memoryCache.Remove("Categories");
 
-
-
+                return RedirectToAction("GetDetails", new { id = article.Id });
             }
-            else
-            {
-                return View(model);
 
-            }
+            return View(model);
+
         }
 
-        [Route("delete/{id:int}")]
-        [HttpPost]
-        public async Task<ActionResult> Delete(int id)
+
+
+        #endregion
+
+
+        #region Read
+
+
+        [Route("list")]
+        public async Task<IActionResult> List(int pageNumber = 1)
         {
-            var article = await _articleManager.GetByIdAsync(id);
-            if (article != null)
-            {
-                if (article.IsDraft == true)
-                {
-                    _articleManager.Delete(article);
-                    return RedirectToAction(nameof(List));
+            var articles = _articleManager.ListReleased();
 
-                }
-                else
-                {
-                    article.Status = false;
-                    _articleManager.Update(article);
-                }
-             
+            List<ArticleListViewModel> model = _mapper.Map<List<ArticleListViewModel>>(articles);
 
-            }
-            return RedirectToAction(nameof(List));
+            return View(await model.ToPagedListAsync(pageNumber, 12));
         }
+
+
+        [Route("details/{id}")]
+        public IActionResult GetDetails(int id)
+        {
+            var article = _articleManager.GetDetailsByUser(id);
+
+            if (article is not null)
+            {
+                ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
+
+                return View(model);
+            }
+
+            return NotFound();
+
+        }
+
+
+
+        #endregion
+
+
+        #region Update
 
 
         [Route("edit/{id}")]
@@ -190,9 +165,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public IActionResult EditArticle(int id)
         {
             Article article = _articleManager.GetByIdInclude(id);
-           
-            if(article is null)
+
+            if (article is null)
                 return NotFound();
+
+            ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
 
             List<SelectListItem> categories = (from x in _categoryManager.ListFilter()
                                                select new SelectListItem
@@ -204,20 +181,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
 
-            try
-            {
-                ArticleEditViewModel model = _mapper.Map<ArticleEditViewModel>(article);
-                return View(model);
-            }
-            catch (AutoMapperMappingException)
-            {
-                _logger.LogError("Mapping exception has been thrown while executing [GET] EditArticle() in ArticleController.");
-                return BadRequest();
-            }
-           
+
+            return View(model);
+
         }
-        
-        
+
+
+
         [Route("edit/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -231,33 +201,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 if (model.Image is not null)
                     await model.GetImage(model.Image);
+
                 model.GetVideoUrl(model.VideoPath);
-                try
-                {
-                    Article article = _mapper.Map<Article>(model);
 
-                    var result = _validator.Validate(article);
-                    if (result.IsValid)
-                    {
-                        article.EditedBy = user.UserName;
-                        _articleManager.Update(article);
+                Article article = _mapper.Map<Article>(model);
 
-                        return RedirectToAction("GetDetails", new { id = article.Id });
-                    }
-                    else
-                    {
-                        foreach (var error in result.Errors)
-                        {
-                            ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
-                        }
-                        return View(model);
-                    }
-                }
-                catch (AutoMapperMappingException)
-                {
-                    _logger.LogError("Mapping exception has been thrown while executing [POST] EditArticle() in ArticleController.");
-                    return View(model);
-                }
+                article.EditedBy = user?.UserName;
+
+                _articleManager.Update(article);
+
+                return RedirectToAction("GetDetails", new { id = article.Id });
 
             }
 
@@ -266,6 +219,40 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
+        #endregion
+
+
+        #region Delete
+
+
+        [Route("delete/{id:int}")]
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id)
+        {
+            var article = await _articleManager.GetByIdAsync(id);
+            if (article != null)
+                switch (article.IsDraft)
+                {
+                    case true:
+
+                        _articleManager.Delete(article);
+                        return RedirectToAction(nameof(List));
+
+                    case false:
+
+                        article.Status = false;
+                        _articleManager.Update(article);
+
+                        break;
+                }
+
+            return NotFound();
+
+        }
+
+
+
+        #endregion
 
 
     }

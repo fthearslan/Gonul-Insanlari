@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using EntityLayer.Concrete.Entities;
-using GonulInsanlari.Areas.Admin.Models.ViewModels.Article;
-using GonulInsanlari.Models;
+using ViewModelLayer.Models.Tools;
+using ViewModelLayer.ViewModels.Article;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
 {
