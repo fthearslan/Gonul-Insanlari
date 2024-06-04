@@ -69,5 +69,24 @@ namespace ViewModelLayer.Models.Tools
             return false;
 
         }
+
+        public static bool CheckFileSize(IFormFile? file)
+        {
+            const int maxfileSize = 2 * 1024 * 1024;
+
+            if (file != null)
+            {
+                if (file.Length > maxfileSize)
+                    return false;
+              
+                return true;
+            }
+
+            return false;
+
+        }
+
     }
+
+
 }

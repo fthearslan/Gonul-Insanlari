@@ -5,5 +5,7 @@
         public bool success { get; set; }
 
         public string responseMessage { get; set; } = null!;
+
+        public dynamic? Data { get; set; }
     }
 }
