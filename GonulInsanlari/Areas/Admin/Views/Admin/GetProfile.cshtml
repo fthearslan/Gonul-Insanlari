@@ -5,7 +5,8 @@
 }
 
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
-
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
+<link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
 
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row m-b-lg m-t-lg">
@@ -61,7 +62,7 @@
                                     <strong>Age</strong><br>
                                     @Model.Age<br>
                                     <br />
-                                    
+
                                     <strong>Phone Number</strong><br>
                                     @Model.PhoneNumber<br>
                                     <br />
@@ -227,7 +228,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <a href="#" style="color:lightseagreen;text-decoration-line:underline" data-toggle="modal" data-target="#changePassword">Change Password</a>
+                    <a href="#" id="chngPass" style="color:lightseagreen;text-decoration-line:underline" data-toggle="modal" data-target="#changePassword">Change Password</a>
                     <button type="button" id="btnEdit" class="btn btn-primary"> Save </button>
                 </div>
             </div>
@@ -247,7 +248,7 @@
             <div class="modal-body">
                 <div class="ibox-content">
 
-                    <div  class="text-center">
+                    <div class="text-center">
                         <img alt="image" id="userImage" class="rounded-circle m-t-lg img-fluid userImage" src="~/Images/@Model.ImagePath">
                         <div class="m-t-xs font-bold">Profile Picture</div>
                     </div>
@@ -294,29 +295,34 @@
             <div class="modal-body">
                 <form id="chngPswrd">
 
-                <div class="form-group">
-                    <label class="col-form-label">Current Password</label>
+                    <div class="form-group">
+                        <label class="col-form-label">Current Password</label>
 
-                    <div><input id="currentPassword" type="password" name="CurrentPassword" class="form-control"></div>
+                        <div><input id="currentPassword" type="password" name="CurrentPassword" class="form-control"></div>
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="col-form-label">New Password</label>
+                    <div class="form-group">
+                        <label class="col-form-label">New Password</label>
 
-                    <div><input id="newPassword" type="password" name="NewPassword" class="form-control"></div>
+                        <div><input id="newPassword" type="password" name="NewPassword" class="form-control"></div>
 
-                </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="col-form-label">Confirm New Password</label>
+                    <div class="form-group">
+                        <label class="col-form-label">Confirm New Password</label>
 
-                    <div><input id="confirmPassword" type="password" name="ConfirmPassword" class="form-control"></div>
+                        <div><input id="confirmPassword" type="password" name="ConfirmPassword" class="form-control"></div>
 
-                </div>
-               
-            
-            </form>
+                    </div>
+
+                    <div class="row">
+                        <ul id="pswrdVld">
+                        </ul>
+
+                    </div>
+
+                </form>
 
             </div>
             <div class="modal-footer">
@@ -326,7 +332,58 @@
     </div>
 </div>
 
+<div class="modal inmodal fade" id="userlogins" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">User logins for @Model.UserName</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div style="margin-right:30px;margin-left:auto;" >
+                        <div class="input-group">
+                            <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search logins">
+                            <div class="input-group-btn">
+                                <button type="button" onclick="Search();" class="btn btn-sm btn-primary">
+                                    Search
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg">
+
+
+
+                    <table id="userLogins" class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Type</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="userlog">
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @section Script{
+
+  
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="~/js/admin.js"></script>
     <script src="~/lib/jquery.toast.min.js"></script>

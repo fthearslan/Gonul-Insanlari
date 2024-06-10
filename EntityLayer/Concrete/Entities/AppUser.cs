@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -21,6 +22,7 @@ namespace EntityLayer.Concrete.Entities
         public int Age { get; set; } 
         public string ImagePath { get; set; } = null!;
 
+        public string SocialMediaAccount { get; set; }
         public string AboutMe { get; set; } = null!;
         public bool Status { get; set; } 
 
@@ -38,6 +40,10 @@ namespace EntityLayer.Concrete.Entities
         public List<Note> Notes { get; set; } = null!;
 
         public List<UserLogin> UserLogin { get; set; }
+
+        [TempData]
+        [NotMapped]
+        public IList<string> Roles { get; set; } = null!;
 
     }
 }

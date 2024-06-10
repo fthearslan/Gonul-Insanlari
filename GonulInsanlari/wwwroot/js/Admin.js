@@ -247,7 +247,7 @@ $('#btnPassword').on('click', function (e) {
         ConfirmPassword: $("#confirmPassword").val(),
 
     };
-
+    let html = "";
 
     if (formData.NewPassword == formData.ConfirmPassword) {
 
@@ -270,14 +270,22 @@ $('#btnPassword').on('click', function (e) {
                     $("#changePassword").modal('hide');
 
                 } else {
-                    $.toast({
-                        heading: 'Error',
-                        text: result.responseMessage,
-                        showHideTransition: 'slide',
-                        position: 'top-right',
-                        icon: 'error'
 
-                    });
+                    if (result.data != null) {
+
+
+                        for (let i = 0; i < result.data.length; i++) {
+
+                            html += '<li class="text-danger">' + result.data[i] + '</li>';
+
+
+                        }
+                        $("#pswrdVld").empty();
+
+                        $("#pswrdVld").append(html);
+                    }
+
+
 
                 }
 
@@ -296,9 +304,187 @@ $('#btnPassword').on('click', function (e) {
         });
     }
 
- 
-        
-   
+
+
+
 
 
 });
+
+$('#chngPass').on('click', function (e) {
+
+    $("#pswrdVld").empty();
+
+    document.getElementById("newPassword").value = "";
+    document.getElementById("currentPassword").value = "";
+    document.getElementById("confirmPassword").value = "";
+
+
+
+
+
+});
+
+
+function getUserLogins(id) {
+
+    let html = "";
+
+    $.ajax({
+        type: "GET",
+        url: "/admin/u/getuserlogins/" + id,
+        success: function (result) {
+
+            for (let i = 0; i < result.length; i++) {
+
+                let cls = "";
+
+                if (result[i].type == "Login") {
+                    cls = "text-navy"
+
+                };
+
+                if (result[i].type == "Logout") {
+                    cls = "text-danger"
+
+                };
+
+                html += '<tr>' +
+                    '<td>' + result[i].description + '</td>' +
+                    '<td class="' + cls + '">' + result[i].type + '</td >' +
+                    '</tr>';
+
+                $("#userlog").html(html);
+
+
+            }
+
+
+        }
+
+
+
+    });
+};
+
+let timeout = null;
+document.getElementById('searchbar').addEventListener('keyup', function (e) {
+
+
+    // Clear existing timeout      
+    clearTimeout(timeout);
+
+    // Reset the timeout to start again
+    timeout = setTimeout(function () {
+
+        var id = $("#userId").val();
+        Search(id)
+
+    }, 500);
+
+});
+
+
+function Search(id) {
+
+    $("#userlog").empty();
+
+
+    let html = "";
+
+    var input = {
+        Id: id,
+        Search: document.getElementById('searchbar').value
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "/admin/u/search",
+        data: { model: input },
+        success: function (result) {
+
+
+            if (result == 0) {
+                let msg = '<tr>' +
+                    '<td>There is no login found.</td>'+
+                '<td></td>'+
+                    '</tr>';
+
+                $("#userlog").html(msg);
+
+            }
+
+            for (let i = 0; i < result.length; i++) {
+
+                let cls = "";
+
+                if (result[i].type == "Login") {
+                    cls = "text-navy"
+
+                };
+
+                if (result[i].type == "Logout") {
+                    cls = "text-danger"
+
+                };
+
+
+
+
+
+                html += '<tr>' +
+                    '<td>' + result[i].description + '</td>' +
+                    '<td class="' + cls + '">' + result[i].type + '</td >' +
+                    '</tr>';
+
+
+
+
+                $("#userlog").html(html);
+
+
+
+
+
+            }
+
+
+
+
+        }
+    })
+
+}
+
+
+function deleteUser(id) {
+
+    $.ajax({
+
+        type: "POST",
+        url: "/admin/users/delete/" + id,
+        success: function (response) {
+
+            if (response.success) {
+
+                //toast
+
+                $("#" + id).hide();
+
+            }
+            else {
+                //toast
+            }
+
+
+        }
+
+
+
+
+
+    })
+
+}
+
+

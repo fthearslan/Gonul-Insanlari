@@ -1,15 +1,19 @@
 ﻿using AutoMapper;
 using BussinessLayer.Concrete.Validations.FluentValidation;
 using BussinessLayer.Concrete.Validations.FluentValidation.Admin;
+using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using GonulInsanlari.Extensions.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Admin;
+using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -180,19 +184,112 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
             var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
-            if(result.Succeeded)
+            if (result.Succeeded)
             {
                 _response.responseMessage = "Password has been successfully changed.";
                 _response.success = true;
             }
             else
             {
-                _response.responseMessage = "Something went wrong...";
+                List<string> errors = new();
+
+                foreach (var error in result.Errors.ToList())
+                {
+                    errors.Add(error.Description);
+                }
+
+                _response.success = false;
+                _response.Data = errors;
             }
 
             return Json(_response);
 
         }
+
+        [HttpGet]
+        [Route("getuserlogins/{userId}")]
+        public async Task<IActionResult> GetUserLogins(int userId)
+        {
+
+            var user =
+               await _userManager.Users.Include(x => x.UserLogin)
+                .SingleOrDefaultAsync(x => x.Id == userId);
+
+            List<AdminUserLoginsViewModel> userLogs = new();
+
+
+            user?.UserLogin.ForEach(x => userLogs.Add(new AdminUserLoginsViewModel { Description = x.Description, Type = x.Type.ToString() }));
+
+
+            return Json(userLogs);
+        }
+
+        [HttpPost]
+        [Route("search")]
+        public async Task<IActionResult> SearchLogins(AdminSearchLoginViewModel model)
+        {
+
+
+            var user =
+               await _userManager.Users.Include(x => x.UserLogin)
+                .SingleOrDefaultAsync(x => x.Id == model.Id);
+
+            List<UserLogin>? userLogins = new();
+
+            if (model.Search is not null)
+            {
+                userLogins = user?.UserLogin.
+                   Where(x => x.Description.Contains(model.Search) || x.Type.ToString().Contains(model.Search) || x.Date.ToString().Contains(model.Search))
+                   .ToList();
+
+
+            }
+
+            List<AdminUserLoginsViewModel> values = new();
+
+
+            userLogins?
+                .ForEach(x => values.Add(new() { Description = x.Description, Type = x.Type.ToString() }));
+
+
+            return Json(values);
+
+        }
+
+
+        [HttpGet]
+        [Route("users")]
+        public async Task<IActionResult> GetUsers(int pageNumber = 1)
+        {
+            var users = await _userManager.GetUsersWithRolesAsync();
+
+            List<AdminListViewModel> model = new();
+
+            foreach (var user in await users.Include(x => x.UserLogin).ToListAsync())
+            {
+                model.Add(new()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Name = user.Name,
+                    Surname = user.Surname,
+                    UserName = user.UserName,
+                    ImagePath = user.ImagePath,
+                    PhoneNumber = user.PhoneNumber,
+                    LastLogin = user.UserLogin
+                    .Where(x => x.Type == LoginType.Login)
+                    .OrderByDescending(x => x.Date)
+                    .First()
+                    .Date
+                });
+            }
+
+            return View(await model.ToPagedListAsync(pageNumber, 10));
+
+        }
+
+
+
     }
 }
 

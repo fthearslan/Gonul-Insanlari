@@ -39,7 +39,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Admin
             //RuleFor(x => x.Age).NotEmpty().WithMessage("Age field is required.");
 
             RuleFor(x => x.Age).GreaterThanOrEqualTo(18).WithMessage("You must at least be 18.");
-
+         
 
         }
 

@@ -1,0 +1,57 @@
+﻿@model List<ListAdminsViewModel>
+
+<div class="ibox-content">
+<div class="table-responsive">
+    <table id="dataTable" class="table table-striped">
+
+        <thead>
+            <tr>
+                <th><i class="fa fa-users"></i></th>
+                <th>Username</th>
+                <th>Role</th>
+               <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+           @foreach (var user in Model)
+                {
+                    int id = user.Id;
+                    string label = (user.Status == true) ? "label label-primary" : "label label-danger";
+                    string text = (user.Status == true) ? "Enabled" : "Disabled";
+
+                    <tr id="@id">
+                    <td class="client-avatar"><img alt="image" src="~/Images/@user.ImagePath"></td>
+                        <td style="cursor:pointer" class="myBox"><a href="/admin/user/details/@user.Id"></a>@@@user.Username</td>
+
+                        <td>
+                        @foreach(var role in user.Roles)
+                        {
+                            <span>
+                                    <i class="fa fa-bullseye"></i>   @role
+                            </span>
+                         
+                        }
+                            </td>
+                      
+                        <td class="btn-group">
+                            <a class="btn-white btn btn-xs" href="/admin/user/details/@user.Id">View</a>
+                           
+                            @if(User.IsInRole("SuperAdmin"))
+                           {
+                            <a class="btn-danger btn btn-xs" onclick="deleteUser(@id)" id="btn_delete" value="@user.Id"><i class="fa fa-trash"></i></a>
+
+                           }
+                        </td>
+
+                    </tr>
+                }
+            
+          
+
+            
+        </tbody>
+
+    </table>
+</div>
+</div>

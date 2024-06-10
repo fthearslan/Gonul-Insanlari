@@ -17,6 +17,10 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             CreateMap<AppUser, AdminEditViewModel>();
             CreateMap<AdminEditViewModel, AppUser>().ForMember(x=>x.SecurityStamp,opt=>opt.Ignore());
 
+            CreateMap<AppUser, AdminListViewModel>()
+                .ForMember(dest => dest.LastLogin,opt=>opt.Ignore());
+
+                
 
 
         }

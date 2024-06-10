@@ -32,7 +32,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Admin
 
             userLogins.ForEach(x => model.Add(new(x.Description, x.Type.ToString())));
 
-            
+            ViewData["userId"] = userId;
 
             return View(model);
         }

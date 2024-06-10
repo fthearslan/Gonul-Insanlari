@@ -1,34 +1,38 @@
 ﻿@model List<(string,string)>
 
 <div class="ibox-content">
-   <div title="See all" class="logs" style="cursor:pointer" data-href="/admin/logs/10">
+    <div title="See all" class="logs" @* style="cursor:pointer" data-href="/admin/logs/10" *@>
         <h3> Last Activities </h3>
-   </div> 
-        <div class="activity-stream">
+    </div>
+    <div class="activity-stream">
 
-            @foreach (var item in Model)
+        @foreach (var item in Model)
+        {
+            string icon = item.Item2 switch
             {
-                string icon = item.Item2 switch
-                {
-                    "Login" => "fa fa-sign-in",
-                    "Logout" => "fa fa-sign-out",
-                    _ => "fa fa-sign-in"
-                };
+                "Login" => "fa fa-sign-in",
+                "Logout" => "fa fa-sign-out",
+                _ => "fa fa-sign-in"
+            };
 
-                <div class="stream">
-                    <div class="stream-badge">
-                        <i class="@icon"></i>
-                    </div>
-                    <div class="stream-panel">
-                        @item.Item1
-                    </div>
+            <div class="stream">
+                <div class="stream-badge">
+                    <i class="@icon"></i>
                 </div>
+                <div class="stream-panel">
+                    @item.Item1
+                </div>
+            </div>
 
-            }
+        }
 
-        </div>
-      
-   
+    </div>
+    <div style="margin-top:10px;margin-left:10px;margin-right:auto;">
+        <a href="#" style="color:slategrey" id="getLogin" onclick="getUserLogins('@ViewData["userId"]')" data-userId="@ViewData["userId"]" data-toggle="modal" data-target="#userlogins">Show all logins for this user </a>
+
+    </div>
+
+
 </div>
 
 
