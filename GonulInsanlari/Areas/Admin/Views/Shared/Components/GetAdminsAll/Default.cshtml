@@ -1,57 +1,67 @@
 ﻿@model List<ListAdminsViewModel>
 
 <div class="ibox-content">
-<div class="table-responsive">
-    <table id="dataTable" class="table table-striped">
+    <div class="table-responsive">
+        <table id="dataTable" class="table table-striped">
 
-        <thead>
-            <tr>
-                <th><i class="fa fa-users"></i></th>
-                <th>Username</th>
-                <th>Role</th>
-               <th>Actions</th>
-            </tr>
-        </thead>
+            <thead>
+                <tr>
+                    <th><i class="fa fa-users"></i></th>
+                    <th>Username</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
 
-        <tbody>
-           @foreach (var user in Model)
+            <tbody>
+                @foreach (var user in Model)
                 {
                     int id = user.Id;
-                    string label = (user.Status == true) ? "label label-primary" : "label label-danger";
-                    string text = (user.Status == true) ? "Enabled" : "Disabled";
+                   
+                    string text = (user.Status == true) ? "text-navy" : "text-danger";
+
+                    string color = (user.Status == true) ? "btn-danger" : "btn-primary";
+                    string textBtn = (user.Status == true) ? "Disable" : "Enable";
+                    string icon = (user.Status == true) ? "fa fa-trash" : "fa fa-undo";
+            
+
 
                     <tr id="@id">
-                    <td class="client-avatar"><img alt="image" src="~/Images/@user.ImagePath"></td>
+                        <td class="client-avatar"><img alt="image" src="~/Images/@user.ImagePath"></td>
                         <td style="cursor:pointer" class="myBox"><a href="/admin/user/details/@user.Id"></a>@@@user.Username</td>
 
                         <td>
-                        @foreach(var role in user.Roles)
-                        {
-                            <span>
+                            @foreach (var role in user.Roles)
+                            {
+                                <span>
                                     <i class="fa fa-bullseye"></i>   @role
-                            </span>
-                         
-                        }
-                            </td>
-                      
-                        <td class="btn-group">
-                            <a class="btn-white btn btn-xs" href="/admin/user/details/@user.Id">View</a>
-                           
-                            @if(User.IsInRole("SuperAdmin"))
-                           {
-                            <a class="btn-danger btn btn-xs" onclick="deleteUser(@id)" id="btn_delete" value="@user.Id"><i class="fa fa-trash"></i></a>
+                                </span>
 
-                           }
+                            }
+                        </td>
+                        <td>
+                            <span class="@text">@user.Status</span>
+                        </td>
+
+                        <td class="btn-group">
+                            <a class="btn-white btn btn-xs" href="/admin/u/user/@user.Username">View</a>
+
+                            @if (User.IsInRole("SuperAdmin"))
+                            {
+                                <a class="@color btn btn-xs" onclick="deleteUser(@id)" style="color:white" id="btn_delete" value="@user.Id"><i class="@icon"></i> @textBtn</a>
+
+                            }
                         </td>
 
                     </tr>
                 }
-            
-          
 
-            
-        </tbody>
 
-    </table>
-</div>
+
+
+            </tbody>
+
+        </table>
+    </div>
 </div>

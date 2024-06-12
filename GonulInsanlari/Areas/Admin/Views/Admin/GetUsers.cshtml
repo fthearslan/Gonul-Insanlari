@@ -24,6 +24,12 @@
                     <div class="row">
                         @foreach (var user in Model)
                         {
+
+                            string color = (user.Status == true) ? "btn-danger" : "btn-primary";
+                            string text = (user.Status == true) ? "Disable" : "Enable";
+                            string icon = (user.Status == true) ? "fa fa-trash" : "fa fa-undo";
+
+
                             <div class="col-sm-3">
                                 <div class="contact-box center-version">
 
@@ -44,11 +50,11 @@
                                     <div class="contact-box-footer">
                                         <div class="m-t-xs btn-group">
 
-                                            <a href="/admin/u/details/@user.Id" class="btn btn-xs btn-primary"><i class="fa fa-eyes"></i>See</a>
+                                            <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-primary "><i class="fa fa-eyes"></i>See</a>
 
                                             @if(User.IsInRole("SuperAdmin")){
                                            
-                                                <a href="/admin/u/users/delete/@user.Id" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i> Disable</a>
+                                                <a href="/admin/u/users/delete/@user.Id" class="btn btn-xs @color"><i class="@icon"></i> @text</a>
                                             }
                                             
                                         </div>

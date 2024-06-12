@@ -16,9 +16,8 @@ namespace ViewModelLayer.ViewModels.Admin
         public string AboutMe { get; set; }
         public int Age { get; set; }
         public DateTime Registered { get; set; }
-        public List<string> Roles { get; set; }
-
-
+        public IList<string> Roles { get; set; }
+        public bool IsUser { get; set; }
 
     }
 }

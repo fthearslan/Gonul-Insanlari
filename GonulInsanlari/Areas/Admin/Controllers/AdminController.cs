@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Admin;
@@ -40,19 +41,40 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             AppUser user = await _userManager.GetUserAsync(HttpContext.User);
 
+            if (user is not null)
+                return NotFound();
+
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
 
-            if (user is not null)
-            {
-                AdminProfileViewModel model = _mapper.Map<AdminProfileViewModel>(user);
-                model.Roles = userRoles.ToList();
 
-                ViewData["DayPassed"] = DateTime.Now.Subtract(model.Registered).Days;
 
-                return View(model);
+            AdminProfileViewModel model = _mapper.Map<AdminProfileViewModel>(user);
+            model.Roles = userRoles;
 
-            }
-            return BadRequest();
+            ViewData["DayPassed"] = DateTime.Now.Subtract(model.Registered).Days;
+
+            return View(model);
+
+
+        }
+
+        [Authorize(Roles = "SuperAdmin")]
+        [Route("user/{username}")]
+        public async Task<IActionResult> GetDetails(string userName)
+        {
+            AppUser user = await _userManager.FindByNameAsync(userName);
+
+            if (user is null)
+                return NotFound();
+
+           
+
+            AdminProfileViewModel model = _mapper.Map<AdminProfileViewModel>(user);
+            model.IsUser = await _userManager.GetUserAsync(User) == user;
+            model.Roles = await _userManager.GetRolesAsync(user);
+
+            return View(model);
+
         }
 
         [HttpGet]
