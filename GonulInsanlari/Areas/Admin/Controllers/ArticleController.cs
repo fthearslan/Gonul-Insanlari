@@ -35,6 +35,8 @@ using EntityLayer.Concrete.Entities;
 using ViewModelLayer.ViewModels.Article;
 using BussinessLayer.Concrete.Validations.FluentValidation;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -92,6 +94,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HasPermission(PermissionType.Article,Permission.Create)]
         public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
         {
 
@@ -162,6 +165,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("edit/{id}")]
         [HttpGet]
+        [HasPermission(PermissionType.Article,Permission.Update)]
         public IActionResult EditArticle(int id)
         {
             Article article = _articleManager.GetByIdInclude(id);
@@ -191,6 +195,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("edit/{id}")]
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [HasPermission(PermissionType.Article, Permission.Update)]
         public async Task<IActionResult> EditArticle(ArticleEditViewModel model)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
@@ -227,6 +232,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("delete/{id:int}")]
         [HttpPost]
+        [HasPermission(PermissionType.Article, Permission.Delete)]
         public async Task<ActionResult> Delete(int id)
         {
             var article = await _articleManager.GetByIdAsync(id);

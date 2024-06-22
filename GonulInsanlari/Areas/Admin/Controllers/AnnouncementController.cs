@@ -5,6 +5,8 @@ using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Framework;
@@ -73,6 +75,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #region READ
 
+        
         [Route("list")]
         public async Task<IActionResult> List()
         {

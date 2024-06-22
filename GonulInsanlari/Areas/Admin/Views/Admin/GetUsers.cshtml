@@ -4,7 +4,10 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
@@ -41,10 +44,18 @@
                                         <h3 class="m-b-xs"><strong>@user.Name @user.Surname</strong></h3>
 
                                         <div class="font-bold">@@@user.UserName</div>
-                                        <address class="m-t-md">
-                                            <strong>@user.Email</strong><br>
-                                            Last login : @GetDate.GetCreateDate(user.LastLogin) <br>
-                                        </address>
+                                    
+                                            <address class="m-t-md">
+
+                                                <strong>@user.Email</strong><br>
+
+                                                Last login : @GetDate.GetCreateDate(user.LastLogin) <br>
+
+
+                                            </address>
+                                        
+
+                                       
 
                                     </a>
                                     <div class="contact-box-footer">
@@ -52,11 +63,12 @@
 
                                             <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-primary "><i class="fa fa-eyes"></i>See</a>
 
-                                            @if(User.IsInRole("SuperAdmin")){
-                                           
-                                                <a href="/admin/u/users/delete/@user.Id" class="btn btn-xs @color"><i class="@icon"></i> @text</a>
+                                            @if (User.IsInRole("SuperAdmin"))
+                                            {
+
+                                                <a href="#" onclick="enableOrDisable('@user.Id',@text)" class="btn btn-xs @color"><i class="@icon"></i> @text</a>
                                             }
-                                            
+
                                         </div>
                                     </div>
 
@@ -69,7 +81,7 @@
                     @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("GetUsers",new { pageNumber}))
 
                 </div>
-               
+
 
             </div>
         </div>
@@ -87,8 +99,16 @@
 
 
 @section Script{
+
+    <script src="~/js/admin.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+
+
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="~/lib/jquery.toast.min.js"></script>
+
 
     <script>
         $(document).ready(function () {

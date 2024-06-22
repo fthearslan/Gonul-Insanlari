@@ -22,6 +22,7 @@ using System.Reflection;
 using GonulInsanlari.Middlewares;
 using Serilog;
 using ViewModelLayer.Models.Tools;
+using GonulInsanlari.Areas.Admin.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +57,17 @@ builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ResponseModel>();
 
+builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
+builder.Services.AddSingleton<IAuthorizationPolicyProvider,PermissionPolicyProvider>();
+
+
+
+
+
+
+
+
+
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
@@ -64,6 +76,8 @@ builder.Services.AddAuthentication(
 }
 
     );
+
+builder.Services.ConfigureApplicationCookie(opt => opt.AccessDeniedPath = new PathString("/error/accessDenied"));
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
@@ -81,7 +95,7 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
-app.UseStatusCodePagesWithReExecute("/Admin/Error/ErrorPage", "?code={0}");
+app.UseStatusCodePagesWithReExecute("/error/notFound", "?code={0}");
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();

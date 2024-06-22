@@ -43,17 +43,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var login = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, true);
                 if (login.Succeeded)
                 {
-                    await _signInManager.LogUserLoginAsync(user.Username, LoginType.Login); 
 
-                    return RedirectToAction("Index", "Dashboard", "Admin");
+                    var usersignedIn = await _signInManager.UserManager.FindByNameAsync(user.Username);
+                    if(usersignedIn.Status is true)
+                    {
+                        await _signInManager.LogUserLoginAsync(user.Username, LoginType.Login);
 
+                        return RedirectToAction("Index", "Dashboard", "Admin");
+
+                    }
                 }
-                else
-                {
-                    TempData["Error"] = "Invalid username or password, please provide valid credentials.";
-                }
-
             }
+
+            TempData["Error"] = "Invalid username or password, please provide valid credentials.";
+
 
             return View(user);
         }
@@ -66,7 +69,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             await _signInManager.SignOutAsync();
 
             if (userName is not null)
-                await _signInManager.LogUserLoginAsync(userName,LoginType.Logout);
+                await _signInManager.LogUserLoginAsync(userName, LoginType.Logout);
 
             return RedirectToAction("Login");
 

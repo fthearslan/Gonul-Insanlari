@@ -15,7 +15,7 @@ namespace ViewModelLayer.ViewModels.Admin
         public string UserName { get; set; }
 
         public bool Status { get; set; }
-        public DateTime LastLogin { get; set; }
+        public DateTime? LastLogin { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public string ImagePath { get; set; }

@@ -7,6 +7,7 @@ using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -47,6 +48,9 @@ namespace BussinessLayer.Concrete.Configurations.Service
                 return Services;
 
         }
+
+
+    
 
     }
 }

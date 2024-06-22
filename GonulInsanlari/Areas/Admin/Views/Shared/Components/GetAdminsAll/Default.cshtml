@@ -49,7 +49,8 @@
 
                             @if (User.IsInRole("SuperAdmin"))
                             {
-                                <a class="@color btn btn-xs" onclick="deleteUser(@id)" style="color:white" id="btn_delete" value="@user.Id"><i class="@icon"></i> @textBtn</a>
+
+                                <a class="@color btn btn-xs" onclick="enableOrDisable('@id')" style="color:white" id="btn_delete" value="@user.Id"><i class="@icon"></i> @textBtn</a>
 
                             }
                         </td>

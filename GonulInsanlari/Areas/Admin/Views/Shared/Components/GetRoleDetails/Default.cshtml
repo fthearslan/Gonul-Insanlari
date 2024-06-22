@@ -1,0 +1,83 @@
+﻿@model List<ListUsersByRoleViewModel>
+
+    @{
+        var id_table = ViewData["RoleName"];
+    }
+
+<div class="table-responsive">
+    <table id="dataTable" class="table table-striped user">
+
+        <thead>
+            <tr>
+                <th><i class="fa fa-users"></i></th>
+                <th>Username</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Actions</th>
+             
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var user in Model)
+            {
+
+                string cls = (user.Status == true) ? "text-navy" : "text-danger";
+
+                <tr id="@user.Id">
+                    <td class="client-avatar"><img alt="image" src="~/Images/@user.ImagePath"></td>
+                    <td style="cursor:pointer" class="myBox"><a href="/admin/user/details/@user.Id"></a>@@@user.UserName</td>
+
+                    <td>
+
+
+
+                        @foreach (var role in user.Roles)
+                        {
+                            <span>
+                                <i class="fa fa-bullseye"></i>   @role
+                            </span>
+
+                        }
+
+                    </td>
+
+                    <td>
+                        <span class="@cls">@user.Status</span>
+                    </td>
+
+                    <td class="btn-group">
+                        <a class="btn-white btn btn-xs" href="/admin/u/user/@user.UserName">View</a>
+
+
+                        <a class="btn-danger btn btn-xs" onclick="remove('@user.Id','@ViewData["RoleName"]')" style="color:white" id="btn_delete" value="@user.Id"><i class="fa fa-trash"></i> Remove</a>
+
+
+                    </td>
+                  
+
+                </tr>
+            }
+
+
+
+
+        </tbody>
+
+    </table>
+</div>
+<div class="col-lg-12">
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <i class="fa fa-info-circle"></i> Info About Role @ViewData["RoleName"]
+        </div>
+        <div class="panel-body">
+            <p>@ViewData["RoleDesc"]</p>
+            <a class="text-navy">Show permission</a>
+        </div>
+
+    </div>
+</div>
+
+
+

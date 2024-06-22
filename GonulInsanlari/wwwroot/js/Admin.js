@@ -406,8 +406,8 @@ function Search(id) {
 
             if (result == 0) {
                 let msg = '<tr>' +
-                    '<td>There is no login found.</td>'+
-                '<td></td>'+
+                    '<td>There is no login found.</td>' +
+                    '<td></td>' +
                     '</tr>';
 
                 $("#userlog").html(msg);
@@ -454,37 +454,83 @@ function Search(id) {
         }
     })
 
-}
+};
 
 
-function deleteUser(id) {
+function enableOrDisable(id,text) {
 
-    $.ajax({
+    //read btnText and write if condition in order to show text.
 
-        type: "POST",
-        url: "/admin/users/delete/" + id,
-        success: function (response) {
+    let msg = "";
+    let icon = "";
+    let btnText = "";
 
-            if (response.success) {
+    if (text == "Disable") {
+        msg = "Disabled user will be permanently deleted within 14 days.";
+        icon = "warning";
+        btnText = "Yes,disable it!";
 
-                //toast
+    } else {
+        msg = "This user will be enabled.";
+        icon = "warning";
+        btnText = "Yes,enable it!";
 
-                $("#" + id).hide();
-
-            }
-            else {
-                //toast
-            }
-
-
-        }
+     }
 
 
+    Swal.fire({
+        title: "Are you sure?",
+        text: msg,
+        icon: icon,
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: btnText
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            $.ajax({
+
+                type: "POST",
+                url: "/admin/u/users/delete/" + id,
+                success: function (response) {
+
+                    if (response.success) {
+
+                        $.toast({
+                            heading: 'Success',
+                            text: response.responseMessage,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'success'
+
+                        });
+
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 3000);
+
+                    }
+                    else {
+                        $.toast({
+                            heading: 'Error',
+                            text: response.responseMessage,
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+                    }
 
 
+                }
 
-    })
+            });
 
-}
+        };
+    });
+    
+    }
 
 

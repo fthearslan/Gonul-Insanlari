@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
+using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete.Validations.FluentValidation;
 using BussinessLayer.Concrete.Validations.FluentValidation.Admin;
 using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 using GonulInsanlari.Extensions.Admin;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Org.BouncyCastle.Crypto;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
@@ -41,7 +46,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             AppUser user = await _userManager.GetUserAsync(HttpContext.User);
 
-            if (user is not null)
+            if (user is null)
                 return NotFound();
 
             IList<string> userRoles = await _userManager.GetRolesAsync(user);
@@ -67,7 +72,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (user is null)
                 return NotFound();
 
-           
+
 
             AdminProfileViewModel model = _mapper.Map<AdminProfileViewModel>(user);
             model.IsUser = await _userManager.GetUserAsync(User) == user;
@@ -281,14 +286,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("users")]
+        [HasPermission(PermissionType.User,Permission.Read)]
         public async Task<IActionResult> GetUsers(int pageNumber = 1)
         {
             var users = await _userManager.GetUsersWithRolesAsync();
-
+         
             List<AdminListViewModel> model = new();
-
             foreach (var user in await users.Include(x => x.UserLogin).ToListAsync())
             {
+
                 model.Add(new()
                 {
                     Id = user.Id,
@@ -298,20 +304,55 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     UserName = user.UserName,
                     ImagePath = user.ImagePath,
                     PhoneNumber = user.PhoneNumber,
-                    LastLogin = user.UserLogin
+                    Status=user.Status,
+                    LastLogin = user?.UserLogin?
                     .Where(x => x.Type == LoginType.Login)
                     .OrderByDescending(x => x.Date)
-                    .First()
+                    .FirstOrDefault()?
                     .Date
-                });
+            });
             }
 
             return View(await model.ToPagedListAsync(pageNumber, 10));
 
         }
 
+        [HttpPost] 
+        [Route("users/delete/{id}")]
+        public async Task<IActionResult> EnableOrDisable(string id)
+        {
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            user.Status = user.Status switch
+            {
+                true => false,
+                false => true
+            };
+
+            using (var c = new Context())
+            {
+                c.Users.Update(user);
+
+                if (c.SaveChanges() > 0)
+                {
+                    _response.responseMessage = "The status of the user has been successfully changed.";
+                    _response.success = true;
+                }
+                else
+                {
+                    _response.responseMessage = "Something went wrong";
+                    _response.success = false;
+
+                }
 
 
+            }
+
+
+            return Json(_response);
+
+        }
     }
 }
 

@@ -22,7 +22,7 @@ namespace GonulInsanlari.Middlewares
                 await _next.Invoke(_context);
             }
             catch (Exception ex)
-            {
+           {
 
                 _logger.LogError($"Something went wrong... {ex.Message}");
 
