@@ -129,6 +129,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("list")]
+        [HasPermission(PermissionType.Article, Permission.Read)]
+
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var articles = _articleManager.ListReleased();
@@ -140,6 +142,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("details/{id}")]
+        [HasPermission(PermissionType.Article,Permission.Read)]
+
         public IActionResult GetDetails(int id)
         {
             var article = _articleManager.GetDetailsByUser(id);
@@ -165,7 +169,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("edit/{id}")]
         [HttpGet]
-        [HasPermission(PermissionType.Article,Permission.Update)]
         public IActionResult EditArticle(int id)
         {
             Article article = _articleManager.GetByIdInclude(id);

@@ -9,19 +9,41 @@
 
 @await Component.InvokeAsync("DashboardStatictic")
 <div class="row">
-    @await Component.InvokeAsync("DashboardContacts")
+
+    @if (User.HasClaim("Permission", "Contact.Read"))
+    {
+        @await Component.InvokeAsync("DashboardContacts")
+
+    }
     <div class="col-lg-8">
 
         <div class="row">
-            @await Component.InvokeAsync("GetArticles")
-            @await Component.InvokeAsync("GetAnnouncements")
+
+            @if (User.HasClaim("Permission", "Article.Read"))
+            {
+                @await Component.InvokeAsync("GetArticles")
+
+            }
+            @if (User.HasClaim("Permission", "Announcement.Read"))
+            {
+                @await Component.InvokeAsync("GetAnnouncements")
+
+            }
 
         </div>
 
 
         <div class="row">
-         @await Component.InvokeAsync("GetAssignments")
-          @await Component.InvokeAsync("GetComments")
+            @if (User.HasClaim("Permission", "Assignment.Read"))
+            {
+                @await Component.InvokeAsync("GetAssignments")
+
+            }
+                @if (User.HasClaim("Permission", "Comment.Read"))
+            {
+                @await Component.InvokeAsync("GetComments")
+
+            }
         </div>
 
     </div>
@@ -35,10 +57,10 @@
 @section Script{
     <script src="~/lib/jquery.toast.min.js"></script>
     <script>
-        
+
 
         $(document).ready(function () {
-     
+
             $.toast({
                 heading: 'Welcome again.',
                 text: 'This is administration panel of Gonul Insanlari.',

@@ -5,7 +5,9 @@ using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Configurations;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
+using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
+using GonulInsanlari.Enums;
 using GonulInsanlari.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -84,6 +86,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add")]
+        [HasPermission(PermissionType.Assignment, Permission.Create)]
+
         public async Task<IActionResult> Add(AssignmentCreateViewModel model)
         {
             ViewData["Users"] = _cache.Get("UserList");
@@ -108,7 +112,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add/user")]
-
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task AddUser(int taskId, int userId)
         {
 
@@ -140,7 +144,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add/subtask")]
-
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task AddSubTask(SubTaskCreateViewModel model)
         {
 
@@ -160,6 +164,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add/file")]
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
 
         public async Task<JsonResult> AddAttachment(AddAttachmentViewModel model)
         {
@@ -242,6 +247,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #region READ
 
         [Route("list")]
+        [HasPermission(PermissionType.Assignment, Permission.Read)]
+
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
@@ -253,6 +260,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("details/{id}")]
+        [HasPermission(PermissionType.Assignment, Permission.Read)]
         public async Task<IActionResult> GetDetails(int id)
         {
             var task = await _manager.GetByIdAsync(id);
@@ -282,6 +290,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("changeProgress")]
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task ChangeProgress(AssingmentProgressChangeViewModel obj)
         {
             var task = await _manager.GetByIdAsync(obj.TaskId);
@@ -328,7 +337,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
 
         [Route("remove/user")]
-
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task RemoveUser(int assignmentId, int userId)
         {
             var assignment = await _manager.GetByIdAsync(assignmentId);
@@ -354,7 +363,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("remove/subtask")]
-
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task RemoveSubTask(int assignmentId, Guid subtaskId)
         {
 
@@ -376,7 +385,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("remove/file")]
-
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
         public async Task<JsonResult> DeleteAttachment(AttachmentDeleteViewModel model)
         {
 

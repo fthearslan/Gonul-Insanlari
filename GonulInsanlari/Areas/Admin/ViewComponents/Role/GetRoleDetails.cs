@@ -16,7 +16,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Role
             _userManager = userManager;
         }
 
-        public IViewComponentResult Invoke(string roleName,string desc)
+        public IViewComponentResult Invoke(string roleName,int roleId,string desc)
         {
 
             var users = _userManager.GetUsersWithRolesAsync(roleName).Result;
@@ -28,6 +28,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Role
 
             ViewData["RoleName"] = roleName;
             ViewData["RoleDesc"] = desc;
+            ViewData["RoleId"] = roleId;
 
             return View(model);
         }

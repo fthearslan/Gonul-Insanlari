@@ -52,6 +52,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("add")]
         [HttpPost]
+        [HasPermission(PermissionType.Announcement,Permission.Create)]
         public async Task<IActionResult> AddAnnouncement(AnnouncementCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -77,6 +78,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         
         [Route("list")]
+        [HasPermission(PermissionType.Announcement, Permission.Read)]
+
         public async Task<IActionResult> List()
         {
             var list = await _manager.GetForAdminAsync();
@@ -92,6 +95,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("details/{id}")]
+        [HasPermission(PermissionType.Announcement,Permission.Read)]
+
         public async Task<IActionResult> GetDetails(int id)
         {
 
@@ -118,6 +123,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("edit/{id}")]
         [HttpGet]
+
         public async Task<IActionResult> EditAnnouncement(int id)
         {
             var announcement = await _manager.GetWithUserAsync(id);
@@ -135,6 +141,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("edit/{id}")]
+        [HasPermission(PermissionType.Announcement, Permission.Update)]
+
         public async Task<IActionResult> EditAnnouncement(AnnouncementEditViewModel model)
         {
             if (ModelState.IsValid)
@@ -160,6 +168,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("delete/{id}")]
+        [HasPermission(PermissionType.Announcement, Permission.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
 

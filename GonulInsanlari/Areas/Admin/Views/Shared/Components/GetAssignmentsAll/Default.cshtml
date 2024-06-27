@@ -13,7 +13,7 @@
 
             <tr>
 
-                <th>#</th>
+                <th><i class="fa fa-caret-down" aria-hidden="true"></i></th>
                 <th> Title</th>
                 <th>Published by</th>
                 <th>SubTasks</th>
@@ -30,15 +30,35 @@
 
             @foreach (var task in Model)
             {
+                string spanCls = "";
+
+                switch (task.Progress)
+                {
+                    case "Published":
+                        spanCls = "text-success";
+                        break;
+                    case "Pending":
+                        spanCls = "text-warning";
+                        break;
+                    case "InProgress":
+                        spanCls = "text-navy";
+                        break;
+                    case "Done":
+                        spanCls = "text-danger";
+                        break;
+
+
+                }
+
 
                 <tr>
 
-                    <td>#</td>
+                    <td><i class="fa fa-dot-circle-o"></i></td>
                     <td>@task.Title</td>
                     <td>@@@task.Publisher</td>
                     <td>@task.SubTasks</td>
                     <td>@task.UserCount</td>
-                    <td><span class="label label-primary">@task.Progress</span></td>
+                    <td><span class=@spanCls>@task.Progress</span></td>
                     <td>@GetDate.GetCreateDate(@task.Created)</td>
                     <td class="btn-group">
                         <a class="btn-white btn btn-xs" href="/assignments/details/@task.Id">View</a>

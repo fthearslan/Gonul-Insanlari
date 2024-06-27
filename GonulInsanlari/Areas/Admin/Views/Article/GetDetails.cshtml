@@ -55,7 +55,11 @@
                             }
                             else
                             {
-                                <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Article/EditArticle/@Model.Id"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+                                @if (User.HasClaim("Permission", "Article.Update"))
+                                {
+                                    <a style="margin-right:0;margin-top:15px;" class="btn btn-primary float-right" href="/Admin/Article/EditArticle/@Model.Id"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+
+                                }
 
                             }
 

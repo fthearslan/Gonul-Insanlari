@@ -25,41 +25,82 @@
             <li>
                 <a href="mailbox.html"><i class="fa fa-inbox"></i> <span class="nav-label">Mailbox</span><span class="fa arrow"></span></a>
                 <ul class="nav nav-second-level collapse">
-                    <li><a href="/mail/inbox">User Contacts</a></li>
+                    @if (User.HasClaim("Permission","Contact.Read"))
+                    {
+                        <li><a href="/mail/inbox">User Contacts</a></li>
+                    }
+                   
                     <li><a href="mail_detail.html">Messages</a></li>
                 </ul>
             </li>
 
-            <li>
-                <a href="/articles/list"><i class="fa fa-file"></i> <span class="nav-label">Articles</span><span class="fa arrow"></span></a>
-                <ul class="nav nav-second-level collapse">
-                    <li><a href="/articles/list">Articles</a></li>
-                    <li><a href="/comments/list">Comments</a></li>
-                </ul>
-            </li>
+            @if (User.HasClaim("Permission", "Article.Read") | User.HasClaim("Permission","Comment.Read"))
+            {
+                <li>
 
-            <li>
-                <a href="/categories/list"><i class="fa fa-th-large"></i> <span class="nav-label">Categories</span></a>
-            </li>
+                    <a href="#"><i class="fa fa-file"></i> <span class="nav-label">Contents</span><span class="fa arrow"></span></a>
+                    <ul class="nav nav-second-level collapse">
+                        @if (User.HasClaim("Permission", "Article.Read"))
+                        {
+                            <li><a href="/articles/list">Articles</a></li>
+                        }
+                        @if (User.HasClaim("Permission", "Comment.Read"))
+                        {
+                            <li><a href="/comments/list">Comments</a></li>
 
-            <li>
-                <a href="/assignments/list"><i class="fa fa-table"></i> <span class="nav-label"> Assignments </span></a>
-            </li>
-            <li>
-                <a href="/announcements/list"><i class="fa fa-bullhorn"></i> <span class="nav-label">Announcements</span></a>
-            </li>
-            <li>
-                <a href="/admin/u/users"><i class="fa fa-users"></i> <span class="nav-label">Users</span></a>
-            </li>
-            <li>
-                <a href="/admin/roles/list"><i class="fa fa-id-card"></i> <span class="nav-label">Roles/Authorizations</span></a>
-            </li>
+                        }
+
+                    </ul>
+                </li>
+            }
+        
+
+
+            @if (User.HasClaim(x => x.Value == "Category.Read"))
+            {
+                <li>
+                    <a href="/categories/list"><i class="fa fa-th-large"></i> <span class="nav-label">Categories</span></a>
+                </li>
+            }
+
+            @if (User.HasClaim(x => x.Value == "Assignment.Read"))
+            {
+                <li>
+                    <a href="/assignments/list"><i class="fa fa-table"></i> <span class="nav-label"> Assignments </span></a>
+                </li>
+            }
+            @if (User.HasClaim(x => x.Value == "Announcement.Read"))
+            {
+                <li>
+                    <a href="/announcements/list"><i class="fa fa-bullhorn"></i> <span class="nav-label">Announcements</span></a>
+                </li>
+            }
+            @if (User.HasClaim(x => x.Value == "User.Read"))
+            {
+                <li>
+                    <a href="/admin/u/users"><i class="fa fa-users"></i> <span class="nav-label">Users</span></a>
+                </li>
+            }
+
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <li>
+                    <a href="/admin/roles/list"><i class="fa fa-id-card"></i> <span class="nav-label">Roles/Authorizations</span></a>
+                </li>
+
+            }
+
             <li>
                 <a href="#"><i class="fa fa-users"></i> <span class="nav-label">Subscriptions</span></a>
             </li>
-            <li>
-                <a href="/Admin/Article/GetRandomData"><i class="fa fa-file-text"></i> <span class="nav-label">About Page</span></a>
-            </li>
+
+            @if (User.HasClaim("Permission", "About.Read"))
+            {
+                <li>
+                    <a href="/Admin/Article/GetRandomData"><i class="fa fa-file-text"></i> <span class="nav-label">About Page</span></a>
+                </li>
+            }
+
             <li class="landing_link">
                 <a target="_blank" href="/Home/Index"><i class="fa fa-arrow-circle-right"></i> <span class="nav-label">Go to Website</span></a>
             </li>

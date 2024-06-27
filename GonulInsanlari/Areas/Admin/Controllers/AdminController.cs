@@ -41,6 +41,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             _response = response;
         }
 
+
         [Route("profile")]
         public async Task<IActionResult> GetProfile()
         {
@@ -63,7 +64,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-        [Authorize(Roles = "SuperAdmin")]
+
+
+
+        [HasPermission(PermissionType.User,Permission.Read)]
         [Route("user/{username}")]
         public async Task<IActionResult> GetDetails(string userName)
         {
@@ -82,6 +86,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+
+
+
         [HttpGet]
         [Route("edit")]
         public async Task<IActionResult> EditProfile()
@@ -94,8 +101,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+
+
+
         [HttpPost]
         [Route("edit")]
+        [HasPermission(PermissionType.User, Permission.Update)]
         public async Task<IActionResult> EditProfile(AdminEditViewModel model)
         {
             List<string> errors = new();
@@ -155,6 +166,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
+
+
         [HttpGet]
         [Route("edit/picture")]
         public async Task<IActionResult> EditProfilePicture()
@@ -168,6 +181,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return NotFound();
 
         }
+
+
+
 
         [HttpPost]
         [Route("edit/picture")]
@@ -203,6 +219,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+
+
         [HttpPost]
         [Route("changePassword")]
         public async Task<IActionResult> ChangePassword(AdminChangePasswordViewModel model)
@@ -233,6 +251,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+
+
         [HttpGet]
         [Route("getuserlogins/{userId}")]
         public async Task<IActionResult> GetUserLogins(int userId)
@@ -250,6 +270,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             return Json(userLogs);
         }
+
+
 
         [HttpPost]
         [Route("search")]
@@ -282,6 +304,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return Json(values);
 
         }
+
 
 
         [HttpGet]
@@ -317,8 +340,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+
+
         [HttpPost] 
         [Route("users/delete/{id}")]
+        [HasPermission(PermissionType.User, Permission.Update | Permission.Delete)]
         public async Task<IActionResult> EnableOrDisable(string id)
         {
 

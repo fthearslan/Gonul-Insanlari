@@ -6,11 +6,16 @@ using System.Security.Claims;
 
 namespace GonulInsanlari.Extensions.Admin
 {
-    public static class UserManagerExtension
+    public static class UserManagerExtensions
     {
 
-        public static async Task<AppUser> GetUsersWithRoles(this UserManager<AppUser> userManager, AppUser user)
+        public static async Task<AppUser> GetUsersWithRoles(this UserManager<AppUser> userManager, string userId)
         {
+
+           AppUser? user =  await userManager.FindByIdAsync(userId);
+
+            if (user is null)
+                return null;
 
             user.Roles = await userManager.GetRolesAsync(user);
             return user;
@@ -48,20 +53,7 @@ namespace GonulInsanlari.Extensions.Admin
         public static async Task<IQueryable<AppRole>> GetRolesWithPermissionsAsync(this UserManager<AppUser> userManager, ClaimsPrincipal _currentUser)
         {
 
-            //AppUser user = await userManager.GetUserAsync(_currentUser);
-
-            //if (user is not null)
-            //{
-            //    using (var c = new Context())
-            //    {
-            //        c.Roles.
-            //            Include(x=>x.Name);
-            //        //first create permission table 
-
-            //    }
-
-
-            //}
+            
 
             return null;
         }

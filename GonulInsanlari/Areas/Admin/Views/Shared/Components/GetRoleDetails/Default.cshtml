@@ -1,8 +1,10 @@
 ﻿@model List<ListUsersByRoleViewModel>
 
-    @{
-        var id_table = ViewData["RoleName"];
-    }
+@{
+    var id_table = ViewData["RoleName"];
+}
+
+
 
 <div class="table-responsive">
     <table id="dataTable" class="table table-striped user">
@@ -14,7 +16,7 @@
                 <th>Role</th>
                 <th>Status</th>
                 <th>Actions</th>
-             
+
             </tr>
         </thead>
 
@@ -32,7 +34,7 @@
 
 
 
-                        @foreach (var role in user.Roles)
+                        @foreach (var role in user.Roles.Take(2))
                         {
                             <span>
                                 <i class="fa fa-bullseye"></i>   @role
@@ -54,7 +56,7 @@
 
 
                     </td>
-                  
+
 
                 </tr>
             }
@@ -67,17 +69,42 @@
     </table>
 </div>
 <div class="col-lg-12">
+
+
     <div class="panel panel-info">
         <div class="panel-heading">
             <i class="fa fa-info-circle"></i> Info About Role @ViewData["RoleName"]
         </div>
         <div class="panel-body">
             <p>@ViewData["RoleDesc"]</p>
-            <a class="text-navy">Show permission</a>
-        </div>
+            @if (id_table?.ToString() != "SuperAdmin")
+            {
+                <div>
+                    <a href="#" class="text-navy" onclick="getPermissions('@ViewData["RoleId"]')" data-toggle="modal" data-target="#permissions">Manage Permissions</a>
 
-    </div>
-</div>
+                    </div>
+            }
+
+            <div style="margin-top:5px;">
+                <a href="#" class="text-success" data-toggle="modal" onclick="getUsers(' @ViewData["RoleId"]')" data-target="#newUser">Add a new user</a>
+
+            </div>
 
 
+            @if (id_table?.ToString() != "SuperAdmin" && id_table?.ToString() != "Admin")
+                {
+                    <div style="margin-top:5px;">
+                        <a href="#" class="text-danger" onclick="deleteRole('@ViewData["RoleId"]')"> Delete Role </a>
+
+                    </div>
+                }
+                     
+               
+
+                       
+
+                    </div>
+
+                </div>
+            </div>
 

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace GonulInsanlari.Extensions.Admin
 {
-    public static class LoginExtension
+    public static class LoginExtensions
     {
 
         public static async Task LogUserLoginAsync(this SignInManager<AppUser> signInManager, string userName, LoginType loginType)

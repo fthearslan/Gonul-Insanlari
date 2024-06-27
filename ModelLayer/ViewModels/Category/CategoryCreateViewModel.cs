@@ -11,9 +11,9 @@ namespace ViewModelLayer.ViewModels.Category
         
         public string Description { get; set; } 
 
-        public IFormFile Image { get; set; } 
+        public IFormFile Image { get; set; }
 
-        public string? ImagePath { get; set; }
+        public string ImagePath { get; set; } = "test-img.jpg";
 
         public bool Status => true;
 

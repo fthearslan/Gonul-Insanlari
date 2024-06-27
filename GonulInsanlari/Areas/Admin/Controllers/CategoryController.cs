@@ -6,6 +6,8 @@ using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using FluentValidation.Results;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -48,6 +50,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Route("add")]
+        [HasPermission(PermissionType.Category,Permission.Create)]
         public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -71,6 +74,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #region READ
 
         [Route("list")]
+        [HasPermission(PermissionType.Category, Permission.Read)]
+
         public IActionResult List()
         {
 
@@ -81,6 +86,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("details/{id}")]
+        [HasPermission(PermissionType.Category, Permission.Read)]
+
         public IActionResult GetDetails(int id)
         {
             var category = _manager.GetDetails(id);
@@ -98,6 +105,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         #endregion
+
 
         #region UPDATE
 
@@ -121,6 +129,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [Route("edit/{id}")]
         [ValidateAntiForgeryToken]
+        [HasPermission(PermissionType.Category,Permission.Update)]
         public async Task<IActionResult> EditCategory(CategoryEditViewModel model)
         {
             if (ModelState.IsValid)
@@ -142,11 +151,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #endregion
 
+
         #region DELETE
 
+
         [Route("delete/{id}")]
+        [HasPermission(PermissionType.Category, Permission.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
+
             var category = await _manager.GetByIdAsync(id);
             if (category is not null)
                 switch (category.Status)
@@ -165,6 +178,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return BadRequest();
 
         }
+
 
 
         #endregion

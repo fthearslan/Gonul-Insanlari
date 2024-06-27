@@ -56,7 +56,11 @@
         </div>
     </div>
     <div class="col-lg-1">
-        <a href="/categories/edit/@Model.Id" class="btn btn-primary">Edit <i class="fa fa-pencil-square-o"></i></a>
+        @if (User.HasClaim("Permission", "Category.Update"))
+        {
+            <a href="/categories/edit/@Model.Id" class="btn btn-primary">Edit <i class="fa fa-pencil-square-o"></i></a>
+
+        }
 
     </div>
 </div>

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -38,6 +40,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("reply/{contactId}")]
         [HttpGet]
+
         public async Task<IActionResult> Reply(int contactId)
         {
 
@@ -48,6 +51,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [HttpPost]
+
         public async Task<IActionResult> Reply(Contact model)
         {
 
@@ -61,6 +65,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #region Read
 
         [Route("inbox")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> Inbox(int pageNumber = 1)
         {
             List<Contact> contacts = await _manager.GetInboxAsync();
@@ -84,6 +89,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("sentbox")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> SentBox(int pageNumber = 1)
         {
             string _userId = _userManager.GetUserId(HttpContext.User);
@@ -114,6 +120,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("drafts")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> Drafts(int pageNumber = 1)
         {
 
@@ -145,6 +152,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("detail/{id}")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> GetDetails(int id)
         {
             Contact contact = await _manager.GetByIdAsync(id);
@@ -239,6 +247,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("trash")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> GetTrash(int pageNumber = 1)
         {
 
@@ -277,7 +286,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             string _senderId = _userManager.GetUserId(HttpContext.User);
 
-                result = await _manager.SearchByAsync(search, _senderId, isdraft, isTodelete, isSent);
+            result = await _manager.SearchByAsync(search, _senderId, isdraft, isTodelete, isSent);
 
 
             if (result is not null)
@@ -314,6 +323,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("markasread")]
         [HttpPost]
+        [HasPermission(PermissionType.Contact, Permission.Update)]
         public async Task<IActionResult> MarkAsRead(List<int>? ids)
         {
             if (ids is not null && ids.Count > 0)
@@ -371,6 +381,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("delete")]
         [HttpPost]
+        [HasPermission(PermissionType.Contact, Permission.Update | Permission.Delete)]
+
         public async Task<IActionResult> Delete(List<int>? ids)
         {
             if (ids is not null && ids.Count > 0)
@@ -425,6 +437,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("delete/{id}")]
         [HttpPost]
+        [HasPermission(PermissionType.Contact, Permission.Update |Permission.Delete)]
 
         public async Task<IActionResult> Delete(int id)
         {

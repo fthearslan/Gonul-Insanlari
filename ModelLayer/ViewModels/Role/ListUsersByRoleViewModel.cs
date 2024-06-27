@@ -14,7 +14,7 @@ namespace ViewModelLayer.ViewModels.Role
         public string? ImagePath { get; set; }
 
         public bool Status { get; set; }
-        public List<string>? Roles { get; set; }
+        public List<string> Roles { get; set; } = null!;
 
 
     }
