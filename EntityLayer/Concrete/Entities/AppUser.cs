@@ -22,9 +22,9 @@ namespace EntityLayer.Concrete.Entities
         public int Age { get; set; } 
         public string ImagePath { get; set; } = null!;
 
-        public string SocialMediaAccount { get; set; }
-        public string AboutMe { get; set; } = null!;
-        public bool Status { get; set; } 
+        public string? SocialMediaAccount { get; set; }
+        public string? AboutMe { get; set; }
+        public bool Status { get; set; } = true;
 
         public DateTime Registered { get; set; } = DateTime.Now;
         public List<Article> Articles { get; set; } = null!;

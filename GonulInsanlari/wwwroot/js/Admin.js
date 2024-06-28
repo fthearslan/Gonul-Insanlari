@@ -457,7 +457,7 @@ function Search(id) {
 };
 
 
-function enableOrDisable(id,text) {
+function enableOrDisable(id, text) {
 
     //read btnText and write if condition in order to show text.
 
@@ -475,7 +475,7 @@ function enableOrDisable(id,text) {
         icon = "warning";
         btnText = "Yes,enable it!";
 
-     }
+    }
 
 
     Swal.fire({
@@ -530,7 +530,103 @@ function enableOrDisable(id,text) {
 
         };
     });
-    
-    }
+
+}
 
 
+//$('#btnAdd').on('click', function () {
+
+
+
+//});
+
+function register() {
+
+    let html = "";
+
+    var object = {
+
+        UserName: $("#username").val(),
+        Name: $("#name").val(),
+        Surname: $("#surname").val(),
+        Email: $("#email").val(),
+
+    };
+
+    $.ajax({
+
+        type: "POST",
+        url: "/admin/u/register/new",
+        data: { model: object },
+        enctype: 'multipart/form-data',
+        success: function () {
+
+                $.toast({
+                    heading: 'Success',
+                    text: 'User has been successfully created.',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'success'
+
+                });
+
+                $("#add").modal('hide');
+
+                setTimeout(function () {
+                    window.location.reload();
+                }, 3000);
+
+
+        },
+        statusCode: {
+
+            400: function (errors) {
+                if (errors != null) {
+
+                    for (let i = 0; i < errors.responseJSON.length; i++) {
+
+                        html += '<li class="text-danger">' + errors.responseJSON[i] + '</li>';
+
+
+                    }
+                    $("#validation").empty();
+
+                    $("#validation").append(html);
+
+                }
+
+
+
+            },
+            403: function () {
+                $.toast({
+                    heading: 'Access denied',
+                    text: 'You do not have an access to create a new user.',
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                });
+
+
+            }
+
+        }
+
+
+
+
+    });
+}
+
+function clearInput() {
+
+    document.getElementById('username').value = "";
+    document.getElementById('name').value = "";
+    document.getElementById('surname').value = "";
+    document.getElementById('email').value = "";
+
+    $("#validation").empty();
+
+
+}

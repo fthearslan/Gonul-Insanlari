@@ -16,13 +16,13 @@
         {
             string id = subtask.Id.ToString();
 
+            string Trid = "tr" + id;
 
-            <tr>
+            <tr id="@Trid">
 
-                @if (ViewBag.userExists)
-                {
+                
                     <td>
-                        <select id="@id" onchange="TaskonChange('@id')" class="btn btn-primary btn-xs">
+                    <select id="@id" onchange="TaskonChange('@id','@ViewData["AssignmentId"]')" class="btn btn-primary btn-xs">
                             <option selected disabled hidden>@subtask.Progress</option>
                             <option value="Pending" class="btn btn-primary btn-sm">Pending</option>
                             <option value="InProgress" class="btn btn-primary btn-sm">InProgress</option>
@@ -30,11 +30,8 @@
                         </select>
 
                     </td>
-                }
-                else
-                {
-                    <td><span onclick="invalidAccess()" class="btn btn-primary btn-xs">@subtask.Progress</span></td>
-                }
+              
+              
 
                 <td>
                     <p>
@@ -43,22 +40,20 @@
                 </td>
 
                 <td>
-                    @if (ViewBag.userExists)
-                    {
-                        <a class="btn-danger btn btn-xs" onclick="deleteTask('@id')" href="#"><i class="fa fa-trash"></i></a>
-                    }
+
+                    <a class="btn-danger btn btn-xs" onclick="deleteSubtask('@id','@ViewData["AssignmentId"]')" href="#"><i class="fa fa-trash"></i></a>
+                    
                 </td>
             </tr>
         }
     </tbody>
 </table>
-@if (ViewBag.userExists)
-{
-    <a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal4"><i class="fa fa-plus"></i> Add</a>
-}
+
+<a class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#addSubtask"><i class="fa fa-plus"></i> Add</a>
 
 
-<div class="modal inmodal" id="myModal4" tabindex="-1" role="dialog" aria-hidden="true">
+
+<div class="modal inmodal" id="addSubtask" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content animated fadeIn">
 
@@ -76,7 +71,7 @@
             </div>
             <div class="modal-footer">
                 <button type="submit" class="btn btn-white" data-dismiss="modal">Close</button>
-                <a href="#" onclick="addSubtask()" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
+                <a href="#" onclick="addSubtask('@ViewData["AssignmentId"]')" class="btn btn-primary"><i class="fa fa-plus"></i> Add</a>
             </div>
         </div>
     </div>
@@ -84,41 +79,4 @@
 
 
 
-
-@section Script{
-    <script>
-        function deleteTask(id) {
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    $.ajax({
-                        type: "POST",
-                        url: "/assignments/delete" + id,
-
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "The assignment has been deleted.",
-                        icon: "success"
-                    }).then(function () {
-                        window.location.reload();
-                    });
-                }
-
-
-            });
-
-        }
-    </script>
-}
 

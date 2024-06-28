@@ -111,13 +111,12 @@
                     <div class="panel-heading">
                         <div class="panel-options">
                             <ul class="nav nav-tabs">
-                                <li><a class="nav-link active" href="#tab-1" data-toggle="tab">Tasks</a></li>
-                                <li><a class="nav-link" href="#tab-2" data-toggle="tab">Last activity</a></li>
-                                <li><a class="nav-link" href="#tab-3" data-toggle="tab">Users</a></li>
-                                @if (ViewBag.userExists)
-                                {
-                                    <li><a class="nav-link" href="#tab-4" data-toggle="tab">Attachments</a></li>
-                                }
+                                <li><a class="nav-link active" href="#subTasks" data-toggle="tab">Tasks</a></li>
+                                <li><a class="nav-link" href="#taskLogs" data-toggle="tab">Last activity</a></li>
+                                <li><a class="nav-link" href="#users" data-toggle="tab">Users</a></li>
+                              
+                                    <li><a class="nav-link" href="#files" data-toggle="tab">Attachments</a></li>
+                                
                             </ul>
                         </div>
                     </div>
@@ -128,7 +127,7 @@
 
                             <!--  SubTasks  -->
 
-                            <div class="tab-pane active" id="tab-1">
+                            <div class="tab-pane active" id="subTasks">
 
                                 @await Component.InvokeAsync("GetSubTasksByAssignment",new { assignmentId = Model.Id })
                             </div>
@@ -136,7 +135,7 @@
                             <!--  / SubTasks  -->
                             <!--  LastActivity  -->
 
-                            <div class="tab-pane " id="tab-2">
+                            <div class="tab-pane " id="taskLogs">
 
                                 @await Component.InvokeAsync("AssignmentGetTaskLogs",new { _taskId = Model.Id })
 
@@ -145,7 +144,7 @@
 
                             <!--  / LastActivity  -->
 
-                            <div class="tab-pane" id="tab-3">
+                            <div class="tab-pane" id="users">
 
                                 @await Component.InvokeAsync("GetUsersByAssignment",new { assignmentId = Model.Id })
 
@@ -155,7 +154,7 @@
                             <!--  Attachments  -->
 
 
-                            <div class="tab-pane" id="tab-4">
+                            <div class="tab-pane" id="files">
 
                                 @await Component.InvokeAsync("GetAttachmentByAssignment",new {taskId= Model.Id})
 
@@ -180,234 +179,18 @@
 @section Script{
 
 
-    @*   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.js"></script> *@
-
-
+    <script src="~/js/assignment.js"></script>
 
     <script src="~/lib/jquery.toast.min.js"></script>
 
-    <script>
-
-
-
-        function TaskonChange(id) {
-
-            var text = $('#' + id + ' option:selected').text();
-
-            var data = {
-                Progress: text,
-                SubTaskId: id,
-                TaskId: @Model.Id
-                                                                                                                                                                                                    };
-
-
-
-            $.ajax({
-                type: 'POST',
-                url: '/assignments/changeProgress',
-                data: { obj: data },
-                success: function (result) {
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Progress has been successfully changed.',
-                        showHideTransition: 'slide',
-                        position: 'top-right',
-                        icon: 'success'
-                    })
-                }
-            })
-
-        };
-
-    </script>
-    <script>
-        function deleteTask(id) {
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    var AssignmentId = @Model.Id;
-                    var subtaskID = id;
-                    $.ajax({
-                        type: "POST",
-                        data: { assignmentId: AssignmentId, subtaskId: subtaskID },
-                        url: "/assignments/remove/subtask/",
-
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "The task has been deleted.",
-                        icon: "success"
-                    }).then(function () {
-                        window.location.reload();
-                    });
-                }
-
-
-            });
-
-        }
-    </script>
-    <script>
-        function deleteUser(id) {
-
-            Swal.fire({
-                title: "Are you sure?",
-                text: "You won't be able to revert this!",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
-            }).then((result) => {
-
-                if (result.isConfirmed) {
-
-                    var AssignmentId = @Model.Id;
-                    var userID = id;
-                    $.ajax({
-                        type: "POST",
-                        data: { assignmentId: AssignmentId, userId: userID },
-                        url: "/assignments/remove/user",
-
-                    });
-                    Swal.fire({
-                        title: "Deleted!",
-                        text: "The user has been removed.",
-                        icon: "success"
-                    }).then(function () {
-                        window.location.reload();
-                    });
-                }
-
-
-            });
-
-        }
-    </script>
-    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('.i-checks').iCheck({
-                checkboxClass: 'icheckbox_square-green',
-                radioClass: 'iradio_square-green',
-            });
-        });
-    </script>
     <script src="~/inspinia-gh-pages/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-    <script>
-        function AddUser(id) {
+    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
 
-            var TaskId = @Model.Id;
-
-            $.ajax({
-                type: "POST",
-                data: { taskId: TaskId, userId: id },
-                url: "/assignments/add/user",
-                success: function (result) {
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Users has been successfully added.',
-                        showHideTransition: 'slide',
-                        position: 'top-right',
-                        icon: 'success'
-
-                    })
-                    $("#tabletr").hide();
-
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 3000);
-
-                }
-            });
-
-
-
-
-
-
-
-        }
-    </script>
-    <script>
-        function Reload() {
-            window.location.reload();
-        }
-
-    </script>
-
-    <script>
-        function addSubtask() {
-
-            var subtask = {
-                TaskId: @Model.Id,
-                SubTaskDescription: $('#description').val(),
-            };
-
-            if ($("#description").val().trim().length < 1) {
-                $.toast({
-                    heading: 'Error',
-                    text: 'Field is required!',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
-
-                })
-                return;
-            }
-
-            if ($("#description").val().length < 15) {
-                $.toast({
-                    heading: 'Error',
-                    text: 'Too short!',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
-
-                })
-                return;
-            }
-
-            
-
-
-            $.ajax({
-                type: "POST",
-                data: { model: subtask },
-                url: "/assignments/add/subtask",
-                success: function (result) {
-                    $.toast({
-                        heading: 'Success',
-                        text: 'Subtask has been added succesfully.',
-                        showHideTransition: 'slide',
-                        position: 'top-right',
-                        icon: 'success'
-
-                    })
-
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 3000);
-                }
-            });
-
-
-        }
-    </script>
     <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
+
         $(document).ready(function () {
 
             $("#description").validate({
@@ -422,23 +205,10 @@
 
 
             });
-        
-    </script>
-    <script>
-
-        function invalidAccess() {
-
-            $.toast({
-                heading: 'Invalid Access!',
-                text: 'You can not change the progress of this task.',
-                showHideTransition: 'slide',
-                position: 'top-right',
-                icon: 'error'
-
-            });
-        }
 
 
+
+        });
 
 
     </script>

@@ -6,10 +6,10 @@
 
  
 
-@if (ViewBag.userExists)
-{
+
+
     <button type="button" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal5"><i class="fa fa-plus"></i> Add</button>
-}
+
 
 <div class="modal inmodal" id="myModal5" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
@@ -41,12 +41,13 @@
                                 @foreach (var user in Model)
                                 {
                                     string id = user.Id.ToString();
-                                    <tr id="tabletr">
+                                    <tr id="@id">
                                         <td class="client-avatar"><img alt="image" src="~/Images/@user.ImagePath"> </td>
                                         <td><a href="#userProfile/@user.Id" class="client-link">@user.UserName</a></td>
-                                        <td>Admin</td>
-                                        <td><a href="#" onclick="AddUser('@id')" class="btn btn-primary">Add</a></td>
-                                    </tr>
+                                        <td>@user.Role</td>
+                                        <td> <input type="checkbox" class="i-checks" value="@id" /></td>
+                                  
+                                  </tr>
                                 }
                              
 
@@ -59,7 +60,7 @@
 
             </div>
             <div class="modal-footer">
-                <a href="#" onclick="Reload()" class="btn btn-primary">Close</a>
+                <a href="#" onclick="AddUser('@ViewData["assignmentId"]')" class="btn btn-primary">Add</a>
                
             </div>
         </div>

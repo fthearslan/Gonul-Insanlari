@@ -24,9 +24,11 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Assignment
 
         public IViewComponentResult Invoke(int assignmentId)
         {
+            ViewData["AssignmentId"] = assignmentId;
 
             var task = _manager.GetByIdAsync(assignmentId).Result;
             
+
             List<SubTaskViewModel> model = new();
 
             foreach (var subtask in task.SubTasks)

@@ -9,10 +9,16 @@ namespace GonulInsanlari.Extensions.Admin
     public static class UserManagerExtensions
     {
 
+        public static async Task<AppUser> GetByIdAsync(this UserManager<AppUser> _userManager, int userId)
+        {
+            return await _userManager.Users
+                .SingleOrDefaultAsync(x => x.Id == userId);
+
+        }
         public static async Task<AppUser> GetUsersWithRoles(this UserManager<AppUser> userManager, string userId)
         {
 
-           AppUser? user =  await userManager.FindByIdAsync(userId);
+            AppUser? user = await userManager.FindByIdAsync(userId);
 
             if (user is null)
                 return null;
@@ -34,8 +40,6 @@ namespace GonulInsanlari.Extensions.Admin
             return users;
 
         }
-
-
         public static async Task<IQueryable<AppUser>> GetUsersWithRolesAsync(this UserManager<AppUser> userManager, string roleName)
         {
 
@@ -50,13 +54,6 @@ namespace GonulInsanlari.Extensions.Admin
 
         }
 
-        public static async Task<IQueryable<AppRole>> GetRolesWithPermissionsAsync(this UserManager<AppUser> userManager, ClaimsPrincipal _currentUser)
-        {
-
-            
-
-            return null;
-        }
 
 
 

@@ -52,7 +52,7 @@
                         <a class="btn-white btn btn-xs" href="/admin/u/user/@user.UserName">View</a>
 
 
-                        <a class="btn-danger btn btn-xs" onclick="remove('@user.Id','@ViewData["RoleName"]')" style="color:white" id="btn_delete" value="@user.Id"><i class="fa fa-trash"></i> Remove</a>
+                        <a class="btn-danger btn btn-xs" onclick="remove('@user.Id','@ViewData["RoleName"]')" style="color:white" id="btn_delete" value="@user.Id"><i class="fa fa-trash"></i></a>
 
 
                     </td>
@@ -80,13 +80,13 @@
             @if (id_table?.ToString() != "SuperAdmin")
             {
                 <div>
-                    <a href="#" class="text-navy" onclick="getPermissions('@ViewData["RoleId"]')" data-toggle="modal" data-target="#permissions">Manage Permissions</a>
+                    <a href="#" class="text-navy" onclick="getPermissions('@ViewData["RoleId"]')" data-toggle="modal" data-target="#permissions"><i class="fa fa-id-card-o" style="margin-right:3px;"></i> Manage Permissions</a>
 
                     </div>
             }
 
             <div style="margin-top:5px;">
-                <a href="#" class="text-success" data-toggle="modal" onclick="getUsers(' @ViewData["RoleId"]')" data-target="#newUser">Add a new user</a>
+                <a href="#" class="text-success" data-toggle="modal" onclick="getUsers(' @ViewData["RoleId"]')" data-target="#newUser"><i class="fa fa-user-plus" style="margin-right:3px;"></i> Add a new user</a>
 
             </div>
 
@@ -94,7 +94,7 @@
             @if (id_table?.ToString() != "SuperAdmin" && id_table?.ToString() != "Admin")
                 {
                     <div style="margin-top:5px;">
-                        <a href="#" class="text-danger" onclick="deleteRole('@ViewData["RoleId"]')"> Delete Role </a>
+                        <a href="#" class="text-danger" onclick="deleteRole('@ViewData["RoleId"]')"> <i class="fa fa-trash" style="margin-right:3px;"></i> Delete Role </a>
 
                     </div>
                 }

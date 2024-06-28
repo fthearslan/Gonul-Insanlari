@@ -28,52 +28,85 @@
             @await Component.InvokeAsync("AdminTopNavBar")
 
             <div class="wrapper wrapper-content">
-               @RenderBody()
+                @RenderBody()
                 <div id="ss_menu">
-                    <div class="myBox" >
-                       <i  class="fa fa-plus"></i>
-                       <a href="/articles/add"></a>
-                    </div>
+
+                    @{
+                        string artIcon = "fa fa-lock";
+                        string artLink = "#";
+
+                        string taskIcon = "fa fa-lock";
+                        string taskLink = "#";
+
+                        string anIcon = "fa fa-lock";
+                        string anLink = "#";
+                    }
+
+
+                    @if (User.HasClaim("Permission", "Article.Create"))
+                    {
+                        artIcon = "fa fa-plus";
+                        artLink = "/articles/add";
+
+                    }
+
                     <div class="myBox">
-                        <i class="fa fa-tasks"></i>
-                        <a href="/assignments/add"></a>
+                        <i class="@artIcon"></i>
+                        <a href=@artLink></a>
                     </div>
+
+                    @if (User.HasClaim("Permission", "Assignment.Create"))
+                    {
+                        taskIcon = "fa fa-tasks";
+                        taskLink = "/assignments/add";
+
+                    }
+
+                    <div class="myBox">
+                        <i class="@taskIcon"></i>
+                        <a href=@taskLink></a>
+                    </div>
+
                     <div class="myBox">
                         <i class="fa fa-commenting"></i>
                         <a href="/Admin/Message/GetList"></a>
                     </div>
+
+
+
+                    @if (User.HasClaim("Permission", "Announcement.Create"))
+                    {
+                        anIcon = "fa fa-bullhorn";
+                        anLink = "/announcements/add";
+                    }
+
                     <div class="myBox">
-                        <i class="fa fa-bullhorn"></i>
-                        <a href="/announcements/add"></a>
+                        <i class="@anIcon"></i>
+                        <a href=@anLink></a>
                     </div>
+
+
                     <div class="menu">
                         <div class="share" id="ss_toggle" data-rot="180">
-                          
+
                             <div class="circle"></div>
                             <div class="bar"></div>
                         </div>
                     </div>
-                   
+
                 </div>
             </div>
-            @* <div class="footer">
-                <div class="float-right">
-                    <strong>Gonul Insanlari </strong> 2023
-                </div>
-                <div>
-                 
-                </div>
-            </div> *@
+          
 
 
             @await Component.InvokeAsync("AnnounceBar")
-            
+
 
         </div>
     </div>
 
-    
-    
+
+
     <!-- Mainly scripts -->
     <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
     <script src="~/inspinia-gh-pages/js/popper.min.js"></script>
@@ -81,7 +114,7 @@
     <script src="~/inspinia-gh-pages/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/sparkline/jquery.sparkline.min.js"></script>
-  @*   <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> *@
+    @*   <script src="//code.jquery.com/jquery-2.1.4.min.js"></script> *@
     <!-- Peity -->
     <script src="~/inspinia-gh-pages/js/plugins/peity/jquery.peity.min.js"></script>
     <script src="~/inspinia-gh-pages/js/demo/peity-demo.js"></script>

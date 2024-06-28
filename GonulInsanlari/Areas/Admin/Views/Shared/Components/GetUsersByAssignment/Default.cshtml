@@ -14,23 +14,22 @@
             <tbody id="table1">
                 @foreach (var user in Model)
                 {
-                    
-                    <tr>
+
+                    <tr id="@user.Item1">
                         <td class="client-avatar"><img alt="image" src="~/Images/@user.Item3"> </td>
                         <td><a href="#userProfile/@user.Item1" class="client-link">@user.Item2</a></td>
                         <td>Admin</td>
                         <td>
-                            @if (ViewBag.userExists)
-                            {
-                            <a class="btn-danger btn btn-xs" onclick="deleteUser(@user.Item1)" href="#"><i class="fa fa-trash"></i></a>
-                            }
+
+                            <a class="btn-danger btn btn-xs" onclick="deleteUser(@user.Item1,'@ViewData["assignmentId"]')" href="#"><i class="fa fa-trash"></i></a>
+
                         </td>
                     </tr>
                 }
 
             </tbody>
         </table>
-       
+
         @await Component.InvokeAsync("AssignmentGetUsersToAdd",new { assignmentId=ViewData["assignmentId"]})
 
     </div>

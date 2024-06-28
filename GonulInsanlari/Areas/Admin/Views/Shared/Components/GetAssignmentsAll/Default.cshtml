@@ -51,7 +51,7 @@
                 }
 
 
-                <tr>
+                <tr id="@task.Id">
 
                     <td><i class="fa fa-dot-circle-o"></i></td>
                     <td>@task.Title</td>
@@ -62,7 +62,7 @@
                     <td>@GetDate.GetCreateDate(@task.Created)</td>
                     <td class="btn-group">
                         <a class="btn-white btn btn-xs" href="/assignments/details/@task.Id">View</a>
-                        <a class="btn-danger btn btn-xs" onclick="fire(@task.Id)" id="btn_delete" value="@task.Id" href="/assignments/delete/@task.Id"><i class="fa fa-trash"></i></a>
+                        <button type="button" class="btn-danger btn btn-xs" onclick="deleteAssignment('@task.Id')" id="btn_delete" value="@task.Id" href="#"><i class="fa fa-trash"></i></button>
                     </td>
                 </tr>
 

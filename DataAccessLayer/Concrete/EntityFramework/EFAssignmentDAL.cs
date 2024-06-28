@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Http;
 using System.Reflection.Metadata.Ecma335;
 using AutoMapper.Configuration.Conventions;
+using System.Security.Policy;
 
 namespace DataAccessLayer.Concrete.EntityFramework
 {
@@ -170,8 +171,13 @@ namespace DataAccessLayer.Concrete.EntityFramework
         public bool IsUser(Assignment task, string _currentUserId)
         {
 
-            return task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId
-                 || a.Assignment.Publisher.Id.ToString() == _currentUserId);
+            if (task.UserAssignments.Any(a => a.UserId.ToString() == _currentUserId))
+                return true;
+
+                if (task.Publisher.Id.ToString() == _currentUserId)
+                    return true;
+
+            return false;
 
         }
 
@@ -193,7 +199,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                     if (attachmentsCount == 1)
                     {
                         c.TaskAttachment.Remove(attachmentToDelete);
-                        
+
 
                         await c.SaveChangesAsync();
 
@@ -223,7 +229,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
             {
 
                 c.Attach(log.Assignment);
-             
+
                 await c.TaskLogs.AddAsync(log);
 
                 await c.SaveChangesAsync();
@@ -255,11 +261,11 @@ namespace DataAccessLayer.Concrete.EntityFramework
             {
 
                 c.Attach(log.Assignment);
-                
+
                 var user = await c.Users.FirstOrDefaultAsync(x => x.Id == _userId);
-             
+
                 log.CreatedBy = user;
-                
+
                 await c.TaskLogs.AddAsync(log);
 
                 await c.SaveChangesAsync();

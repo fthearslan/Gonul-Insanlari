@@ -20,9 +20,9 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         public IViewComponentResult Invoke()
         {
             var commentcount = _commentManager.List().Count;
-            ViewBag.CommentCount = commentcount;
+            ViewData["CommentCount"] = commentcount;
             var articlecount = _articleManager.ListFilter().Count();
-            ViewBag.ArticleCount = articlecount;
+            ViewData["ArticleCount"] = articlecount;
             return View();
         }
     }

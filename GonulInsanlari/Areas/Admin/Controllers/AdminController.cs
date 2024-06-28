@@ -65,9 +65,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
-
-
-        [HasPermission(PermissionType.User,Permission.Read)]
+        [HasPermission(PermissionType.User, Permission.Read)]
         [Route("user/{username}")]
         public async Task<IActionResult> GetDetails(string userName)
         {
@@ -83,6 +81,42 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             model.Roles = await _userManager.GetRolesAsync(user);
 
             return View(model);
+
+        }
+
+        [HttpPost]
+        [Route("register/new")]
+        [HasPermission(PermissionType.User, Permission.Create)]
+        public async Task<IActionResult> Register(AdminRegisterViewModel model)
+        {
+            List<string> modelErrors = new();
+
+            if (ModelState.IsValid)
+            {
+
+                AppUser user = _mapper.Map<AppUser>(model);
+
+                IdentityResult result = await _userManager.CreateAsync(user, "Admin123@");
+
+                if (!result.Succeeded)
+                {
+                    foreach (var error in result.Errors)
+                        modelErrors.Add(error.Description);
+                    return BadRequest(modelErrors);
+
+                }
+
+                return StatusCode(200);
+
+            }
+
+            foreach (var Errors in ModelState.Values)
+                foreach (var error in Errors.Errors)
+                {
+                    modelErrors.Add(error.ErrorMessage);
+                }
+
+            return BadRequest(modelErrors);
 
         }
 
@@ -309,11 +343,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpGet]
         [Route("users")]
-        [HasPermission(PermissionType.User,Permission.Read)]
+        [HasPermission(PermissionType.User, Permission.Read)]
         public async Task<IActionResult> GetUsers(int pageNumber = 1)
         {
             var users = await _userManager.GetUsersWithRolesAsync();
-         
+
             List<AdminListViewModel> model = new();
             foreach (var user in await users.Include(x => x.UserLogin).ToListAsync())
             {
@@ -327,13 +361,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     UserName = user.UserName,
                     ImagePath = user.ImagePath,
                     PhoneNumber = user.PhoneNumber,
-                    Status=user.Status,
+                    Status = user.Status,
                     LastLogin = user?.UserLogin?
                     .Where(x => x.Type == LoginType.Login)
                     .OrderByDescending(x => x.Date)
                     .FirstOrDefault()?
                     .Date
-            });
+                });
             }
 
             return View(await model.ToPagedListAsync(pageNumber, 10));
@@ -342,7 +376,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
 
-        [HttpPost] 
+        [HttpPost]
         [Route("users/delete/{id}")]
         [HasPermission(PermissionType.User, Permission.Update | Permission.Delete)]
         public async Task<IActionResult> EnableOrDisable(string id)
@@ -379,6 +413,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return Json(_response);
 
         }
+
+        // DeleteUser()...
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     }
 }
 

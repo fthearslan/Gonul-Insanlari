@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240627195632_mig_appUser_aboutMe_convertToNullable")]
+    partial class mig_appUser_aboutMe_convertToNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -58,7 +60,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Abouts", (string)null);
+                    b.ToTable("Abouts");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Announcement", b =>
@@ -106,7 +108,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.AppRole", b =>
@@ -208,6 +210,7 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SocialMediaAccount")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("Status")
@@ -290,7 +293,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Assignment", b =>
@@ -336,7 +339,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("Assignments", (string)null);
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Category", b =>
@@ -372,7 +375,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Comment", b =>
@@ -415,7 +418,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ArticleID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Contact", b =>
@@ -472,7 +475,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Message", b =>
@@ -520,7 +523,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.NewsLetter", b =>
@@ -554,7 +557,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NewsLetters", (string)null);
+                    b.ToTable("NewsLetters");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Note", b =>
@@ -590,7 +593,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Notification", b =>
@@ -633,7 +636,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.SubTask", b =>
@@ -657,7 +660,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("SubTask", (string)null);
+                    b.ToTable("SubTask");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.TaskAttachment", b =>
@@ -680,7 +683,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("TaskAttachment", (string)null);
+                    b.ToTable("TaskAttachment");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.TaskLog", b =>
@@ -716,7 +719,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("TaskLogs", (string)null);
+                    b.ToTable("TaskLogs");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.UserAssignment", b =>
@@ -731,7 +734,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("UserAssignment", (string)null);
+                    b.ToTable("UserAssignment");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.UserLogin", b =>
@@ -757,7 +760,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersLogins", (string)null);
+                    b.ToTable("UsersLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

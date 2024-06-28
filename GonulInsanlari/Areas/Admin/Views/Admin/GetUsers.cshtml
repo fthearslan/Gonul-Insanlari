@@ -16,12 +16,17 @@
 
 <div class="tabs-container">
     <ul class="nav nav-tabs" role="tablist">
-        <li><a class="nav-link active" data-toggle="tab" href="#tabs-1">Users</a></li>
-        <li><a class="nav-link " data-toggle="tab" href="#tabs-2"><i class="fa fa-search"></i></a></li>
+        <li><a class="nav-link active" data-toggle="tab" href="#users">Users</a></li>
+        <li><a class="nav-link " data-toggle="tab" href="#search"><i class="fa fa-search"></i></a></li>
+        @if (User.HasClaim("Permission", "User.Create"))
+        {
+            <li><a class="nav-link " onclick="clearInput();" data-toggle="modal" data-target="#add"><i class="fa fa-plus"></i></a></li>
+        }
+
 
     </ul>
     <div class="tab-content">
-        <div role="tabpanel" id="tabs-1" class="tab-pane active">
+        <div role="tabpanel" id="users" class="tab-pane active">
             <div class="panel-body">
                 <div class="ibox-content">
                     <div class="row">
@@ -44,18 +49,18 @@
                                         <h3 class="m-b-xs"><strong>@user.Name @user.Surname</strong></h3>
 
                                         <div class="font-bold">@@@user.UserName</div>
-                                    
-                                            <address class="m-t-md">
 
-                                                <strong>@user.Email</strong><br>
+                                        <address class="m-t-md">
 
-                                                Last login : @GetDate.GetCreateDate(user.LastLogin) <br>
+                                            <strong>@user.Email</strong><br>
+
+                                            Last login : @GetDate.GetCreateDate(user.LastLogin) <br>
 
 
-                                            </address>
-                                        
+                                        </address>
 
-                                       
+
+
 
                                     </a>
                                     <div class="contact-box-footer">
@@ -86,7 +91,7 @@
             </div>
         </div>
 
-        <div role="tabpanel" id="tabs-2" class="tab-pane ">
+        <div role="tabpanel" id="search" class="tab-pane ">
 
 
             @await Component.InvokeAsync("GetAdminsAll")
@@ -94,9 +99,115 @@
 
         </div>
 
+
+
     </div>
 </div>
 
+<div class="modal inmodal fade" id="add" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus" style="margin-right:3px;"></i> Add a new user</h4>
+            </div>
+            <div class="modal-body">
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg">
+
+
+                            <div class="form-group">
+
+                                <label class="col-form-label">Name</label>
+
+                                <div><input  tabindex="1" id="name" type="text" name="Name" class="form-control" ></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Username</label>
+
+                                <div><input tabindex="3" id="username" type="text" name="Username" class="form-control"></div>
+
+                            </div>
+
+
+
+
+
+
+
+
+
+                        </div>
+
+
+                        <div class="col-lg">
+
+
+                            <div class="form-group">
+                                <label class="col-form-label">Surname</label>
+
+                                <div><input tabindex="2" id="surname" type="text" name="Surname" class="form-control"></div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Email</label>
+
+                                <div><input tabindex="4" id="email" type="text" name="Email" class="form-control"></div>
+
+                            </div>
+
+
+
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div style="margin-top:30px;" class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <i class="fa fa-info-circle"></i> Be aware of
+                                </div>
+                                <div class="panel-body">
+
+                                    <ul>
+                                        <li>User password will be automaticly set <span class="text-success">"Admin123@@"</span> after he is registered.</li>
+                                        <li>User will be granted with role named  <span class="text-navy">Admin</span> after he is registered.</li>
+                                        <li>User can easily change it later on.</li>
+
+                                    </ul>
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <ul id="validation">
+                        </ul>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button  type="button" id="btnAdd" onclick="register();" class="btn btn-primary"> Add </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Script{
 

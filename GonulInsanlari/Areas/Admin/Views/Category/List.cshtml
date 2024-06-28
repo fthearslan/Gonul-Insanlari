@@ -1,5 +1,5 @@
 ﻿@model List<CategoryListViewModel>
- 
+
 @{
     ViewData["Title"] = "List";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
@@ -12,14 +12,7 @@
     <div class="col-lg-12">
         <div class="ibox ">
             <h2><i class="fa fa-th-list"></i> Categories </h2>
-            <div class="ibox-tools">
-                <a class="collapse-link">
-                    <i class="fa fa-chevron-up"></i>
-                </a>
-                <a class="close-link">
-                    <i class="fa fa-times"></i>
-                </a>
-            </div>
+            
             <div class="ibox-content">
 
                 <div class="table-responsive">
@@ -48,7 +41,7 @@
                                     </td>
                                     <td><span class="@label">@text</span></td>
                                     <td>@category.ArticleCount</td>
-                                  
+
                                     @if (category.Status == true)
                                     {
                                         <td class="btn-group">
@@ -61,8 +54,15 @@
                                     {
                                         <td class="btn-group">
                                             <a class="btn-white btn btn-xs" href="/categories/details/@category.CategoryID">View</a>
-                                            <a class="btn-white btn btn-xs" href="/categories/edit/@category.CategoryID">Edit</a>
-                                            <a class="btn-danger btn btn-xs" onclick="firedelete('@category.CategoryID','delete it.')" id="btn_delete"><i class="fa fa-trash"></i></a>
+
+                                            @if (User.HasClaim("Permission", "Category.Update"))
+                                            {
+                                                <a class="btn-white btn btn-xs" href="/categories/edit/@category.CategoryID">Edit</a>
+                                            }
+                                            @if (User.HasClaim("Permission", "Category.Delete"))
+                                            {
+                                                <a class="btn-danger btn btn-xs" onclick="firedelete('@category.CategoryID','delete it.')" id="btn_delete"><i class="fa fa-trash"></i></a>
+                                            }
                                         </td>
 
                                     }
@@ -74,9 +74,9 @@
 
                     </table>
                 </div>
-                
+
             </div>
-            
+
         </div>
         <div style="margin-right:15px;margin-left:auto">
             @if (User.HasClaim("Permission", "Category.Create"))
@@ -100,7 +100,7 @@
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script src="sweetalert2.all.min.js"></script>
-    
+
     <script>
         $(document).ready(function () {
             $("#dataTable").dataTable({
@@ -120,7 +120,7 @@
             });
         });
     </script>
-    
+
 
     <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
 }

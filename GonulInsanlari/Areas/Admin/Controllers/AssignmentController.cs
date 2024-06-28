@@ -8,7 +8,9 @@ using FluentValidation;
 using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Areas.Admin.ViewComponents.Assignment;
 using GonulInsanlari.Enums;
+using GonulInsanlari.Extensions.Admin;
 using GonulInsanlari.Models;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.JsonPatch.Internal;
@@ -20,6 +22,7 @@ using Microsoft.Data.SqlClient.Server;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Identity;
+using System.Drawing;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Assignment;
 using ViewModelLayer.ViewModels.TaskAttachment;
@@ -44,7 +47,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly IHttpContextAccessor? _contextAccessor;
 
         AppUser _currentUser = new();
-        public AssignmentController(IAssignmentService manager, IMapper mapper,UserManager<AppUser> userManager, IMemoryCache cache, ResponseModel response, IHttpContextAccessor contextAccessor)
+        public AssignmentController(IAssignmentService manager, IMapper mapper, UserManager<AppUser> userManager, IMemoryCache cache, ResponseModel response, IHttpContextAccessor contextAccessor)
         {
             _manager = manager;
             _mapper = mapper;
@@ -102,7 +105,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 await _manager.PublishAsync(task);
 
-                return RedirectToAction(nameof(List));
+                return RedirectToAction("GetDetails", new { id = task.Id });
 
             }
 
@@ -113,34 +116,43 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [Route("add/user")]
         [HasPermission(PermissionType.Assignment, Permission.Update)]
-        public async Task AddUser(int taskId, int userId)
+        public async Task<IActionResult> AddUser(List<int> users, int assignmentId)
         {
 
-            var assignment = await _manager.GetByIdAsync(taskId);
+            if (users is null)
+                return StatusCode(404);
 
+            var assignment = await _manager.GetByIdAsync(assignmentId);
 
-            if (assignment != null)
+            if (assignment is null)
+                return StatusCode(404);
+
+            foreach (int userId in users)
             {
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+                AppUser? user = await _userManager.GetByIdAsync(userId);
 
-                if (user != null)
+                if (user is null)
+                    continue;
+
+                assignment.UserAssignments.Add(new()
                 {
-                    assignment.UserAssignments.Add(new()
-                    {
-                        User = user,
-                        UserId = userId,
-                    });
+                    User = user,
+                    UserId = userId,
+                });
 
-                    assignment.Modified = DateTime.Now;
-
-                    await _manager.LogAsync(new($"User named {user.UserName} were addded by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
+                assignment.Modified = DateTime.Now;
 
 
-                }
+                await _manager.LogAsync(new($"User named {user.UserName} were addded by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
 
             }
 
+            return StatusCode(200);
+
+
         }
+
+
 
         [HttpPost]
         [Route("add/subtask")]
@@ -158,6 +170,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 subTask.Assignment.Logs.Add(new($"New subtask '{subTask.Description.Substring(0, 15)}...' were added by {_currentUser.UserName}") { CreatedBy = _currentUser });
                 _manager.AddSubTask(subTask);
+
 
             }
         }
@@ -248,7 +261,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("list")]
         [HasPermission(PermissionType.Assignment, Permission.Read)]
-
         public async Task<IActionResult> List(int pageNumber = 1)
         {
             var tasks = await _manager.GetByProgress(Assignment.ProgressStatus.InProgress);
@@ -263,24 +275,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.Assignment, Permission.Read)]
         public async Task<IActionResult> GetDetails(int id)
         {
+
             var task = await _manager.GetByIdAsync(id);
 
-            if (task != null)
-            {
+            if (task is null)
+                return NotFound();
 
-                AssignmentDetailsViewModel model = _mapper.Map<AssignmentDetailsViewModel>(task);
 
-                ViewData["SubTasksAll"] = task.SubTasks?.Count;
-                ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
+            if (!_manager.IsUser(task, _userManager.GetUserId(HttpContext.User)))
+                return StatusCode(403);
 
-                ViewBag.userExists = _manager.IsUser(task, _userManager.GetUserId(HttpContext.User));
+            AssignmentDetailsViewModel model = _mapper.Map<AssignmentDetailsViewModel>(task);
 
-                return View(model);
+            ViewData["SubTasksAll"] = task.SubTasks?.Count;
+            ViewData["SubTasksDone"] = task.SubTasks?.Where(s => s.Progress == SubTasksProgress.Done).Count();
 
-            }
-
-            return NotFound();
-
+            return View(model);
 
         }
 
@@ -291,41 +301,52 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [Route("changeProgress")]
         [HasPermission(PermissionType.Assignment, Permission.Update)]
-        public async Task ChangeProgress(AssingmentProgressChangeViewModel obj)
+        public async Task<IActionResult> ChangeProgress(AssingmentProgressChangeViewModel obj)
         {
-            var task = await _manager.GetByIdAsync(obj.TaskId);
 
-            SubTask? subtask = task.SubTasks.Find(s => s.Id.ToString() == obj.SubTaskId);
 
-            if (subtask != null)
+            Assignment? task = await _manager.GetByIdAsync(obj.TaskId);
 
-                switch (obj.Progress)
-                {
-                    case "Pending":
+            if (task is null)
+                return StatusCode(404);
 
-                        subtask.Progress = SubTasksProgress.Pending;
 
-                        break;
+            SubTask? subtask = task.SubTasks
+                .Find(s => s.Id.ToString() == obj.SubTaskId);
 
-                    case "InProgress":
 
-                        subtask.Progress = SubTasksProgress.InProgress;
-                        break;
+            if (subtask is null)
+                return StatusCode(404);
 
-                    case "Done":
 
-                        subtask.Progress = SubTasksProgress.Done;
-                        break;
+            switch (obj.Progress)
+            {
+                case "Pending":
 
-                }
+                    subtask.Progress = SubTasksProgress.Pending;
+
+                    break;
+
+                case "InProgress":
+
+                    subtask.Progress = SubTasksProgress.InProgress;
+                    break;
+
+                case "Done":
+
+                    subtask.Progress = SubTasksProgress.Done;
+                    break;
+
+            }
 
 
             await _manager.LogAsync(new($"{_currentUser.UserName} changed the progress of subtask '{subtask?.Description.Substring(0, 15)}...' to {subtask?.Progress.ToString()}.")
             { Assignment = task },
             _currentUser.Id);
+
             _manager.Update(task);
 
-
+            return StatusCode(200);
 
 
         }
@@ -338,26 +359,36 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("remove/user")]
         [HasPermission(PermissionType.Assignment, Permission.Update)]
-        public async Task RemoveUser(int assignmentId, int userId)
+        public async Task<IActionResult> RemoveUser(int assignmentId, int userId)
         {
+
             var assignment = await _manager.GetByIdAsync(assignmentId);
+
+            if (assignment is not null && assignment.Publisher.UserName != User?.Identity?.Name)
+                return StatusCode(403);
 
             var user = assignment?.UserAssignments?.Find(a => a.UserId == userId);
 
-            if (user != null)
+            if (user is not null)
             {
                 assignment?.UserAssignments?.Remove(user);
 
-                if (assignment != null)
+                if (assignment is not null)
                 {
 
                     await _manager.LogAsync(new($"User named {user?.User?.UserName} deleted by {_currentUser.UserName}") { Assignment = assignment }, _currentUser.Id);
 
                     _manager.Update(assignment);
 
+                    return StatusCode(200);
 
                 }
+
+
+
             }
+
+            return StatusCode(404);
 
         }
 
@@ -421,6 +452,31 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         }
+
+
+        [HttpPost]
+        [Route("delete/{id}")]
+        [HasPermission(PermissionType.Assignment, Permission.Delete)]
+        public async Task<IActionResult> DeleteAssignment(int id)
+        {
+
+            Assignment? assignmentToDelete = await _manager.GetByIdAsync(id);
+
+            if (assignmentToDelete is null)
+                return StatusCode(404);
+
+            if (assignmentToDelete.Publisher.UserName != User?.Identity?.Name)
+                return StatusCode(403);
+
+
+            _manager.Delete(assignmentToDelete);
+
+            return StatusCode(200);
+
+
+        }
+
+
 
         #endregion
 

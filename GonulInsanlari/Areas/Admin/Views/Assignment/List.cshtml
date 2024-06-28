@@ -5,7 +5,9 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2 style="margin-bottom:30px;">Tasks</h2>
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+<h2 style="margin-bottom:30px;"><i class="fa fa-tasks" style="margin-right:3px;"></i> Tasks</h2>
 
 <div class="tabs-container">
     <ul class="nav nav-tabs" role="tablist">
@@ -102,6 +104,10 @@
 
 
 @section Script{
+
+    <script src="~/js/assignment.js"></script>
+    <script src="~/lib/jquery.toast.min.js"></script>
+
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script>

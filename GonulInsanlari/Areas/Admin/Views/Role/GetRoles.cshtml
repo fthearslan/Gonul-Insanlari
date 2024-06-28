@@ -7,6 +7,7 @@
 
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="~/inspinia-gh-pages/css/plugins/icheck/custom.css" rel="stylesheet" />
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
@@ -25,7 +26,7 @@
                     <a class="nav-link @role.IsActive" data-toggle="tab" href="#@role.Name"><i class="fa fa-user"></i> @role.Name     </a>
                 </li>
             }
-            <li><a class="nav-link" data-toggle="modal" data-target="#newRole" title="Add a new role" href="/admin/roles/add"><i class="fa fa-plus"></i></a></li>
+            <li><a class="nav-link" data-toggle="modal" data-target="#newRole" onclick="clearRoleInput();" title="Add a new role" href="/admin/roles/add"><i class="fa fa-plus"></i></a></li>
 
         </ul>
         <div class="tab-content">
@@ -56,7 +57,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Manage Permissions</h4>
+                <h4 class="modal-title"><i class="fa fa-id-card-o" style="margin-right:3px;"></i> Manage Permissions</h4>
             </div>
             <div id="inputLocater" class="modal-body">
                     
@@ -89,11 +90,11 @@
 </div>
 
 <div class="modal inmodal fade" id="newRole" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Add a new role</h4>
+                <h4 class="modal-title"><i class="fa fa-user-plus" style="margin-right:3px;"></i> Add a new role</h4>
             </div>
             <div class="modal-body">
 
@@ -106,7 +107,6 @@
                                     <label class="col-form-label">Role Title</label>
 
                                     <div><input id="name" type="text" name="Name" class="form-control"></div>
-                                    <span id="nameInvalid" class="text-danger"> </span>
                                 </div>
 
                             <div class="form-group">
@@ -117,7 +117,6 @@
 
                             </textarea>
                                 </div>
-                                <span class="text-danger"></span>
 
                             </div>
 
@@ -155,7 +154,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title">Add a new user</h4>
+                <h4 class="modal-title"><i class="fa fa-user-plus" style="margin-right:3px;"></i> Add a new user</h4>
             </div>
             <div id="inputLocater" class="modal-body">
 

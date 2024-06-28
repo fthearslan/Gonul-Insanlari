@@ -18,7 +18,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Role
             RuleFor(x => x.Name).MinimumLength(3).WithMessage("Too short for role name.");
 
             RuleFor(x => x.RoleDescription).MaximumLength(350).WithMessage("Too long for role description.");
-            RuleFor(x => x.Name).MinimumLength(100).WithMessage("Too short for role description.");
+            RuleFor(x => x.RoleDescription).MinimumLength(75).WithMessage("Too short for role description.");
 
         }
     }

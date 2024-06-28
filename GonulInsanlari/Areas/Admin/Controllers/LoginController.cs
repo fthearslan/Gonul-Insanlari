@@ -53,9 +53,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                     }
                 }
+
+                TempData["Error"] = "Invalid username or password, please provide valid credentials.";
             }
 
-            TempData["Error"] = "Invalid username or password, please provide valid credentials.";
+          
 
 
             return View(user);

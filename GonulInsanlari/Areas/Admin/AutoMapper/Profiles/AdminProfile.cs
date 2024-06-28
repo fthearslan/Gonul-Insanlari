@@ -20,6 +20,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             CreateMap<AppUser, AdminListViewModel>()
                 .ForMember(dest => dest.LastLogin,opt=>opt.Ignore());
 
+            CreateMap<AdminRegisterViewModel, AppUser>();
                 
 
 

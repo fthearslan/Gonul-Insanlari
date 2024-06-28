@@ -450,3 +450,21 @@ function addUser(id) {
 
 
 }
+
+$(document).ready(function () {
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+});
+
+function clearRoleInput() {
+
+    document.getElementById('name').value = "";
+    document.getElementById('roleDesc').value = "";
+   
+
+    $("#validation").empty();
+
+
+}

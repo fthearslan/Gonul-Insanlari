@@ -32,7 +32,11 @@
     </div>
 </div>
 
-<button type="button" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal6"><i class="fa fa-plus"></i> Add</button>
+@if (User.HasClaim("Permission", "Assignment.Update"))
+{
+    <button type="button" class="btn btn-primary btn-xs" href="#" data-toggle="modal" data-target="#myModal6"><i class="fa fa-plus"></i> Add</button>
+
+}
 
 <div class="modal inmodal" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog">
