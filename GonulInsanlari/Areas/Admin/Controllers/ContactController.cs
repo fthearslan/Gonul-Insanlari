@@ -437,7 +437,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("delete/{id}")]
         [HttpPost]
-        [HasPermission(PermissionType.Contact, Permission.Update |Permission.Delete)]
+        [HasPermission(PermissionType.Contact, Permission.Delete)]
 
         public async Task<IActionResult> Delete(int id)
         {

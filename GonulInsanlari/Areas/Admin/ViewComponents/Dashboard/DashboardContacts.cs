@@ -18,7 +18,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         {
             var contacts = _contactManager.ListFilter().Take(10).ToList();
             var Count = _contactManager.ListFilter().Count;
-            ViewBag.Count = Count;
+            ViewData["Count"] = Count;
             return View(contacts);
         }
     }

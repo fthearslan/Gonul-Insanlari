@@ -1,10 +1,18 @@
-﻿using EntityLayer.Concrete.Entities;
+﻿using BussinessLayer.Abstract.Services;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Extensions.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Build.Logging;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Options;
+using System.Net;
+using System.Net.Mail;
+using System.Runtime.CompilerServices;
+using ViewModelLayer.Models.Configuration;
+using ViewModelLayer.Models.Newsletter;
 using ViewModelLayer.ViewModels.Login;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
@@ -16,12 +24,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         SignInManager<AppUser> _signInManager;
 
-        private readonly ILogger<LoginController> _logger;
-
-        public LoginController(SignInManager<AppUser> signInManager, ILogger<LoginController> Logger)
+        public LoginController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
-            _logger = Logger;
+          
+       
         }
 
         [HttpGet]
@@ -29,9 +36,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult Login()
         {
+
+
             return View();
+
         }
 
+        
         [HttpPost]
         [Route("admin")]
 
@@ -45,7 +56,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
 
                     var usersignedIn = await _signInManager.UserManager.FindByNameAsync(user.Username);
-                    if(usersignedIn.Status is true)
+                    if (usersignedIn.Status is true)
                     {
                         await _signInManager.LogUserLoginAsync(user.Username, LoginType.Login);
 
@@ -57,7 +68,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 TempData["Error"] = "Invalid username or password, please provide valid credentials.";
             }
 
-          
+
 
 
             return View(user);

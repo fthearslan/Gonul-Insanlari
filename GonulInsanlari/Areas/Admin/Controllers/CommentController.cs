@@ -40,7 +40,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #region Read
 
         [Route("list")]
-        [HasPermission(PermissionType.Category, Permission.Read)]
+        [HasPermission(PermissionType.Comment, Permission.Read)]
 
         public async Task<IActionResult> List(int pageNumber = 1)
         {
@@ -66,7 +66,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("list/approved")]
-        [HasPermission(PermissionType.Category, Permission.Read)]
+        [HasPermission(PermissionType.Comment, Permission.Read)]
 
         public async Task<IActionResult> Approved(int pageNumber = 1)
         {
@@ -93,7 +93,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("list/rejected")]
-        [HasPermission(PermissionType.Category, Permission.Read)]
+        [HasPermission(PermissionType.Comment, Permission.Read)]
 
         public async Task<IActionResult> Rejected(int pageNumber = 1)
         {
@@ -119,11 +119,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("list/disabled")]
-        [HasPermission(PermissionType.Category, Permission.Read)]
+        [HasPermission(PermissionType.Comment, Permission.Read)]
 
         public async Task<IActionResult> Disabled(int pageNumber = 1)
         {
-            List<Comment> comment = await _manager.GetAllAsync(CommentProgress.Disabled,false);
+            List<Comment> comment = await _manager.GetAllAsync(CommentProgress.Disabled, false);
 
             List<CommentListViewModel> model = new();
 
@@ -147,7 +147,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("details/{id}")]
-        [HasPermission(PermissionType.Category, Permission.Read)]
+        [HasPermission(PermissionType.Comment, Permission.Read)]
 
         public async Task<IActionResult> GetDetails(int id)
         {
@@ -187,7 +187,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("update")]
         [HttpPost]
-        [HasPermission(PermissionType.Category, Permission.Update)]
+        [HasPermission(PermissionType.Comment, Permission.Update)]
         public async Task<IActionResult> ApproveOrReject(int commentId, string action)
         {
 
@@ -209,9 +209,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         comment.Progress = CommentProgress.Disabled;
                         comment.Status = false;
                         _manager.Update(comment);
-                        break;
-                    case "delete":
-                        _manager.Delete(comment);
                         break;
                     case "save":
                         comment.Progress = CommentProgress.Pending;
@@ -247,12 +244,18 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("delete/{id}")]
         [HttpPost]
-        [HasPermission(PermissionType.Category, Permission.Delete)]
+        [HasPermission(PermissionType.Comment, Permission.Delete)]
         public async Task<IActionResult> Delete(int id)
         {
-
             var comment = await _manager.GetByIdAsync(id);
-            return RedirectToAction(nameof(List));
+
+            if (comment is null)
+                return NotFound();
+
+            _manager.Delete(comment);
+
+            return Json(200);
+
         }
 
         #endregion

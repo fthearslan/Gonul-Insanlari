@@ -10,7 +10,7 @@ $(".myBox").click(function () {
 });
 
 
-function fireDelete(id) {
+function deleteComment(id) {
 
     Swal.fire({
         title: "Are you sure?",
@@ -27,20 +27,49 @@ function fireDelete(id) {
             $.ajax({
                 type: "POST",
                 url: "/comments/delete/" + id,
+                success: function () {
 
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Comment has been successfully deleted.',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+
+                    });
+
+                    $("#" + id).hide();
+
+                },
+                statusCode: {
+                    403: function () {
+                        $.toast({
+                            heading: 'Access denied!',
+                            text: 'You do not have an access to delete this comment.',
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+
+                    },
+                    404: function () {
+                        $.toast({
+                            heading: 'Not found',
+                            text: 'Source might have been changed.',
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+                    }
+
+                }
 
 
             });
 
-            Swal.fire({
-                title: "Disabled!",
-                text: "The comment has been deleted.",
-                icon: "success"
-
-
-            }).then(function () {
-                window.location.reload();
-            });
+    
         }
 
 

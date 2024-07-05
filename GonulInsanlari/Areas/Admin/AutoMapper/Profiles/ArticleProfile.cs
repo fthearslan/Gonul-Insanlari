@@ -3,21 +3,28 @@ using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
 using GonulInsanlari.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using ViewModelLayer.Models.Newsletter;
 using ViewModelLayer.ViewModels.Article;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
     public class ArticleProfile : Profile
     {
-
         public ArticleProfile()
         {
 
             #region Create
+
             CreateMap<Article, ArticleCreateViewModel>();
+
             CreateMap<ArticleCreateViewModel, Article>()
-                .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>())
-                ;
+                .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
+
+            CreateMap<Article, WeeklyNewsletterModel>()
+                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content.Substring(0, 100)));
+            
+
+
             #endregion
 
             #region Edit

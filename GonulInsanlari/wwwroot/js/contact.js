@@ -229,6 +229,7 @@ function DeleteSingle(id) {
 
                     window.location.replace("/mail/inbox");
                 }
+                
 
             }
             );

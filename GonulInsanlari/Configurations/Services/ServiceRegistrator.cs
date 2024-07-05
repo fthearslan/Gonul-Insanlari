@@ -12,19 +12,23 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Options;
+using Quartz;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModelLayer.Models.Configuration;
 
-namespace BussinessLayer.Concrete.Configurations.Service
+namespace GonulInsanlari.Configurations.Service
 {
-    public static class ServiceRegisrations
+    public static class ServiceRegistrator
     {
 
-        public static IServiceCollection AddBussinessServices(this IServiceCollection Services)
+        public static void AddBussinessServices(this IServiceCollection Services)
         {
             Services.AddScoped<ICategoryService>(x => new CategoryManager(new EFCategoryDAL()));
             Services.AddScoped<IArticleService>(x => new ArticleManager(new EFArticleDAL()));
@@ -37,20 +41,27 @@ namespace BussinessLayer.Concrete.Configurations.Service
             Services.AddScoped<INotificationService>(x => new NotificationManager(new EFNotificationDAL()));
             Services.AddScoped<IMessageService>(x => new MessageManager(new EFMessageDAL()));
             Services.AddScoped<INewsLetterService>(x => new NewsLetterManager(new EFNewsLetterDAL()));
-       
-            return Services;
+
+            ServiceProvider serviceProvider = Services.BuildServiceProvider();
+
+            MailServerConfiguration mailServerConfiguration = serviceProvider
+                  .GetRequiredService<IOptions<MailServerConfiguration>>()
+                 .Value;
+
+            Services.AddScoped<IEmailService>(x => new EmailManager(new NewsLetterManager(new EFNewsLetterDAL()), mailServerConfiguration));
+
         }
 
-        public static IServiceCollection AddValidators(this IServiceCollection Services)
+        public static void AddValidators(this IServiceCollection Services)
         {
             Services.AddFluentValidationAutoValidation();
             Services.AddValidatorsFromAssemblyContaining<EditAdminValidator>();
-                return Services;
+
 
         }
 
 
-    
+
 
     }
 }

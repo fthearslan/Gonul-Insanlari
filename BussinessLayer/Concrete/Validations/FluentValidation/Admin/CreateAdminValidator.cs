@@ -26,6 +26,11 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Admin
 
             RuleFor(x => x.Email).MinimumLength(12).WithMessage("Please tpye valid email adress.");
             RuleFor(x => x.Email).MaximumLength(30).WithMessage("Please tpye valid email adress.");
+
+            RuleFor(x => x.PhoneNumber).MinimumLength(10).WithMessage("Please, type valid phone number.");
+            RuleFor(x => x.PhoneNumber).MinimumLength(15).WithMessage("Please, type valid phone number.");
+
+            RuleFor(x => x.Age).GreaterThanOrEqualTo(18).WithMessage("User must be at least 18.");
           
      
         }

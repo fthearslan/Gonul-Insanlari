@@ -22,7 +22,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task AddAsync(Article entity)
         {
-            await _article.InsertAsync(entity);
+              await _article.InsertAsync(entity);
         }
 
         public void Delete(Article entity)

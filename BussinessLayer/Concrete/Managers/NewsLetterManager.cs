@@ -53,6 +53,7 @@ namespace BussinessLayer.Concrete.Managers
             return _news.ListFilter(x => x.Status == true);
         }
 
+
         public void Update(NewsLetter entity)
         {
             _news.Update(entity);

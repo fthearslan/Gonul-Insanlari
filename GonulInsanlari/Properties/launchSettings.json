@@ -9,7 +9,7 @@
       "dotnetRunMessages": true,
       "applicationUrl": "https://localhost:7025;http://localhost:5005"
     }
-   
+
   },
   "iisSettings": {
     "windowsAuthentication": false,
@@ -19,4 +19,7 @@
       "sslPort": 44350
     }
   }
+  
+
+ 
 }

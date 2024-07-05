@@ -363,9 +363,9 @@ function addUser(id) {
 
         if (users.length == 1) {
 
-            msg = "User has been successfully added!";
+            msg = "User has been successfully added.";
         } else {
-            msg = "Users have been successfully added!";
+            msg = "Users have been successfully added.";
 
         }
 

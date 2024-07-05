@@ -187,11 +187,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 List<string> errors = new();
 
                 if (model.Name is not null)
-                {
                     if (await _roleManager.RoleExistsAsync(model.Name))
                         errors.Add("Role name is in used.");
-                }
-
 
                 foreach (var errorValue in ModelState.Values)
                 {
@@ -211,12 +208,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             var result = await _roleManager.CreateAsync(new() { Name = model.Name, Description = model.RoleDescription });
 
-
             if (result.Succeeded)
-                return Json(_response.success = true);
+                _response.success = true;
 
-            _response.Data = result.Errors;
-            _response.success = false;
+            if (!result.Succeeded)
+                _response.Data = result.Errors;
 
             return Json(_response);
 
@@ -320,7 +316,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     _response.success = false;
 
                     return Json(_response);
-                }    
+                }
 
                 var result = await _userManager.AddToRoleAsync(user, role.Name);
 

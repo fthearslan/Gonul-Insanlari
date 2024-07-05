@@ -1,5 +1,6 @@
 ﻿using DataAccessLayer.Abstract.Repositories;
 using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,11 @@ namespace DataAccessLayer.Abstract.SubRepositories
 {
     public interface INewsLetterDAL : IRepository<NewsLetter>
     {
+
+     
+
+
+
+
     }
 }

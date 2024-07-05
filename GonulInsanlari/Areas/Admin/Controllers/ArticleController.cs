@@ -37,6 +37,8 @@ using BussinessLayer.Concrete.Validations.FluentValidation;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
+using Quartz.Impl.Calendar;
+using ViewModelLayer.Models.Newsletter;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -54,16 +56,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         private readonly IMapper _mapper;
         private readonly IArticleService _articleManager;
         private readonly ICategoryService _categoryManager;
+        private readonly IEmailService _emailManager;
 
-
-        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger, IArticleService articleManager, ICategoryService categoryManager)
+        public ArticleController(UserManager<AppUser> userManager, IMemoryCache memoryCache, IMapper mapper, ILogger<ArticleController> logger, IArticleService articleManager, ICategoryService categoryManager, IEmailService emailManager)
         {
             this._userManager = userManager;
             this._memoryCache = memoryCache;
             this._mapper = mapper;
             _articleManager = articleManager;
             _categoryManager = categoryManager;
-
+            _emailManager = emailManager;
         }
 
 
@@ -94,7 +96,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("add")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [HasPermission(PermissionType.Article,Permission.Create)]
+        [HasPermission(PermissionType.Article, Permission.Create)]
         public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
         {
 
@@ -142,7 +144,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [Route("details/{id}")]
-        [HasPermission(PermissionType.Article,Permission.Read)]
+        [HasPermission(PermissionType.Article, Permission.Read)]
 
         public IActionResult GetDetails(int id)
         {

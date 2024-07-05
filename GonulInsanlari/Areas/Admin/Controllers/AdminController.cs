@@ -16,6 +16,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Org.BouncyCastle.Crypto;
+using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Admin;
@@ -105,7 +106,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     return BadRequest(modelErrors);
 
                 }
-
+             
                 return StatusCode(200);
 
             }

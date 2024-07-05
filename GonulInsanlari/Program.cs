@@ -1,6 +1,5 @@
 using BussinessLayer.Abstract;
 using BussinessLayer.Concrete;
-using BussinessLayer.Concrete.Configurations.Service;
 using BussinessLayer.Concrete.Validations;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete.Providers;
@@ -23,6 +22,8 @@ using GonulInsanlari.Middlewares;
 using Serilog;
 using ViewModelLayer.Models.Tools;
 using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Configurations.Service;
+using ViewModelLayer.Models.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,8 +32,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 builder.Services.AddSession();
-
-
 
 builder.Services.AddMvc(config =>
 {
@@ -44,27 +43,24 @@ builder.Services.AddMvc(config =>
 );
 builder.Services.AddDbContext<Context>();
 
-
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 
-
-
-
-
 builder.Services.AddBussinessServices();
+
 builder.Services.AddValidators();
+
 builder.Services.AddSingleton<IMemoryCache, MemoryCache>();
+
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 builder.Services.AddScoped<ResponseModel>();
 
+builder.Services.Configure<MailServerConfiguration>(builder.Configuration.GetSection(MailServerConfiguration.Server));
+
+builder.Services.AddScoped<MailServerConfiguration>();
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
-builder.Services.AddSingleton<IAuthorizationPolicyProvider,PermissionPolicyProvider>();
 
-
-
-
-
-
+builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
 
 
@@ -74,7 +70,6 @@ builder.Services.AddAuthentication(
     x.LoginPath = "/login/admin";
 
 }
-
     );
 
 builder.Services.ConfigureApplicationCookie(opt => opt.AccessDeniedPath = new PathString("/error/accessDenied"));
@@ -95,17 +90,22 @@ if (!app.Environment.IsDevelopment())
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
 app.UseStatusCodePagesWithReExecute("/error/notFound", "?code={0}");
+
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
 
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();
-app.UseSession();
-app.UseAuthorization();
 
+app.UseAuthentication();
+
+app.UseSession();
+
+app.UseAuthorization();
 
 
 

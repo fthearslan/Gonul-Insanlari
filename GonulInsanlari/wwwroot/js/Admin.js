@@ -550,6 +550,9 @@ function register() {
         Name: $("#name").val(),
         Surname: $("#surname").val(),
         Email: $("#email").val(),
+        Age: $("#age").val(),
+        PhoneNumber: $("#phoneNumber").val(),
+
 
     };
 

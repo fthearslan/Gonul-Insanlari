@@ -74,7 +74,7 @@
                                 <div class="btn-group">
                                     <button onclick="approveOrReject('@comment.Id',this.value)" value="save" class="btn btn-primary btn-xs"><i class="fa fa-repeat"></i> Save </button>
                                     <a href="/articles/details/@comment.ArticleID" class="btn btn-warning btn-xs"><i class="fa fa-file"></i> Go to Article</a>
-                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="delete" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
+                                    <button onclick="deleteComment('@comment.Id')" value="delete" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Delete</button>
 
                                 </div>
                             </div>

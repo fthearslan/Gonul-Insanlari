@@ -14,8 +14,8 @@ namespace ViewModelLayer.ViewModels.Admin
         public string Name { get; set; }
         public string Surname { get; set; }
         public string Email { get; set; }
-        public string? AboutMe { get; set; }
         public int Age { get; set; } = 18;
+        public string? PhoneNumber { get; set; } = "Not added yet.";
         public string? ImagePath { get; set; }= "profile.jpg";
       
     }

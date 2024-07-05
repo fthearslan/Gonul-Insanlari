@@ -12,7 +12,7 @@ namespace ViewModelLayer.ViewModels.Admin
         public string Surname { get; set; }
         public string Email { get; set; }
         public string ImagePath { get; set; }
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } 
         public string AboutMe { get; set; }
         public int Age { get; set; }
         public DateTime Registered { get; set; }
