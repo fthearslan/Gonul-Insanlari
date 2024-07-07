@@ -12,13 +12,15 @@ namespace ViewModelLayer.Models.Configuration
 
         public const string Server = "MailServer";
 
-        public string? Host { get; set; }
+        public string HostName { get; set; } = null!;
 
-        public string? Port { get; set; }
+        public int Port { get; set; } 
 
-        public string? User { get; set; }
+        public string Username { get; set; } = null!;
 
-        public string? Password { get; set; }
+        public string Password { get; set; } = null!;
+        public bool UseDefaultCredentials { get; set; }
+        public bool EnableSsl { get; set; }
 
 
 

@@ -22,12 +22,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers.Tests
     [TestClass()]
     public class LoginControllerTests
     {
-       
+
 
         [TestMethod()]
         public async Task ExampleTest()
         {
-           
+
 
             string subscriber = "fthearslan12@gmail.com";
             string sender = "ginsanlari@gmail.com";
@@ -59,9 +59,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers.Tests
 
             var body = builder.HtmlBody.Replace("{Name}", "Fatih Arslan");
 
-        var body1 =    body.Replace("{Title}", "Why were we created?");
-           var body2 = body1.Replace("{Content}", articleContent);
-           var body3 = body2.Replace("{Url}", url);
+            var body1 = body.Replace("{Title}", "Why were we created?");
+            var body2 = body1.Replace("{Content}", articleContent);
+            var body3 = body2.Replace("{Url}", url);
 
 
             await client.SendMailAsync(new(sender, subscriber)
@@ -71,10 +71,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers.Tests
                 IsBodyHtml = true
             });
 
-            client.SendCompleted += (sender, e) =>
-            {
-                Console.WriteLine("Mail has been sent succesfully.");
-            };
+           
 
 
 

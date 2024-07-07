@@ -23,12 +23,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class LoginController : Controller
     {
         SignInManager<AppUser> _signInManager;
-
+     
         public LoginController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
-          
-       
         }
 
         [HttpGet]
@@ -36,7 +34,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult Login()
         {
-
+           
 
             return View();
 

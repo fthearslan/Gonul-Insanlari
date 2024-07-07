@@ -97,7 +97,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [HasPermission(PermissionType.Article, Permission.Create)]
-        public async Task<IActionResult> AddArticle(ArticleCreateViewModel model)
+        public async Task<IActionResult> AddArticle([FromServices] IEmailService _emailManager, ArticleCreateViewModel model)
         {
 
             ViewData["Categories"] = _memoryCache.Get("Categories");
@@ -112,6 +112,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 article.AppUserID = user.Id;
 
                 await _articleManager.AddAsync(article);
+
+                await _emailManager.SendNewsletterAsync(_mapper.Map<WeeklyNewsletterModel>(article));
 
                 _memoryCache.Remove("Categories");
 

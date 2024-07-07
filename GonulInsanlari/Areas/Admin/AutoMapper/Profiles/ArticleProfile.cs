@@ -5,6 +5,7 @@ using GonulInsanlari.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using ViewModelLayer.Models.Newsletter;
 using ViewModelLayer.ViewModels.Article;
+using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 {
@@ -21,7 +22,11 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
 
             CreateMap<Article, WeeklyNewsletterModel>()
-                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content.Substring(0, 100)));
+                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content))
+                   .ForMember(model => model.Category, opt => opt.MapFrom(article => article.Category.Name))
+                   .ForMember(model => model.Subject, opt => opt.Ignore());
+     
+                   
             
 
 

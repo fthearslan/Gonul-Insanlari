@@ -45,6 +45,11 @@ builder.Services.AddDbContext<Context>();
 
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
 
+builder.Services.Configure<MailServerConfiguration>(builder.Configuration.GetSection(MailServerConfiguration.Server));
+
+builder.Services.AddScoped<MailServerConfiguration>();
+
+
 builder.Services.AddBussinessServices();
 
 builder.Services.AddValidators();
@@ -55,9 +60,9 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
 builder.Services.AddScoped<ResponseModel>();
 
-builder.Services.Configure<MailServerConfiguration>(builder.Configuration.GetSection(MailServerConfiguration.Server));
 
-builder.Services.AddScoped<MailServerConfiguration>();
+
+
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
