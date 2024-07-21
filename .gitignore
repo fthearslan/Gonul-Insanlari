@@ -361,3 +361,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/GonulInsanlari/wwwroot/inspinia-gh-pages/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css
