@@ -3,7 +3,6 @@ using DataAccessLayer.Concrete.DTOs.Assignment;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers.AssignmentResolvers;
-using Microsoft.Build.Framework;
 using ViewModelLayer.ViewModels.Assignment;
 
 namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
@@ -33,7 +32,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region List
 
-            CreateMap<AssignmentByProgressDto, AssignmentByProgressListViewModel>();
+            CreateMap<AssignmentByProgressDto, AssignmentByProgressListViewModel>()
+                .ForMember(dest => dest.Content,opt=>opt.MapFrom(src=>src.Content.Substring(0,200)));
 
             CreateMap<AssignmentListDto, AssignmentListViewModel>();
 

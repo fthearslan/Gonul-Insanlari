@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Configurations
 {
-    public class AssignmentConfiguration : IEntityTypeConfiguration<Assignment>
+    sealed internal class AssignmentConfiguration : IEntityTypeConfiguration<Assignment>
     {
         public void Configure(EntityTypeBuilder<Assignment> builder)
         {

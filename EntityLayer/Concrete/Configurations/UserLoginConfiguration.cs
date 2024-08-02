@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Configurations
 {
-    public class UserLoginConfiguration : IEntityTypeConfiguration<UserLogin>
+    sealed internal class UserLoginConfiguration : IEntityTypeConfiguration<UserLogin>
     {
         public void Configure(EntityTypeBuilder<UserLogin> builder)
         {

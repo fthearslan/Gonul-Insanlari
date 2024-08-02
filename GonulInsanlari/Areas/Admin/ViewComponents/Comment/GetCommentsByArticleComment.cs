@@ -2,6 +2,7 @@
 using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ViewModelLayer.ViewModels.Comment;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.Comment
@@ -10,30 +11,26 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Comment
     {
         private readonly IArticleService _manager;
         private readonly IMapper _mapper;
-        private readonly ILogger<GetCommentsByArticleComment> _logger;
 
-        public GetCommentsByArticleComment(IArticleService manager, IMapper mapper, ILogger<GetCommentsByArticleComment> logger)
+
+        public GetCommentsByArticleComment(IArticleService manager, IMapper mapper)
         {
             _manager = manager;
             _mapper = mapper;
-            _logger = logger;
+
         }
 
         public IViewComponentResult Invoke()
         {
-            var articles = _manager.GetWhere(x=>x.Status==true).ToList();
+            var articles = _manager.GetWhere(x => x.Status == true)
+                .Include(x => x.Comments)
+                .ToList();
 
             List<CommentsByArtcleViewModel> model = new();
 
-            try
-            {
-                model = _mapper.Map<List<CommentsByArtcleViewModel>>(articles);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-            
-            }
+
+            model = _mapper.Map<List<CommentsByArtcleViewModel>>(articles);
+
 
             return View(model);
 

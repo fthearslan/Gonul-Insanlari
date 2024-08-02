@@ -58,7 +58,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Abouts", (string)null);
+                    b.ToTable("Abouts");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Announcement", b =>
@@ -106,7 +106,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Announcements", (string)null);
+                    b.ToTable("Announcements");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.AppRole", b =>
@@ -290,7 +290,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CategoryID");
 
-                    b.ToTable("Articles", (string)null);
+                    b.ToTable("Articles");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Assignment", b =>
@@ -336,7 +336,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("Assignments", (string)null);
+                    b.ToTable("Assignments");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Category", b =>
@@ -372,7 +372,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Comment", b =>
@@ -415,7 +415,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("ArticleID");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Contact", b =>
@@ -426,35 +426,29 @@ namespace DataAccessLayer.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("ContactStatus")
+                        .HasColumnType("int");
+
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("EmailAddress")
+                    b.Property<string>("From")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<bool>("IsDraft")
-                        .HasColumnType("bit");
-
                     b.Property<bool>("IsSeen")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsSent")
                         .HasColumnType("bit");
 
                     b.Property<DateTime?>("Modified")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("NameSurname")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<int?>("RepliedToId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SenderId")
                         .HasColumnType("nvarchar(max)");
@@ -467,12 +461,60 @@ namespace DataAccessLayer.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("To")
+                    b.HasKey("Id");
+
+                    b.HasIndex("RepliedToId");
+
+                    b.ToTable("Contacts");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.ContactAttachment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Path")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Contacts", (string)null);
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("ContactAttachments");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.ContactToCollection", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ContactId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("EmailAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ContactId");
+
+                    b.ToTable("ContactToCollection");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Message", b =>
@@ -520,7 +562,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("SenderId");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.NewsLetter", b =>
@@ -554,7 +596,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("NewsLetters", (string)null);
+                    b.ToTable("NewsLetters");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Note", b =>
@@ -590,7 +632,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("Notes", (string)null);
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Notification", b =>
@@ -633,7 +675,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Notifications", (string)null);
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.SubTask", b =>
@@ -657,7 +699,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("SubTask", (string)null);
+                    b.ToTable("SubTask");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.TaskAttachment", b =>
@@ -680,7 +722,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("TaskAttachment", (string)null);
+                    b.ToTable("TaskAttachment");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.TaskLog", b =>
@@ -716,7 +758,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("CreatedById");
 
-                    b.ToTable("TaskLogs", (string)null);
+                    b.ToTable("TaskLogs");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.UserAssignment", b =>
@@ -731,7 +773,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("AssignmentId");
 
-                    b.ToTable("UserAssignment", (string)null);
+                    b.ToTable("UserAssignment");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.UserLogin", b =>
@@ -757,7 +799,7 @@ namespace DataAccessLayer.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersLogins", (string)null);
+                    b.ToTable("UsersLogins");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -909,6 +951,37 @@ namespace DataAccessLayer.Migrations
                         .HasForeignKey("ArticleID");
 
                     b.Navigation("Article");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.Contact", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Entities.Contact", "RepliedTo")
+                        .WithMany()
+                        .HasForeignKey("RepliedToId");
+
+                    b.Navigation("RepliedTo");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.ContactAttachment", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Entities.Contact", "Contact")
+                        .WithMany("Attachments")
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contact");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.ContactToCollection", b =>
+                {
+                    b.HasOne("EntityLayer.Concrete.Entities.Contact", "Contact")
+                        .WithMany("Tos")
+                        .HasForeignKey("ContactId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Contact");
                 });
 
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Message", b =>
@@ -1103,6 +1176,13 @@ namespace DataAccessLayer.Migrations
             modelBuilder.Entity("EntityLayer.Concrete.Entities.Category", b =>
                 {
                     b.Navigation("Articles");
+                });
+
+            modelBuilder.Entity("EntityLayer.Concrete.Entities.Contact", b =>
+                {
+                    b.Navigation("Attachments");
+
+                    b.Navigation("Tos");
                 });
 #pragma warning restore 612, 618
         }

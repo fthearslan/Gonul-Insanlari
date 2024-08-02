@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using EntityLayer.Abstract;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Net.Mail;
 using System.Runtime.InteropServices;
 
 namespace ViewModelLayer.Models.Tools
@@ -31,17 +34,22 @@ namespace ViewModelLayer.Models.Tools
 
                 foreach (var file in files)
                 {
-                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", file.FileName);
+                    string fileName = file.FileName.Replace(" ", "");
+
+                    var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", fileName);
 
                     if (File.Exists(path))
                     {
-                        Paths.Add(file.FileName);
+                        Paths.Add(fileName);
                         continue;
                     }
 
-                    var stream = new FileStream(path, FileMode.Create);
-                    await file.CopyToAsync(stream);
-                    Paths.Add(file.FileName);
+                    using (var stream = new FileStream(path, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                        Paths.Add(file.FileName);
+
+                    };
 
                 }
                 return Paths;
@@ -78,13 +86,31 @@ namespace ViewModelLayer.Models.Tools
             {
                 if (file.Length > maxfileSize)
                     return false;
-              
+
                 return true;
             }
 
             return false;
 
         }
+
+
+        public static bool DeleteFile(string fileName)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", fileName);
+
+            if (!File.Exists(path))
+                return false;
+
+            System.IO.File.Delete(path);
+
+            if (!File.Exists(path))
+                return true;
+
+            return false;
+
+        }
+
 
     }
 

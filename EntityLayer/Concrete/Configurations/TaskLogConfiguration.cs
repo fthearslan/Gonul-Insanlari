@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Configurations
 {
-    public class TaskLogConfiguration : IEntityTypeConfiguration<TaskLog>
+    sealed internal class TaskLogConfiguration : IEntityTypeConfiguration<TaskLog>
     {
         public void Configure(EntityTypeBuilder<TaskLog> builder)
         {

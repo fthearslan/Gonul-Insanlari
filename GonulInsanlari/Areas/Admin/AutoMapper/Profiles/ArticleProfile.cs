@@ -22,7 +22,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
 
             CreateMap<Article, WeeklyNewsletterModel>()
-                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content))
+                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content.Substring(0,500)))
                    .ForMember(model => model.Category, opt => opt.MapFrom(article => article.Category.Name))
                    .ForMember(model => model.Subject, opt => opt.Ignore());
      

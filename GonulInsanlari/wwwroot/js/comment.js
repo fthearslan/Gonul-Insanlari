@@ -69,7 +69,7 @@ function deleteComment(id) {
 
             });
 
-    
+
         }
 
 
@@ -87,8 +87,15 @@ document.getElementById('searchbar').addEventListener('keyup', function (e) {
     // Reset the timeout to start again
     timeout = setTimeout(function () {
 
+        var CommentProgress = $("#progress").val();
 
-        SearchComments()
+        if (CommentProgress.length > 0) {
+            SearchComments()
+
+        } else {
+            searchCommentsByArticleDetails();
+        }
+
 
     }, 500);
 
@@ -100,23 +107,27 @@ function SearchComments() {
 
     $('#panel').empty();
 
-    var CommentProgress = $("#progress").val();
-    var Status = $("#Status").val();
 
 
-    let value = document.getElementById('searchbar').value
+
+    var searchModel = {
+
+        Search: document.getElementById('searchbar').value,
+        Progress: $("#progress").val()
+
+    };
 
 
     $.ajax({
         type: "POST",
         url: "/comments/search",
-        data: { search: value, progress: CommentProgress, status: Status },
+        data: { model: searchModel },
         success: function (result) {
 
             for (let i = 0; i < result.length; i++) {
 
                 var labelstatus = "";
-                
+
                 var actionValueFirst = "";
                 var actionValueSec = "";
                 var btnFirstText = "";
@@ -186,7 +197,7 @@ function SearchComments() {
                     '<div class="social-body">' +
                     '<p>' + result[i].content + '</p>' +
                     '<div class="btn-group">' +
-                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="' + actionValueFirst + '" class="btn btn-primary btn-xs"><i class="'+btnFirstcls+'"></i>' + btnFirstText + '</button>' +
+                    '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="' + actionValueFirst + '" class="btn btn-primary btn-xs"><i class="' + btnFirstcls + '"></i>' + btnFirstText + '</button>' +
                     '<a href="/articles/details/' + result[i].articleID + '" class="btn btn-warning btn-xs"><i class="fa fa-file"></i> Go to Article</a>' +
                     '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="' + actionValueSec + '" class="btn btn-danger btn-xs"><i class="' + btnSeccls + '"></i>' + btnSecText + '</button>' +
                     '</div>' +
@@ -245,21 +256,156 @@ function approveOrReject(id, value) {
 
 }
 
+function searchCommentsByArticleDetails() {
 
-$(document).ready(function () {
-    $("#dataTable").dataTable({
-        "language": {
-            "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
-        },
-        "searching": true,
-        "ordering": true,
-        "paging": true,
-        "pagingType": "full_numbers",
-        "pageLength": 10,
-        "responsive": true,
-        "columnDefs": [{
-            "targets": 3,
-            "orderable": false
-        }]
+    let html = "";
+
+    var searchModel = {
+
+        Search: document.getElementById('searchbar').value,
+        ArticleTitle: document.getElementById('articleTitle').value
+
+    };
+
+
+    $.ajax({
+        type: "POST",
+        url: "/comments/search",
+        data: { model: searchModel },
+        success: function (result) {
+
+            for (let i = 0; i < result.length; i++) {
+
+
+
+                switch (result[i].progress) {
+
+                    case "Pending":
+
+                        html += '<div id="' + result[i].id + '" class="social-feed-box">' +
+                            '<div class="float-right social-action dropdown">' +
+                            '<ul>' +
+                            '<li style="list-style:none"><span class="text-warning"> Pending </span></li>' +
+                            '</ul>' +
+                            '</div>' +
+
+                            '<div class="social-avatar">' +
+                            '<a href="#" class="float-left">' +
+                            '<img alt="image" src="/Images/profile.jpg">' +
+                            '</a>' +
+                            '<div class="media-body">' +
+                            '<a><strong>' + result[i].nameSurname + '</strong><a>' +
+                            '<small class="text-muted">' + result[i].created + '</small>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="social-body">' +
+                            '<p>' + result[i].content + '</p>' +
+                            '<div class="btn-group">' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve</button>' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+                        break;
+
+                    case "Approved":
+
+                        html += '<div id="' + result[i].id + '" class="social-feed-box">' +
+                            '<div class="float-right social-action dropdown">' +
+                            '<ul>' +
+                            '<li style="list-style:none"><span class="text-navy"> Approved</span></li>' +
+                            '</ul>' +
+                            '</div>' +
+
+                            '<div class="social-avatar">' +
+                            '<a href="#" class="float-left">' +
+                            '<img alt="image" src="/Images/profile.jpg">' +
+                            '</a>' +
+                            '<div class="media-body">' +
+                            '<a><strong>' + result[i].nameSurname + '</strong><a>' +
+                            '<small class="text-muted">' + result[i].created + '</small>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="social-body">' +
+                            '<p>' + result[i].content + '</p>' +
+                            '<div class="btn-group">' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject</button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+                        break;
+
+                    case "Rejected":
+
+                        html += '<div id="' + result[i].id + '" class="social-feed-box">' +
+                            '<div class="float-right social-action dropdown">' +
+                            '<ul>' +
+                            '<li style="list-style:none"><span class="text-danger"> Rejected</span></li>' +
+                            '</ul>' +
+                            '</div>' +
+
+                            '<div class="social-avatar">' +
+                            '<a href="#" class="float-left">' +
+                            '<img alt="image" src="/Images/profile.jpg">' +
+                            '</a>' +
+                            '<div class="media-body">' +
+                            '<a><strong>' + result[i].nameSurname + '</strong><a>' +
+                            '<small class="text-muted">' + result[i].created + '</small>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="social-body">' +
+                            '<p>' + result[i].content + '</p>' +
+                            '<div class="btn-group">' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve</button>' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="disable" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Disable </button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+
+
+
+                        break;
+
+                    case "Disabled":
+
+                        html += '<div id="' + result[i].id + '" class="social-feed-box">' +
+                            '<div class="float-right social-action dropdown">' +
+                            '<ul>' +
+                            '<li style="list-style:none"><span class="text-danger"> Disabled </span></li>' +
+                            '</ul>' +
+                            '</div>' +
+
+                            '<div class="social-avatar">' +
+                            '<a href="#" class="float-left">' +
+                            '<img alt="image" src="/Images/profile.jpg">' +
+                            '</a>' +
+                            '<div class="media-body">' +
+                            '<a><strong>' + result[i].nameSurname + '</strong><a>' +
+                            '<small class="text-muted">' + result[i].created + '</small>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div class="social-body">' +
+                            '<p>' + result[i].content + '</p>' +
+                            '<div class="btn-group">' +
+                            '<button onclick="approveOrReject(' + result[i].id + ',this.value)"  value="save" class="btn btn-success btn-xs"><i class="fa fa-repeat"></i> Save </button>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>';
+
+
+                        break;
+                }
+
+
+
+
+            }
+
+            $("#panel").html(html);
+
+        }
     });
-});
+}

@@ -1,13 +1,124 @@
-﻿@model List<Comment>
+﻿@model IPagedList<CommentListViewModel>
 @{
     ViewData["Title"] = "GetDetails";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
 
-@foreach(var item in Model)
-{
-    <p>@item.NameSurname =>  @item.Content</p>
+<h3><i class="fa fa-comments" style="margin-right:5px;"></i> Comments for <strong> @ViewData["ArticleTitle"] </strong></h3>
 
+<div class="tab-content">
+
+    <div role="tabpanel" id="tabs-1" class="tab-pane active">
+
+        <div class="panel-body">
+            <div class="input-group" style="margin-bottom:15px;">
+                <input id="progress" value="" hidden />
+                <input id="Status" value="" hidden />
+                <input hidden value="@ViewData["ArticleTitle"]" id="articleTitle" />
+
+                <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search comment...">
+                <div style="margin-left:5px;" class="input-group-btn">
+                    <button type="button" onclick="searchCommentsByArticleDetails('@ViewData["ArticleTitle"]');" class="btn btn-sm btn-primary">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+
+            <div id="panel" class="col-lg-12">
+
+                @foreach (var comment in Model)
+                {
+
+
+                    string btnCls = comment.Progress switch
+                    {
+                        "Pending" => "text-warning",
+                        "Approved" => "text-navy",
+                        "Rejected" => "text-danger",
+                        "Disabled" => "text-danger",
+                        _ => ""
+
+                    };
+
+
+                    <div id="@comment.Id" class="social-feed-box">
+
+                        <div class="float-right social-action dropdown">
+                            <ul>
+                                <li style="list-style:none"><span class="@btnCls"> @comment.Progress</span></li>
+                            </ul>
+                        </div>
+
+                        <div class="social-avatar">
+                            <a href="#" class="float-left">
+                                <img alt="image" src="~/Images/profile.jpg">
+                            </a>
+                            <div class="media-body">
+
+                                <a><strong> @comment.NameSurname</strong></a>
+
+                                <small class="text-muted">@comment.Created</small>
+                            </div>
+                        </div>
+                        <div class="social-body">
+                            <p>
+                                @comment.Content
+                            </p>
+
+                            <div class="btn-group">
+
+
+                                @if (comment.Progress == CommentProgress.Pending.ToString())
+                                {
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve </button>
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject </button>
+
+                                }
+
+                                @if (comment.Progress == CommentProgress.Approved.ToString())
+                                {
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject </button>
+
+                                }
+
+                                @if (comment.Progress == CommentProgress.Disabled.ToString())
+                                {
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="save" class="btn btn-success btn-xs"><i class="fa fa-repeat"></i> Save </button>
+
+
+                                }
+
+                                @if (comment.Progress == CommentProgress.Rejected.ToString())
+                                {
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="approve" class="btn btn-primary btn-xs"><i class="fa fa-thumbs-up"></i> Approve </button>
+                                    <button onclick="approveOrReject('@comment.Id',this.value)" value="disable" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i> Disable </button>
+                                }
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                }
+                @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("GetDetails","Comment",new { pageNumber}))
+
+            </div>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+@section Script{
+
+    <script src="~/js/comment.js"></script>
+    <script src="~/lib/jquery.toast.min.js"></script>
 }

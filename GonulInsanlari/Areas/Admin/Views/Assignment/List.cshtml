@@ -9,94 +9,98 @@
 
 <h2 style="margin-bottom:30px;"><i class="fa fa-tasks" style="margin-right:3px;"></i> Tasks</h2>
 
-<div class="tabs-container">
-    <ul class="nav nav-tabs" role="tablist">
-        <li><a class="nav-link active" data-toggle="tab" href="#tabs-1">On going</a></li>
-        <li><a class="nav-link " data-toggle="tab" href="#tabs-2"><i class="fa fa-search"></i></a></li>
 
-    </ul>
-    <div class="tab-content">
+<div class="col-lg-12">
 
-        <div role="tabpanel" id="tabs-1" class="tab-pane active">
+    <div class="tabs-container">
+        <ul class="nav nav-tabs" role="tablist">
+            <li><a class="nav-link active" data-toggle="tab" href="#tabs-1">On going</a></li>
+            <li><a class="nav-link " data-toggle="tab" href="#tabs-2"><i class="fa fa-search"></i></a></li>
 
-            <div class="panel-body">
-                <div class="row">
-                    @foreach (var task in Model)
-                    {
-                        <div class="col-lg-4">
+        </ul>
+        <div class="tab-content">
 
-                            <div class="ibox">
-                                <div style="cursor:pointer" class="ibox-title myBox">
-                                    <span class="label label-primary float-right">In Progress</span>
-                                    <h5># @task.Title</h5>
-                                    <a href="/assignments/details/@task.Id"></a>
-                                </div>
-                                <div class="ibox-content">
-                                    <div class="team-members">
-                                        @foreach (var member in task.UserImagePaths.Take(5))
-                                        {
-                                            <a href="#userProfile"><img alt="member" class="rounded-circle" src="~/Images/@member"></a>
-                                        }
-                                        @if (task.UserImagePaths.Count > 5)
-                                        {
-                                            int count = task.UserImagePaths.Count - 5;
-                                            <i class="fa fa-plus"></i> @count
-                                        }
+            <div role="tabpanel" id="tabs-1" class="tab-pane active">
+
+                <div class="panel-body">
+                    <div class="row">
+                        @foreach (var task in Model)
+                        {
+                            <div class="col-lg-4">
+
+                                <div class="ibox">
+                                    <div style="cursor:pointer" class="ibox-title myBox">
+                                        <span class="label label-primary float-right">In Progress</span>
+                                        <h5># @task.Title</h5>
+                                        <a href="/assignments/details/@task.Id"></a>
                                     </div>
-
-                                    <h4>Description</h4>
-
-                                    <p>
-                                        @Html.Raw(@task.Content)
-                                    </p>
-                                    <div>
-                                        <span>Status of current project:</span>
-                                        <div class="stat-percent">@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks,task.SubTasksDone)%</div>
-                                        <div class="progress progress-mini">
-                                            <div style="width:@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks,task.SubTasksDone)%;" class="progress-bar"></div>
+                                    <div class="ibox-content">
+                                        <div class="team-members">
+                                            @foreach (var member in task.UserImagePaths.Take(5))
+                                            {
+                                                <a href="#userProfile"><img alt="member" class="rounded-circle" src="~/Images/@member"></a>
+                                            }
+                                            @if (task.UserImagePaths.Count > 5)
+                                            {
+                                                int count = task.UserImagePaths.Count - 5;
+                                                <i class="fa fa-plus"></i> @count
+                                            }
                                         </div>
+
+                                        <h4>Description</h4>
+
+                                        <p>
+                                            @Html.Raw(@task.Content)
+                                        </p>
+
+                                        <div>
+                                            <span>Status of current project:</span>
+                                            <div class="stat-percent">@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks,task.SubTasksDone)%</div>
+                                            <div class="progress progress-mini">
+                                                <div style="width:@ProgressBarWidth.GetWidthBySubTasks(task.SubTasks,task.SubTasksDone)%;" class="progress-bar"></div>
+                                            </div>
+                                        </div>
+                                        <div class="row  m-t-sm">
+                                            <div class="col-sm-3">
+                                                <div class="font-bold">Publisher</div>
+                                                @@@task.Publisher
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <div class="font-bold">Users</div>
+                                                @task.UserImagePaths.Count
+                                            </div>
+                                            <div class="col-sm-3 text-right">
+                                                <div class="font-bold">Sub-Tasks</div>
+                                                @task.SubTasks
+                                            </div>
+                                            <div class="col-sm-3 text-right">
+                                                <div class="font-bold">Published at</div>
+                                                @GetDate.GetCreateDate(@task.Created)
+                                            </div>
+                                        </div>
+
                                     </div>
-                                    <div class="row  m-t-sm">
-                                        <div class="col-sm-3">
-                                            <div class="font-bold">Publisher</div>
-                                            @@@task.Publisher
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="font-bold">Users</div>
-                                            @task.UserImagePaths.Count
-                                        </div>
-                                        <div class="col-sm-3 text-right">
-                                            <div class="font-bold">Sub-Tasks</div>
-                                            @task.SubTasks
-                                        </div>
-                                        <div class="col-sm-3 text-right">
-                                            <div class="font-bold">Published at</div>
-                                            @GetDate.GetCreateDate(@task.Created)
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
-                        </div>
 
-                    }
+                        }
+
+                    </div>
+                    @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List","Assignment",new { pageNumber}))
 
                 </div>
-                @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List","Assignment",new { pageNumber}))
-
             </div>
-        </div>
-        <div role="tabpanel" id="tabs-2" class="tab-pane">
-            <div class="panel-body">
+            <div role="tabpanel" id="tabs-2" class="tab-pane">
+                <div class="panel-body">
 
-                @await Component.InvokeAsync("GetAssignmentsAll")
+                    @await Component.InvokeAsync("GetAssignmentsAll")
 
+                </div>
             </div>
         </div>
     </div>
+
 </div>
-
-
 
 
 

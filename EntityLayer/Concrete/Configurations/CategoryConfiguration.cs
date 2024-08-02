@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace EntityLayer.Concrete.Configurations
 {
 
-    public class CategoryConfiguration : IEntityTypeConfiguration<Category>
+    sealed internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         public void Configure(EntityTypeBuilder<Category> builder)
         {

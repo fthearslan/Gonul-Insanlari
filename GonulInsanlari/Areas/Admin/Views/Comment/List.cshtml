@@ -24,7 +24,6 @@
             <div  class="panel-body">
                 <div class="input-group" style="margin-bottom:15px;">
                     <input id="progress" value="Pending" hidden/>
-                    <input id="Status" value="true" hidden/>
 
                     <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search comment...">
                     <div style="margin-left:5px;" class="input-group-btn">
@@ -101,6 +100,30 @@
 
 
 @section Script{
+
+    <script>
+
+        $(document).ready(function () {
+            $("#commentTable").dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+                },
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+        </script>
+
+
+
 
     <script src="~/js/comment.js"></script>
     <script src="~/lib/jquery.toast.min.js"></script>

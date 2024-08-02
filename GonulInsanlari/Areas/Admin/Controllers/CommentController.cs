@@ -146,38 +146,37 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
 
-        [Route("details/{id}")]
+        [Route("details/{articleTitle}")]
         [HasPermission(PermissionType.Comment, Permission.Read)]
 
-        public async Task<IActionResult> GetDetails(int id)
+        public async Task<IActionResult> GetDetails(string articleTitle, int pageNumber = 1)
         {
-            var comments = await _manager.GetByArticleAsync(id);
 
-            return View(comments);
+            var comments = await _manager.GetByArticleAsync(articleTitle);
+            ViewData["ArticleTitle"] = articleTitle;
+       
+
+            if (comments is null)
+                return NotFound();
+
+            List<CommentListViewModel>? model = _mapper.Map<List<CommentListViewModel>?>(comments);
+
+            return View(await model.ToPagedListAsync(pageNumber, 5));
 
         }
 
         [Route("search")]
-        public async Task<IActionResult> Search(string search, CommentProgress progress, bool status)
+        public async Task<IActionResult> Search(CommentSearchViewModel model)
         {
 
-            List<Comment> results = await _manager.SearchAsync(search, progress, status);
+            List<Comment> results = await _manager.SearchAsync(model);
 
-            List<CommentListViewModel> model = new();
+            List<CommentListViewModel> viewModel = new();
 
-            try
-            {
-                model = _mapper.Map<List<CommentListViewModel>>(results);
+            viewModel = _mapper.Map<List<CommentListViewModel>>(results);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
+            return Json(viewModel);
 
-            }
-
-            return Json(model);
         }
 
 
@@ -190,7 +189,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.Comment, Permission.Update)]
         public async Task<IActionResult> ApproveOrReject(int commentId, string action)
         {
-
             Comment comment = await _manager.GetByIdAsync(commentId);
 
             if (comment is not null)
@@ -199,23 +197,24 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     case "approve":
                         comment.Progress = CommentProgress.Approved;
-                        _manager.Update(comment);
                         break;
+
                     case "reject":
                         comment.Progress = CommentProgress.Rejected;
-                        _manager.Update(comment);
                         break;
+
                     case "disable":
                         comment.Progress = CommentProgress.Disabled;
                         comment.Status = false;
-                        _manager.Update(comment);
                         break;
+
                     case "save":
                         comment.Progress = CommentProgress.Pending;
                         comment.Status = true;
-                        _manager.Update(comment);
                         break;
                 }
+
+                _manager.Update(comment);
 
                 _response.success = true;
                 _response.responseMessage = "Status of the comment has been successfully changed.";

@@ -1,12 +1,15 @@
 ﻿using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Abstract.SubRepositories;
 using EntityLayer.Concrete.Entities;
+using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Nist;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModelLayer.ViewModels.Contact;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -35,37 +38,39 @@ namespace BussinessLayer.Concrete.Managers
         {
 
             return await _contact.GetAsync(x => x.Id == id);
+
         }
 
-        public async Task<List<Contact>> GetDraftsAsync(string _senderId)
+        public async Task<List<Contact>> GetContactsAsync(ContactStatus? contactStatus, string? senderId, bool? status)
         {
 
-            return await _contact.GetDraftsAsync(_senderId);
-        }
+            if (senderId is not null && contactStatus is not null)
+                return await _contact.GetContactsAsync((ContactStatus)contactStatus, senderId);
 
-        public async Task<List<Contact>> GetInboxAsync()
-        {
+            if (status is not null && senderId is not null)
+                return await _contact.GetContactsAsync((bool)status, senderId);
 
-            return await _contact.GetInboxAsync();
+            if (contactStatus is not null)
+                return await _contact.GetContactsAsync((ContactStatus)contactStatus);
+              
+            return null;
 
-        }
-
-        public async Task<List<Contact>> GetSentboxAsync(string senderId)
-        {
-            return await _contact.GetSentboxAsync(senderId);
 
         }
 
-        public async Task<List<Contact>> GetTrashAsync()
-        {
-
-            return await _contact.GetTrashAsync();
-        }
 
         public IQueryable<Contact> GetWhere(Expression<Func<Contact, bool>> filter)
         {
 
             return _contact.GetWhere(filter);
+        }
+
+        public async Task<Contact> GetWithReply(int id)
+        {
+            return await _contact.GetWhere(contact => contact.Id == id)
+                            .Include(x => x.RepliedTo)
+                            .SingleOrDefaultAsync();
+
         }
 
         public void InsertWithRelated(Contact entity)
@@ -80,7 +85,10 @@ namespace BussinessLayer.Concrete.Managers
 
         public List<Contact> ListFilter()
         {
-            return _contact.ListFilter(x => x.Status == true && x.IsSeen == false).OrderByDescending(x => x.Created).ToList();
+            return _contact
+                .ListFilter(x => x.Status == true && x.IsSeen == false)
+                .OrderByDescending(x => x.Created)
+                .ToList();
         }
 
         public async Task<List<Contact>> SearchByAsync(string search)
@@ -89,10 +97,24 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public async Task<List<Contact>> SearchByAsync(string search, string senderId, bool isdraft, bool isTodelete, bool isSent)
+        public async Task<List<Contact>> SearchByAsync(string search, ContactStatus status, string? senderId)
         {
 
-            return await _contact.SearchByAsync(search, senderId, isdraft, isTodelete,isSent);
+            if (status == ContactStatus.Received | status == ContactStatus.Newsletter)
+                return await _contact.SearchByAsync(search, status);
+
+            if (senderId is not null && status == ContactStatus.Trash)
+                return await _contact.SearchByAsync(search, senderId, true);
+
+
+            if (senderId is not null && status != ContactStatus.Received | status != ContactStatus.Newsletter)
+                return await _contact.SearchByAsync(search, status, senderId);
+
+
+
+            return await _contact.SearchByAsync(search, status);
+
+
 
         }
 

@@ -9,7 +9,6 @@ using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Framework;
 using Microsoft.Extensions.Caching.Memory;
 using Org.BouncyCastle.Crypto;
 using System.Dynamic;

@@ -1,15 +1,268 @@
-﻿@model Contact
+﻿@model SendMailModel
+
 @{
     ViewData["Title"] = "Reply";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h1>Reply</h1>
+<link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+<link href="~/inspinia-gh-pages/css/plugins/summernote/summernote-bs4.css" rel="stylesheet">
+<link href="~/inspinia-gh-pages/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet" />
 
 
-<p>@Model.NameSurname</p>
-<p>@Model.Subject</p>
-<p>@Model.Created</p>
+@{
+    ContactDetailsViewModel? reply = (ContactDetailsViewModel?)ViewData["Reply"];
+
+}
+
+<div class="row">
+
+    @await Component.InvokeAsync("ContactFolders")
+
+
+
+    <div class="col-lg-9 animated fadeInRight">
+        <div class="ibox collapsed">
+            <div class="ibox-title">
+                <h5> Reply to : @reply?.From - @reply?.Subject</h5>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+               
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+
+                <div class="col-lg-12 animated fadeInRight">
+                    <div class="mail-box-header" style="border:none">
+
+                        <h2>
+                            @reply?.Subject
+
+                        </h2>
+                        <div class="mail-tools tooltip-demo m-t-md">
+
+
+
+                            <h3>
+                              
+                                    <span class="font-normal">To: @reply?.To</span>
+                                
+                            </h3>
+                            <h5>
+                                <span class="float-right font-normal">@reply?.Created</span>
+                                <span class="font-normal">From: </span>@reply?.From
+                            </h5>
+                        </div>
+                    </div>
+                    <div class="mail-box" style="border:none">
+
+
+                        <div class="mail-body">
+
+                            @Html.Raw(reply?.Content)
+
+                        </div>
+                      
+
+                        <div class="row">
+                            <div class="col-lg-12" style="border:none">
+
+                                @if(reply is not null)
+                                @foreach (string fileName in reply.Attachments)
+                                {
+                                    <div style="margin-right:auto;margin-left:10px;" class="file-box">
+
+                                        <div class="file">
+
+                                            <a href="/contact/download/file/@fileName">
+                                                <span class="corner"></span>
+
+                                                <div class="icon">
+                                                    <i class="fa fa-file"></i>
+                                                </div>
+                                                <div class="file-name">
+                                                    @fileName
+                                                </div>
+                                            </a>
+                                        </div>
+
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+
+
+
+
+
+
+
+            </div>
+        </div>
+     
+        <div class="mail-box">
+
+            <form asp-action="Reply" enctype="multipart/form-data">
+                <div class="mail-body">
+
+                    <input type="hidden" asp-for="ReplyTo" value="@reply?.Id" />  
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">To:</label>
+                        <div class="col-sm-10" style="pointer-events:none"><input class="tagsinput form-control" asp-for="To" value="@reply?.From" style="padding:6px 12px;" type="text" readonly="readonly" id="composeTo" /></div>
+                        <span style="margin-top:8px;margin:auto" asp-validation-for="To" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label">Subject:</label>
+
+                        <div class="col-sm-10"><input type="text" id="composeSubject" asp-for="Subject" class="form-control"></div>
+                        <span style="margin-top:8px;margin:auto" asp-validation-for="Subject" class="text-danger"></span>
+
+                    </div>
+
+
+                </div>
+
+                <div class="mail-text h-200">
+
+                    <textarea id="content" asp-for="Content" class="summernote">
+                                        </textarea>
+
+                    <span style="margin-top:8px;margin:auto" asp-validation-for="Content" class="text-danger" id="validate3"></span>
+
+                    <div class="clearfix"></div>
+                </div>
+
+
+                <div class="clearfix"></div>
+
+
+                <div style="margin-right:auto;margin-left:10px; margin-top:10px; " id="attachments" class="row">
+                    <span class="text-danger" asp-validation-for="Attachments"></span>
+
+
+                </div>
+
+
+                <div class="mail-body tooltip-demo">
+
+                    <div class="row">
+                        <div style="margin-right:auto;margin-left:8px;">
+                            <a href="#" class="text-navy" data-toggle="modal" data-target="#uploadFiles"> <i class="fa fa-paperclip"></i> Add attachment</a>
+
+                        </div>
+
+
+                        <div style="margin-right:5px;margin-left:auto">
+
+                            <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" name="IsDraft" value="false" title="Send"><i class="fa fa-reply"></i> Reply </button>
+                            <button type="submit" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" name="IsDraft" value="true" title="Move to draft folder"><i class="fa fa-pencil"></i> Draft</button>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+
+                <div class="modal inmodal fade" id="uploadFiles" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title"><i class="fa fa-paperclip" style="margin-right:3px;"></i> Add attachment</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="ibox-content">
+
+
+                                    <input id="files" asp-for="Attachments" type="file" size="1" multiple onchange="uploadFiles('files');" />
+
+                                </div>
+
+                                <div class="modal-footer">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
+            </form>
+
+
+
+            <div class="clearfix"></div>
+
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+
+
+
+@section Script{
+
+    <script src="~/js/contact.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
+
+    <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
+    <script src="~/inspinia-gh-pages/js/plugins/bootstrap-tagsinput/bootstrap-tagsinput.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('.summernote').summernote({
+                toolbar: [
+
+
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['view', ['codeview']],
+                ]
+            });
+
+        });
+
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+            $('.tagsinput').tagsinput({
+                tagClass: 'label label-default'
+            });
+        })
+    </script>
+}
+
+
 
 
 

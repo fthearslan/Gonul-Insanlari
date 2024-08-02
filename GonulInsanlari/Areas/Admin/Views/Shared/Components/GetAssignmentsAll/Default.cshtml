@@ -6,69 +6,72 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<div class="table-responsive">
-    <table id="dataTable" class="table table-striped">
+                <div class="table-responsive">
+                    <table id="dataTable" class="table table-striped">
 
-        <thead>
+                        <thead>
 
-            <tr>
+                            <tr>
 
-                <th><i class="fa fa-caret-down" aria-hidden="true"></i></th>
-                <th> Title</th>
-                <th>Published by</th>
-                <th>SubTasks</th>
-                <th>Users</th>
-                <th>Progress</th>
-                <th>Created</th>
-                <th></th>
+                                <th><i class="fa fa-caret-down" aria-hidden="true"></i></th>
+                                <th> Title</th>
+                                <th>Published by</th>
+                                <th>SubTasks</th>
+                                <th>Users</th>
+                                <th>Progress</th>
+                                <th>Created</th>
+                                <th></th>
 
-            </tr>
+                            </tr>
 
-        </thead>
+                        </thead>
 
-        <tbody>
+                        <tbody>
 
-            @foreach (var task in Model)
-            {
-                string spanCls = "";
+                            @foreach (var task in Model)
+                            {
+                                string spanCls = "";
 
-                switch (task.Progress)
-                {
-                    case "Published":
-                        spanCls = "text-success";
-                        break;
-                    case "Pending":
-                        spanCls = "text-warning";
-                        break;
-                    case "InProgress":
-                        spanCls = "text-navy";
-                        break;
-                    case "Done":
-                        spanCls = "text-danger";
-                        break;
-
-
-                }
+                                switch (task.Progress)
+                                {
+                                    case "Published":
+                                        spanCls = "text-success";
+                                        break;
+                                    case "Pending":
+                                        spanCls = "text-warning";
+                                        break;
+                                    case "InProgress":
+                                        spanCls = "text-navy";
+                                        break;
+                                    case "Done":
+                                        spanCls = "text-danger";
+                                        break;
 
 
-                <tr id="@task.Id">
+                                }
 
-                    <td><i class="fa fa-dot-circle-o"></i></td>
-                    <td>@task.Title</td>
-                    <td>@@@task.Publisher</td>
-                    <td>@task.SubTasks</td>
-                    <td>@task.UserCount</td>
-                    <td><span class=@spanCls>@task.Progress</span></td>
-                    <td>@GetDate.GetCreateDate(@task.Created)</td>
-                    <td class="btn-group">
-                        <a class="btn-white btn btn-xs" href="/assignments/details/@task.Id">View</a>
-                        <button type="button" class="btn-danger btn btn-xs" onclick="deleteAssignment('@task.Id')" id="btn_delete" value="@task.Id" href="#"><i class="fa fa-trash"></i></button>
-                    </td>
-                </tr>
 
-            }
+                                <tr id="@task.Id">
 
-        </tbody>
+                                    <td><i class="fa fa-dot-circle-o"></i></td>
+                                    <td>@task.Title</td>
+                                    <td>@@@task.Publisher</td>
+                                    <td>@task.SubTasks</td>
+                                    <td>@task.UserCount</td>
+                                    <td><span class=@spanCls>@task.Progress</span></td>
+                                    <td>@GetDate.GetCreateDate(@task.Created)</td>
+                                    <td class="btn-group">
+                                        <a class="btn-white btn btn-xs" href="/assignments/details/@task.Id">View</a>
+                                        <button type="button" class="btn-danger btn btn-xs" onclick="deleteAssignment('@task.Id')" id="btn_delete" value="@task.Id" href="#"><i class="fa fa-trash"></i></button>
+                                    </td>
+                                </tr>
 
-    </table>
-</div>
+                            }
+
+                        </tbody>
+
+                    </table>
+                </div>
+            
+            
+           

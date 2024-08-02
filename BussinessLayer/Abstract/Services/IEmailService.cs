@@ -21,7 +21,7 @@ namespace BussinessLayer.Abstract.Services
         /// It configures port number, host name and credentials such as username and password.
         /// </summary>
         /// <returns>SmtpClient</returns>
-        SmtpClient ConfigureClient();
+        protected SmtpClient ConfigureClient();
 
 
         /// <summary>
@@ -29,7 +29,7 @@ namespace BussinessLayer.Abstract.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        string GetBody(WeeklyNewsletterModel model);
+        protected string GetBody(WeeklyNewsletterModel model);
 
 
         /// <summary>
@@ -38,14 +38,14 @@ namespace BussinessLayer.Abstract.Services
         /// <param name="model"></param>
         /// <returns></returns>
 
-        string GetBody(MailReplyModel model);
+        protected string GetBody(SendMailModel model);
 
 
         /// <summary>
         /// Gets all the subscriber.
         /// </summary>
         /// <returns></returns>
-        Task<List<NewsletterSubscriberViewModel>> GetSubscribersAsync();
+        protected Task<List<NewsletterSubscriberViewModel>> GetSubscribersAsync();
 
         /// <summary>   
         /// Send article to the subscribers asynchrnously.
@@ -55,8 +55,12 @@ namespace BussinessLayer.Abstract.Services
         Task SendNewsletterAsync(WeeklyNewsletterModel model);
 
 
-
-        Task SendEmailAsync(MailReplyModel model);
+        /// <summary>
+        /// Sends email to certain user.
+        /// /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        Task SendEmailAsync(SendMailModel model);
 
 
 

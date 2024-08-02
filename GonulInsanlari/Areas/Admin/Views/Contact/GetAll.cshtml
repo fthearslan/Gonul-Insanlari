@@ -1,0 +1,128 @@
+﻿@model List<ContactListViewModel>
+@{
+    ViewData["Title"] = "GetAll";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<head>
+
+    <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
+
+</head>
+
+<div style="margin-top:20px;margin-bottom:20px;" class="row">
+
+
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <div class="ibox-title">
+                <h2><i class="fa fa-envelope"></i> Displaying all contacts</h2>
+                <div class="ibox-tools">
+                    <a class="collapse-link">
+                        <i class="fa fa-chevron-up"></i>
+                    </a>
+                    <a class="close-link">
+                        <i class="fa fa-times"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="table-responsive">
+                    <table id="dataTable" class="table table-striped">
+                        <thead>
+                            <tr>
+
+                                <th>#Title</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Status</th>
+                                <th>Seen</th>
+                                <th>Created</th>
+                                <th>Action</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var contact in Model)
+                            {
+                                string status = contact.ContactStatus switch
+                                {
+
+                                    ContactStatus.Pending => "text-primary",
+                                    ContactStatus.Received => "text-success",
+                                    ContactStatus.Sent => "text-navy",
+                                    ContactStatus.Drafted => "text-warning",
+                                    ContactStatus.Trash => "text-danger",
+                                    _ => "text-default"
+
+                                };
+
+                                <tr>
+                                    <td style="cursor:pointer" class="myBox"><a href="/mail/detail/@contact.Id"></a><strong>#</strong> @contact.Subject</td>
+                                    <td><span class="text-success"><a href="#"></a>@contact.From</span></td>
+                                    <td><span class="text-navy"><a href="#"></a>@contact.To</span></td>
+                                    <td><span class="@status">@contact.ContactStatus.ToString()</span></td>
+                                    <td><span> @contact.IsSeen</span></td>
+                                    <td>@contact.Created.ToString("dd-MMM-yyyy")</td>
+
+                                    <td class="btn-group">
+                                        <a class="btn-white btn btn-xs" href="/mail/detail/@contact.Id">View</a>
+
+                                        @if (contact.ContactStatus == ContactStatus.Drafted)
+                                        {
+                                            <a class="btn-warning btn btn-xs" href="/mail/edit/@contact.Id">Edit</a>
+
+                                        }
+
+                                        <a class="btn-danger btn btn-xs" onclick="DeleteSingle('@contact.Id')" href="#"><i class="fa fa-trash"></i></a>
+
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                    <div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Script{
+
+    <script src="~/lib/jquery.toast.min.js"></script>
+
+    <script src="~/js/contact.js"></script>
+
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
+    <script src="sweetalert2.all.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+                },
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+    </script>
+}

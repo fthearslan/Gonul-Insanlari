@@ -5,30 +5,17 @@
     <div class="sidebar-container">
 
 
-        <ul class="nav nav-tabs navs-3">
-            
-                <li>
-                    <a class="nav-link active " data-toggle="tab" href="#tab-1"> <i class="fa fa-bullhorn"></i></a>
-                </li>
-            
-            @if (User.HasClaim("Permission", "Assignment.Read"))
-            {
-                <li>
-                    <a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-calendar"></i></a>
-                </li>
-            }
-            else
-            {
-                <li>
-                    <a class="nav-link" data-toggle="tab" href="#notFound"><i class="fa fa-calendar"></i></a>
-                </li>
 
-            }
+        <ul class="nav nav-tabs navs-2">
 
-            
             <li>
-                <a class="nav-link" data-toggle="tab" href="#tab-3"> <i class="fa fa-sticky-note"></i> </a>
+                <a class="nav-link active " data-toggle="tab" href="#tab-1"> <i class="fa fa-bullhorn"></i></a>
             </li>
+
+            <li>
+                <a class="nav-link" data-toggle="tab" href="#tab-2"><i class="fa fa-calendar"></i></a>
+            </li>
+
         </ul>
 
 
@@ -40,17 +27,17 @@
             <div id="tab-1" class="tab-pane active">
                 @if (User.HasClaim("Permission", "Announcement.Read"))
                 {
-                <div class="sidebar-title">
-                    <h3>Announcements</h3>
-                    <p style="font-weight:600">There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
-                </div>
+                    <div class="sidebar-title">
+                        <h3>Announcements</h3>
+                        <p style="font-weight:600">There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
+                    </div>
 
-           
+
                     <div>
                         @foreach (var announce in Model)
                         {
                             <div class="sidebar-message">
-                                <a href="/Admin/Announcement/GetDetails/@announce.Id">
+                                <a href="announcements/details/@announce.Id">
                                     <div class="float-left text-center">
                                         <i class="fa fa-bullhorn fa-lg"></i>
                                     </div>
@@ -70,31 +57,26 @@
                 }
                 else
                 {
-                    <div>
-                        <div class="sidebar-title">
-                            <p style="font-weight:600">There is nothing found to show.</p>
 
-                        </div>
+                    <div class="sidebar-title">
+                        <p style="font-weight:600">There is nothing found to show.</p>
+
                     </div>
 
                 }
 
             </div>
-            @if (User.HasClaim("Permission", "Assignment.Read"))
-            {
-                @await Component.InvokeAsync("AssignmentBar")
+           
+            <div id="tab-2" class="tab-pane">
+               
+                @if (User.HasClaim("Permission", "Assignment.Read"))
+                {
+                    @await Component.InvokeAsync("AssignmentBar")
 
-            }
-            else{
-                <div id="notFound" class="tab-pane ">
-
-                    <div class="sidebar-title">
-                       
-                        <p style="font-weight:600">There is nothing found to show.</p>
-                    </div>
-                </div>
-            }
-            @await Component.InvokeAsync("AdminGetNotes")
+                }
+              
+            </div>
+         
 
         </div>
     </div>

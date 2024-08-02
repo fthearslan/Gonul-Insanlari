@@ -10,21 +10,62 @@ namespace EntityLayer.Concrete.Entities
 {
     public class Contact : BaseEntity
     {
+
+        public Contact()
+        {
+
+            Attachments = new();
+            Tos = new();
+       
+
+        }
+
+        public Contact(ContactStatus status)
+        {
+             ContactStatus = status;
+
+            Attachments = new();
+            Tos = new();
+
+        }
+
+
         [StringLength(50)]
-        public string NameSurname { get; set; }
-        [StringLength(50)]
-        public string EmailAddress { get; set; }
-        [StringLength(300)]
+        public string From { get; set; }
+
         public string Content { get; set; }
         [StringLength(50)]
         public string Subject { get; set; }
         public bool IsSeen { get; set; }
-        public bool IsDraft { get; set; }
 
-        public bool IsSent { get; set; }
         public string? SenderId { get; set; }
 
-        public string? To { get; set; }
+        public ContactStatus ContactStatus { get; set; } = ContactStatus.Pending;
+
+
+        public List<ContactToCollection> Tos { get; set; }
+
+        public List<ContactAttachment> Attachments { get; set; }
+
+        public Contact? RepliedTo { get; set; }
+
 
     }
+
+    public enum ContactStatus
+    {
+
+        Pending,
+        Received,
+        Sent,
+        Drafted,
+        Newsletter,
+        Trash
+
+    }
+
+  
+
+
+
 }

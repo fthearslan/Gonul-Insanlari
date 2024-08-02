@@ -21,7 +21,7 @@
                     <div style="cursor: pointer" class="feed-element myBox">
                         <div>
                             <small class="float-right text-navy">@GetDate.GetCreateDate(contact.Created)</small>
-                            <i style="margin-right:10px;margin-left:2px;" class="fa fa-envelope-o"></i>  <strong>@contact.NameSurname</strong> - @contact.EmailAddress
+                            <i style="margin-right:10px;margin-left:2px;" class="fa fa-envelope-o"></i>  <strong>@contact.From</strong> - @contact.From
                             @if (contact.Content.Length >= 70)
                             {
                                 <div>

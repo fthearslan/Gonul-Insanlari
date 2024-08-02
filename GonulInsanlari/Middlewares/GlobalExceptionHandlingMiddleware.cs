@@ -30,6 +30,7 @@ namespace GonulInsanlari.Middlewares
                     _context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
 
+
             }
 
 

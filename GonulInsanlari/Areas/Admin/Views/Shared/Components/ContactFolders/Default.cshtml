@@ -3,14 +3,14 @@
     <div class="ibox ">
         <div class="ibox-content mailbox-content">
             <div class="file-manager">
-                <a class="btn btn-block btn-primary compose-mail" href="mail_compose.html">Compose Mail</a>
+                <a class="btn btn-block btn-primary compose-mail" href="/mail/compose">Compose Mail</a>
                 <div class="space-25"></div>
                 <h5>Folders</h5>
                 <ul class="folder-list m-b-md" style="padding: 0">
 
-                    @if ((int)@ViewData["Count"] > 0)
+                    @if ((int?)@ViewData["Count"] > 0)
                     {
-                        <li><a href="/mail/inbox"> <i class="fa fa-inbox "></i> Inbox <span class="label label-warning float-right">@ViewData["Count"]</span> </a></li>
+                        <li><a href="/mail/inbox"> <i style="margin-right:8px;" class="fa fa-inbox "></i> Inbox <span class="label label-warning float-right">@ViewData["Count"]</span> </a></li>
                     }
                     else
                     {
@@ -18,13 +18,16 @@
 
                     }
 
-                 
-                        <li><a href="/mail/sentbox"> <i class="fa fa-envelope-o"></i> Sent</a></li>
+
+                    <li><a href="/mail/sentbox"><i class="fa fa-paper-plane-o"></i> Sent</a></li>
         
+                    <li><a href="/mail/newsletters"> <i class="fa fa-envelope-o"></i> Newsletter </a></li>
 
 
                     <li><a href="/mail/drafts"> <i class="fa fa-file-text-o"></i> Drafts </a></li>
                     <li><a href="/mail/trash"> <i class="fa fa-trash-o"></i> Trash </a></li>
+                    <li><a href="/mail/all"> <i class="fa fa-sort-alpha-asc"></i> All </a></li>
+
 
                 </ul>
 

@@ -1,27 +1,35 @@
 ﻿@model List<AssignmentBarViewModel>
 
-<div id="tab-2" class="tab-pane">
-    <div class="sidebar-title">
-        <h3>Assignments</h3>
-        <p style="font-weight:600"><i class="fa fa-tim"></i>@ViewBag.Count, <a href="#">see all</a>.</p>
-    </div>
-
-    <ul class="sidebar-list">
-     @foreach(var assignment in Model){
-        <li>
-            <a href="Admin/Assignment/GetDetails/@assignment.Id">
-                <div class="small float-right m-t-xs">@GetDate.GetCreateDate(assignment.Created)</div>
-                <h4>@assignment.Title</h4>
-                @Html.Raw(@assignment.Content.Substring(0,100));
-
-                <div style="margin-top:4px;" class="small">@assignment.Due.Subtract(assignment.Created).Days days left</div>
-                    <div class="progress progress-mini">
-                    <div style="width:@ProgressBarWidth.GetWidthBySubTasks(assignment.SubTasks,assignment.SubTasksDone)%;" class="progress-bar progress-bar-warning"></div>
-                </div>
-                    <div class="small text-muted m-t-xs">Due: @(((DateTime)assignment.Due).ToString("dd-MMM-yyyy"))</div>
-            </a>
-        </li>
-     }
-    </ul>
-
+<div class="sidebar-title">
+    <h3>Assignments</h3>
+    <p style="font-weight:600"><i class="fa fa-tim"></i>@ViewBag.Count, <a href="#">see all</a>.</p>
 </div>
+
+<div>
+    @foreach (var assignment in Model)
+    {
+        <div style="cursor:pointer" class="sidebar-message myBox">
+            <a href="/assignments/details/@assignment.Id">
+
+                <div style="margin-right:8px;" class="float-left text-center">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <div class="media-body">
+                    <h4> @assignment.Title</h4>
+
+                    @Html.Raw(assignment.Content.Substring(0,250));
+
+                    <br>
+
+                    <small class="text-muted">@assignment.Due.Subtract(assignment.Created).Days days left</small>
+                    <div class="progress progress-mini">
+                        <div style="width:@ProgressBarWidth.GetWidthBySubTasks(assignment.SubTasks,assignment.SubTasksDone)%;" class="progress-bar progress-bar-warning"></div>
+                    </div>
+
+                </div>
+            </a>
+
+        </div>
+    }
+</div>
+

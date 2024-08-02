@@ -178,7 +178,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [Route("add/file")]
         [HasPermission(PermissionType.Assignment, Permission.Update)]
-
         public async Task<JsonResult> AddAttachment(AddAttachmentViewModel model)
         {
             List<TaskAttachment> attachments = new List<TaskAttachment>();

@@ -4,38 +4,42 @@
     ViewData["Title"] = "List";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
-<link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
-<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
+<head>
 
+    <link href="~/inspinia-gh-pages/css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+</head>
 
 <div class="row">
-    @*   @await Html.PartialAsync("Categories") *@
 
     @await Component.InvokeAsync("ContactFolders")
 
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
 
-            <form method="get" action="index.html" class="float-right mail-search">
-                <input id="isSent" value="false" hidden />
-                <input id="isdraft" value="false" hidden />
+            <form method="get" class="float-right mail-search">
+
                 <div class="input-group">
+                    <input type="hidden" id="contactStatus" value="@ContactStatus.Received" />
+                    <input type="hidden" id="getAll" value="false" />
+
 
                     <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search email">
                     <div class="input-group-btn">
-                        <button type="button" onclick="Search();" class="btn btn-sm btn-primary">
+                        <button type="button" onclick="search();" class="btn btn-sm btn-primary">
                             Search
                         </button>
                     </div>
                 </div>
             </form>
             <h2>
-                Inbox(@ViewData["Count"])
+                <i class="fa fa-inbox" style="margin-right:6px;"></i>  Inbox(@ViewData["Count"])
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
 
-                <button onclick="Refresh();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
+                <button onclick="refresh('@ContactStatus.Received');" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
                 <button onclick="markAsRead();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Mark as read"><i class="fa fa-eye"></i> </button>
                 <button onclick="Delete();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
 
@@ -55,8 +59,12 @@
                             <td class="check-mail">
                                 <input type="checkbox" class="i-checks" value="@contact.Id">
                             </td>
-                            <td class="mail-ontact"><a href="">@contact.NameSurname</a></td>
-                            <td class="mail-subject"><a href="mail_detail.html">@contact.Subject - @contact.Content.Substring(0,30)...</a></td>
+                            <td class="mail-ontact">@contact.From</td>
+                            <td class="mail-subject"><a href="/mail/detail/@contact.Id">@contact.Subject </a></td>
+
+
+
+
 
                             @if (contact.IsSeen)
                             {
@@ -89,13 +97,9 @@
 
 @section Script{
 
-
-      
     <script src="~/js/contact.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
     <script src="~/lib/jquery.toast.min.js"></script>
-
-
 
 
                             }

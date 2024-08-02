@@ -54,5 +54,7 @@ namespace DataAccessLayer.Concrete.Providers
 
         public DbSet<UserLogin> UsersLogins { get; set; } = null!;
 
+        public DbSet<ContactAttachment> ContactAttachments { get; set; } = null!;
+
     }
 }

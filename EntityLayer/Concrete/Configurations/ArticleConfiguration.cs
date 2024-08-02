@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Configurations
 {
-    public class ArticleConfiguration : IEntityTypeConfiguration<Article>
+   sealed internal class ArticleConfiguration : IEntityTypeConfiguration<Article>
     {
         public void Configure(EntityTypeBuilder<Article> builder)
         {

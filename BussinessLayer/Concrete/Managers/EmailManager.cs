@@ -27,6 +27,7 @@ using GonulInsanlari.Exceptions.Newsletter;
 using BussinessLayer.Concrete.Exceptions.Newsletter;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Html;
+using DataAccessLayer.Concrete.Providers;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -79,22 +80,20 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public string GetBody(MailReplyModel model)
+        public string GetBody(SendMailModel model)
         {
 
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(MailReplyModel.Path))
+            using (StreamReader reader = System.IO.File.OpenText(SendMailModel.Path))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
             };
 
-            string? withName = builder.HtmlBody.Replace("{Name}", model.Name);
 
-            string? withContent = withName.Replace("{Content}", model.Content);
+            return builder.HtmlBody.Replace("{Content}", model.Content);
 
-            return withContent;
 
         }
 
@@ -118,8 +117,9 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public async Task SendEmailAsync(MailReplyModel model)
+        public async Task SendEmailAsync(SendMailModel model)
         {
+
             string? body = GetBody(model);
 
             if (body is null)
@@ -127,14 +127,37 @@ namespace BussinessLayer.Concrete.Managers
 
             SmtpClient client = ConfigureClient();
 
-            await client.SendMailAsync(new(_configuration.Username, model.Email)
+
+            foreach (string email in model.To)
             {
+                MailMessage mail = new(_configuration.Username, email)
+                {
+                    Body = body,
+                    Subject = model.Subject,
+                    IsBodyHtml = true,
 
-                Body = body,
-                Subject = model.Subject,
-                IsBodyHtml = true
+                };
 
-            });
+                if (model.ReplyTo is not null)
+                    mail.ReplyToList.Add(new(email));
+
+                mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess;
+
+                if (model.Attachments is not null)
+                {
+                    List<string> paths = await model.GetAttachmentPathsAsync();
+
+                    if (paths is not null)
+                        foreach (string? attachment in paths)
+                            mail.Attachments.Add(new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", attachment)));
+
+                }
+
+                await client.SendMailAsync(mail);
+             
+
+            }
+
 
         }
 
@@ -158,23 +181,49 @@ namespace BussinessLayer.Concrete.Managers
 
             SmtpClient client = ConfigureClient();
 
+            List<ContactToCollection> TOs = new();
+
             foreach (var subscriber in subscribers)
             {
+                string body = mailBody.Replace("{Name}", subscriber.Name);
 
                 await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
                 {
 
-                    Body = mailBody.Replace("{Name}", subscriber.Name),
+                    Body = body,
                     Subject = model.Subject,
                     IsBodyHtml = true
 
                 });
 
+                client.SendCompleted += (sender, e) =>
+                {
+                    TOs.Add(new(subscriber.EmailAddress)
+                    {
+                        Name = subscriber.Name,
+                        Surname = "Arslan"
+
+                    });
+                };
 
             }
 
 
+            using (var c = new Context())
+            {
+                c.Contacts.Add(new(ContactStatus.Newsletter)
+                {
+                 
+                    Tos = TOs,
+                    Content = model.Description,
+                    Subject = ContactStatus.Newsletter.ToString(),
+                    From = "Administration",
+                    IsSeen = true,
 
+                });
+
+                c.SaveChanges();
+            }
         }
     }
 }

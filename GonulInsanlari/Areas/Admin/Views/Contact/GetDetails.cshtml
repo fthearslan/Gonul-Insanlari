@@ -4,16 +4,20 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+@{
+    ContactDetailsViewModel? reply = Model.RepliedTo;
+
+}
+
 
 <div class="row">
-    @* @await Html.PartialAsync("Categories") *@
     @await Component.InvokeAsync("ContactFolders")
 
 
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
             <div class="float-right tooltip-demo">
-                @if (!Model.IsSent && !Model.IsDraft && Model.Status)
+                @if (Model.ContactStatus==ContactStatus.Received)
                 {
                     <a href="/mail/reply/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
 
@@ -21,9 +25,16 @@
 
                 @if (!Model.Status)
                 {
-                    <a href="/mail/recover/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Recover this mail"><i class="fa fa-undo"></i> Recover</a>
+                    <a href="/mail/recover/@Model.Id"  class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Recover this mail"><i class="fa fa-undo"></i> Recover</a>
 
                 }
+                @if (Model.ContactStatus == ContactStatus.Drafted)
+                {
+                    <a href="/mail/edit/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Edit this draft"><i class="fa fa-pencil"></i> Edit</a>
+
+                }
+
+
                 <a href="javascript:window.print()" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Print email"><i class="fa fa-print"></i> </a>
                 @if (User.HasClaim("Permission", "Contact.Delete"))
                 {
@@ -37,22 +48,45 @@
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
 
-
-
-                <h3>
-                    @if (Model.To is not null)
+                @if(Model.ContactStatus != ContactStatus.Received)
+                {
+                    @if (Model.Tos.Count == 1)
                     {
-                        <span class="font-normal">@Model.To</span>
-                    }
-                    else
-                    {
-                        <span class="font-normal">To: Administration </span>
+
+                        <span class="font-normal">To: @Model.Tos.First()</span>
 
                     }
-                </h3>
+
+                    @if (Model.Tos.Count > 1)
+                    {
+
+                        <h5><span class="font-normal">To: @Model.Tos.First() <strong>  + @(Model.Tos.Count - 1)</strong> <a data-toggle="collapse" data-target="#mail"><i class="fa fa-chevron-down"></i></a></span></h5>
+
+                        <div id="mail" style="border:none;margin-top:5px;margin-bottom:20px;" class="collapse">
+
+                            @foreach (var email in Model.Tos.Skip(1))
+                            {
+                                <h5><span class="font-normal"><i style="margin-right:3px;" class="fa fa-user-circle"></i></span> @email</h5>
+                            }
+
+                        </div>
+
+                    }
+
+                }
+           
+
                 <h5>
+                
                     <span class="float-right font-normal">@Model.Created</span>
-                    <span class="font-normal">From: </span>@Model.EmailAddress
+                    
+                    @if(Model.ContactStatus==ContactStatus.Received){
+                        <span class="font-normal">From: </span>
+
+                        @Model.From
+
+                    }
+                
                 </h5>
             </div>
         </div>
@@ -66,8 +100,130 @@
             </div>
             <div class="clearfix"></div>
 
+            <div class="row">
+                <div class="col-lg-12">
+
+
+                    @foreach (string fileName in Model.Attachments)
+                    {
+                        <div style="margin-right:auto;margin-left:10px;" class="file-box">
+
+                            <div class="file">
+
+                                <a href="/contact/download/file/@fileName">
+                                    <span class="corner"></span>
+
+                                    <div class="icon">
+                                        <i class="fa fa-file"></i>
+                                    </div>
+                                    <div class="file-name">
+                                        @fileName
+                                    </div>
+                                </a>
+                            </div>
+
+                        </div>
+                    }
+                </div>
+            </div>
+
+
 
         </div>
+
+        @if (reply is not null)
+        {
+            <div class="ibox collapsed">
+                <div class="ibox-title">
+                    <h5> Replied to : @reply.From - @reply.Subject</h5>
+                    <div class="ibox-tools">
+                        <a class="collapse-link">
+                            <i class="fa fa-chevron-up"></i>
+                        </a>
+
+                        <a class="close-link">
+                            <i class="fa fa-times"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="ibox-content">
+
+                    <div class="col-lg-12 animated fadeInRight">
+                        <div class="mail-box-header" style="border:none">
+
+                            <h2>
+                                @reply.Subject
+
+                            </h2>
+                            <div class="mail-tools tooltip-demo m-t-md">
+
+
+
+                                <h3>
+
+                                    <span class="font-normal">To: @reply.To</span>
+
+                                </h3>
+                                <h5>
+                                    <span class="float-right font-normal">@reply.Created</span>
+                                    <span class="font-normal">From: </span>@reply.From
+                                </h5>
+                            </div>
+                        </div>
+                        <div class="mail-box" style="border:none">
+
+
+                            <div class="mail-body">
+
+                                @Html.Raw(reply.Content)
+
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-lg-12" style="border:none">
+
+                                    @if (reply is not null)
+                                        @foreach (string fileName in reply.Attachments)
+                                        {
+                                            <div style="margin-right:auto;margin-left:10px;" class="file-box">
+
+                                                <div class="file">
+
+                                                    <a href="/contact/download/file/@fileName">
+                                                        <span class="corner"></span>
+
+                                                        <div class="icon">
+                                                            <i class="fa fa-file"></i>
+                                                        </div>
+                                                        <div class="file-name">
+                                                            @fileName
+                                                        </div>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        }
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+                </div>
+            </div>
+        }
+
+
+
     </div>
 
 </div>

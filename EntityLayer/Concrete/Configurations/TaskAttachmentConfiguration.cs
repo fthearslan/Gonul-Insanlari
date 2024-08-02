@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Configurations
 {
-    public class TaskAttachmentConfiguration : IEntityTypeConfiguration<TaskAttachment>
+    sealed internal class TaskAttachmentConfiguration : IEntityTypeConfiguration<TaskAttachment>
     {
         public void Configure(EntityTypeBuilder<TaskAttachment> builder)
         {

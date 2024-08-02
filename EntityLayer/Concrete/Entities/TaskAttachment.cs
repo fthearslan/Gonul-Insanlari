@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class TaskAttachment
+    public class TaskAttachment:BaseAttachment
     {
         public TaskAttachment()
         {
@@ -19,13 +19,7 @@ namespace EntityLayer.Concrete.Entities
             Assignment = task;
         }
 
-        public Guid Id { get; set; } = Guid.NewGuid();
-
-        public string Path { get; set; } = null!;
-
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
-
-        public Assignment Assignment { get; set; } = null!;
+           public Assignment Assignment { get; set; } = null!;
 
 
     }

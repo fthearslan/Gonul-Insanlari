@@ -2,13 +2,17 @@
 
 
 
-function Refresh() {
+function refresh(status) {
 
     $('#mails').empty();
+
+
+
 
     $.ajax({
         type: "POST",
         url: "/mail/refresh",
+        data: { status: status },
         success: function (result) {
 
 
@@ -16,6 +20,7 @@ function Refresh() {
 
                 var cls = "";
                 var icon = "";
+
                 if (result[i].isSeen) {
                     cls = "read";
 
@@ -25,12 +30,28 @@ function Refresh() {
 
                 }
 
+                fromOrTo = result[i].from;
+
+                switch (result[i].contactStatus) {
+
+                    case "Received":
+
+                        fromOrTo = result[i].from;
+                        break;
+
+                    default:
+                        fromOrTo = result[i].to;
+                        cls = "read";
+                        icon = "";
+
+                }
+
                 var html = '<tr id="' + result[i].id + '" class="' + cls + '" style="cursor:pointer">' +
                     '<td class="check-mail">' +
                     '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
                     ' </td>' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + fromOrTo + '<a href=""></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '<a href="mail/detail/' + result[i].id + '"></a></td >' +
                     '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
 
                     '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + icon + ' ' + result[i].id + '" > </i></td >' +
@@ -40,7 +61,6 @@ function Refresh() {
 
 
 
-
                 $("#mails").append(html);
 
 
@@ -49,50 +69,6 @@ function Refresh() {
         }
     });
 };
-
-function RefreshSentBox() {
-
-    $('#mails').empty();
-
-    var status = $("#status").val();
-
-    $.ajax({
-        type: "POST",
-        url: "/mail/refreshsentbox",
-        data: { status: status },
-        success: function (result) {
-
-
-            for (let i = 0; i < result.length; i++) {
-
-
-
-                var html = '<tr id="' + result[i].id + '" class="read click" style="cursor:pointer">' +
-                    '<td class="check-mail">' +
-                    '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
-                    ' </td>' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
-
-                    '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + result[i].id + '" > </i></td >' +
-
-                    '<td onclick="Send(' + result[i].id + ')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
-                    '</tr>';
-
-
-
-
-                $("#mails").append(html);
-
-
-            }
-
-        }
-    });
-};
-
-
 
 
 function Send(id) {
@@ -153,7 +129,6 @@ function markAsRead() {
 
 
 }
-
 function Delete() {
 
     var allVals = [];
@@ -199,6 +174,19 @@ function Delete() {
                 });
             }
 
+        },
+        statusCode: {
+            403: function () {
+                $.toast({
+                    heading: 'Access denied!',
+                    text: "You do not have an access to delete contacts.",
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                });
+            }
+
         }
 
     }
@@ -229,7 +217,7 @@ function DeleteSingle(id) {
 
                     window.location.replace("/mail/inbox");
                 }
-                
+
 
             }
             );
@@ -243,9 +231,6 @@ function DeleteSingle(id) {
 
 
 }
-
-
-
 
 jQuery(document).ready(function ($) {
     $(".click").click(function () {
@@ -274,38 +259,36 @@ document.getElementById('searchbar').addEventListener('keyup', function (e) {
     timeout = setTimeout(function () {
 
 
-        Search()
+        search();
 
     }, 500);
 
 });
 
-
-function Search() {
+function search() {
 
     $('#mails').empty();
 
-    var isSent = $("#isSent").val();
-    var isdraft = $("#isdraft").val();
-    var isTrash = $("#status").val();
-    if (isTrash == "trash") {
-        var IsToDelete = Boolean(true);
+    var model = {
 
-    }
+        Search: document.getElementById('searchbar').value,
+        ContactStatus: $('#contactStatus').val(),
+        GetAll: $('#getAll').val(),
 
-    let value = document.getElementById('searchbar').value
-
+    };
 
     $.ajax({
         type: "POST",
         url: "/mail/search",
-        data: { search: value, isSent: isSent, isdraft: isdraft, isTodelete: IsToDelete },
+        data: { model: model },
         success: function (result) {
 
             for (let i = 0; i < result.length; i++) {
 
+
                 var cls = "";
                 var icon = "";
+
                 if (result[i].isSeen) {
                     cls = "read";
 
@@ -314,30 +297,35 @@ function Search() {
                     icon = "fa fa-eye";
 
                 }
-                if (result[i].isSent) {
-                    cls = "read";
-                    icon = "";
-                } if (result[i].isDraft) {
-                    cls = "read";
-                    icon = "";
+
+                fromOrTo = result[i].from;
+
+                switch (result[i].contactStatus) {
+
+                    case "Received":
+
+                        fromOrTo = result[i].from;
+                        break;
+
+                    default:
+                        fromOrTo = result[i].to;
+                        cls = "read";
+                        icon = "";
+
                 }
-                
 
                 var html = '<tr id="' + result[i].id + '" class="' + cls + '" style="cursor:pointer">' +
                     '<td class="check-mail">' +
                     '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
                     ' </td>' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + result[i].nameSurname + '<a href=""></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '-' + result[i].content + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + fromOrTo + '<a href=""></a></td >' +
+                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '<a href="/Admin/Contact/GetDetails/' + result[i].id + '"></a></td >' +
                     '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
 
                     '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + icon + ' ' + result[i].id + '" > </i></td >' +
 
                     '<td onclick="Send(' + result[i].id + ')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
                     '</tr>';
-
-
-
 
                 $("#mails").append(html);
 
@@ -353,6 +341,107 @@ function Search() {
 
 }
 
+function uploadFiles(inputId, contactId) {
+
+
+    var input = document.getElementById(inputId);
+    var files = input.files;
+
+    for (var i = 0; i != files.length; i++) {
+
+        let fileName = files[i].name.replace(" ", "");
+
+        var html = '<div id="' + fileName.replace(".", "") + '" style="margin-right:auto;margin-left:10px;" class="file-box">' +
+
+
+            '<div class="file">' +
+            '<div onclick="removeFile(' + fileName + ',' + contactId + ')" style="cursor:pointer">' +
+            '<i class="fa fa-times"></i>' +
+            '</div>' +
+            '<span class="corner"></span>' +
+            '<div class="icon">' +
+            '<i class="fa fa-file"></i>' +
+            '</div>' +
+            '<div class="file-name">' +
+            '<a href="/contact/download/file/@fileName">' +
+            fileName
+        '</a>' +
+
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+
+        $("#attachments").append(html);
+
+
+    }
+
+
+
+}
+
+
+
+function removeFile(fileName, id) {
+
+    $.ajax({
+        type: "POST",
+        url: "/mail/removeFile",
+        data: { fileName: fileName, Id: id },
+        success: function (result) {
+
+            if (result) {
+
+                $.toast({
+                    heading: 'Success',
+                    text: "Attachment has been successfully deleted.",
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'success'
+
+                });
+
+                
+
+                document.getElementById(fileName).style.display = 'none';
+
+            } else {
+
+                $.toast({
+                    heading: 'Error',
+                    text: "Something went wrong while deleting file.",
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                });
+            }
+
+        },
+
+        statusCode: {
+            404: function () {
+
+                $.toast({
+                    heading: 'Error',
+                    text: "Source might have been changed, please try again later.",
+                    showHideTransition: 'slide',
+                    position: 'top-right',
+                    icon: 'error'
+
+                });
+
+
+            }
+        }
+
+
+
+    });
+
+
+}
 
 
 

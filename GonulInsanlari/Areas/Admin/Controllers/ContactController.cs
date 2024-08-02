@@ -1,15 +1,20 @@
 ﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
+using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Server.IIS.Core;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using Microsoft.Extensions.Caching.Memory;
+using RabbitMQ.Client;
 using System.Runtime.CompilerServices;
+using ViewModelLayer.Models.Newsletter;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Contact;
 using X.PagedList;
@@ -22,40 +27,136 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         private readonly IContactService _manager;
         private readonly IMapper _mapper;
-        private readonly ILogger<ContactController> _logger;
         private readonly UserManager<AppUser> _userManager;
+        private readonly IEmailService _emailManager;
+        private readonly IMemoryCache _cache;
 
         ResponseModel _response;
 
-        public ContactController(IContactService manager, IMapper mapper, ILogger<ContactController> logger, ResponseModel response, UserManager<AppUser> userManager)
+        public ContactController(IContactService manager, IMapper mapper, ResponseModel response, UserManager<AppUser> userManager, IEmailService emailManager, IMemoryCache cache)
         {
             _manager = manager;
             _mapper = mapper;
-            _logger = logger;
             _response = response;
             _userManager = userManager;
+            _emailManager = emailManager;
+            _cache = cache;
         }
 
         #region Create 
 
-        [Route("reply/{contactId}")]
+
+
+
+
         [HttpGet]
-
-        public async Task<IActionResult> Reply(int contactId)
-        {
-
-            Contact contact = await _manager.GetByIdAsync(contactId);
-
-            return View(contact);
-        }
-
-
-        [HttpPost]
-
-        public async Task<IActionResult> Reply(Contact model)
+        [Route("compose")]
+        public IActionResult Compose()
         {
 
             return View();
+
+        }
+
+
+
+
+
+
+
+
+        [HttpPost]
+        [Route("compose")]
+        [HasPermission(PermissionType.Contact, Permission.Create)]
+        public async Task<IActionResult> Compose(SendMailModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                List<string> paths = await model.GetAttachmentPathsAsync();
+
+                Contact contact = new(model.Status)
+                {
+                    From = "Administration",
+
+                    Tos = model.GetContactTos(),
+                    Status = true,
+                    Subject = model.Subject,
+                    SenderId = _userManager.GetUserId(User),
+                    Content = model.Content,
+                    
+                };
+
+                paths.ForEach((path) =>
+                {
+                    contact.Attachments
+                    .Add(new(path));
+                });
+
+                await _manager.AddAsync(contact);
+
+                if (model.Status == ContactStatus.Sent)
+                    await _emailManager.SendEmailAsync(model);
+
+                return RedirectToAction(nameof(GetDetails), new { contact.Id });
+
+            }
+
+            return View(model);
+
+        }
+
+
+
+
+
+
+
+
+        [Route("reply/{contactId}")]
+        [HttpGet]
+        public async Task<IActionResult> Reply(int contactId)
+        {
+            Contact contactToReply = await _manager.GetByIdAsync(contactId);
+
+            if (contactToReply is null)
+                return NotFound();
+
+            if (contactToReply.ContactStatus == ContactStatus.Drafted | contactToReply.ContactStatus == ContactStatus.Sent)
+                return NotFound();
+
+            ContactDetailsViewModel model = _mapper.Map<ContactDetailsViewModel>(contactToReply);
+
+            ViewData["Reply"] = model;
+
+            _cache.Set("reply", model);
+
+
+            return View();
+
+        }
+
+
+
+
+
+
+        [HttpPost]
+        [Route("reply/{contactId}")]
+        [HasPermission(PermissionType.Contact, Permission.Create)]
+        public async Task<IActionResult> Reply(SendMailModel model)
+        {
+
+            if (model.To.Count > 1)
+                ModelState.AddModelError(nameof(model.To), "You can not reply more than one mail.");
+
+            if (ModelState.IsValid)
+                return await Compose(model);
+
+            ViewData["Reply"] = _cache.Get("reply");
+
+            return View(model);
+
+
         }
 
 
@@ -64,22 +165,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #region Read
 
+
+
         [Route("inbox")]
         [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> Inbox(int pageNumber = 1)
         {
-            List<Contact> contacts = await _manager.GetInboxAsync();
-            List<ContactListViewModel> model = new();
-            try
-            {
-                model = _mapper.Map<List<ContactListViewModel>>(contacts);
 
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
+
+            List<Contact> contacts = await _manager.GetContactsAsync(ContactStatus.Received, null, null);
+
+            List<ContactListViewModel> model = new();
+
+            model = _mapper.Map<List<ContactListViewModel>>(contacts);
+
 
             ViewData["Count"] = contacts.Count;
 
@@ -88,28 +187,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
+
         [Route("sentbox")]
         [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> SentBox(int pageNumber = 1)
         {
-            string _userId = _userManager.GetUserId(HttpContext.User);
+            List<Contact> contacts = await _manager.
+                GetContactsAsync(ContactStatus.Sent, _userManager.GetUserId(HttpContext.User), null);
 
-            List<Contact> contacts = await _manager.GetSentboxAsync(_userId);
             List<ContactListViewModel> model = new();
 
-            if (contacts is not null)
-                try
-                {
-                    model = _mapper.Map<List<ContactListViewModel>>(contacts);
+            if (contacts is null)
+                return NotFound();
 
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-
-
-                }
+            model = _mapper.Map<List<ContactListViewModel>>(contacts);
 
             model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
 
@@ -118,28 +209,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(await model.ToPagedListAsync(pageNumber, 20));
 
         }
+
 
         [Route("drafts")]
         [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> Drafts(int pageNumber = 1)
         {
 
-            string _userId = _userManager.GetUserId(HttpContext.User);
-
-            List<Contact> drafts = await _manager.GetDraftsAsync(_userId);
+            List<Contact> drafts = await _manager
+                .GetContactsAsync(ContactStatus.Drafted, _userManager.GetUserId(HttpContext.User), null);
 
             List<ContactListViewModel> model = new();
-            try
-            {
-                model = _mapper.Map<List<ContactListViewModel>>(drafts);
 
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
+            model = _mapper.Map<List<ContactListViewModel>>(drafts);
 
             ViewData["Count"] = model.Count;
 
@@ -147,102 +229,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             return View(await model.ToPagedListAsync(pageNumber, 20));
 
-        }
-
-
-
-        [Route("detail/{id}")]
-        [HasPermission(PermissionType.Contact, Permission.Read)]
-        public async Task<IActionResult> GetDetails(int id)
-        {
-            Contact contact = await _manager.GetByIdAsync(id);
-
-            if (contact is not null)
-                try
-                {
-                    var model = _mapper.Map<ContactDetailsViewModel>(contact);
-                    return View(model);
-
-
-                }
-                catch (Exception ex)
-                {
-                    _logger.LogError(ex.Message);
-                    return BadRequest();
-                }
-
-
-            return NotFound();
-
-        }
-
-        [Route("refresh")]
-        [HttpPost]
-        public async Task<IActionResult> Refresh()
-        {
-            List<Contact> contacts = await _manager.GetInboxAsync();
-
-            List<ContactListViewModel> model = new();
-            try
-            {
-                model = _mapper.Map<List<ContactListViewModel>>(contacts);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
-
-            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
-
-            return Json(model.Take(20));
-        }
-
-
-        [Route("refreshsentbox")]
-        [HttpPost]
-        public async Task<IActionResult> RefreshSent(string status)
-        {
-
-
-            string userId = _userManager.GetUserId(HttpContext.User);
-            List<Contact> contacts = new();
-
-            switch (status)
-            {
-                case "sent":
-                    contacts = await _manager.GetSentboxAsync(userId);
-                    break;
-                case "trash":
-                    contacts = await _manager.GetTrashAsync();
-                    break;
-                case "draft":
-                    contacts = await _manager.GetDraftsAsync(userId);
-                    break;
-            }
-
-
-
-
-
-
-            List<ContactListViewModel> model = new();
-
-            try
-            {
-                model = _mapper.Map<List<ContactListViewModel>>(contacts);
-
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
-
-            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
-
-            return Json(model.Take(20));
         }
 
 
@@ -251,20 +237,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> GetTrash(int pageNumber = 1)
         {
 
-            List<Contact> contactsToDelete = await _manager.GetTrashAsync();
+            List<Contact> contactsToDelete = await _manager.GetContactsAsync(null, _userManager.GetUserId(HttpContext.User), false);
 
-            List<ContactListViewModel> model = new();
-
-            try
-            {
-                model = _mapper.Map<List<ContactListViewModel>>(contactsToDelete);
-            }
-            catch (Exception ex)
-            {
-
-                _logger.LogError(ex.Message);
-                return BadRequest();
-            }
+            List<ContactListViewModel> model = _mapper.Map<List<ContactListViewModel>>(contactsToDelete);
 
             model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
 
@@ -274,40 +249,108 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        [Route("newsletters")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
+        public async Task<IActionResult> Newsletters(int pageNumber = 1)
+        {
+
+            List<Contact> contacts = await _manager.GetContactsAsync(ContactStatus.Newsletter, null, null);
+
+            List<ContactListViewModel> model = _mapper.Map<List<ContactListViewModel>>(contacts);
+
+            ViewData["Count"] = model.Count;
+
+            return View(await model.ToPagedListAsync(pageNumber, 20));
+
+
+        }
+
+
+        [Route("all")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
+        public IActionResult GetAll()
+        {
+
+            List<ContactListViewModel> model = _mapper.Map<List<ContactListViewModel>>(_manager.List());
+
+            return View(model);
+
+
+        }
+
+
+
+
+        [Route("detail/{id}")]
+        [HasPermission(PermissionType.Contact, Permission.Read)]
+        public async Task<IActionResult> GetDetails(int id)
+        {
+
+            Contact contact = await _manager.GetWithReply(id);
+
+            if (contact is null)
+                return NotFound();
+
+            var model = _mapper.Map<ContactDetailsViewModel>(contact);
+
+            return View(model);
+
+
+        }
+
+
+
+
+
+        [Route("refresh")]
+        [HttpPost]
+        public async Task<IActionResult> Refresh(ContactStatus status)
+        {
+
+            List<Contact> contacts = status switch
+            {
+                ContactStatus.Received or ContactStatus.Newsletter => await _manager.GetContactsAsync(status, null, null),
+
+                ContactStatus.Trash => await _manager.GetContactsAsync(null, _userManager.GetUserId(HttpContext.User), false),
+
+                _ => await _manager.GetContactsAsync(status, _userManager.GetUserId(HttpContext.User), null)
+
+            };
+
+
+            List<ContactListViewModel> model = new();
+
+            model = _mapper.Map<List<ContactListViewModel>>(contacts);
+
+
+            model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+
+            return Json(model.Take(20));
+        }
 
 
 
         [Route("search")]
         [HttpPost]
-        public async Task<IActionResult> Search(string search, bool isSent, bool isdraft, bool isTodelete)
+        public async Task<IActionResult> Search(ContactSearchViewModel model)
         {
-            List<Contact> result = new();
-
 
             string _senderId = _userManager.GetUserId(HttpContext.User);
 
-            result = await _manager.SearchByAsync(search, _senderId, isdraft, isTodelete, isSent);
-
-
-            if (result is not null)
+            List<Contact> contacts = model.GetAll switch
             {
-                List<ContactListViewModel> model = new();
+                true => await _manager.SearchByAsync(model.Search),
+                false => await _manager.SearchByAsync(model.Search, model.ContactStatus, _senderId)
+            };
 
-                try
-                {
-                    model = _mapper.Map<List<ContactListViewModel>>(result);
-                }
-                catch (AutoMapperMappingException ex)
-                {
-                    _logger.LogError(ex.Message);
+            if (contacts is not null)
+            {
 
-                    return BadRequest();
-                }
+                List<ContactListViewModel> viewModel = _mapper.Map<List<ContactListViewModel>>(contacts);
 
-                model.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
+                viewModel.ForEach(x => x.CreatedDate = GetDate.GetCreateDate(x.Created));
 
-                return Json(model);
-
+                return Json(viewModel);
 
             }
 
@@ -375,14 +418,120 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
 
+        [Route("recover/{id}")]
+        [HttpGet]
+        [HasPermission(PermissionType.Contact, Permission.Update)]
+        public async Task<IActionResult> Recover(int id)
+        {
+
+            Contact trash = await _manager.GetByIdAsync(id);
+
+
+            if (trash is null || trash.Status is not null && (bool)trash.Status)
+                return NotFound();
+
+            trash.Status = true;
+
+            _manager.Update(trash);
+
+            return RedirectToAction(nameof(GetDetails), new { id });
+
+
+        }
+
+        [Route("edit/{id}")]
+        [HttpGet]
+        [HasPermission(PermissionType.Contact, Permission.Update)]
+        public async Task<IActionResult> EditDraft(int id)
+        {
+            Contact draft = await _manager.GetByIdAsync(id);
+
+            if (draft is null)
+                return NotFound();
+
+            SendMailModel model = new()
+            {
+                Id = id,
+                Content = draft.Content,
+                ReplyTo = draft.RepliedTo?.Id,
+                Subject = draft.Subject,
+                Status = draft.ContactStatus,
+                AttachmentExists = draft.Attachments?.Select(x => x.Path).ToList(),
+                To = draft.Tos
+                .Select(x => x.EmailAddress)
+                .ToList(),
+            };
+
+            return View(model);
+
+        }
+
+        [Route("edit/{id}")]
+        [HttpPost]
+        [HasPermission(PermissionType.Contact, Permission.Update)]
+        public async Task<IActionResult> EditDraft(SendMailModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                List<string> paths = await model.GetAttachmentPathsAsync();
+
+                Contact? contact = await _manager.GetByIdAsync(model.Id);
+
+                if (contact is null)
+                    return NotFound();
+
+                contact.From = "Administration";
+                contact.Subject = model.Subject;
+                contact.SenderId = _userManager.GetUserId(User);
+                contact.Content = model.Content;
+                contact.ContactStatus = model.Status;
+
+                paths.ForEach((path) =>
+                {
+                    contact.Attachments
+                    .Add(new(path));
+                });
+
+                List<string> mailsExists = contact.Tos.
+                    Select(x => x.EmailAddress).
+                    ToList();
+
+                model.To.ForEach((adr) =>
+                {
+
+                    if (!mailsExists.Contains(adr))
+                        contact.Tos.Add(new(adr) { Contact = contact });
+
+                });
+
+                contact.Tos.RemoveAll(x => !model.To.Contains(x.EmailAddress));
+
+                _manager.Update(contact);
+
+                if (contact.ContactStatus == ContactStatus.Sent)
+                {
+                    await _emailManager.SendEmailAsync(model);
+
+                    return RedirectToAction(nameof(SentBox));
+
+                }
+
+                return RedirectToAction(nameof(GetDetails), new { contact.Id });
+
+            }
+
+            return View(model);
+
+        }
+
+
         #endregion
 
         #region Delete
 
         [Route("delete")]
         [HttpPost]
-        [HasPermission(PermissionType.Contact, Permission.Update | Permission.Delete)]
-
+        [HasPermission(PermissionType.Contact, Permission.Delete)]
         public async Task<IActionResult> Delete(List<int>? ids)
         {
             if (ids is not null && ids.Count > 0)
@@ -400,8 +549,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         }
                         else
                         {
-                            contact.Status = false;
+                            contact.SenderId = _userManager.GetUserId(HttpContext.User);
+
                             _manager.Update(contact);
+
                         }
 
                         _response.responseMessage = "Mails have been successfully deleted.";
@@ -410,11 +561,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
                     else
                     {
+
                         _response.responseMessage = "Something went wrong.";
                         _response.success = false;
-
                     }
-
 
                 }
             }
@@ -438,31 +588,51 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("delete/{id}")]
         [HttpPost]
         [HasPermission(PermissionType.Contact, Permission.Delete)]
-
         public async Task<IActionResult> Delete(int id)
         {
-            var contacttoDelete = await _manager.GetByIdAsync(id);
 
-            if (contacttoDelete is not null)
-            {
-                if (contacttoDelete.Status == true)
-                {
-                    contacttoDelete.Status = false;
+            await Delete(new List<int>() { id });
 
-                    _manager.Update(contacttoDelete);
-
-                }
-                else
-                {
-                    _manager.Delete(contacttoDelete);
-
-                }
-
-            }
-            return RedirectToAction(nameof(Inbox));
+            return RedirectToAction(nameof(GetTrash));
 
 
         }
+
+        [Route("removeFile")]
+        [HttpPost]
+        [HasPermission(PermissionType.Contact, Permission.Delete)]
+        public async Task<IActionResult> RemoveFile(string fileName, int Id)
+        {
+
+            Contact contact = await _manager.GetByIdAsync(Id);
+
+            if (contact is null)
+                return NotFound();
+
+
+            if (_manager.GetWhere(x => x.Attachments != null && x.Attachments.Any(a => a.Path.Contains(fileName))).ToList().Count > 0)
+            {
+
+                ContactAttachment? attachment = contact.
+                     Attachments?.
+                     Find(x => x.Path == fileName.Trim());
+
+                if (attachment is not null)
+                    contact.Attachments?.Remove(attachment);
+
+                _manager.Update(contact);
+
+                return Json(true);
+
+            }
+            else
+            {
+                return Json(ImageUpload.DeleteFile(fileName));
+
+            }
+
+        }
+
         #endregion
 
         #region Partial
@@ -477,3 +647,5 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
     }
 }
+
+

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModelLayer.ViewModels.Comment;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -45,6 +46,13 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
+        public async Task<List<Comment>> GetByArticleAsync(string articleTitle)
+        {
+            return await _comment.GetByArticleAsync(articleTitle);
+
+        }
+
+
         public async Task<Comment> GetByIdAsync(int id)
         {
             return await _comment.GetByIdAsync(id);
@@ -71,11 +79,23 @@ namespace BussinessLayer.Concrete.Managers
             return _comment.ListFilter(x => x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
-        public async Task<List<Comment>> SearchAsync(string search, CommentProgress progress, bool status)
+        public async Task<List<Comment>> SearchAsync(CommentSearchViewModel model)
         {
-            return await _comment.SearchByAsync(search, progress, status);
+
+            if (model.Progress is not null)
+                return await _comment.SearchByAsync(model.Search, model.Progress);
+
+            if (model.ArticleTitle is not null)
+                return await _comment.SearchByAsync(model.Search, model.ArticleTitle);
+
+            return await _comment.SearchByAsync(model.Search);
+
 
         }
+
+
+
+
 
         public void Update(Comment entity)
         {

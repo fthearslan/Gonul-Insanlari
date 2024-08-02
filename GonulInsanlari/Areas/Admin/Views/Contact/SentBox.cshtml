@@ -19,27 +19,27 @@
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
 
-            <form method="get" action="index.html" class="float-right mail-search">
-               <input id="isSent" value="true" hidden  />
-                <input id="isdraft" value="false" hidden />
-                <input id="status" value="sent" hidden />
+            <form method="get" class="float-right mail-search">
+          
+                <input type="hidden" id="contactStatus" value="@ContactStatus.Sent" />
+                <input type="hidden" id="getAll" value="false" />
 
 
                 <div class="input-group">
                     <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search email">
                     <div class="input-group-btn">
-                        <button type="button" onclick="Search();" class="btn btn-sm btn-primary">
+                        <button type="button" onclick="search();" class="btn btn-sm btn-primary">
                             Search
                         </button>
                     </div>
                 </div>
             </form>
             <h2>
-                Sentbox(@ViewData["Count"])
+                <i class="fa fa-envelope-o" style="margin-right:6px;"></i>  Sentbox(@ViewData["Count"])
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
 
-                <button onclick="RefreshSentBox();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
+                <button onclick="refresh('@ContactStatus.Sent');" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="left" title="Refresh inbox"><i class="fa fa-refresh"></i> Refresh </button>
                 <button onclick="Delete();" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Move to trash"><i class="fa fa-trash-o"></i> </button>
 
             </div>
@@ -57,8 +57,8 @@
                             <td class="check-mail">
                                 <input type="checkbox" class="i-checks" value="@contact.Id">
                             </td>
-                            <td class="mail-ontact"><a href="">@contact.NameSurname</a></td>
-                            <td class="mail-subject"><a href="mail_detail.html">@contact.Subject - @contact.Content.Substring(0,30)...</a></td>
+                            <td class="mail-ontact">@contact.To</td>
+                            <td class="mail-subject">@contact.Subject</td>
 
                           
                                 <td class=""></td>

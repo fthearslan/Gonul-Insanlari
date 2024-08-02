@@ -4,7 +4,6 @@ using GonulInsanlari.Extensions.Admin;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Build.Logging;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
@@ -34,7 +33,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult Login()
         {
-           
+         
 
             return View();
 
