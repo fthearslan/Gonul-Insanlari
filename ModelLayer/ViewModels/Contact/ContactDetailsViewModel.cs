@@ -29,6 +29,8 @@ namespace ViewModelLayer.ViewModels.Contact
         public ContactDetailsViewModel? RepliedTo { get;set; }
         public List<string> Attachments { get; set; } = null!;
         public DateTime Created { get; set; }
+        public DateTime Modified { get; set; }
+
 
     }
 }

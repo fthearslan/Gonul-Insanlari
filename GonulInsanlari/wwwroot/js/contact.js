@@ -1,5 +1,40 @@
-﻿
+﻿function notify(title, message, icon) {
 
+    $.toast({
+        heading: title,
+        text: message,
+        showHideTransition: 'slide',
+        position: 'top-right',
+        icon: icon
+
+    });
+
+}
+
+function notifySuccess(message) {
+
+    $.toast({
+        heading: 'Success',
+        text: message,
+        showHideTransition: 'slide',
+        position: 'top-right',
+        icon: 'success'
+
+    });
+
+}
+function notifyError(message) {
+
+    $.toast({
+        heading: 'Error',
+        text: message,
+        showHideTransition: 'slide',
+        position: 'top-right',
+        icon: 'error'
+
+    });
+
+}
 
 
 function refresh(status) {
@@ -92,14 +127,7 @@ function markAsRead() {
         success: function (result) {
             if (result.success) {
 
-                $.toast({
-                    heading: 'Success',
-                    text: result.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+                notifySuccess(result.responseMessage);
 
                 for (let i = 0; i < allVals.length; i++) {
 
@@ -111,14 +139,8 @@ function markAsRead() {
 
             }
             else {
-                $.toast({
-                    heading: 'Error',
-                    text: result.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
 
-                });
+                notifyError(result.responseMessage);
             }
 
         }
@@ -144,14 +166,8 @@ function Delete() {
         success: function (result) {
             if (result.success) {
 
-                $.toast({
-                    heading: 'Success',
-                    text: result.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+                notifySuccess(result.responseMessage);
+             
 
                 for (let i = 0; i < allVals.length; i++) {
 
@@ -164,27 +180,16 @@ function Delete() {
 
             }
             else {
-                $.toast({
-                    heading: 'Error',
-                    text: result.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
-
-                });
+                notifyError(result.responseMessage);
+               
             }
 
         },
         statusCode: {
             403: function () {
-                $.toast({
-                    heading: 'Access denied!',
-                    text: "You do not have an access to delete contacts.",
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
 
-                });
+                notify('Access denied!', 'You do not have an access to delete contacts.', 'error');
+              
             }
 
         }
@@ -231,21 +236,6 @@ function DeleteSingle(id) {
 
 
 }
-
-jQuery(document).ready(function ($) {
-    $(".click").click(function () {
-        window.location = $(this).data("href");
-    });
-});
-
-
-jQuery(document).ready(function ($) {
-    $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-    });
-});
-
 
 // New timeout variable
 let timeout = null;
@@ -341,7 +331,9 @@ function search() {
 
 }
 
-function uploadFiles(inputId, contactId) {
+
+
+function uploadFiles(inputId) {
 
 
     var input = document.getElementById(inputId);
@@ -350,12 +342,13 @@ function uploadFiles(inputId, contactId) {
     for (var i = 0; i != files.length; i++) {
 
         let fileName = files[i].name.replace(" ", "");
+        var index = Math.floor(Math.random() * 100);
 
-        var html = '<div id="' + fileName.replace(".", "") + '" style="margin-right:auto;margin-left:10px;" class="file-box">' +
+        var html = '<div id="file+' + index + '" style="margin-right:auto;margin-left:10px;" class="file-box">' +
 
 
             '<div class="file">' +
-            '<div onclick="removeFile(' + fileName + ',' + contactId + ')" style="cursor:pointer">' +
+            '<div onclick="hide(' + index + ')" style="cursor:pointer">' +
             '<i class="fa fa-times"></i>' +
             '</div>' +
             '<span class="corner"></span>' +
@@ -363,7 +356,7 @@ function uploadFiles(inputId, contactId) {
             '<i class="fa fa-file"></i>' +
             '</div>' +
             '<div class="file-name">' +
-            '<a href="/contact/download/file/@fileName">' +
+            '<a href="/contact/download/file/' + fileName + '">' +
             fileName
         '</a>' +
 
@@ -383,57 +376,40 @@ function uploadFiles(inputId, contactId) {
 
 
 
-function removeFile(fileName, id) {
+
+function removeFile(index, contactId) {
+
+
+    var id = "file+" + index;
+
+    let fileName = document.getElementById(id).getAttribute('data-fileName');
 
     $.ajax({
         type: "POST",
         url: "/mail/removeFile",
-        data: { fileName: fileName, Id: id },
+        data: { fileName: fileName, Id: contactId },
         success: function (result) {
 
             if (result) {
 
-                $.toast({
-                    heading: 'Success',
-                    text: "Attachment has been successfully deleted.",
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
+                notifySuccess('Attachment has been successfully deleted!');
 
-                });
-
-                
-
-                document.getElementById(fileName).style.display = 'none';
+                document.getElementById(id).style.display = 'none';
 
             } else {
 
-                $.toast({
-                    heading: 'Error',
-                    text: "Something went wrong while deleting file.",
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
+                notifyError('Something went wrong while deleting file.');
 
-                });
             }
 
         },
 
         statusCode: {
             404: function () {
-
-                $.toast({
-                    heading: 'Error',
-                    text: "Source might have been changed, please try again later.",
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
-
-                });
-
+                notifyError('Source might have been changed, please try again later.');
 
             }
+
         }
 
 
@@ -442,6 +418,25 @@ function removeFile(fileName, id) {
 
 
 }
+function hide(index) {
+
+    var id = "file+" + index;
+
+    document.getElementById(id).style.display = 'none';
+
+}
+
+jQuery(document).ready(function ($) {
+    $(".click").click(function () {
+        window.location = $(this).data("href");
+    });
+});
 
 
+jQuery(document).ready(function ($) {
+    $('.i-checks').iCheck({
+        checkboxClass: 'icheckbox_square-green',
+        radioClass: 'iradio_square-green',
+    });
+});
 

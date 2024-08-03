@@ -17,7 +17,7 @@
     <div class="col-lg-9 animated fadeInRight">
         <div class="mail-box-header">
             <div class="float-right tooltip-demo">
-                @if (Model.ContactStatus==ContactStatus.Received)
+                @if (Model.ContactStatus == ContactStatus.Received)
                 {
                     <a href="/mail/reply/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Reply"><i class="fa fa-reply"></i> Reply</a>
 
@@ -25,7 +25,7 @@
 
                 @if (!Model.Status)
                 {
-                    <a href="/mail/recover/@Model.Id"  class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Recover this mail"><i class="fa fa-undo"></i> Recover</a>
+                    <a href="/mail/recover/@Model.Id" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" title="Recover this mail"><i class="fa fa-undo"></i> Recover</a>
 
                 }
                 @if (Model.ContactStatus == ContactStatus.Drafted)
@@ -48,7 +48,7 @@
             </h2>
             <div class="mail-tools tooltip-demo m-t-md">
 
-                @if(Model.ContactStatus != ContactStatus.Received)
+                @if (Model.ContactStatus != ContactStatus.Received)
                 {
                     @if (Model.Tos.Count == 1)
                     {
@@ -74,19 +74,30 @@
                     }
 
                 }
-           
+
 
                 <h5>
-                
-                    <span class="float-right font-normal">@Model.Created</span>
-                    
-                    @if(Model.ContactStatus==ContactStatus.Received){
+
+                    @if (Model.ContactStatus == ContactStatus.Drafted)
+                    {
+                        <span class="float-right font-normal">@Model.Modified</span>
+                    }
+                    else
+                    {
+
+                        <span class="float-right font-normal">@Model.Created</span>
+
+                    }
+
+
+                    @if (Model.ContactStatus == ContactStatus.Received)
+                    {
                         <span class="font-normal">From: </span>
 
                         @Model.From
 
                     }
-                
+
                 </h5>
             </div>
         </div>

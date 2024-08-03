@@ -72,81 +72,82 @@
                 <div style="margin-right:auto;margin-left:10px; margin-top:10px; " id="attachments" class="row">
                     <span class="text-danger" asp-validation-for="Attachments"></span>
                     @if (Model.AttachmentExists is not null)
-                        @foreach (string fileName in Model.AttachmentExists)
-                        {
+                    @for (int i = 0; i < Model.AttachmentExists.Count; i++)
+                    {
 
-                            string trimmed = @fileName.Replace(" ","");
+                            string fileName = Model.AttachmentExists[i];
 
-                            <div id="@trimmed" style="margin-right:auto;margin-left:10px;" class="file-box">
+                        <div id="file+@i" data-fileName="@fileName" style="margin-right:auto;margin-left:10px;" class="file-box">
 
-                                <div class="file">
-                                    <div onclick="removeFile('@trimmed','@Model.Id')" style="cursor:pointer">
+                            <div class="file">
+                                <div onclick="removeFile('@i','@Model.Id')" style="cursor:pointer">
 
-                                        <i class="fa fa-times"></i>
-                                    </div>
-
-                                    <span class="corner"></span>
-
-                                    <div class="icon">
-                                        <i class="fa fa-file"></i>
-                                    </div>
-                                    <div class="file-name">
-                                        <a href="/contact/download/file/@fileName">
-                                            @fileName
-                                        </a>
-
-                                    </div>
+                                    <i class="fa fa-times"></i>
                                 </div>
 
+                                <span class="corner"></span>
+
+                                <div class="icon">
+                                    <i class="fa fa-file"></i>
+                                </div>
+                                <div class="file-name">
+                                    <a href="/contact/download/file/@fileName">
+                                        @fileName
+                                    </a>
+
+                                </div>
                             </div>
 
-                        }
                         </div>
-                
+
+                    }
+     
+                </div>
+
                 <div class="mail-body tooltip-demo">
 
-                        <div class="row">
-                            <div style="margin-right:auto;margin-left:8px;">
-                                <a href="#" class="text-navy" data-toggle="modal" data-target="#uploadFiles"> <i class="fa fa-paperclip"></i> Add attachment</a>
+                    <div class="row">
+                        <div style="margin-right:auto;margin-left:8px;">
+                            <a href="#" class="text-navy" data-toggle="modal" data-target="#uploadFiles"> <i class="fa fa-paperclip"></i> Add attachment</a>
 
-                            </div>
+                        </div>
 
 
-                            <div style="margin-right:5px;margin-left:auto">
+                        <div style="margin-right:5px;margin-left:auto">
 
-                                <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Sent" title="Send"><i class="fa fa-reply"></i> Send</button>
-                                <button type="submit" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Drafted" title="Move to draft folder"><i class="fa fa-pencil"></i> Draft</button>
-
-                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Sent" title="Send"><i class="fa fa-reply"></i> Send</button>
+                            <button type="submit" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Drafted" title="Move to draft folder"><i class="fa fa-pencil"></i> Draft</button>
 
                         </div>
 
                     </div>
 
+                </div>
 
 
 
-                    <div class="modal inmodal fade" id="uploadFiles" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-md">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                                    <h4 class="modal-title"><i class="fa fa-paperclip" style="margin-right:3px;"></i> Add attachment</h4>
+
+                <div class="modal inmodal fade" id="uploadFiles" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title"><i class="fa fa-paperclip" style="margin-right:3px;"></i> Add attachment</h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="ibox-content">
+
+
+                                    <input id="files" asp-for="Attachments" type="file" size="1" multiple onchange="uploadFiles('files',@Model.Id);" />
+
                                 </div>
-                                <div class="modal-body">
-                                    <div class="ibox-content">
 
-
-                                        <input id="files" asp-for="Attachments" type="file" size="1" multiple onchange="uploadFiles('files',@Model.Id);" />
-
-                                    </div>
-
-                                    <div class="modal-footer">
-                                    </div>
+                                <div class="modal-footer">
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div>
 
 
 

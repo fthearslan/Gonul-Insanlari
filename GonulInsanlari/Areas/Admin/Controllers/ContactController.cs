@@ -83,7 +83,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     Subject = model.Subject,
                     SenderId = _userManager.GetUserId(User),
                     Content = model.Content,
-                    
+
                 };
 
                 paths.ForEach((path) =>
@@ -486,7 +486,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 contact.Content = model.Content;
                 contact.ContactStatus = model.Status;
 
-                paths.ForEach((path) =>
+                paths?.ForEach((path) =>
                 {
                     contact.Attachments
                     .Add(new(path));
@@ -609,19 +609,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (contact is null)
                 return NotFound();
 
+            ContactAttachment? attachment = contact.
+                 Attachments?.
+                 Find(x => x.Path == fileName);
+
+            if (attachment is null)
+                return NotFound();
+
+            contact.
+                Attachments?.Remove(attachment);
 
             if (_manager.GetWhere(x => x.Attachments != null && x.Attachments.Any(a => a.Path.Contains(fileName))).ToList().Count > 0)
             {
 
-                ContactAttachment? attachment = contact.
-                     Attachments?.
-                     Find(x => x.Path == fileName.Trim());
-
-                if (attachment is not null)
-                    contact.Attachments?.Remove(attachment);
-
                 _manager.Update(contact);
-
                 return Json(true);
 
             }
