@@ -1,4 +1,5 @@
 ﻿using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using RabbitMQ.Client;
 using System;
@@ -10,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModelLayer.Models.Configuration;
 using ViewModelLayer.Models.Newsletter;
+using ViewModelLayer.ViewModels.Email;
 using ViewModelLayer.ViewModels.Newsletter;
 
 namespace BussinessLayer.Abstract.Services
@@ -38,8 +40,9 @@ namespace BussinessLayer.Abstract.Services
         /// <param name="model"></param>
         /// <returns></returns>
 
-        protected string GetBody(SendMailModel model);
-
+        protected string GetBody(string content);
+        protected Task<AppUser> GetUser(string userName);
+        protected Task<string> GetCallBackLink(AppUser user, ConfirmEmailViewModel model);
 
         /// <summary>
         /// Gets all the subscriber.
@@ -63,9 +66,9 @@ namespace BussinessLayer.Abstract.Services
         Task SendEmailAsync(SendMailModel model);
 
 
+        Task SendResetPasswordLinkAsync(SendMailModel model);
 
-
-
+        Task<bool> SendConfirmationLinkAsync(ConfirmEmailViewModel model);
 
 
     }

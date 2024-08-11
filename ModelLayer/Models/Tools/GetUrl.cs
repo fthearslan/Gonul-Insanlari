@@ -1,4 +1,6 @@
-﻿namespace ViewModelLayer.Models.Tools
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace ViewModelLayer.Models.Tools
 {
     public static class GetUrl
     {
@@ -17,7 +19,7 @@
         }
 
 
-
+     
 
     }
 }

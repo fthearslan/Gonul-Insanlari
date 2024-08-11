@@ -28,6 +28,16 @@ using BussinessLayer.Concrete.Exceptions.Newsletter;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Html;
 using DataAccessLayer.Concrete.Providers;
+using System.Security.Policy;
+using Microsoft.Extensions.Hosting;
+using ViewModelLayer.ViewModels.Email;
+using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.Models.Tools;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Runtime.InteropServices;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -35,12 +45,22 @@ namespace BussinessLayer.Concrete.Managers
     {
         private readonly INewsLetterService _newsletterManager;
         private readonly MailServerConfiguration _configuration;
+        private readonly SignInManager<AppUser> _signInManager;
+        private readonly LinkGenerator _linkGenerator;
+        private readonly UserManager<AppUser> _userManager;
 
-        public EmailManager(INewsLetterService newsletterManager, MailServerConfiguration configuration)
+        const string quote = "\"";
+
+        public EmailManager(INewsLetterService newsletterManager, MailServerConfiguration configuration, SignInManager<AppUser> signInManager, LinkGenerator linkGenerator)
         {
             _newsletterManager = newsletterManager;
             _configuration = configuration;
+            _signInManager = signInManager;
+            _linkGenerator = linkGenerator;
+            _userManager = signInManager.UserManager;
         }
+
+        #region InnerMethods
 
         public SmtpClient ConfigureClient()
         {
@@ -80,7 +100,7 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public string GetBody(SendMailModel model)
+        public string GetBody(string content)
         {
 
             BodyBuilder builder = new BodyBuilder();
@@ -92,10 +112,40 @@ namespace BussinessLayer.Concrete.Managers
             };
 
 
-            return builder.HtmlBody.Replace("{Content}", model.Content);
+            return builder.HtmlBody.Replace("{Content}", content);
 
 
         }
+
+        public async Task<AppUser> GetUser(string userName)
+        {
+            UserManager<AppUser> _userManager = _signInManager.UserManager;
+
+            AppUser user = await _userManager.FindByNameAsync(userName);
+
+            if (user is null)
+                return null;
+
+            return user;
+
+        }
+        public async Task<string> GetCallBackLink(AppUser user, ConfirmEmailViewModel model)
+        {
+
+            string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            if (token is null)
+                return null;
+
+            return _linkGenerator.GetUriByAction(model.HttpContext, model.CallBackAction, model.CallBackController, new
+            {
+                userId = user.Id,
+                token = token
+            }, model.HttpContext.Request.Scheme);
+
+        }
+
+
 
         public async Task<List<NewsletterSubscriberViewModel>> GetSubscribersAsync()
         {
@@ -117,10 +167,13 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
+
+        #endregion
+
         public async Task SendEmailAsync(SendMailModel model)
         {
 
-            string? body = GetBody(model);
+            string? body = GetBody(model.Content);
 
             if (body is null)
                 throw new MailBodyIsNullException();
@@ -154,13 +207,12 @@ namespace BussinessLayer.Concrete.Managers
                 }
 
                 await client.SendMailAsync(mail);
-             
+
 
             }
 
 
         }
-
 
         public async Task SendNewsletterAsync(WeeklyNewsletterModel model)
         {
@@ -213,7 +265,7 @@ namespace BussinessLayer.Concrete.Managers
             {
                 c.Contacts.Add(new(ContactStatus.Newsletter)
                 {
-                 
+
                     Tos = TOs,
                     Content = model.Description,
                     Subject = ContactStatus.Newsletter.ToString(),
@@ -225,5 +277,65 @@ namespace BussinessLayer.Concrete.Managers
                 c.SaveChanges();
             }
         }
+
+        public async Task SendResetPasswordLinkAsync(SendMailModel model)
+        {
+
+            string content = "<h3> Reset Password </h3>" + Environment.NewLine + "To reset your password, <a href=" + quote + model.Content + quote + "> click this link <a>.";
+
+            string? body = GetBody(content);
+
+            if (body is null)
+                throw new MailBodyIsNullException();
+
+            SmtpClient client = ConfigureClient();
+
+            MailMessage mail = new(_configuration.Username, model.To.First())
+            {
+                Body = body,
+                Subject = model.Subject,
+                IsBodyHtml = true,
+
+            };
+
+            await client.SendMailAsync(mail);
+
+        }
+
+        public async Task<bool> SendConfirmationLinkAsync(ConfirmEmailViewModel model)
+        {
+            AppUser user = await GetUser(model.Username);
+
+            if (user is null)
+                return false;
+
+            string link = await GetCallBackLink(user, model);
+
+            if (link is null)
+                return false;
+
+            string content = "<h3> Confirm your mail </h3>" + Environment.NewLine + "To confirm your mail, <a href=" + quote + link + quote + "> click this link <a>.";
+
+            string? body = GetBody(content);
+
+            if (body is null)
+                throw new MailBodyIsNullException();
+
+            SmtpClient client = ConfigureClient();
+
+            MailMessage mail = new(_configuration.Username, user.Email)
+            {
+                Body = body,
+                Subject = "Confirm Your Email",
+                IsBodyHtml = true,
+
+            };
+
+            await client.SendMailAsync(mail);
+
+            return true;
+
+        }
+
     }
 }

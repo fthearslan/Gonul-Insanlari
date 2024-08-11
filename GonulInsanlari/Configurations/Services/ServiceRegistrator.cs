@@ -9,6 +9,9 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -41,6 +44,7 @@ namespace GonulInsanlari.Configurations.Service
             Services.AddScoped<INotificationService>(x => new NotificationManager(new EFNotificationDAL()));
             Services.AddScoped<IMessageService>(x => new MessageManager(new EFMessageDAL()));
             Services.AddScoped<INewsLetterService>(x => new NewsLetterManager(new EFNewsLetterDAL()));
+            Services.AddHttpContextAccessor();
 
             ServiceProvider serviceProvider = Services.BuildServiceProvider();
 
@@ -48,7 +52,14 @@ namespace GonulInsanlari.Configurations.Service
                   .GetRequiredService<IOptions<MailServerConfiguration>>()
                  .Value;
 
-            Services.AddScoped<IEmailService>(x => new EmailManager(new NewsLetterManager(new EFNewsLetterDAL()), mailServerConfiguration));
+            SignInManager<AppUser> signInManager = serviceProvider.GetRequiredService<SignInManager<AppUser>>();
+
+            var linkGenerator = serviceProvider.GetRequiredService<LinkGenerator>();
+
+            var httpcontext
+               = serviceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext;
+
+            Services.AddScoped<IEmailService>(x => new EmailManager(new NewsLetterManager(new EFNewsLetterDAL()), mailServerConfiguration, signInManager, linkGenerator));
 
         }
 

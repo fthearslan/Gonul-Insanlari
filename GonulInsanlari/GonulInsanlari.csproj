@@ -8,10 +8,18 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Areas\Admin\Data\**" />
 	  <Compile Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <Compile Remove="Areas\Admin\Views\Notification\**" />
+	  <Content Remove="Areas\Admin\Data\**" />
 	  <Content Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <Content Remove="Areas\Admin\Views\Notification\**" />
+	  <EmbeddedResource Remove="Areas\Admin\Data\**" />
 	  <EmbeddedResource Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <EmbeddedResource Remove="Areas\Admin\Views\Notification\**" />
+	  <None Remove="Areas\Admin\Data\**" />
 	  <None Remove="Areas\Admin\ViewComponents\Categories\**" />
+	  <None Remove="Areas\Admin\Views\Notification\**" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -55,8 +63,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Folder Include="Areas\Admin\Data\" />
-		<Folder Include="Areas\Admin\Views\Notification\" />
 		<Folder Include="wwwroot\Files\" />
 		<Folder Include="wwwroot\CustomJs\" />
 		<Folder Include="wwwroot\PdfReports\" />

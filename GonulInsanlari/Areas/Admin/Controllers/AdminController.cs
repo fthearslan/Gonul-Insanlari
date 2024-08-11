@@ -20,6 +20,7 @@ using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Admin;
+using ViewModelLayer.ViewModels.Email;
 using X.PagedList;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
@@ -88,7 +89,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HttpPost]
         [Route("register/new")]
         [HasPermission(PermissionType.User, Permission.Create)]
-        public async Task<IActionResult> Register(AdminRegisterViewModel model)
+        public async Task<IActionResult> Register([FromServices] IEmailService emailManager, AdminRegisterViewModel model)
         {
             List<string> modelErrors = new();
 
@@ -106,9 +107,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     return BadRequest(modelErrors);
 
                 }
-             
-                return StatusCode(200);
 
+                if (await emailManager.SendConfirmationLinkAsync(new ConfirmEmailViewModel(user.UserName,"ConfirmEmailOnRegister","Email",HttpContext)))
+                    return StatusCode(200);
+
+                return BadRequest();
+          
             }
 
             foreach (var Errors in ModelState.Values)

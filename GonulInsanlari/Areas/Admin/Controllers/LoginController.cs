@@ -1,6 +1,9 @@
 ﻿using BussinessLayer.Abstract.Services;
+using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Enums;
 using GonulInsanlari.Extensions.Admin;
+using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +25,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     public class LoginController : Controller
     {
         SignInManager<AppUser> _signInManager;
-     
+
         public LoginController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
@@ -33,42 +36,55 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         public IActionResult Login()
         {
-         
+
 
             return View();
 
         }
 
-        
+
         [HttpPost]
         [Route("admin")]
-
-        public async Task<IActionResult> Login(SignInViewModel user)
+        public async Task<IActionResult> Login([FromServices] IEmailService mailManager, SignInViewModel user)
         {
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(user);
+
+            var login = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, true);
+
+            if (login.IsNotAllowed)
             {
-                var login = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, true);
-                if (login.Succeeded)
+                if (await mailManager.SendConfirmationLinkAsync(new(user.Username,"EmailConfirmed","Email",HttpContext)))
                 {
+                    TempData["MailInfo"] = "To log in, you need to confirm your email address first, we have sent you a confirmation link.";
 
-                    var usersignedIn = await _signInManager.UserManager.FindByNameAsync(user.Username);
-                    if (usersignedIn.Status is true)
-                    {
-                        await _signInManager.LogUserLoginAsync(user.Username, LoginType.Login);
-
-                        return RedirectToAction("Index", "Dashboard", "Admin");
-
-                    }
+                    return View(user);
                 }
 
-                TempData["Error"] = "Invalid username or password, please provide valid credentials.";
             }
 
+            if (login.IsLockedOut)
+                return RedirectToAction(nameof(LockedOut), new { username = user.Username });
 
+            if (login.Succeeded)
+            {
+                var usersignedIn = await _signInManager.UserManager.FindByNameAsync(user.Username);
 
+                if (usersignedIn.Status is true)
+                {
+                    await _signInManager.LogUserLoginAsync(user.Username, LoginType.Login);
+
+                    return RedirectToAction("Index", "Dashboard", "Admin");
+
+                }
+
+            }
+
+            TempData["Error"] = "Invalid username or password, please provide valid credentials.";
 
             return View(user);
+
         }
 
         [Route("logout")]
@@ -85,6 +101,24 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        public async Task<IActionResult> LockedOut(string username)
+        {
+
+            AppUser? user = await _signInManager.UserManager.FindByNameAsync(username);
+
+            ViewData["LockOutEnd"] = user?
+                .LockoutEnd
+                .GetValueOrDefault().
+                LocalDateTime;
+
+            return View();
+
+        }
+
+
+
 
     }
+
+
 }

@@ -42,7 +42,12 @@ builder.Services.AddMvc(config =>
 );
 builder.Services.AddDbContext<Context>();
 
-builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>();
+builder.Services.AddIdentity<AppUser, AppRole>(opt =>
+{
+    opt.SignIn.RequireConfirmedEmail = true;
+    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(1);
+
+}).AddDefaultTokenProviders().AddEntityFrameworkStores<Context>();
 
 builder.Services.Configure<MailServerConfiguration>(builder.Configuration.GetSection(MailServerConfiguration.Server));
 
