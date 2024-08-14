@@ -1,0 +1,209 @@
+﻿@model List<NewsletterListSubscribersViewModel>
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox ">
+            <h2><i class="fa fa-users"></i> Subscribers  </h2>
+
+            <div class="ibox-content">
+
+                <div class="table-responsive">
+                    <table id="dataTable" class="table table-striped">
+
+                        <thead>
+                            <tr>
+                                <th><i class="fa fa-user"></i></th>
+                                <th>Name Surname </th>
+                                <th>Email Address </th>
+                                <th> Subscription Start Date</th>
+                                <th>Subscription End Date </th>
+                                <th> Status </th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (NewsletterListSubscribersViewModel subscriber in Model)
+                            {
+
+                                string spanClass = subscriber.SubscriberStatus switch
+                                {
+                                    SubscriberStatus.Active => "text-navy",
+                                    SubscriberStatus.Pending => "text-warning",
+                                    _ => "text-primary"
+                                };
+
+
+                                <tr>
+                                    <td class="client-avatar"><img alt="image" src="~/Images/profile.jpg"></td>
+                                    <td>@subscriber.NameSurname</td>
+                                    <td>@subscriber.MailAddress</td>
+                                    <td>@subscriber.Created</td>
+                                    <td>@subscriber.SubscriptionEndDate</td>
+                                    <td><span class=@spanClass>@subscriber.SubscriberStatus</span></td>
+                                    <td class="btn-group">
+                                        @if (subscriber.SubscriberStatus == SubscriberStatus.Active)
+                                        {
+                                            <a class="btn-warning btn btn-xs" onclick="pendOrDelete('@subscriber.Id','pended');" href="#">To pending</a>
+
+                                        }
+                                        @if (subscriber.SubscriberStatus == SubscriberStatus.Pending)
+                                        {
+                                            <a class="btn-primary btn btn-xs" onclick="pendOrDelete('@subscriber.Id','activated');" href="#">Activate</a>
+
+                                        }
+                                        <a class="btn-danger btn btn-xs" onclick="pendOrDelete('@subscriber.Id','deleted');" href="#">Delete</a>
+                                    </td>
+
+                                </tr>
+
+                            }
+
+
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+        <div style="margin-right:15px;margin-left:auto">
+            @if (User.HasClaim("Permission", "Subscription.Create"))
+            {
+                <a class="btn btn-primary" data-toggle="modal" data-target="#newSubscriber" onclick="clearInput();" title="Add a new subscriber" href="#"><i class="fa fa-plus"></i> Add</a>
+            }
+        </div>
+    </div>
+
+
+
+</div>
+
+<div class="modal inmodal fade" id="newSubscriber" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus" style="margin-right:3px;"></i> Add a new subscriber</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="ibox-content">
+
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+
+                                <label class="col-form-label">Name</label>
+
+                                <div><input id="name" type="text" name="Name" class="form-control"></div>
+                            </div>
+                            <div class="form-group">
+
+                                <label class="col-form-label">Surname</label>
+
+                                <div><input id="surname" type="text" name="Surname" class="form-control"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-form-label">Email</label>
+
+                                <div><input id="email" type="email" name="Email" class="form-control"></div>
+
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+
+                    <div style="margin-top:30px;" class="row">
+                        <div class="col-lg-12">
+                            <div class="panel panel-info">
+                                <div class="panel-heading">
+                                    <i class="fa fa-info-circle"></i> Be aware of
+                                </div>
+                                <div class="panel-body">
+
+                                    <ul>
+                                        <li> Email address <span class="text-danger">must be unique.</span></li>
+                                        <li>After registration, a confirmation email will be sent to typed email address.</li>
+                                        <li>Until its confirmed, subscriber will not become active. Otherwise it remains status of <span class="text-warning">pending.</span></li>
+                                    </ul>
+
+
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <ul id="validation">
+                        </ul>
+
+                    </div>
+
+
+
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" id="btnSave" onclick="add();" class="btn btn-primary"> Save </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Script{
+
+    <script src="~/js/newsletter.js"></script>
+
+    <script src="~/lib/jquery.toast.min.js"></script>
+
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="sweetalert2.all.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $("#dataTable").dataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.13.7/i18n/en-GB.json"
+                },
+                "searching": true,
+                "ordering": true,
+                "paging": true,
+                "pagingType": "full_numbers",
+                "pageLength": 10,
+                "responsive": true,
+                "columnDefs": [{
+                    "targets": 3,
+                    "orderable": false
+                }]
+            });
+        });
+    </script>
+
+
+    <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
+}
+

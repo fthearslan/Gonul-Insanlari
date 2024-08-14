@@ -11,5 +11,8 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFNewsLetterDAL : GenericRepository<NewsLetter>, INewsLetterDAL
     {
+
+
+
     }
 }

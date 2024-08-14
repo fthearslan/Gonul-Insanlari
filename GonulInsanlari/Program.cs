@@ -21,8 +21,8 @@ using GonulInsanlari.Middlewares;
 using Serilog;
 using ViewModelLayer.Models.Tools;
 using GonulInsanlari.Areas.Admin.Authorization;
-using GonulInsanlari.Configurations.Service;
 using ViewModelLayer.Models.Configuration;
+using GonulInsanlari.Configurations.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -77,7 +77,7 @@ builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
     x.LoginPath = "/login/admin";
-
+   
 }
     );
 

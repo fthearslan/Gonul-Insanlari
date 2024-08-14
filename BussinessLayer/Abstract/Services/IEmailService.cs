@@ -42,7 +42,9 @@ namespace BussinessLayer.Abstract.Services
 
         protected string GetBody(string content);
         protected Task<AppUser> GetUser(string userName);
-        protected Task<string> GetCallBackLink(AppUser user, ConfirmEmailViewModel model);
+        protected Task<string> GetCallBackLink(AppUser user, SendConfirmEmailViewModel model);
+
+        protected string GetCallBackLink(SendConfirmEmailViewModel model);    
 
         /// <summary>
         /// Gets all the subscriber.
@@ -68,8 +70,10 @@ namespace BussinessLayer.Abstract.Services
 
         Task SendResetPasswordLinkAsync(SendMailModel model);
 
-        Task<bool> SendConfirmationLinkAsync(ConfirmEmailViewModel model);
+        Task<bool> SendConfirmationLinkAsync(SendConfirmEmailViewModel model);
 
+
+        Task<bool> SendSubscriptionConfirmationAsync(SendConfirmEmailViewModel model);
 
     }
 }

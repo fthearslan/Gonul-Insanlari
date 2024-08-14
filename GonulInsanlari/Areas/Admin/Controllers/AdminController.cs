@@ -98,7 +98,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 AppUser user = _mapper.Map<AppUser>(model);
 
-                IdentityResult result = await _userManager.CreateAsync(user, "Admin123@");
+                IdentityResult result = await _userManager.CreateAsync(user);
 
                 if (!result.Succeeded)
                 {
@@ -108,11 +108,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 }
 
-                if (await emailManager.SendConfirmationLinkAsync(new ConfirmEmailViewModel(user.UserName,"ConfirmEmailOnRegister","Email",HttpContext)))
+                if (await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "ConfirmEmailOnRegister", "Email", HttpContext)))
                     return StatusCode(200);
 
                 return BadRequest();
-          
+
             }
 
             foreach (var Errors in ModelState.Values)
@@ -303,8 +303,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<AdminUserLoginsViewModel> userLogs = new();
 
+            List<UserLogin>? userLogins = user?.UserLogin?
+                .OrderByDescending(x => x.Date)
+                .ToList();
 
-            user?.UserLogin.ForEach(x => userLogs.Add(new AdminUserLoginsViewModel { Description = x.Description, Type = x.Type.ToString() }));
+            userLogins?
+                  .ForEach(x => userLogs.Add(new AdminUserLoginsViewModel { Description = x.Description, Type = x.Type.ToString() }));
 
 
             return Json(userLogs);
@@ -328,9 +332,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 userLogins = user?.UserLogin.
                    Where(x => x.Description.Contains(model.Search) || x.Type.ToString().Contains(model.Search) || x.Date.ToString().Contains(model.Search))
+                   .OrderByDescending(x=>x.Date)
                    .ToList();
-
-
             }
 
             List<AdminUserLoginsViewModel> values = new();

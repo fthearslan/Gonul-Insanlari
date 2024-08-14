@@ -8,8 +8,10 @@
         Category,
         Assignment,
         Contact,
+        Subscription,
         Announcement,
         About
+
 
     }
 }

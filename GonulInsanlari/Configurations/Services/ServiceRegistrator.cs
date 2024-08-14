@@ -26,7 +26,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModelLayer.Models.Configuration;
 
-namespace GonulInsanlari.Configurations.Service
+namespace GonulInsanlari.Configurations.Services
 {
     public static class ServiceRegistrator
     {

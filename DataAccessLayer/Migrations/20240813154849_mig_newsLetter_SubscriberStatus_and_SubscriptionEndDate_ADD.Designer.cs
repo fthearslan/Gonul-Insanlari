@@ -4,6 +4,7 @@ using DataAccessLayer.Concrete.Providers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccessLayer.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20240813154849_mig_newsLetter_SubscriberStatus_and_SubscriptionEndDate_ADD")]
+    partial class mig_newsLetter_SubscriberStatus_and_SubscriptionEndDate_ADD
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -574,9 +576,6 @@ namespace DataAccessLayer.Migrations
                     b.Property<DateTime>("Created")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
                     b.Property<string>("MailAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -591,7 +590,7 @@ namespace DataAccessLayer.Migrations
                     b.Property<bool?>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("SubscriberStatus")
+                    b.Property<int>("SubcsriberStatus")
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("SubscriptionEndDate")

@@ -14,7 +14,7 @@ namespace EntityLayer.Abstract
         { get; set; }= DateTime.Now;
         public DateTime? Modified { get; set; }
 
-        public bool? Status { get; set; }
+        public bool? Status { get; set; } = true;
 
 
     }

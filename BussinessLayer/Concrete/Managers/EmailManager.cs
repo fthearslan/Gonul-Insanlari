@@ -38,6 +38,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json.Linq;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -129,7 +130,7 @@ namespace BussinessLayer.Concrete.Managers
             return user;
 
         }
-        public async Task<string> GetCallBackLink(AppUser user, ConfirmEmailViewModel model)
+        public async Task<string> GetCallBackLink(AppUser user, SendConfirmEmailViewModel model)
         {
 
             string token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -145,6 +146,15 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
+        public string GetCallBackLink(SendConfirmEmailViewModel model)
+        {
+
+            return _linkGenerator.GetUriByAction(model.HttpContext, model.CallBackAction, model.CallBackController, new
+            {
+                email = model.Username
+            }, model.HttpContext.Request.Scheme);
+
+        }
 
 
         public async Task<List<NewsletterSubscriberViewModel>> GetSubscribersAsync()
@@ -302,7 +312,7 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public async Task<bool> SendConfirmationLinkAsync(ConfirmEmailViewModel model)
+        public async Task<bool> SendConfirmationLinkAsync(SendConfirmEmailViewModel model)
         {
             AppUser user = await GetUser(model.Username);
 
@@ -337,5 +347,36 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
+        public async Task<bool> SendSubscriptionConfirmationAsync(SendConfirmEmailViewModel model)
+        {
+
+            string? link = GetCallBackLink(model);
+
+            if (link is null)
+                return false;
+
+            string content = "<h3> Confirm your subscription </h3>" + Environment.NewLine + "To confirm your subscription, <a href=" + quote + link + quote + "> click this link <a>.";
+
+            string? body = GetBody(content);
+
+            if (body is null)
+                throw new MailBodyIsNullException();
+
+            SmtpClient client = ConfigureClient();
+
+            MailMessage mail = new(_configuration.Username, model.Username)
+            {
+                Body = body,
+                Subject = model.Subject,
+                IsBodyHtml = true,
+
+            };
+
+            await client.SendMailAsync(mail);
+
+            return true;
+
+
+        }
     }
 }

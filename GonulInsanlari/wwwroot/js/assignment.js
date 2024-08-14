@@ -52,49 +52,7 @@ function TaskonChange(id, assignmentId) {
 
 };
 
-//function AddUser(id, assignmentId) {
 
-//    var TaskId = assignmentId;
-
-//    $.ajax({
-//        type: "POST",
-//        data: { taskId: TaskId, userId: id },
-//        url: "/assignments/add/user",
-//        success: function (result) {
-//            $.toast({
-//                heading: 'Success',
-//                text: 'Users has been successfully added.',
-//                showHideTransition: 'slide',
-//                position: 'top-right',
-//                icon: 'success'
-
-//            })
-
-//            $("#" + id).hide();
-
-//            setTimeout(function () {
-//                window.location.reload();
-//            }, 3000);
-
-//        },
-//        statusCode: {
-//            403: function () {
-
-//                $.toast({
-//                    heading: 'Access Denied',
-//                    text: 'You do not have an access to add user.',
-//                    showHideTransition: 'slide',
-//                    position: 'top-right',
-//                    icon: 'error'
-
-//                });
-
-//            }
-//        }
-
-//    });
-
-//}
 
 function deleteUser(id, assignmentId) {
 

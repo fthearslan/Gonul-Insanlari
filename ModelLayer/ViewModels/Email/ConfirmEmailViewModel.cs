@@ -1,36 +1,35 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ViewModelLayer.ViewModels.Email
 {
     public record ConfirmEmailViewModel
     {
-
-        public ConfirmEmailViewModel(string username)
+        public ConfirmEmailViewModel()
         {
-            Username = username;
+            
+        }
+        public ConfirmEmailViewModel(string userId, string token)
+        {
+            UserId = userId;
+            Token = token;
         }
 
-        public ConfirmEmailViewModel(string username,string callbackAction,string callbackController,HttpContext httpContext)
-        {
-            Username = username;
-            CallBackAction=callbackAction;
-            CallBackController=callbackController;
-            HttpContext = httpContext;
-        }
+        [Required]
+        public string UserId { get; set; }
 
+        [Required]
+        public string Token { get; set; }
 
-        public string Username { get; set; }
+        public string Password { get; set; }
 
-        public HttpContext HttpContext { get; set; }
-        public string CallBackAction { get; set; }
-
-        public string CallBackController { get; set; }
+        [Compare(nameof(Password),ErrorMessage ="Passwords do not match.")]
+        public string ConfirmPassword { get; set; }
 
     }
 }

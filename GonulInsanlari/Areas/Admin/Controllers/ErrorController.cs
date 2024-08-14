@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
+    [AllowAnonymous]
     [Area(nameof(Admin))]
     [Route("error")]
     public class ErrorController : Controller

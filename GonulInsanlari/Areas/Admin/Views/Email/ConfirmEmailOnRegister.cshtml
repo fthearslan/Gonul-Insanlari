@@ -1,0 +1,103 @@
+﻿@model ConfirmEmailViewModel
+
+@{
+    Layout = null;
+}
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Gonul Insanlari | Set a password</title>
+
+
+
+    <link href="~/inspinia-gh-pages/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+    <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
+    <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
+
+</head>
+
+<body class="gray-bg">
+
+    <div class="passwordBox animated fadeInDown">
+        <div class="row">
+
+            <div class="col-md-12">
+                <div class="ibox-content">
+
+                    <h2 class="font-bold">Set a password </h2>
+
+                    <p>
+                       Set a password and confirm it to log in.
+                    </p>
+
+                    <div class="row">
+
+                        <div class="col-lg-12">
+                            <form class="m-t" role="form" asp-action="ConfirmEmailOnRegister">
+                            
+                                <input type="hidden" asp-for="UserId" class="form-control">
+                                <input type="hidden" asp-for="Token" class="form-control">
+
+                                <div class="form-group">
+                                    <input type="password" asp-for="Password" class="form-control" placeholder="New password" required="">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Confirm new password" required="">
+                                </div>
+
+                                <button type="submit" class="btn btn-primary block full-width m-b post">Save password</button>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                    <span class="text-danger" asp-validation-for="ConfirmPassword"></span>
+                    <span class="text-danger" asp-validation-for="UserId"></span>
+                    <span class="text-danger" asp-validation-for="Token"></span>
+
+                    @{
+
+                        List<string>? errors = (List<string>?)ViewData["Errors"];
+
+                    }
+
+                    <ul>
+                    @if (errors is not null)
+                        @foreach (string error in errors)
+                        {
+                            <li class="text-danger">@error</li>
+
+                        }
+                    </ul>
+
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-6">
+                Gonul Insanlari
+            </div>
+            <div class="col-md-6 text-right">
+                <small>© 2024</small>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
