@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ViewModelLayer.ViewModels.Article;
 
-namespace BussinessLayer.Concrete.Validations.FluentValidation
+namespace BussinessLayer.Concrete.Validations.FluentValidation.Article
 {
     public class CreateArticleValidator : AbstractValidator<ArticleCreateViewModel>
     {

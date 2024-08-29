@@ -39,23 +39,28 @@
                 @await Component.InvokeAsync("GetAssignments")
 
             }
-                @if (User.HasClaim("Permission", "Comment.Read"))
+            @if (User.HasClaim("Permission", "Comment.Read"))
             {
                 @await Component.InvokeAsync("GetComments")
 
             }
         </div>
-
+        <button type="button" id="sendButton">Send</button>
     </div>
 
 
 </div>
 
-<script src="~/inspinia-gh-pages/js/plugins/sparkline/jquery.sparkline.min.js"></script>
 
 
 @section Script{
+
     <script src="~/lib/jquery.toast.min.js"></script>
+
+   @*  <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+    <script src="~/js/notification.js"></script>
+ *@
     <script>
 
 

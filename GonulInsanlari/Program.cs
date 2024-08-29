@@ -22,7 +22,10 @@ using Serilog;
 using ViewModelLayer.Models.Tools;
 using GonulInsanlari.Areas.Admin.Authorization;
 using ViewModelLayer.Models.Configuration;
-using GonulInsanlari.Configurations.Services;
+using TableDependency.SqlClient;
+using GonulInsanlari.Subscriptions;
+using GonulInsanlari.Configurations;
+using GonulInsanlari.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -53,8 +56,20 @@ builder.Services.Configure<MailServerConfiguration>(builder.Configuration.GetSec
 
 builder.Services.AddScoped<MailServerConfiguration>();
 
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder => builder.AllowAnyOrigin()
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        );
+});
+
 
 builder.Services.AddBussinessServices();
+
 
 builder.Services.AddValidators();
 
@@ -65,19 +80,20 @@ builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Services.AddScoped<ResponseModel>();
 
 
-
-
 builder.Services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
 
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, PermissionPolicyProvider>();
 
+builder.Services.AddSingleton<NotificationHub>();
+
+builder.Services.AddSingleton<NotificationSubscription>();
 
 
 builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
     x.LoginPath = "/login/admin";
-   
+
 }
     );
 
@@ -89,6 +105,10 @@ var logger = new LoggerConfiguration()
     .CreateLogger();
 
 builder.Logging.AddSerilog(logger);
+
+
+
+
 
 var app = builder.Build();
 
@@ -103,6 +123,8 @@ if (!app.Environment.IsDevelopment())
 app.UseStatusCodePagesWithReExecute("/error/notFound", "?code={0}");
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();
+
+app.UseDatabaseSubscription<NotificationSubscription>("Notifications");
 
 app.UseHttpsRedirection();
 
@@ -129,5 +151,7 @@ app.UseEndpoints(endpoints =>
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();

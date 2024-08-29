@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BussinessLayer.Concrete.Exceptions.Newsletter
+namespace BussinessLayer.Concrete.Exceptions
 {
-    public  class SubscribersAreNullException:Exception
+    public class SubscribersAreNullException : Exception
     {
 
-        public SubscribersAreNullException():base("No subscriber was found.")
+        public SubscribersAreNullException() : base("No subscriber was found.")
         {
-            
+
         }
     }
 }

@@ -9,5 +9,6 @@ namespace BussinessLayer.Abstract.Services
 {
     public interface INotificationService : IGenericService<Notification>
     {
+
     }
 }

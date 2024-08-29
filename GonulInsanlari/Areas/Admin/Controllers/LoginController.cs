@@ -1,4 +1,5 @@
 ﻿using BussinessLayer.Abstract.Services;
+using DataAccessLayer.Concrete.Providers;
 using DataAccessLayer.Migrations;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Enums;
@@ -7,7 +8,9 @@ using Humanizer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Options;
 using System.Net;
@@ -38,6 +41,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
 
+          
+            
+        
             return View();
 
         }

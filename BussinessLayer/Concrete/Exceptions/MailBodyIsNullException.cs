@@ -1,4 +1,4 @@
-﻿namespace GonulInsanlari.Exceptions.Newsletter
+﻿namespace BussinessLayer.Concrete.Exceptions
 {
     public class MailBodyIsNullException : Exception
     {

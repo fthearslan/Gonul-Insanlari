@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Gonul Insanlari | Admin Panel</title>
+    <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
 
     <link href="~/inspinia-gh-pages/css/bootstrap.min.css" rel="stylesheet">
     <link href="~/inspinia-gh-pages/font-awesome/css/font-awesome.css" rel="stylesheet">
@@ -106,6 +107,9 @@
     </div>
 
 
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
+    <script src="~/js/notification.js"></script>
 
     <!-- Mainly scripts -->
     <script src="~/inspinia-gh-pages/js/jquery-3.1.1.min.js"></script>
@@ -121,8 +125,10 @@
 
     <!-- Custom and plugin javascript -->
     <script src="~/inspinia-gh-pages/js/inspinia.js"></script>
-    <script src="~/inspinia-gh-pages/js/plugins/pace/pace.min.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/steps/jquery.steps.min.js"></script>
+    <script src="~/lib/jquery.toast.min.js"></script>
+    <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+
     @RenderSection("Script",required:false)
 </body>
 

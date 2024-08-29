@@ -1,6 +1,9 @@
 ﻿using BussinessLayer.Abstract.Services;
 using DataAccessLayer.Abstract.SubRepositories;
 using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,13 +11,13 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TableDependency.SqlClient;
 
 namespace BussinessLayer.Concrete.Managers
 {
     public class NotificationManager : INotificationService
     {
         INotificationDAL _notify;
-
         public NotificationManager(INotificationDAL notify)
         {
             _notify = notify;
@@ -24,6 +27,7 @@ namespace BussinessLayer.Concrete.Managers
         {
             await _notify.InsertAsync(entity);
         }
+
 
         public void Delete(Notification entity)
         {
@@ -59,5 +63,8 @@ namespace BussinessLayer.Concrete.Managers
         {
             _notify.Update(entity);
         }
+
+
+
     }
 }

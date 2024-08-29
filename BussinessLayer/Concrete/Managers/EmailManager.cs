@@ -20,11 +20,8 @@ using ViewModelLayer.Models.Configuration;
 using ViewModelLayer.Models.Newsletter;
 using MimeKit;
 using System.Data;
-using GonulInsanlari.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using ViewModelLayer.ViewModels.Newsletter;
-using GonulInsanlari.Exceptions.Newsletter;
-using BussinessLayer.Concrete.Exceptions.Newsletter;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Html;
 using DataAccessLayer.Concrete.Providers;
@@ -39,6 +36,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
+using BussinessLayer.Concrete.Exceptions;
 
 namespace BussinessLayer.Concrete.Managers
 {

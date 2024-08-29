@@ -20,6 +20,9 @@
     <link href="~/inspinia-gh-pages/css/animate.css" rel="stylesheet">
     <link href="~/inspinia-gh-pages/css/style.css" rel="stylesheet">
 
+    <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+
+
 </head>
 
 <body class="gray-bg">
@@ -79,16 +82,26 @@
 
 
 </html>
-<script>
-    // Change the type of input to password or text
-    function Toggle() {
-        let temp = document.getElementById("typepass");
 
-        if (temp.type === "password") {
-            temp.type = "text";
+<script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
+<script src="~/lib/jquery.toast.min.js"></script>
+
+<script src="~/js/notification.js"></script>
+ 
+    <script>
+        // Change the type of input to password or text
+        function Toggle() {
+            let temp = document.getElementById("typepass");
+
+            if (temp.type === "password") {
+                temp.type = "text";
+            }
+            else {
+                temp.type = "password";
+            }
         }
-        else {
-            temp.type = "password";
-        }
-    }
-</script>
+    </script>
+
+
+
+

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -24,15 +25,18 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using TableDependency.SqlClient;
 using ViewModelLayer.Models.Configuration;
 
-namespace GonulInsanlari.Configurations.Services
+namespace GonulInsanlari.Configurations
 {
     public static class ServiceRegistrator
     {
 
         public static void AddBussinessServices(this IServiceCollection Services)
         {
+
+
             Services.AddScoped<ICategoryService>(x => new CategoryManager(new EFCategoryDAL()));
             Services.AddScoped<IArticleService>(x => new ArticleManager(new EFArticleDAL()));
             Services.AddScoped<IAboutService>(x => new AboutManager(new EFAboutDAL()));
@@ -41,9 +45,11 @@ namespace GonulInsanlari.Configurations.Services
             Services.AddScoped<ICommentService>(x => new CommentManager(new EFCommentDAL()));
             Services.AddScoped<IContactService>(x => new ContactManager(new EFContactDAL()));
             Services.AddScoped<INoteService>(x => new NoteManager(new EFNoteDAL()));
-            Services.AddScoped<INotificationService>(x => new NotificationManager(new EFNotificationDAL()));
             Services.AddScoped<IMessageService>(x => new MessageManager(new EFMessageDAL()));
             Services.AddScoped<INewsLetterService>(x => new NewsLetterManager(new EFNewsLetterDAL()));
+            Services.AddScoped<INotificationService>(x => new NotificationManager(new EFNotificationDAL()));
+
+
             Services.AddHttpContextAccessor();
 
             ServiceProvider serviceProvider = Services.BuildServiceProvider();
@@ -72,7 +78,6 @@ namespace GonulInsanlari.Configurations.Services
         }
 
 
-
-
+    
     }
 }
