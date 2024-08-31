@@ -29,6 +29,7 @@ namespace GonulInsanlari.Middlewares
                 if (_context.Response.StatusCode != 404)
                     _context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 
+                
 
 
             }

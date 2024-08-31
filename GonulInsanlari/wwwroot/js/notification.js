@@ -25,26 +25,37 @@ function notifySuccess(message) {
 
 }
 
+function markAsSeen(id) {
+
+    $.ajax({
+        type: "POST",
+        data: { notificationId: id },
+        url: "/notifications/markAsSeen",
+        success: function () {
+
+        }
+    });
+}
+
 
 var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").
-    build();
+            build();
 
 
 
-connection.start();
+        connection.start();
 
-connection.on("Receive", function (message) {
+        connection.on("Receive", function (message) {
 
-    notifySuccess(message);
+            notifySuccess(message);
 
-    
+        });
 
-});
+        document.getElementById("sendButton").addEventListener("click", function (event) {
+            var message = "It worked!";
+            connection.invoke("SendNotification", message).catch(function (err) {
+                return console.error(err.toString());
+            });
+            event.preventDefault();
+        });
 
-document.getElementById("sendButton").addEventListener("click", function (event) {
-    var message = "It worked!";
-    connection.invoke("SendNotification", message).catch(function (err) {
-        return console.error(err.toString());
-    });
-    event.preventDefault();
-});

@@ -25,11 +25,12 @@ namespace GonulInsanlari.Subscriptions
 
             _tableDependency.OnChanged += async (o, e) =>
             {
+                if (e.ChangeType == TableDependency.SqlClient.Base.Enums.ChangeType.Insert)
+                {
+                    Notification notification = e.Entity;
 
-                Notification notification = e.Entity;
-
-                await _hubContext.Clients.All.SendAsync("Receive",notification.Content);
-
+                    await _hubContext.Clients.All.SendAsync("Receive", notification.Content);
+                }
             };
 
             _tableDependency.Start();

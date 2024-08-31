@@ -32,8 +32,11 @@
                         <tr  style="cursor:pointer">
                           
                             <td><small>#</small></td>
-                            <td><a href="/articles/details/@article.Id">@article.Title</a></td>
-                            <td><span class="label label-info">@article.Category.Name</span><a href="/categories/details/@article.CategoryID"></a></td>
+                            <td>
+                                <a href="/articles/details/@article.Id"><span class="text-success">@article.Title</span></a>
+
+                        </td>
+                            <td> <span class="text-info">@article.Category.Name</span><a href="/categories/details/@article.CategoryID"></a></td>
                             <td ><i style="padding-right:5px;" class="fa fa-clock-o"></i>@GetDate.GetCreateDate(article.Created)</td>
                         </tr>
                         

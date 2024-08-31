@@ -87,7 +87,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("details/{id}")]
         [HasPermission(PermissionType.Category, Permission.Read)]
-
         public IActionResult GetDetails(int id)
         {
             var category = _manager.GetDetails(id);

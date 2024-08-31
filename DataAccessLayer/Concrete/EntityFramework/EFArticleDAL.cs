@@ -52,7 +52,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
             using (var db = new Context())
             {
                 return db.Articles
-                    .Where(a => a.IsDraft == true)
+                    .Where(a => a.IsDraft == true && a.AppUserID==userId)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
                     .OrderByDescending(c => c.Created)

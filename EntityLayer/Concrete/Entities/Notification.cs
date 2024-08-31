@@ -19,6 +19,7 @@ namespace EntityLayer.Concrete.Entities
         [StringLength(150)]
         public string Content { get; set; }
         public int? Value { get; set; }
+        public bool IsSeen { get; set; } = false;
 
     }
 }
