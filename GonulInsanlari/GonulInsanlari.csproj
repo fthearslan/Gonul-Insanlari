@@ -71,6 +71,7 @@
 
 	<ItemGroup>
 		<None Include="..\.editorconfig" Link=".editorconfig" />
+		<Content Include="Areas\Admin\Views\Notification\List.cshtml" />
 		<None Include="wwwroot\bootstrap-datetimepicker\js\bootstrap-datetimepicker.min.js" />
 		<None Include="wwwroot\bootstrap-datetimepicker\js\demo.js" />
 	</ItemGroup>

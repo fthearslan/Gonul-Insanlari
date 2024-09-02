@@ -19,13 +19,14 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
             _mapper = mapper;
         }
 
-        public IViewComponentResult Invoke()
+        public IViewComponentResult Invoke(List<string> permissions)
         {
-            var notifications = _manager.
-                GetWhere(x => x.IsSeen == false && x.Status == true)
-                .OrderByDescending(x=>x.Created);
 
-            ViewData["Count"] = notifications.Count();
+            var notifications = _manager.GetPermittedNotifications(permissions).Result;
+
+            ViewData["Count"] = notifications
+                .Where(x => x.IsSeen == false)
+                .Count();
 
             List<NotificationBarViewModel> model = _mapper.Map<List<NotificationBarViewModel>>(notifications);
 

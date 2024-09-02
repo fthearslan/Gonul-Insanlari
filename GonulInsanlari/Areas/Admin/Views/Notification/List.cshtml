@@ -1,0 +1,171 @@
+﻿@model IPagedList<NotificationListViewModel>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+<h3><i class="fa fa-bell" aria-hidden="true"></i> Notifications</h3>
+
+<div class="wrapper wrapper-content  animated fadeInRight">
+
+    <div class="col-mg-12">
+
+        <div class="ibox-content">
+
+            <div class="input-group" style="margin-bottom:15px;">
+                <input id="progress" value="Pending" hidden />
+
+                <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search notification...">
+                <div style="margin-left:5px;" class="input-group-btn">
+                    <button type="button" onclick="searchNotifications();" class="btn btn-sm btn-primary">
+                        Search
+                    </button>
+                </div>
+            </div>
+
+
+
+            <div class="activity-stream" id="notificationPanel">
+                @foreach (NotificationListViewModel notification in Model)
+                {
+
+
+                    @if (User.HasClaim("Permission", notification.Type + ".Read"))
+                    {
+                        <div class="stream myBox" style="cursor:pointer">
+                            <a href="@notification.Url/@notification.Value"></a>
+
+                            <div class="stream-badge">
+                                <i class="@notification.Symbol"></i>
+                            </div>
+                            <div class="stream-panel">
+                                <div class="stream-info">
+
+                                    <span><strong>@notification.Title</strong></span>
+                                    <span class="date">@GetDate.GetCreateDate(notification.Created)</span>
+
+                                </div>
+                                @notification.Content
+                            </div>
+                        </div>
+
+
+
+                    }
+
+
+
+                }
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Script{
+
+    <script>
+
+        let timeout = null;
+
+        document.getElementById('searchbar').addEventListener('keyup', function (e) {
+
+
+            // Clear existing timeout
+            clearTimeout(timeout);
+
+            // Reset the timeout to start again
+            timeout = setTimeout(function () {
+
+
+
+
+                searchNotifications();
+
+
+
+            }, 500);
+
+        });
+
+    </script>
+
+    <script>
+        $(".myBox").click(function () {
+            window.location = $(this).find("a").attr("href");
+            return false;
+        });
+    </script>
+
+    <script>
+        function searchNotifications() {
+
+            $('#notificationPanel').empty();
+
+            var searchModel = {
+
+                Search: document.getElementById('searchbar').value,
+
+            };
+
+            if (searchModel.Search == null) {
+                notifyError("Please, type a word.");
+            }
+
+
+            $.ajax({
+                type: "POST",
+                url: "/notifications/search",
+                data: { model: searchModel },
+                success: function (result) {
+
+                    let html = "";
+
+                    for (let i = 0; i < result.length; i++) {
+
+                        html += '<div class="stream">' +
+                            '<div class="stream-badge">' +
+                            '<i class="' + result.symbol + '"></i>' +
+                            '</div>' +
+                            '<div class="stream-panel">' +
+                            '<div class="stream-info">' +
+                            '<a href="' + result.url + '">' +
+                            '<img src="img/a5.jpg"/>' +
+                            '<span>' + result.Title + '</span>' +
+                            '<span class="date">' + result.date + '</span>' +
+                            '</a>' +
+                            '</div>' +
+                            result.content
+                        '<div>' +
+                            '</div>';
+
+
+
+
+
+                        $("#notificationPanel").append(html);
+
+
+                    }
+
+                }
+            });
+
+
+
+
+
+        }
+
+    </script>
+
+
+
+
+
+                                       }

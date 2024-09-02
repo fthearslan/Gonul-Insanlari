@@ -13,8 +13,15 @@
             <li>
                 <span class="m-r-sm text-muted welcome-message">Welcome @User?.Identity?.Name</span>
             </li>
-      
-            @await Component.InvokeAsync("GetNotifications")
+     
+            @{
+                List<string>? permissions = User?.Claims.
+                Where(x => x.Type == "Permission")
+                .Select(x => x.Value)
+                .ToList();
+      }
+            
+      @await Component.InvokeAsync("GetNotifications",new { permissions = permissions})
 
 
             

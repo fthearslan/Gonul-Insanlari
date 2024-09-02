@@ -28,7 +28,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
             {
                 count = 0;
             }
-            ViewBag.Count = count;
+            ViewData["Count"]= count;
             return View(comments);
 
         }

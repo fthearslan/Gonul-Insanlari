@@ -9,6 +9,8 @@ namespace BussinessLayer.Abstract.Services
 {
     public interface INotificationService : IGenericService<Notification>
     {
+        Task<List<Notification>> SearchNotifications(string searchInput);
+        Task<List<Notification>> GetPermittedNotifications(List<string> permissions);
 
     }
 }

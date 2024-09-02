@@ -2,35 +2,57 @@
 
 <li class="dropdown">
     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-        <i class="fa fa-bell"></i>  <span class="label label-primary">@ViewData["Count"]</span>
+
+
+        <i class="fa fa-bell"></i>
+        @if ((int?)@ViewData["Count"] != 0)
+        {
+            <span class="label label-primary">@ViewData["Count"]</span>
+
+        }
+
     </a>
     <ul id="notifyBar" style="width:350px;" class="dropdown-menu dropdown-alerts">
         @foreach (var notify in Model)
         {
 
-                string url = notify.Type switch
-                {
+            string title = "";
 
-                    "Category" => "/categories/details",
-                    "Article" => "/articles/details",
-                    "Comment" => "/comments/details",
-                    "Contact" => "/contacts/details",
-                    _ => "/notifications/all"
-                };
+            if (notify.Title.Length >= 20)
+                title = @notify.Title.Substring(0, notify.Title.Substring(0, 20).LastIndexOf(" "));
+            else
+                title = @notify.Title;
+
+      
+            
+            string url = notify.Type switch
+            {
+
+                "Category" => "/categories/details",
+                "Article" => "/articles/details",
+                "Comment" => "/comments/details",
+                "Contact" => "/contacts/details",
+                _ => "/notifications/all"
+            };
+
+
+
 
 
             <li onclick="markAsSeen('@notify.Id')" title="See notification">
                 <a href="@url/@notify.Value" class="dropdown-item">
                     <div>
-                        @if (notify.Title.Length >= 20)
-                        {
-                            <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@notify.Title.Substring(0,notify.Title.Substring(0,20).LastIndexOf(" "))...</span>
 
-                        }
-                        else
-                        {
-                            <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@notify.Title</span>
-                        }
+                            @if (notify.IsSeen)
+                            {
+                                <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
+                            }
+                            else
+                            {
+                                    <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
+
+                            }
+                      
                         <span class="float-right text-muted small">@GetDate.GetCreateDate(notify.Created)</span>
                     </div>
                 </a>
