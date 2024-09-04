@@ -14,7 +14,10 @@ namespace DataAccessLayer.Abstract.SubRepositories
 
         Task<List<Notification>> SearchNotifications(string searchInput);
 
-        Task<List<Notification>> GetNotifications();
-    
+        Task<List<UserNotification>> GetNotifications(string userId);
+
+        Task<UserNotification> GetUserNotificationById(string userId, int notificationId);
+
+        Task UpdateUserNotification(UserNotification userNotification);
     }
 }

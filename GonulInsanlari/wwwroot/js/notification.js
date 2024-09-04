@@ -51,11 +51,5 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").
 
         });
 
-        document.getElementById("sendButton").addEventListener("click", function (event) {
-            var message = "It worked!";
-            connection.invoke("SendNotification", message).catch(function (err) {
-                return console.error(err.toString());
-            });
-            event.preventDefault();
-        });
+    
 

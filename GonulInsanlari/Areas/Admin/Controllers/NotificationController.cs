@@ -3,6 +3,7 @@ using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ViewModelLayer.ViewModels.Notification;
@@ -16,14 +17,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         private readonly INotificationService _manager;
         private readonly IMapper _mapper;
-        public NotificationController(INotificationService manager, IMapper mapper)
+       private readonly UserManager<AppUser> _userManager;
+        public NotificationController(INotificationService manager, IMapper mapper, UserManager<AppUser> userManager)
         {
             _manager = manager;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         [Route("all")]
-        public async Task<IActionResult> List(int pageNumber = 1)
+        public async Task<IActionResult> List( int pageNumber = 1)
         {
 
             List<string> permissions = User.Claims.
@@ -31,7 +34,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                  .Select(x => x.Value)
                  .ToList();
 
-            List<Notification> notifications = await _manager.GetPermittedNotifications(permissions);
+            string userId = _userManager.GetUserId(User);
+
+            List<UserNotification> notifications = await _manager.GetPermittedNotifications(permissions, userId);
 
 
             List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
@@ -46,13 +51,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #region Methods 
 
         [Route("markAsSeen")]
+        
         public async Task MarkAsSeen(int notificationId)
         {
-            var notification = await _manager.GetByIdAsync(notificationId);
+            string userId = _userManager.GetUserId(User);
+
+            var notification = await _manager.GetUserNotificationById(userId,notificationId);
 
             notification.IsSeen = true;
 
-            _manager.Update(notification);
+            await _manager.UpdateUserNotification(notification);
 
 
         }
@@ -68,7 +76,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             allNotifications?.ForEach(ntf =>
             {
 
-                if(User.HasClaim("Permission", ntf.Type + ".Read"))
+                if (User.HasClaim("Permission", ntf.Type + ".Read"))
                     permittedNotifications.Add(ntf);
 
             });

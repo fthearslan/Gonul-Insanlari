@@ -14,6 +14,7 @@ namespace EntityLayer.Concrete.Entities
         public AppUser()
         {
             UserLogin = new();
+            Notifications = new();
         }
 
         public string Name { get; set; } = null!;
@@ -37,6 +38,8 @@ namespace EntityLayer.Concrete.Entities
         public List<Message> MessagesSent { get; set; } = null!;
         [InverseProperty("Receiver")]
         public List<Message> MessagesReceived { get; set; } = null!;
+
+        public List<UserNotification> Notifications { get; set; } = null!;
         public List<Note> Notes { get; set; } = null!;
 
         public List<UserLogin> UserLogin { get; set; }

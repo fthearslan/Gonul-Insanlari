@@ -40,26 +40,31 @@ namespace BussinessLayer.Concrete.Managers
             return await _notify.GetAsync(x => x.Id == id);
         }
 
-        public async Task<List<Notification>> GetPermittedNotifications(List<string> permissions)
+        public async Task<List<UserNotification>> GetPermittedNotifications(List<string> permissions, string userId)
         {
 
             if (permissions is null)
                 return null;
 
-            List<Notification> notifications = await _notify.GetNotifications();
-            
-            List<Notification> result = new();
+            List<UserNotification> notifications = await _notify.GetNotifications(userId);
+
+            List<UserNotification> result = new();
 
             notifications?.ForEach(notification =>
             {
 
-                if (permissions.Contains(notification.Type + ".Read"))
+                if (permissions.Contains(notification.Notification.Type + ".Read"))
                     result.Add(notification);
 
             });
 
             return result;
 
+        }
+
+        public async Task<UserNotification> GetUserNotificationById(string userId, int notificationId)
+        {
+            return await _notify.GetUserNotificationById(userId,notificationId);
         }
 
         public IQueryable<Notification> GetWhere(Expression<Func<Notification, bool>> filter)
@@ -96,7 +101,10 @@ namespace BussinessLayer.Concrete.Managers
             _notify.Update(entity);
         }
 
+        public async Task UpdateUserNotification(UserNotification userNotification)
+        {
+            await _notify.UpdateUserNotification(userNotification);
 
-
+        }
     }
 }

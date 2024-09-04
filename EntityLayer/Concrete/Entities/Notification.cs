@@ -21,5 +21,7 @@ namespace EntityLayer.Concrete.Entities
         public int? Value { get; set; }
         public bool IsSeen { get; set; } = false;
 
+        public List<UserNotification> Users { get; set; }
+
     }
 }

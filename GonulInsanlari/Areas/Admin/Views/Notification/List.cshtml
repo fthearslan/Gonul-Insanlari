@@ -34,7 +34,7 @@
 
                     @if (User.HasClaim("Permission", notification.Type + ".Read"))
                     {
-                        <div class="stream myBox" style="cursor:pointer">
+                        <div class="stream myBox" onclick="markAsSeen('@notification.Id')" style="cursor:pointer">
                             <a href="@notification.Url/@notification.Value"></a>
 
                             <div class="stream-badge">
@@ -44,10 +44,15 @@
                                 <div class="stream-info">
 
                                     <span><strong>@notification.Title</strong></span>
-                                    <span class="date">@GetDate.GetCreateDate(notification.Created)</span>
+                                    <span class="date">@notification.Created</span>
 
                                 </div>
-                                @notification.Content
+                                @notification.Content @if (!notification.IsSeen)
+                                {
+                                    <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-left:8px;"></i>
+
+                                    
+                                }
                             </div>
                         </div>
 

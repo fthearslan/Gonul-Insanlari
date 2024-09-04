@@ -13,16 +13,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
         public NotificationProfile()
         {
 
-            CreateMap<Notification, NotificationBarViewModel>();
-            CreateMap<Notification, NotificationListViewModel>()
-                .ForMember(dest => dest.Url, opt => opt.MapFrom<NotificationTypeUrlResolver>());
                 
 
-            CreateMap<Notification, NotificationSearchResultViewModel>()
-                .ForMember(dest => dest.Url, opt => opt.MapFrom<NotificationTypeUrlResolver>())
-                .ForMember(dest => dest.Date, opt => opt.MapFrom(src => GetDate.GetCreateDate(src.Created)));
-
-
+            CreateMap<UserNotification, NotificationListViewModel>().ConvertUsing<NotificationConverter>();
 
 
         }

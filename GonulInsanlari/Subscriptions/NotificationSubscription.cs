@@ -1,6 +1,9 @@
-﻿using EntityLayer.Concrete.Entities;
+﻿using DataAccessLayer.Concrete.Providers;
+using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Hubs;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using TableDependency.SqlClient;
 
 namespace GonulInsanlari.Subscriptions
@@ -10,6 +13,7 @@ namespace GonulInsanlari.Subscriptions
 
         IConfiguration _configuration;
         IHubContext<NotificationHub> _hubContext;
+
         public NotificationSubscription(IConfiguration configuration, IHubContext<NotificationHub> hub)
         {
             _configuration = configuration;
@@ -29,7 +33,23 @@ namespace GonulInsanlari.Subscriptions
                 {
                     Notification notification = e.Entity;
 
+                    using var c = new Context();
+
+                    List<AppUser> users = c.Users.
+                     Where(x => x.Status == true)
+                     .ToList();
+
+                    users?.ForEach(user =>
+                    {
+                        user.Notifications
+                        .Add(new(user.Id,notification.Id));
+
+                    });
+
+                    c.SaveChanges();
+
                     await _hubContext.Clients.All.SendAsync("Receive", notification.Content);
+
                 }
             };
 

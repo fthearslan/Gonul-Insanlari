@@ -56,5 +56,7 @@ namespace DataAccessLayer.Concrete.Providers
 
         public DbSet<ContactAttachment> ContactAttachments { get; set; } = null!;
 
+        public DbSet<UserNotification> UserNotifications { get; set; } = null!;
+
     }
 }

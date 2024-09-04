@@ -1,4 +1,4 @@
-﻿@model List<NotificationBarViewModel>
+﻿@model List<NotificationListViewModel>
 
 <li class="dropdown">
     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
@@ -49,11 +49,11 @@
                             }
                             else
                             {
-                                    <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
+                            <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title </span>
 
                             }
-                      
-                        <span class="float-right text-muted small">@GetDate.GetCreateDate(notify.Created)</span>
+
+                        <span class="float-right text-muted small"><i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-right:3px;"></i> @notify.Created</span>
                     </div>
                 </a>
             </li>

@@ -3,6 +3,8 @@ using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Abstract;
 using DataAccessLayer.Concrete.EntityFramework;
+using EntityLayer.Concrete.Entities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ViewModelLayer.ViewModels.Notification;
 
@@ -12,23 +14,28 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
     {
         private readonly INotificationService _manager;
         private readonly IMapper _mapper;
+        private readonly UserManager<AppUser> _userManager;
 
-        public GetNotifications(INotificationService manager, IMapper mapper)
+        public GetNotifications(INotificationService manager, IMapper mapper, UserManager<AppUser> userManager)
         {
             _manager = manager;
             _mapper = mapper;
+            _userManager = userManager;
         }
 
         public IViewComponentResult Invoke(List<string> permissions)
         {
+            string userId = _userManager.GetUserId(UserClaimsPrincipal);
 
-            var notifications = _manager.GetPermittedNotifications(permissions).Result;
+            var notifications = _manager
+                .GetPermittedNotifications(permissions, userId)
+                .Result;
 
             ViewData["Count"] = notifications
                 .Where(x => x.IsSeen == false)
                 .Count();
 
-            List<NotificationBarViewModel> model = _mapper.Map<List<NotificationBarViewModel>>(notifications);
+            List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
 
             return View(model.Take(3).ToList());
 
