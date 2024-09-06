@@ -293,6 +293,32 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
+        [Route("downloadFile/{fileName}")]
+        public async Task<IActionResult> DownloadFile(string fileName)
+        {
+
+            var memory = new MemoryStream();
+
+            string fileNameTrimmed = fileName.Replace(" ", "");
+
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", fileNameTrimmed);
+
+            if (!System.IO.File.Exists(path))
+                return NotFound();
+
+            using (var stream = new FileStream(path, FileMode.Open))
+            {
+                await stream.CopyToAsync(memory);
+
+            }
+
+            memory.Position = 0;
+            string ext = Path.GetExtension(path).ToLowerInvariant();
+
+            return File(memory, ImageUpload.GetMimeTypes()[ext], Path.GetFileName(path));
+
+        }
+
         #endregion
 
         #region UPDATE
@@ -477,10 +503,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
 
+
+
         #endregion
 
 
     }
+
 
 
 

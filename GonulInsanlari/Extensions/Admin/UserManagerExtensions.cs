@@ -54,7 +54,16 @@ namespace GonulInsanlari.Extensions.Admin
 
         }
 
+        public static List<string> GetUserPermissions(this UserManager<AppUser> _userManager, ClaimsPrincipal _currentUser)
+        {
 
+            return _currentUser.Claims.
+                    Where(x => x.Type == "Permission")
+                    .Select(x => x.Value)
+                    .ToList();
+
+
+        }
 
 
     }

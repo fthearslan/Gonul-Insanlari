@@ -187,7 +187,6 @@
 
     <script src="~/inspinia-gh-pages/js/plugins/iCheck/icheck.min.js"></script>
 
-    <script src="js/plugins/validate/jquery.validate.min.js"></script>
 
     <script>
 
@@ -213,85 +212,7 @@
 
     </script>
 
-    <script>
-        function uploadFiles(inputId) {
-
-            var id = @Model.Id;
-            var input = document.getElementById(inputId);
-            var files = input.files;
-            var formData = new FormData();
-
-            for (var i = 0; i != files.length; i++) {
-                formData.append("Attachments", files[i]);
-            }
-
-            formData.append("TaskId", id);
-            $.ajax(
-                {
-                    url: "/assignments/add/file",
-                    data: formData,
-                    processData: false,
-                    contentType: false,
-                    type: "POST",
-                    success: function (result) {
-                        if (result.success) {
-                            $.toast({
-                                heading: 'Success',
-                                text: result.responseMessage,
-                                showHideTransition: 'slide',
-                                position: 'top-right',
-                                icon: 'success'
-                            })
-
-                            var obj = result.data;
-
-
-                            for (let i = 0; i < obj.length; i++) {
-
-                                var html = '<div class="file-box">' +
-
-                                    '<div class="file">' +
-
-                                    '<a href="Admin/Assignment/DownloadFile/' + obj[i].id + '" >' +
-
-                                    '<span class="corner"></span>' +
-
-                                    '<div class="icon">' +
-                                    '<i class="fa fa-file"></i>' +
-                                    '</div>' +
-                                    '<div class="file-name">'
-                                    + obj[i].path +
-
-                                    '<br />' +
-                                    '<small> Added: ' + obj[i].createdDate + '</small>' +
-                                    '</div>' +
-                                    '</a>' +
-                                    '</div>' +
-                                    '</div>';
-
-                                $("#mydiv1").append(html);
-
-
-                            }
-
-                        }
-                        else {
-
-                            $.toast({
-                                heading: 'Error',
-                                text: result.responseMessage,
-                                showHideTransition: 'slide',
-                                position: 'top-right',
-                                icon: 'error'
-                            })
-
-                        }
-
-                    }
-                }
-            );
-        }
-    </script>
+    
   
     <script>
         function DeleteAttachment(input) {

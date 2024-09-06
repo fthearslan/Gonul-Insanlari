@@ -27,26 +27,30 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         }
 
-        public async Task<UserNotification> GetUserNotificationById(string userId,int notificationId)
+        public async Task<UserNotification> GetUserNotificationById(string userId, int notificationId)
         {
             using var c = new Context();
 
             return await c.UserNotifications
-              .SingleOrDefaultAsync(x => x.UserId==Convert.ToInt32(userId) && x.Notification.Id == notificationId);
+              .SingleOrDefaultAsync(x => x.UserId == Convert.ToInt32(userId) && x.Notification.Id == notificationId);
 
 
         }
 
-        public async Task<List<Notification>> SearchNotifications(string searchInput)
+        public async Task<List<UserNotification>> SearchNotifications(string userId, string searchInput)
         {
 
             using var c = new Context();
 
-            return await c.Notifications
-                  .Where(x => x.Title.Contains(searchInput) | x.Content.Contains(searchInput) | x.Type.Contains(searchInput))
-                  .OrderByDescending(x => x.Created)
+
+            return await c.UserNotifications
+                .Where(x => x.UserId == Convert.ToInt32(userId) && x.Notification.Title.Contains(searchInput) | x.Notification.Content.Contains(searchInput) | x.Notification.Type.Contains(searchInput))
+                .OrderByDescending(x => x.Notification.Created)
                 .OrderByDescending(x => x.IsSeen == false)
-                  .ToListAsync();
+                .AsNoTrackingWithIdentityResolution()
+                .ToListAsync();
+
+
 
 
         }

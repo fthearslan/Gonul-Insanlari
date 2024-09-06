@@ -9,16 +9,17 @@
             <div id="@file.Item1.Split(".").First()" class="file-box">
            
                 <div class="file">
-                    <div style="cursor:pointer" onclick="DeleteAttachment('@file.Item1')">
+                    <div style="cursor:pointer" title="Remove file" onclick="DeleteAttachment('@file.Item1')">
                         <i class="fa fa-times"><a href="/assignment/remove/file/@file.Item1"></a></i>
                     </div>
-                
-                    <a href="/assignment/download/file/@file.Item1">
+
+                    
                         <span class="corner"></span>
 
                         <div class="icon">
                             <i class="fa fa-file"></i>
                         </div>
+                    <a href="/assignments/downloadFile/@file.Item1" title="Download file">
                         <div class="file-name">
                           @file.Item1
                             <br />
@@ -56,9 +57,9 @@
 
 
 
-                <input type="hidden" value="@ViewData["taskId"]" name="TaskId" />
+                <input type="hidden"  id="taskId" value="@ViewData["taskId"]" name="TaskId" />
 
-                <input id="files" name="files" type="file" size="1" multiple onchange="uploadFiles('files');" />
+                <input id="Files" name="files" type="file" size="1" multiple onchange="UploadFiles('Files','@ViewData["taskId"]');" />
 
             </div>
             <div class="modal-footer">

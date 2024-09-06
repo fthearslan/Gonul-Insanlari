@@ -18,15 +18,13 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         public IViewComponentResult Invoke()
         {
            var contacts = _contactManager.
-                   GetWhere(x => x.Status == true  && x.IsSeen==false && x.ContactStatus==ContactStatus.Received).
+                   GetWhere(x => x.Status == true && x.ContactStatus==ContactStatus.Received).
                     OrderByDescending(x => x.Created).
-                   ToList();
+                    OrderByDescending(x=>x.IsSeen==false)
+                   .ToList();
 
-            int Count = _contactManager
-                .ListFilter()
-                .Count;
 
-            ViewData["Count"] = Count;
+            ViewData["Count"] = contacts.Where(x=>x.IsSeen==false).Count();
             
             return View(contacts);
         

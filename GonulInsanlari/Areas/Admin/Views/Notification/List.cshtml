@@ -51,7 +51,7 @@
                                 {
                                     <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-left:8px;"></i>
 
-                                    
+
                                 }
                             </div>
                         </div>
@@ -67,12 +67,15 @@
 
 
             </div>
+            @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
 
         </div>
     </div>
 </div>
 
 @section Script{
+
+
 
     <script>
 
@@ -101,62 +104,58 @@
     </script>
 
     <script>
-        $(".myBox").click(function () {
-            window.location = $(this).find("a").attr("href");
-            return false;
-        });
-    </script>
-
-    <script>
         function searchNotifications() {
 
             $('#notificationPanel').empty();
 
-            var searchModel = {
-
-                Search: document.getElementById('searchbar').value,
-
-            };
-
-            if (searchModel.Search == null) {
-                notifyError("Please, type a word.");
-            }
+            let searchInput = document.getElementById('searchbar').value;
 
 
             $.ajax({
                 type: "POST",
                 url: "/notifications/search",
-                data: { model: searchModel },
+                data: { searchInput: searchInput },
                 success: function (result) {
+
+                    if (result.length == 0) {
+                        $("#notificationPanel").append('<p>Nothing found.</p>');
+                    }
 
                     let html = "";
 
                     for (let i = 0; i < result.length; i++) {
 
-                        html += '<div class="stream">' +
+                        let IsSeen = ""
+
+                        if (result[i].isSeen == false) {
+
+                            IsSeen = '<i class="fa fa-bell" aria-hidden="true" style="color:#1ab394;margin-left:8px;"></i>';
+                        }
+
+
+                        html += '<div class="stream myBox" onclick = "markAsSeen(' + result[i].id + ')" style= "cursor:pointer">' +
+                            '<a href="' + result[i].url + '/' + result[i].value + '"></a>' +
+
                             '<div class="stream-badge">' +
-                            '<i class="' + result.symbol + '"></i>' +
-                            '</div>' +
-                            '<div class="stream-panel">' +
+                            '<i class="' + result[i].symbol + '"></i>' +
+                            '</div>'+
+                        '<div class="stream-panel">' +
                             '<div class="stream-info">' +
-                            '<a href="' + result.url + '">' +
-                            '<img src="img/a5.jpg"/>' +
-                            '<span>' + result.Title + '</span>' +
-                            '<span class="date">' + result.date + '</span>' +
-                            '</a>' +
+
+                            '<span><strong>' + result[i].title + '</strong></span>' +
+                            '<span class="date">' + result[i].date + '</span>' +
+
                             '</div>' +
-                            result.content
-                        '<div>' +
+
+                            result[i].content + IsSeen +
+
+                            '</div>' +
                             '</div>';
 
 
-
-
-
-                        $("#notificationPanel").append(html);
-
-
                     }
+
+                    $("#notificationPanel").append(html);
 
                 }
             });
@@ -168,6 +167,15 @@
         }
 
     </script>
+
+    <script>
+        $(".myBox").click(function () {
+            window.location = $(this).find("a").attr("href");
+            return false;
+        });
+    </script>
+
+  
 
 
 

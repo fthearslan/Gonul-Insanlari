@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TableDependency.SqlClient;
+using ViewModelLayer.ViewModels.Notification;
 using X.PagedList;
 
 namespace BussinessLayer.Concrete.Managers
@@ -87,12 +88,25 @@ namespace BussinessLayer.Concrete.Managers
             return _notify.ListFilter(x => x.Status == true).OrderByDescending(x => x.Created).ToList();
         }
 
-        public async Task<List<Notification>> SearchNotifications(string searchInput)
+        public async Task<List<UserNotification>> SearchNotifications(NotificationSearchViewModel model)
         {
-            if (searchInput is not null)
-                await _notify.SearchNotifications(searchInput);
 
-            return null;
+            if (model.UserPermissions is null)
+                return null;
+
+            List<UserNotification> notifications = await _notify.SearchNotifications(model.UserId, model.SearchInput);
+
+            List<UserNotification> result = new();
+
+            notifications?.ForEach(notification =>
+            {
+
+                if (model.UserPermissions.Contains(notification.Notification.Type + ".Read"))
+                    result.Add(notification);
+
+            });
+
+            return result;
 
         }
 

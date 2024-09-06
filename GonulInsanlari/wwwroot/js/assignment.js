@@ -422,3 +422,101 @@ function AddUser(assignmentId) {
 
 
 }
+
+
+function UploadFiles(inputId, taskId) {
+
+
+    var input = document.getElementById(inputId);
+
+    var files = input.files;
+
+
+    var formData = new FormData();
+
+    for (var i = 0; i != files.length; i++) {
+        formData.append("Attachments", files[i]);
+    }
+
+    formData.append("TaskId", taskId);
+    $.ajax(
+        {
+            url: "/assignments/add/file",
+            data: formData,
+            processData: false,
+            contentType: false,
+            type: "POST",
+            success: function (result) {
+                if (result.success) {
+
+                    notifySuccess(result.responseMessage);
+
+                    var obj = result.data;
+
+
+                    for (let i = 0; i < obj.length; i++) {
+
+                        var html = '<div class="file-box">' +
+
+                            '<div class="file">' +
+
+
+                            '<span class="corner"></span>' +
+
+                            '<div class="icon">' +
+                            '<i class="fa fa-file"></i>' +
+                            '</div>' +
+                            '<a href="/assignments/downloadFile/' + obj[i].path + '" >' +
+
+                            '<div class="file-name">'
+                            + obj[i].path +
+
+                            '<br />' +
+                            '<small> Added: ' + obj[i].createdDate + '</small>' +
+                            '</div>' +
+                            '</a>' +
+                            '</div>' +
+                            '</div>';
+
+                        $("#mydiv1").append(html);
+
+
+                    }
+
+                }
+                else {
+
+                    notifyError(result.responseMessage);
+
+
+                }
+
+            }
+        }
+    );
+}
+
+//function downloadFile(fileName) {
+
+//    let fileNameTrimmed = fileName.replace(" ", "");
+
+//    $.ajax(
+//        {
+//            url: "/assignments/downloadFile/" + fileNameTrimmed,
+//            type: "POST",
+//            success: function (result) {
+               
+//            },
+//            statusCode: {
+//                404: function () {
+//                    notifyError('Source might have been changed.');
+//                }
+//            }
+
+
+
+//        });
+
+//        }
+
+

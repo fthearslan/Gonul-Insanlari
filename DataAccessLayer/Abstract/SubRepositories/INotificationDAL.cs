@@ -12,7 +12,7 @@ namespace DataAccessLayer.Abstract.SubRepositories
     public interface INotificationDAL : IRepository<Notification>
     {
 
-        Task<List<Notification>> SearchNotifications(string searchInput);
+        Task<List<UserNotification>> SearchNotifications(string userId,string searchInput);
 
         Task<List<UserNotification>> GetNotifications(string userId);
 
