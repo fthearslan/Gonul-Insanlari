@@ -22,8 +22,8 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Article
                 using Context context = new Context();
 
                 bool result = context.Articles
-                 .Select(x => x.Title)
-                 .Contains(title);
+                .Where(x=>x.Title==title).Count() > 1;
+                
 
                 return !result;
 

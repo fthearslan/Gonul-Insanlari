@@ -21,8 +21,8 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Article
                 using Context context = new Context();
 
                 bool result = context.Articles
-                 .Select(x => x.Title)
-                 .Contains(title);
+                 .Select(x => x.Title).ToString() == title;
+                
 
                 return !result;
 

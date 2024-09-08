@@ -56,7 +56,12 @@
                                                     </div>
                                                     <div class="m-t text-righ">
                                                         <a href="/articles/details/@article.Id" class="btn btn-xs btn-outline btn-primary">See<i style="margin-left:5px;" class="fa fa-long-arrow-right"></i> </a>
+                                                       
+                                                    @if (User.HasClaim("Permission", "Article.Update"))
+                                                    {
                                                         <a href="/articles/edit/@article.Id" class="btn btn-xs btn-outline btn-warning">Edit<i style="margin-left:5px;" class="fa fa-pencil-square-o"></i> </a>
+
+                                                    }
                                                     </div>
                                                 </div>
                                             </div>

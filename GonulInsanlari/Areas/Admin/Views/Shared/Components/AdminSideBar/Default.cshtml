@@ -14,8 +14,9 @@
                         <li><a class="dropdown-item" href="/admin/u/profile">Profile</a></li>
                     </ul>
                 </div>
-                <div class="logo-element">
-                    IN+
+                <div style="cursor:pointer" title="See profile"  class="logo-element myBox">
+                  <a href="/admin/u/profile"></a>
+                    <img alt="image" style="width:48px;height:48px;" class="rounded-circle" src="~/Images/@Model.ImagePath" />
                 </div>
             </li>
             <li class="active">
@@ -25,10 +26,11 @@
             @if (User.HasClaim("Permission", "Contact.Read"))
             {
                 <li>
-                    <a href="/mail/inbox"><i class="fa fa-inbox"></i> <span class="nav-label">Mailbox</span></a>
+                    <a href="/mail/inbox"><i class="fa fa-inbox"></i> <span class="nav-label">Mailbox</span> <span class="label label-primary">@ViewData["ContactCount"]</span> </a>
                 </li>
             }
 
+            
 
 
             @if (User.HasClaim("Permission", "Article.Read") | User.HasClaim("Permission", "Comment.Read"))
