@@ -17,6 +17,7 @@ namespace ViewModelLayer.ViewModels.Newsletter
         public string MailAddress { get; set; }
 
         public DateTime Created { get; set; }
+        public DateTime SubscriptionStartDate{ get; set; }
 
         public DateTime? SubscriptionEndDate { get; set; }
 

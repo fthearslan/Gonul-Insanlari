@@ -109,6 +109,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             newsLetterSubscriber.SubscriberStatus = SubscriberStatus.Active;
             newsLetterSubscriber.EmailConfirmed = true;
+            newsLetterSubscriber.SubscriptionStartDate = DateTime.Now;
+
             _newsLetterManager.Update(newsLetterSubscriber);
 
             @ViewData["Success"] = "Email has been successfully confirmed. You are subscribing our newsletter from now on.";

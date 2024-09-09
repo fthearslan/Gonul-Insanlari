@@ -50,7 +50,11 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #endregion
 
             #region All
-            CreateMap<Article, ArticleAllViewModel>();
+
+            CreateMap<Article, ArticleAllViewModel>()
+                .ForMember(dest=>dest.CommentCount,opt=>opt.MapFrom(src=>src.Comments.Count))
+                .ForMember(dest=>dest.Category,opt=>opt.MapFrom(src=>src.Category.Name));
+            
             #endregion
 
         }

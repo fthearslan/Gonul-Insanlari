@@ -16,6 +16,8 @@ namespace EntityLayer.Concrete.Entities
         public string MailAddress { get; set; }
 
         public bool EmailConfirmed { get; set; }
+
+        public DateTime? SubscriptionStartDate { get; set; } 
         public DateTime? SubscriptionEndDate { get; set; }
 
         public SubscriberStatus SubscriberStatus { get; set; } = SubscriberStatus.Pending;

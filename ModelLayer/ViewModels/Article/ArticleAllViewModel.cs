@@ -5,9 +5,10 @@
 
         public int Id { get; set; }
         public string Title { get; set; }
-        public EntityLayer.Concrete.Entities.Category Category { get; set; }
+        public string Category { get; set; }
         public string AppUser { get; set; }
         public bool Status { get; set; }
+        public int CommentCount { get; set; }
         public DateTime Created { get; set; }
 
     }

@@ -23,7 +23,9 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
         public IViewComponentResult Invoke()
         {
             var articles = _articleManager.GetAllWithoutDrafts();
+         
             List<ArticleAllViewModel> model = _mapper.Map<List<ArticleAllViewModel>>(articles);
+            
             return View(model);
 
         }

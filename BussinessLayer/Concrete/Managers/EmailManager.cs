@@ -160,7 +160,7 @@ namespace BussinessLayer.Concrete.Managers
 
 
             return await _newsletterManager
-                .GetWhere(sub => sub.Status == true)
+                .GetWhere(sub => sub.Status == true && sub.SubscriberStatus==SubscriberStatus.Active && sub.EmailConfirmed==true)
                 .Select(sub => new NewsletterSubscriberViewModel()
                 {
                     Name = sub.Name,

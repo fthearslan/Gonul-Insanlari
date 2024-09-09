@@ -101,6 +101,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         return BadRequest();
 
                     newsLetterSubscriber.SubscriberStatus = SubscriberStatus.Active;
+                    newsLetterSubscriber.SubscriptionStartDate = DateTime.Now;
                     newsLetterSubscriber.SubscriptionEndDate = null;
                     _manager.Update(newsLetterSubscriber);
 

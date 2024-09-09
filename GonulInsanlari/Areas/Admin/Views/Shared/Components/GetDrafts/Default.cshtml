@@ -42,12 +42,12 @@
                                 {
                                     int id = article.Id;
                                     <tr>
-                                        <td style="cursor:pointer" class="myBox"><a href="/Admin/Article/GetDetails/@article.Id"></a># @article.Title</td>
-                                        <td><span style="cursor:pointer" class="label label-primary myBox"><a href="#categorypage"></a>@article.Category.Name</span></td>
+                                        <td style="cursor:pointer" class="myBox"><a href="/articles/details/@article.Id"></a><i style="margin-right:3px;" class="fa fa-file-text" aria-hidden="true"></i>  @article.Title</td>
+                                        <td><span style="cursor:pointer" class="text-success myBox"><a href="#categorypage"></a>@article.Category</span></td>
                                         <td>@article.Created.ToString("dd-MMM-yyyy")</td>
-                                        <td><span class="label label-warning">Draft</span></td>
+                                        <td><span class="text-warning">Draft</span></td>
                                         <td class="btn-group">
-                                            <a class="btn-white btn btn-xs" href="/Admin/Article/GetDetails/@article.Id">View</a>
+                                            <a class="btn-white btn btn-xs" href="/articles/details/@article.Id">View</a>
                                             <a class="btn-danger btn btn-xs" onclick="fire(@id)" id="btn_delete" value="@article.Id" href="#"><i class="fa fa-trash"></i></a>
                                         </td>
                                     </tr>
