@@ -16,6 +16,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using Org.BouncyCastle.Crypto;
+using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
@@ -332,7 +333,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 userLogins = user?.UserLogin.
                    Where(x => x.Description.Contains(model.Search) || x.Type.ToString().Contains(model.Search) || x.Date.ToString().Contains(model.Search))
-                   .OrderByDescending(x=>x.Date)
+                   .OrderByDescending(x => x.Date)
                    .ToList();
             }
 
@@ -386,43 +387,54 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("users/delete/{id}")]
-        [HasPermission(PermissionType.User, Permission.Update | Permission.Delete)]
-        public async Task<IActionResult> EnableOrDisable(string id)
+        [HasPermission(PermissionType.User, Permission.Delete)]
+        public async Task<IActionResult> EnableOrDisable(string id, string action)
         {
 
             var user = await _userManager.FindByIdAsync(id);
 
-            user.Status = user.Status switch
+            switch (action)
             {
-                true => false,
-                false => true
-            };
+                case "Disable":
+                    user.Status = false; await _userManager.UpdateAsync(user); break;
 
-            using (var c = new Context())
-            {
-                c.Users.Update(user);
+                case "Enable":
+                    user.Status = true; await _userManager.UpdateAsync(user); break;
 
-                if (c.SaveChanges() > 0)
-                {
-                    _response.responseMessage = "The status of the user has been successfully changed.";
-                    _response.success = true;
-                }
-                else
-                {
-                    _response.responseMessage = "Something went wrong";
-                    _response.success = false;
+                case "Delete":
+                    try
+                    {
+                        await _userManager.DeleteAsync(user); break;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is DbUpdateException)
+                            _response.responseMessage = "Cannot delete this user while it has ongoing processes such as assignment...";
 
-                }
+                        else
+                            _response.responseMessage = "Something went wrong.";
 
+                        _response.success = false;
+
+                    }
+
+                    return Json(_response);
+
+                  
 
             }
+
+            _response.responseMessage = "Action succeed!";
+            _response.success = true;
 
 
             return Json(_response);
 
+         
+
         }
 
-        // DeleteUser()...
+
 
 
 

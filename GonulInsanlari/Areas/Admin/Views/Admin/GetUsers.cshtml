@@ -5,9 +5,9 @@
 }
 
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
-
-
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" />
 <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/fixedheader/3.1.6/css/fixedHeader.bootstrap4.min.css" />
@@ -33,15 +33,14 @@
                         @foreach (var user in Model)
                         {
 
-                            string color = (user.Status == true) ? "btn-danger" : "btn-primary";
+                            string color = (user.Status == true) ? "btn-warning" : "btn-success";
                             string text = (user.Status == true) ? "Disable" : "Enable";
-                            string icon = (user.Status == true) ? "fa fa-trash" : "fa fa-undo";
 
 
                             <div class="col-sm-3">
                                 <div class="contact-box center-version">
 
-                                    <a href="profile.html">
+                                    <a href="#">
 
                                         <img alt="image" class="rounded-circle" src="~/Images/@user.ImagePath">
 
@@ -66,12 +65,14 @@
                                     <div class="contact-box-footer">
                                         <div class="m-t-xs btn-group">
 
-                                            <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-primary "><i class="fa fa-eyes"></i>See</a>
+                                            <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-primary"><i class="fa fa-eyes"></i>See</a>
 
                                             @if (User.IsInRole("SuperAdmin"))
                                             {
 
-                                                <a href="#" onclick="enableOrDisable('@user.Id',@text)" class="btn btn-xs @color"><i class="@icon"></i> @text</a>
+                                                <a href="#" onclick="enableOrDisable('@user.Id','@text')" class="btn btn-xs @color"> @text</a>
+                                                <a href="#" onclick="enableOrDisable('@user.Id','Delete')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+
                                             }
 
                                         </div>
@@ -222,11 +223,13 @@
 @section Script{
 
     <script src="~/js/admin.js"></script>
-    <script src="sweetalert2.all.min.js"></script>
+
+  
 
 
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+
 
     <script src="~/lib/jquery.toast.min.js"></script>
 

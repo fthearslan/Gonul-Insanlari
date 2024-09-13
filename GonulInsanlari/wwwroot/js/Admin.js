@@ -459,7 +459,6 @@ function Search(id) {
 
 function enableOrDisable(id, text) {
 
-    //read btnText and write if condition in order to show text.
 
     let msg = "";
     let icon = "";
@@ -468,16 +467,22 @@ function enableOrDisable(id, text) {
     if (text == "Disable") {
         msg = "Disabled user will be permanently deleted within 14 days.";
         icon = "warning";
-        btnText = "Yes,disable it!";
-
-    } else {
-        msg = "This user will be enabled.";
-        icon = "warning";
-        btnText = "Yes,enable it!";
+        btnText = "Yes, disable it!";
 
     }
+    if (text=="Enable") {
+        msg = "This user will be enabled.";
+        icon = "warning";
+        btnText = "Yes, enable it!";
 
+    }
+    if (text == "Delete") {
+        msg = "This user will be deleted permanently.";
+        icon = "warning";
+        btnText = "Yes, delete it!";
 
+    }
+    
     Swal.fire({
         title: "Are you sure?",
         text: msg,
@@ -490,14 +495,18 @@ function enableOrDisable(id, text) {
 
         if (result.isConfirmed) {
 
+
+
             $.ajax({
 
                 type: "POST",
                 url: "/admin/u/users/delete/" + id,
+                data: {action:text},
                 success: function (response) {
 
                     if (response.success) {
 
+                      
                         $.toast({
                             heading: 'Success',
                             text: response.responseMessage,
@@ -524,12 +533,33 @@ function enableOrDisable(id, text) {
                     }
 
 
+                },
+                statusCode: {
+                    403: function () {
+
+                        $.toast({
+                            heading: 'Error',
+                            text: 'You do not have a permission.',
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+                        
+                    }
                 }
 
             });
 
-        };
+
+
+
+        }
+
+
     });
+
+
 
 }
 
