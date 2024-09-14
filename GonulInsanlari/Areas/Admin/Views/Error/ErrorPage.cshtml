@@ -31,7 +31,18 @@
         </div>
 
         <div>
-            <a href="/home/dashboard" class="btn btn-primary"> Go to Home </a>
+        @if(User.Identity is not null)
+            @if (User.Identity.IsAuthenticated)
+            {
+                <a href="/home/dashboard" class="btn btn-primary"> Back to dashboard </a>
+            }
+            else
+            {
+
+                <a href="/Home/Index" class="btn btn-primary"> Go to home </a>
+
+            }
+
 
         </div>
 

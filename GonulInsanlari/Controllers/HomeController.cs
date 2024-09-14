@@ -25,13 +25,7 @@ namespace GonulInsanlari.Controllers
         {
             return RedirectToAction("Login","Login",new {area="Admin"});
         }
-        [HttpPost]
-        public IActionResult Index(List<string> strings) 
-        {
-
-            return View();
-        
-        }
+     
         public IActionResult Privacy()
         {
             return View();

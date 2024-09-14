@@ -100,6 +100,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                     .Where(a => a.IsDraft == false)
                     .Include(a => a.Category)
                     .Include(a => a.AppUser)
+                    .Include(a=>a.Comments)
                     .OrderByDescending(a => a.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToList();

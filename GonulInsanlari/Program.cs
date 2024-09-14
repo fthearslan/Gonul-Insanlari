@@ -41,6 +41,8 @@ builder.Services.AddMvc(config =>
     .RequireAuthenticatedUser()
     .Build();
     config.Filters.Add(new AuthorizeFilter(policy));
+
+
 }
 );
 builder.Services.AddDbContext<Context>();
