@@ -7,6 +7,9 @@ namespace GonulInsanlari.Views.Shared
     {
         public void OnGet()
         {
+
+
+
         }
     }
 }
