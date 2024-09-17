@@ -103,7 +103,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
-            model.GetVideoUrl(model.VideoPath);
 
             if (ModelState.IsValid)
             {
@@ -153,6 +152,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (article is not null)
             {
+
+                ViewData["articleTitle"] = article.Title;
+
                 ArticleDetailsViewModel model = _mapper.Map<ArticleDetailsViewModel>(article);
 
                 return View(model);

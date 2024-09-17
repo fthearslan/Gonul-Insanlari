@@ -21,7 +21,6 @@ namespace ViewModelLayer.ViewModels.Article
         public int CategoryID { get; set; }
 
         public bool Status { get; set; } = true;
-        public string? VideoPath { get; set; }
 
         public bool IsDraft { get; set; } = false;
 
@@ -30,12 +29,7 @@ namespace ViewModelLayer.ViewModels.Article
         /// To convert raw url.
         /// </summary>
         /// <param name="Url"></param>
-        public void GetVideoUrl(string? Url)
-        {
-
-            VideoPath = GetUrl.GetVideoUrl(Url);
-
-        }
+      
     }
 
 

@@ -32,12 +32,12 @@
 
                             @foreach (var category in Model)
                             {
-                                string label = (category.Status == true) ? "label label-primary" : "label label-danger";
+                                string label = (category.Status == true) ? "text-navy" : "text-danger";
                                 string text = (category.Status == true) ? "Enabled" : "Disabled";
                                 <tr>
                                     <td style="cursor:pointer" class="myBox">
                                         <a href="/categories/details/@category.CategoryID"></a>
-                                        # @category.Name
+                                        <i class="fa fa-th-list" style="color:darkslategrey;margin-right:3px;"></i> @category.Name
                                     </td>
                                     <td><span class="@label">@text</span></td>
                                     <td>@category.ArticleCount</td>

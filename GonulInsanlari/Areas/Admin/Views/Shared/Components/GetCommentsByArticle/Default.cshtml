@@ -1,11 +1,10 @@
-﻿@model List<Comment>
+﻿@model List<CommentListViewModel>
 
 <div class="row">
-   
+
     <div class="col-md-12">
         <div class="small text-right">
-            <h5>Stats:</h5>
-            <div> <i class="fa fa-comments-o fa-lg"> </i> @Model.Count  comments </div>
+            <h5><i class="fa fa-comments-o fa-lg"> </i> @Model.Count  comments</h5>
         </div>
     </div>
 </div>
@@ -15,27 +14,27 @@
         <h2>Comments:</h2>
         @foreach (var comment in Model.Take(3))
         {
-            <div class="social-feed-box">
-                <div class="social-avatar">
-                    <a class="float-left">
-                        <i class="fa fa-comment fa-2x"></i>
-                    </a>
-                    <div style="padding-left:15px;" class="media-body">
-                        <a>
-                            @comment.NameSurname
-                        </a>
-                        <small class="text-muted">@comment.Created</small>
-                    </div>
-                </div>
-                <div class="social-body">
-                    <p>
+
+
+            <div class="chat-element ">
+                <a href="#" class="float-left">
+                    <img alt="image" class="rounded-circle" src="~/Images/profile.jpg" />
+                </a>
+                <div class="media-body ">
+                    <small class="float-right">@comment.Progress?.ToString()</small>
+                    <strong>@comment.NameSurname</strong>
+                    <p class="m-b-xs">
                         @comment.Content
                     </p>
+                    <small class="text-muted">@GetDate.GetCreateDate(comment.Created)</small>
                 </div>
             </div>
+
+
+
         }
         <p>@TempData["Warning"]</p>
-        <a class="float-right" href="/Admin/Comment/GetByArticle/"><h5>See all comments for this article >></h5></a>
+        <a class="float-right" href="/comments/details/@ViewData["articleTitle"]/"><h5>See all comments for this article >></h5></a>
     </div>
 </div>
 

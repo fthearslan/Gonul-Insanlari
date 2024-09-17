@@ -14,6 +14,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Article
 
         public EditArticleValidator()
         {
+
             RuleFor(x => x.Title).NotEmpty().WithMessage("Title cannot be empty.");
             RuleFor(x => x.Title).MinimumLength(3).WithMessage("Too short for title.");
             RuleFor(x => x.Title).MaximumLength(50).WithMessage("Title cannot contain more than 50 charachters.");
