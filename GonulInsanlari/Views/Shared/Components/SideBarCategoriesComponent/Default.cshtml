@@ -1,4 +1,5 @@
-﻿
+﻿@model List<CategoryWithCountViewModel>
+
 <div class="sidebar-widget discover-post">
 
     <h6 class="discover-title">
@@ -10,11 +11,24 @@
         </svg>
     </h6>
 
+
+
+
+
     <ul class="category">
 
-        <li>
-            <a href="#"> Category Name (Article Count) </a>
-        </li>
+        @foreach(CategoryWithCountViewModel category in Model)
+        {
+
+            <li>
+                <a href="#details"> @category.Name (@category.ArticleCount) </a>
+            </li>
+
+
+
+            
+        }
+
 
 
     </ul>

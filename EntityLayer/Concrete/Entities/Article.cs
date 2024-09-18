@@ -32,6 +32,8 @@ namespace EntityLayer.Concrete.Entities
         public string? VideoPath { get; set; }
         public AppUser? AppUser { get; set; }
 
+        public int SeenCount { get; set; }
+
 
     }
 }

@@ -15,5 +15,8 @@ namespace DataAccessLayer.Abstract.SubRepositories
         List<CategoryDto> GetList();
         Category GetDetails(int id);
 
+        List<Category> GetCategoriesWithArticleCount(int takeCount);
+
+
     }
 }

@@ -1,5 +1,8 @@
 ﻿
 
+
+@model List<ArticleBannerViewModel>
+
 <div class="banner-swipe mb-60">
 
     <div class="container-xl">
@@ -12,52 +15,59 @@
 
                     <div class="swiper-wrapper">
 
-                        <div class="swiper-slide">
+                        @foreach (ArticleBannerViewModel article in Model)
+                        {
+                            string description = @GetString.GetRawString(article.Description);
 
-                            <div class="row gy-4">
-                                <div class="col-lg-6 col-md-6 d-flex align-items-center">
-                                    <div class="banner-content">
-                                        <ul class="btn-area">
+                            <div class="swiper-slide">
 
-                                            <li class="basic-btn"><a href="ai-category.html"> Category Name </a></li>
+                                <div class="row gy-4">
+                                    <div class="col-lg-6 col-md-6 d-flex align-items-center">
+                                        <div class="banner-content">
+
+                                            <ul class="btn-area">
+
+                                                <li class="basic-btn"><a href="#details/@article.CategoryName"> @article.CategoryName </a></li>
 
 
 
-                                        </ul>
+                                            </ul>
 
-                                        <h1><a href="standard-formate.html"> Article Name </a></h1>
-                                        <p> Article Description </p>
+                                            <h1><a href="#details/@article.Title"> @article.Title </a></h1>
+                                            <p> @description.Substring(0,description.IndexOf(".")).</p>
 
-                                        <div class="author-area">
-                                            <div class="author-img">
-                                                <a href="editor-profile.html"><img src="../assets/image/ai-technology/Image-46.png" alt=""></a>
-                                            </div>
-                                            <div class="author-content">
-                                                <div class="author-name">
-                                                    <a href="editor-profile.html"> Author Name </a>
+                                            <div class="author-area">
+                                                <div class="author-img">
+                                                    <a href="#"><img src="../assets/image/ai-technology/Image-46.png" alt=""></a>
                                                 </div>
-                                                <div class="publish-date">
-                                                    <a href="ai-category.html"> Published Date </a>
-                                                    <span> Read Count </span>
+                                                <div class="author-content">
+                                                    <div class="author-name">
+                                                        <a href=""> example </a>
+                                                    </div>
+                                                    <div class="publish-date">
+                                                        <a href="#"> @article.Created.ToShortDateString() </a>
+                                                        <span> @article.SeenCount </span>
+                                                    </div>
                                                 </div>
                                             </div>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 d-md-flex d-none justify-content-end">
+
+                                        <div style="cursor:pointer;" class="banner-img">
+                                            <img src="~/Images/@article.ImagePath" width="536px;" height="423px;" alt="@article.Title">
                                         </div>
 
                                     </div>
 
                                 </div>
 
-                                <div class="col-lg-6 col-md-6 d-md-flex d-none justify-content-end">
-
-                                    <div class="banner-img">
-                                        <img src="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/image/ai-technology/Robot-Image.png" alt="">
-                                    </div>
-
-                                </div>
-
                             </div>
+                        }
 
-                        </div>
 
                     </div>
                 </div>

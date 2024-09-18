@@ -14,10 +14,28 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFCategoryDAL : GenericRepository<Category>, ICategoryDAL
     {
-       
+        public List<Category> GetCategoriesWithArticleCount(int takeCount)
+        {
+            using var c = new Context();
+
+            return c.Categories
+                      .Where(x => x.Status == true)
+                      .Include(x => x.Articles)
+                      .Select(x => new Category
+                      {
+                          Name = x.Name,
+                          Articles = x.Articles
+                     
+                      }).OrderByDescending(x => x.Articles.Count)
+                      .Take(takeCount)
+                      .ToList();
+
+
+        }
+
         public Category GetDetails(int id)
         {
-            using (var db= new Context())
+            using (var db = new Context())
             {
                 return db.Categories.Where(c => c.Id == id).Select(c => new Category
                 {

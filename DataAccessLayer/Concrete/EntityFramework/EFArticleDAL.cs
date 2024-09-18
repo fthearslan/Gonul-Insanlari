@@ -127,6 +127,8 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
 
         }
+
+    
     }
 
 }

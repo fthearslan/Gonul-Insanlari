@@ -20,5 +20,6 @@ namespace BussinessLayer.Abstract.Services
 
         List<Article> ListByCategory(int id);
 
+
     }
 }

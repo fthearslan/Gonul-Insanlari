@@ -15,5 +15,8 @@ namespace BussinessLayer.Abstract.Services
         List<CategoryDto> GetCategoriesWithArticle();
 
         Category GetDetails(int id);
+
+        List<Category> GetCategoriesWithArticleCount(int takeCount);
+
     }
 }

@@ -41,6 +41,19 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
+        public List<Category> GetCategoriesWithArticleCount(int takeCount)
+        {
+
+            if (takeCount < 0)
+                return null;
+
+
+            return _category.GetCategoriesWithArticleCount(takeCount);
+
+
+
+        }
+
         public Category GetDetails(int id)
         {
             return _category.GetDetails(id);

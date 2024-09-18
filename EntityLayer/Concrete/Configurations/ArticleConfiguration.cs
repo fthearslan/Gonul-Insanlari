@@ -18,6 +18,9 @@ namespace EntityLayer.Concrete.Configurations
                 .WithMany(u => u.Articles)
                 .HasForeignKey(a => a.AppUserID);
 
+            builder.Navigation(a => a.Category)
+                .AutoInclude();
+
             builder.Property(a => a.Status).HasDefaultValue(true);
 
 

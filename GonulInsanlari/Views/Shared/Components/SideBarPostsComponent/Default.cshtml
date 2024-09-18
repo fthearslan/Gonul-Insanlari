@@ -1,18 +1,27 @@
-﻿
+﻿@model List<ArticleSideBarViewModel>
+
 <div class="sidebar-widget featured-post">
 
-    <h6> Articles </h6>
+    <h6> Latest Articles </h6>
 
-    <div class="recent-post mb-20">
-     
-        <div class="recent-post-img">
-            <a href="standard-formate.html"><img src="assets/image/life-style/sidebar-img1.png" alt=""></a>
+
+    @foreach (ArticleSideBarViewModel article in Model)
+    {
+ 
+        <div class="recent-post mb-20">
+
+            <div class="recent-post-img">
+                <a href="#details"><img src="~/Images/@article.ImagePath" width="88px;" height="90px;" alt=""></a>
+            </div>
+
+            <div class="recent-post-content">
+                <a href="#details"> @article.Created.ToShortDateString() </a>
+                <h5><a href="#details"> @article.Title </a></h5>
+            </div>
         </div>
 
-        <div class="recent-post-content">
-            <a href="life-style.html"> Published Date </a>
-            <h5><a href="standard-formate.html"> Article Name </a></h5>
-        </div>
-    </div>
 
+    }
+
+   
 </div>
