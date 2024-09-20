@@ -40,16 +40,16 @@ namespace GonulInsanlari.Controllers
                 })
                 .OrderByDescending(x => x.Created)
                 .OrderByDescending(x => x.ArticleCount)
-                .ToPagedListAsync(pageNumber,3);
+                .ToPagedListAsync(pageNumber,10);
 
-            ViewData["pageNumber"] = pageNumber;
+           
 
             return View(categories);
 
         }
 
         [Route("details/{categoryName}")]
-        public async Task<IActionResult> GetDetails(string categoryName)
+        public async Task<IActionResult> GetDetails(string categoryName,int pageNumber = 1)
         {
 
             Category? category = await _categoryManager.GetByNameAsync(categoryName);
@@ -58,6 +58,8 @@ namespace GonulInsanlari.Controllers
                 return NotFound();
 
             CategoryDetailsUIViewModel model = _mapper.Map<CategoryDetailsUIViewModel>(category);
+
+            model.PagedArticles = await model.Articles.ToPagedListAsync(pageNumber, 10);
 
             return View(model);
 

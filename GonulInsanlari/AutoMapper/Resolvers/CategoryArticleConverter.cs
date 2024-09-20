@@ -4,6 +4,7 @@ using ViewModelLayer.ViewModels.Article;
 using ViewModelLayer.ViewModels.Category;
 using ViewModelLayer.ViewModels.Contact;
 using ViewModelLayer.ViewModels.Notification;
+using X.PagedList;
 
 namespace GonulInsanlari.AutoMapper.Resolvers
 {
@@ -20,9 +21,9 @@ namespace GonulInsanlari.AutoMapper.Resolvers
             destination.Description = source.Description;
             destination.Created = source.Created;
             destination.ImagePath = source.ImagePath;
-
-
+            destination.PagedArticles = null;
             destination.Articles = new();
+            
 
             source.Articles?.ForEach(x =>
             {

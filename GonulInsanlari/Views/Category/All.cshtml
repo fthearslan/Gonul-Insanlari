@@ -106,14 +106,14 @@
 
 
                             <div class="col-lg-12 d-flex justify-content-center">
-                           
+
 
 
                                 @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("All",new { pageNumber}),new X.PagedList.Web.Common.PagedListRenderOptions(){
 
-                                    
-                                DisplayLinkToLastPage=X.PagedList.Web.Common.PagedListDisplayMode.Never,
 
+                                DisplayLinkToLastPage=X.PagedList.Web.Common.PagedListDisplayMode.Never,
+                                Display=X.PagedList.Web.Common.PagedListDisplayMode.IfNeeded,
                                 DisplayPageCountAndCurrentLocation=false,
                                 DisplayLinkToIndividualPages=false,
                                 LiElementClasses=new[]{"load-btn hover-btn"},

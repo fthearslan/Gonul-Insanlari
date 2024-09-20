@@ -13,7 +13,8 @@ namespace ViewModelLayer.Models.Tools
         {
 
             if (text is not null)
-                return Regex.Replace(text, "<.*?>", string.Empty);
+               return Regex.Replace(text, "<.*?>", string.Empty)
+                    .Replace("&nbsp;"," ");
 
             return null;
 

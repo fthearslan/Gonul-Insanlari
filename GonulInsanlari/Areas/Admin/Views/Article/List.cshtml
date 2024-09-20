@@ -73,7 +73,7 @@
                             }
 
                         </div>
-                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
+                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}),X.PagedList.Web.Common.PagedListRenderOptions.TwitterBootstrapPager)
 
                     </div>
                 </div>
@@ -109,9 +109,7 @@
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
     <script src="sweetalert2.all.min.js"></script>
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+
 
 
     <script>

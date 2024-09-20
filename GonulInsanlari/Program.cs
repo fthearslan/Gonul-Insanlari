@@ -122,6 +122,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+
+
 app.UseStatusCodePagesWithReExecute("/error/notFound", "?code={0}");
 
 app.UseMiddleware<GlobalExceptionHandlingMiddleware>();

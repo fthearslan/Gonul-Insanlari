@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ViewModelLayer.ViewModels.Article;
+using X.PagedList;
 
 namespace ViewModelLayer.ViewModels.Category
 {
@@ -17,6 +18,8 @@ namespace ViewModelLayer.ViewModels.Category
         public string? ImagePath { get; set; }
 
         public List<ArticleListUIViewModel> Articles { get; set; }
+
+        public IPagedList<ArticleListUIViewModel>? PagedArticles { get; set; }
         public DateTime Created { get; set; }
 
 
