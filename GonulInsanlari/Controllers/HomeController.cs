@@ -23,7 +23,7 @@ namespace GonulInsanlari.Controllers
 
         public IActionResult Index()
         {
-            //return RedirectToAction("Login","Login",new {area="Admin"});
+           
             return View();
         }
      

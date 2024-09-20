@@ -14,6 +14,18 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFCategoryDAL : GenericRepository<Category>, ICategoryDAL
     {
+     
+        public async Task<Category> GetByNameAsync(string categoryName)
+        {
+            using var c = new Context();
+
+            return await c.Categories
+                .Include(x=>x.Articles)
+                .SingleOrDefaultAsync(x => x.Status == true && x.Name == categoryName);
+                
+
+        }
+
         public List<Category> GetCategoriesWithArticleCount(int takeCount)
         {
             using var c = new Context();

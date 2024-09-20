@@ -18644,7 +18644,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             visibility: hidden;
         }
     }
-
     // travel
     header.travel {
         border-color: #484848;
@@ -18745,9 +18744,11 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             .slider-btn {
                 background: var(--dark-text-color);
                 border: 1px solid #2F2F2F;
+
                 svg {
                     fill: var(--white-color);
                 }
+
                 &:hover {
                     background-color: var(--primary-green);
                     border-color: var(--primary-green);
@@ -18762,6 +18763,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
         .banner-bg {
             border-color: #313030;
         }
+
         .helth-banner {
             border-color: #313030;
         }
@@ -18772,8 +18774,10 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             border-color: #313030;
         }
     }
+
     .blog-area {
         border-color: #313030;
+
         .blog-card {
             .blog-bottom-content {
                 .blog-author {
@@ -18813,6 +18817,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             }
         }
     }
+
     .health-sidebar-area {
         .single-widget {
             border-color: #313030;
@@ -18849,28 +18854,34 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
 
     .footer-section {
         background: #111111;
+
         .footer-top {
             .footer-top-content {
                 .email-area {
                     .input-area {
                         background: var(--dark-text-color);
                         border: 1px solid #2F2F2F;
+
                         input {
                             background: var(--dark-text-color);
-                        }      
+                        }
                     }
+
                     .our-activetis {
                         .social-area {
                             .icon {
                                 background: var(--dark-text-color);
                                 border: 1px solid #2F2F2F;
+
                                 svg {
                                     fill: var(--white-color);
                                 }
                             }
-                            &:hover{
-                                .icon{
+
+                            &:hover {
+                                .icon {
                                     background: var(--primary-green);
+
                                     svg {
                                         fill: var(--dark-text-color);
                                     }
@@ -18905,6 +18916,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 }
             }
         }
+
         .footer-btm {
             background: var(--dark-text-color);
             border: 1px solid #2F2F2F;
@@ -19032,9 +19044,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                     }
                 }
             }
-
         }
-
     }
 
     .pet-news {
@@ -19244,7 +19254,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                                     fill: #161616;
                                 }
                             }
-
                         }
 
                         .number {
@@ -19269,7 +19278,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                             background: var(--primary-green);
                             color: var(--dark-text-color);
                         }
-
                     }
                 }
 
@@ -19359,7 +19367,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                     width: 100%;
                 }
             }
-
         }
 
         .contect-section {
@@ -19414,7 +19421,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 svg {
                     path {
                         stroke: var(--white-color);
-
                     }
                 }
 
@@ -19424,7 +19430,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                     svg {
                         path {
                             stroke: #191919;
-
                         }
                     }
                 }
@@ -19592,10 +19597,8 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 }
             }
         }
-
-        
-
     }
+
     .pet-sidebar-area {
         .single-widget {
             border: 1px solid #2F2F2F;
@@ -19680,9 +19683,10 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 .input-area {
                     background: var(--dark-text-color);
                     border: 1px solid #2F2F2F;
+
                     input {
                         background: var(--dark-text-color);
-                    } 
+                    }
                 }
             }
 
@@ -19974,9 +19978,10 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 .input-area {
                     background: var(--dark-text-color);
                     border: 1px solid #2F2F2F;
+
                     input {
                         background: var(--dark-text-color);
-                    } 
+                    }
                 }
             }
 
@@ -20034,7 +20039,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             }
         }
     }
- 
+
     .exclusive-section {
         .section-title {
             h5 {
@@ -20457,14 +20462,16 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
 
     .footer-section-7 {
         background: var(--dark-text-color);
+
         .footer-logo-section {
             .our-activetis {
                 .social-area {
                     .icon {
                         border: 1px solid #2F2F2F;
                     }
-                    &:hover{
-                        .icon{
+
+                    &:hover {
+                        .icon {
                             svg {
                                 fill: var(--dark-text-color);
                             }
@@ -20478,7 +20485,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             border-top: 1px solid #2F2F2F;
         }
     }
-
     // life style
     .blog-post-8 {
 
@@ -20516,7 +20522,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
         h1 {
             border-bottom: 1px solid #2F2F2F;
         }
-       
+
         .post-btn {
             border-top: 1px solid #2F2F2F;
             border-bottom: 1px solid #2F2F2F;
@@ -20586,20 +20592,16 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
 
             .content-area {
                 border-bottom: 1px solid #2F2F2F;
-
-               
             }
-
         }
 
         .banner-content {
             border-bottom: 1px solid #2F2F2F;
-           
         }
 
-       
 
-          
+
+
         .pagination-area {
             h6 {
                 color: var(--white-color);
@@ -20716,14 +20718,14 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
 
             ul {
                 li {
-                    
+
                     .icon {
                         background: var(--dark-text-color);
                         border: 1px solid #2F2F2F;
+
                         svg {
                             fill: var(--white-color);
                         }
-
                     }
 
                     &:hover {
@@ -20748,7 +20750,8 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                 #copy-link-icon {
                     border: 1px solid var(--primary-green);
                     background-color: var(--primary-green);
-                    svg{
+
+                    svg {
                         fill: var(--dark-text-color);
                     }
                 }
@@ -20770,7 +20773,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             input {
                 background: var(--dark-text-color);
             }
-
         }
 
         p {
@@ -20881,7 +20883,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
             }
 
             .banner-content {
-                >span {
+                > span {
                     color: var(--text-color);
                 }
 
@@ -20988,7 +20990,8 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                         }
                     }
                 }
-                .counter-area{
+
+                .counter-area {
                     background-color: #161616;
                 }
             }
@@ -21004,7 +21007,6 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                     .author-name {
                         h5 {
                             color: var(--white-color);
-
                         }
 
                         span {
@@ -21175,12 +21177,15 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                         border: 1px solid var(--border-color);
                         margin-bottom: 15px;
                         background-color: transparent;
+
                         &:last-child {
                             margin-bottom: 0;
                         }
+
                         .accordion-header {
                             border-radius: 10px;
                             background-color: transparent;
+
                             .accordion-button {
                                 color: var(--text-color);
                                 font-family: var(--font-red-rose);
@@ -21189,6 +21194,7 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                                 padding: 15px 55px 15px 25px;
                                 border-radius: 10px;
                                 background-color: transparent;
+
                                 @include sm-down-device() {
                                     padding: 15px 45px 15px 15px;
                                 }
@@ -21206,50 +21212,57 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                                 }
                             }
                         }
-                        &:hover{
-                            .accordion-header{
-                                .accordion-button{
-                                    &::after{
+
+                        &:hover {
+                            .accordion-header {
+                                .accordion-button {
+                                    &::after {
                                         background-color: var(--primary-green);
                                         border-color: var(--primary-green);
                                         color: var(--dark-text-color);
                                     }
                                 }
-                            } 
+                            }
                         }
                     }
                 }
             }
         }
     }
+
     #simp {
-        .simp-player{
+        .simp-player {
             background-color: #202020;
         }
     }
-    mark{
+
+    mark {
         background-color: #333333;
     }
-    .featured-post-sideber{
-        .featured-post{
+
+    .featured-post-sideber {
+        .featured-post {
             background-color: #202020;
+
             .recent-post {
-                border-color:  #2F2F2F;
-    
+                border-color: #2F2F2F;
+
                 .recent-post-content {
-                    >a {
+                    > a {
                         color: #C4C4C4;
                     }
                 }
             }
         }
-        .about-section{
-            ul{
-                li{
-                    a{
+
+        .about-section {
+            ul {
+                li {
+                    a {
                         color: var(--white-color);
                         background: #2F2F2F;
-                        &:hover{
+
+                        &:hover {
                             color: #161616;
                             background: var(--white-color);
                         }
@@ -21259,91 +21272,103 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
         }
     }
 
-    .breadcrumb-and-page-title{
-        .inner-page-breadcrumb-wrapper{
+    .breadcrumb-and-page-title {
+        .inner-page-breadcrumb-wrapper {
             padding: 15px 0;
         }
-        .page-title-area{
+
+        .page-title-area {
             background-color: #202020;
-            .vector{
+
+            .vector {
                 stroke: var(--dark-text-color);
-              
             }
-            h1{
-                span{
+
+            h1 {
+                span {
                     background-color: var(--dark-text-color);
-                    
-                }              
+                }
             }
-           
         }
-        &.health{
-            .page-title-area{
+
+        &.health {
+            .page-title-area {
                 border-color: #313030;
                 background-image: unset !important;
                 background-color: #202020;
-            } 
+            }
         }
-        &.ai{
-            .page-title-area{
+
+        &.ai {
+            .page-title-area {
                 background-image: unset !important;
                 background-color: #202020;
-            } 
+            }
         }
     }
-    .load-btn{
+
+    .load-btn {
         background-color: #2F2F2F;
-        &:hover{
+
+        &:hover {
             color: var(--dark-text-color);
-            svg{
+
+            svg {
                 stroke: var(--dark-text-color);
             }
         }
     }
-    .blog-audio{
-        .image-content{
+
+    .blog-audio {
+        .image-content {
             border: 1px solid #2F2F2F;
             border-top: unset;
+
             .publish-date {
                 .button {
                     background: #2f2f2f;
-    
+
                     &:hover {
                         background: var(--primary-blue);
                         color: var(--white-color);
                     }
-    
                 }
             }
         }
     }
-    .blog-card3{
-        .blog-content2{
+
+    .blog-card3 {
+        .blog-content2 {
             border: 1px solid #2F2F2F;
-            .author-area{
+
+            .author-area {
                 border-top: 1px solid #2F2F2F;
             }
+
             .blog-text {
                 .btn-area {
                     .basic-btn {
                         a {
                             background: #2F2F2F;
+
                             &:hover {
                                 background: var(--primary-green);
                             }
                         }
                     }
+
                     .bookmarks {
                         a {
                             border: 1px solid #2F2F2F;
                             background: #2F2F2F;
+
                             &:hover {
                                 background: var(--primary-green);
                             }
                         }
-    
                     }
                 }
+
                 h4 {
                     a {
                         font-family: var(--font-red-rose);
@@ -21353,35 +21378,38 @@ header.podcast .header-wrapper .icon-area .search-bar .search-input{
                         text-align: left;
                         color: var(--text-color);
                         transition: 0.35s;
-    
+
                         &:hover {
                             color: var(--primary-green);
                         }
-    
+
                         @include xxl-down-device() {
                             font-size: 20px;
                             line-height: 1;
                         }
-    
                     }
                 }
             }
         }
     }
-    .podcast-sidebar-area{
-        .single-widget-category{
+
+    .podcast-sidebar-area {
+        .single-widget-category {
             background-color: #202020;
+
             .category {
                 li {
                     a {
                         background: #2f2f2f;
-                        &:hover{
+
+                        &:hover {
                             color: var(--text-color);
                         }
                     }
                 }
-    
             }
         }
     }
+
+  
 }

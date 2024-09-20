@@ -1,4 +1,6 @@
-﻿<footer class="footer-section4">
+﻿@using ViewModelLayer.ViewModels.Footer;
+@model FooterViewModel
+<footer class="footer-section4">
 
     <div class="footer-area">
         <div class="container-xl">
@@ -86,18 +88,23 @@
 
                         <ul class="widget-list">
 
-                            <li class="category-list">
+                            @foreach (string categoryName in Model.Categories)
+                            {
 
-                                <a href="ai-category.html">
-                                   Category Name
-                                    <svg class="arrow" width="10" height="10" viewBox="0 0 10 10"
-                                         xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M1 9L9 1M9 1C7.22222 1.33333 3.33333 2 1 1M9 1C8.66667 2.66667 8 6.33333 9 9"
-                                              stroke="#191919" stroke-width="1.5" stroke-linecap="round"></path>
-                                    </svg>
-                                </a>
+                                <li class="category-list">
 
-                            </li>
+                                    <a href="#details">
+                                        @categoryName
+                                        <svg class="arrow" width="10" height="10" viewBox="0 0 10 10"
+                                             xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 9L9 1M9 1C7.22222 1.33333 3.33333 2 1 1M9 1C8.66667 2.66667 8 6.33333 9 9"
+                                                  stroke="#191919" stroke-width="1.5" stroke-linecap="round"></path>
+                                        </svg>
+                                    </a>
+
+                                </li>
+
+                            }
 
 
                         </ul>
@@ -117,18 +124,22 @@
                         </div>
 
                         <ul>
-                            <li>
-                                <div class="img-section">
-                                    <a href="standard-formate.html" class="gallery-img">
-                                        <img src="~/Images/profile.jpg" alt="" width="80px" height="80px">
-                                    </a>
-                                    <div class="img-content">
-                                        <a href="ai-category.html">Published Date</a>
-                                        <h3><a href="standard-formate.html">Article Title </a></h3>
+                            @foreach (ArticleSideBarViewModel article in Model.Articles)
+                            {
+                                <li>
+                                    <div class="img-section">
+                                        <a href="standard-formate.html" class="gallery-img">
+                                            <img src="~/Images/@article.ImagePath" alt="" width="80px" height="80px">
+                                        </a>
+                                        <div class="img-content">
+                                            <a href="ai-category.html">@article.Created.ToShortDateString()</a>
+                                            <h3><a href="standard-formate.html">@article.Title </a></h3>
+                                        </div>
                                     </div>
-                                </div>
 
-                            </li>
+                                </li>
+
+                            }
 
                         </ul>
 

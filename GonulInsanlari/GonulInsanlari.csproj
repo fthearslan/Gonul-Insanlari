@@ -66,6 +66,7 @@
 	<ItemGroup>
 		<Folder Include="wwwroot\Files\" />
 		<Folder Include="wwwroot\CustomJs\" />
+		<Folder Include="wwwroot\js\jsUI\" />
 		<Folder Include="wwwroot\PdfReports\" />
 	</ItemGroup>
 

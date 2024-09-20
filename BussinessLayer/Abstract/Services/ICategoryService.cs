@@ -18,5 +18,10 @@ namespace BussinessLayer.Abstract.Services
 
         List<Category> GetCategoriesWithArticleCount(int takeCount);
 
+        Task<Category> GetByNameAsync(string categoryName);
+
+    
+
+
     }
 }
