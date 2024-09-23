@@ -15,5 +15,6 @@ namespace ViewModelLayer.ViewModels.Article
         public bool IsDraft { get; set; }
 
         public string? VideoPath { get; set; }
+
     }
 }

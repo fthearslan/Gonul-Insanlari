@@ -19,7 +19,7 @@ namespace ViewModelLayer.ViewModels.Category
 
         public List<ArticleListUIViewModel> Articles { get; set; }
 
-        public IPagedList<ArticleListUIViewModel>? PagedArticles { get; set; }
+        public IPagedList<ArticleListUIViewModel> PagedArticles { get; set; } = null!;
         public DateTime Created { get; set; }
 
 

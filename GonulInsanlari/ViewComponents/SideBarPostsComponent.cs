@@ -21,6 +21,7 @@ namespace GonulInsanlari.ViewComponents
              .OrderByDescending(a => a.Created)
              .Select(a => new ArticleSideBarViewModel()
              {
+                 Id = a.Id, 
                  Title = a.Title,
                  CategoryName = a.Category.Name,
                  ImagePath= a.ImagePath,

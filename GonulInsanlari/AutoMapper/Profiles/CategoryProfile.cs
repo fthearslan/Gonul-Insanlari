@@ -12,6 +12,8 @@ namespace GonulInsanlari.AutoMapper.Profiles
 
 
             CreateMap<Category, CategoryDetailsUIViewModel>().ConvertUsing<CategoryArticleConverter>();
+
+           
                 
 
         }

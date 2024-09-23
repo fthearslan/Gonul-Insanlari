@@ -1,6 +1,6 @@
-﻿@model CategoryDetailsUIViewModel
+﻿@model IPagedList<ArticleListUIViewModel>
 @{
-    ViewData["Title"] = "GetDetails";
+    ViewData["Title"] = "All";
     Layout = "~/Views/Shared/Main_Layout.cshtml";
 }
 
@@ -11,17 +11,16 @@
                 <div class="inner-page-breadcrumb-wrapper">
                     <ul>
                         <li><a href="/">Home</a></li>
-                        <li><a href="/category/all">Categories</a></li>
-                        <li>@Model.Name</li>
+                        <li><a href="">Articles</a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="page-title-area">
-                
-                    <h1>@Model.Name <span>@Model.Articles.Count Articles</span></h1>
-                    <p>@GetString.GetRawString(@Model.Description)</p>
-                 
+
+                    <h1>Displaying all the articles <span></span></h1>
+
+
                     <div class="page-content">
                     </div>
                 </div>
@@ -41,8 +40,8 @@
 
                         <div class="row gy-4 justify-content-center mb-70">
 
-                         
-                            @foreach (ArticleListUIViewModel article in Model.PagedArticles)
+
+                            @foreach (ArticleListUIViewModel article in Model)
                             {
 
                                 <div class="col-lg-6 col-md-6 col-sm-10">
@@ -51,7 +50,7 @@
                                     <div class="blog-card3">
 
                                         <div class="blog-card-img">
-                                            <a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id"><img src="~/Images/@article.ImagePath" width="424px;" height="256px;" alt=""> </a>
+                                            <a href="/article/details/@article.Title"><img src="~/Images/@article.ImagePath" width="424px;" height="256px;" alt=""> </a>
                                         </div>
 
                                         <div class="blog-content2">
@@ -59,12 +58,12 @@
                                             <div class="blog-text">
                                                 <ul class="btn-area">
 
-                                                    <li class="basic-btn"><a href="/category/@GetString.GetSlugUrl(@article.CategoryName)/@article.CategoryId"> @article.CategoryName </a></li>
+                                                    <li class="basic-btn"><a href="/category/details/@article.CategoryName"> @article.CategoryName </a></li>
 
                                                 </ul>
 
                                                 <h4>
-                                                    <a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id">
+                                                    <a href="/article/@GetString.GetSlugUrl(@article.Title)/@article.Id">
                                                         @article.Title
                                                     </a>
                                                 </h4>
@@ -98,8 +97,8 @@
 
                         <div class="row">
                             <div class="col-lg-12 d-flex justify-content-center">
-                                
-                                @Html.PagedListPager((IPagedList)Model.PagedArticles,pageNumber=>Url.Action("GetDetails",new { pageNumber, categoryName=Model.Name}),new X.PagedList.Web.Common.PagedListRenderOptions(){
+
+                                @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("All",new { pageNumber}),new X.PagedList.Web.Common.PagedListRenderOptions(){
 
 
                                 DisplayLinkToLastPage=X.PagedList.Web.Common.PagedListDisplayMode.Never,
@@ -112,7 +111,7 @@
                                 })
 
 
-                            </div>  
+                            </div>
 
                         </div>
 
@@ -134,4 +133,6 @@
     </div>
 
 </div>
+
+
 

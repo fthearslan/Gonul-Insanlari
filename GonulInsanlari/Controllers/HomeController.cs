@@ -10,6 +10,7 @@ using System.Diagnostics;
 namespace GonulInsanlari.Controllers
 {
     [AllowAnonymous]
+    
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -20,7 +21,7 @@ namespace GonulInsanlari.Controllers
             _logger = logger;
            
         }
-
+        
         public IActionResult Index()
         {
            

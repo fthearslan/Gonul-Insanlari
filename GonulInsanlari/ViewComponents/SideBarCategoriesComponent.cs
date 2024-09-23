@@ -22,13 +22,13 @@ namespace GonulInsanlari.ViewComponents
         {
 
             List<Category> categories = categoryService.GetCategoriesWithArticleCount(10);
-        
+
             List<CategoryWithCountViewModel> model = new();
 
             categories?.ForEach(x =>
             {
 
-                model.Add(new() { Name = x.Name, ArticleCount = x.Articles.Count });
+                model.Add(new() { Id = x.Id, Name = x.Name, ArticleCount = x.Articles.Count });
 
             });
 

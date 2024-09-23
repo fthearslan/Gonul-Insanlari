@@ -34,6 +34,6 @@ namespace EntityLayer.Concrete.Entities
 
         public int SeenCount { get; set; }
 
-
+      
     }
 }

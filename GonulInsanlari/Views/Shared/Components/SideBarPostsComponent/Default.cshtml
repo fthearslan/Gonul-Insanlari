@@ -11,12 +11,12 @@
         <div class="recent-post mb-20">
 
             <div class="recent-post-img">
-                <a href="#details"><img src="~/Images/@article.ImagePath" width="88px;" height="90px;" alt=""></a>
+                <a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id"><img src="~/Images/@article.ImagePath" width="88px;" height="90px;" alt=""></a>
             </div>
 
             <div class="recent-post-content">
-                <a href="#details"> @article.Created.ToShortDateString() </a>
-                <h5><a href="#details"> @article.Title </a></h5>
+                <a href=""> @article.Created.ToShortDateString() </a>
+                <h5><a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id"> @article.Title </a></h5>
             </div>
         </div>
 

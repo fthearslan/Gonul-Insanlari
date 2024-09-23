@@ -29,6 +29,7 @@ namespace GonulInsanlari.ViewComponents
                 .OrderByDescending(x => x.Created)
                 .Select(x => new ArticleSideBarViewModel()
                 {
+                    Id=x.Id,
                     Title = x.Title,
                     CategoryName = x.Category.Name,
                     Created = x.Created,
@@ -38,7 +39,15 @@ namespace GonulInsanlari.ViewComponents
 
 
             model.Categories = categoryManager.GetCategoriesWithArticleCount(5)
-            .Select(x => x.Name).ToList();
+                .Select(x => new FooterCategoryViewModel()
+                {
+
+                    Name = x.Name,
+                    Id = x.Id
+
+                })
+                .ToList();
+
 
 
             return View(model);

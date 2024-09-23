@@ -18,8 +18,10 @@ namespace GonulInsanlari.ViewComponents
            .OrderByDescending(a => a.Created)
            .Select(a => new ArticleBannerViewModel()
            {
+               Id = a.Id,
                Title = a.Title,
                CategoryName = a.Category.Name,
+               CategoryId = a.Category.Id,
                Description = a.Content,
                ImagePath = a.ImagePath,
                SeenCount = a.SeenCount,

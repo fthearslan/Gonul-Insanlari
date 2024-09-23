@@ -20,9 +20,19 @@ namespace ViewModelLayer.ViewModels.Footer
         }
         public List<ArticleSideBarViewModel> Articles {  get; set; }
 
-        public List<string> Categories { get; set; }
+        public List<FooterCategoryViewModel > Categories { get; set; }
 
 
 
     }
+
+    public record FooterCategoryViewModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+       
+
+    }
+
+
 }

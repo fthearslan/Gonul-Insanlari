@@ -88,13 +88,13 @@
 
                         <ul class="widget-list">
 
-                            @foreach (string categoryName in Model.Categories)
+                            @foreach (FooterCategoryViewModel category in Model.Categories)
                             {
 
                                 <li class="category-list">
 
-                                    <a href="#details">
-                                        @categoryName
+                                    <a href="/category/@GetString.GetSlugUrl(@category.Name)/@category.Id">
+                                        @category.Name
                                         <svg class="arrow" width="10" height="10" viewBox="0 0 10 10"
                                              xmlns="http://www.w3.org/2000/svg">
                                             <path d="M1 9L9 1M9 1C7.22222 1.33333 3.33333 2 1 1M9 1C8.66667 2.66667 8 6.33333 9 9"
@@ -128,12 +128,12 @@
                             {
                                 <li>
                                     <div class="img-section">
-                                        <a href="standard-formate.html" class="gallery-img">
+                                        <a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id" class="gallery-img">
                                             <img src="~/Images/@article.ImagePath" alt="" width="80px" height="80px">
                                         </a>
                                         <div class="img-content">
                                             <a href="ai-category.html">@article.Created.ToShortDateString()</a>
-                                            <h3><a href="standard-formate.html">@article.Title </a></h3>
+                                            <h3><a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id">@article.Title </a></h3>
                                         </div>
                                     </div>
 
@@ -154,7 +154,7 @@
             <div class="footer-list">
 
                 <div class="copyright-area">
-                    <p> © Copyright 2024 <a href="index.html"> Rightous Path  </a></p>
+                    <p> © Copyright 2024 <a href="#"> Rightous Path  </a></p>
                 </div>
 
                 <ul>

@@ -8,7 +8,7 @@ namespace ViewModelLayer.ViewModels.Article
 {
     public record ArticleSideBarViewModel
     {
-
+        public int Id { get; set; }
         public string Title { get; set; }   
         public string CategoryName { get; set; }
         public string ImagePath { get; set; }

@@ -3,7 +3,7 @@ using System.Web;
 
 namespace ViewModelLayer.ViewModels.Announcement
 {
-    public record struct DashboardAnnouncementViewModel
+    public record  DashboardAnnouncementViewModel
     {
         public int ID { get; set; }
         public string Title { get; set; }

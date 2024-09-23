@@ -27,13 +27,13 @@
 
                                             <ul class="btn-area">
 
-                                                <li class="basic-btn"><a href="#details/@article.CategoryName"> @article.CategoryName </a></li>
+                                                <li class="basic-btn"><a href="/category/@GetString.GetSlugUrl(@article.CategoryName)/@article.CategoryId"> @article.CategoryName </a></li>
 
 
 
                                             </ul>
 
-                                            <h1><a href="#details/@article.Title"> @article.Title </a></h1>
+                                            <h1><a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id"> @article.Title </a></h1>
                                             <p> @description.Substring(0,description.IndexOf(".")).</p>
 
                                             <div class="author-area">

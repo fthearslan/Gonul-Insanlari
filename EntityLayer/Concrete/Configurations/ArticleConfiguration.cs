@@ -23,7 +23,7 @@ namespace EntityLayer.Concrete.Configurations
 
             builder.Property(a => a.Status).HasDefaultValue(true);
 
-
+          
         }
     }
 }

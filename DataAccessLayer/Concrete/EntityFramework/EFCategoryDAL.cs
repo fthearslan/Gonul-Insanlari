@@ -35,6 +35,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                       .Include(x => x.Articles)
                       .Select(x => new Category
                       {
+                          Id= x.Id,
                           Name = x.Name,
                           Articles = x.Articles
                      

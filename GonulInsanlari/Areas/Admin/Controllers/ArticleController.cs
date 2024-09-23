@@ -38,6 +38,7 @@ using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
 using Quartz.Impl.Calendar;
 using ViewModelLayer.Models.Newsletter;
+using ViewModelLayer.Models.Tools;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -107,7 +108,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
+              
                 article.AppUserID = user.Id;
+
 
                 await _articleManager.AddAsync(article);
 
@@ -220,6 +223,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 Article article = _mapper.Map<Article>(model);
 
                 article.EditedBy = user?.UserName;
+
+              
 
                 _articleManager.Update(article);
 

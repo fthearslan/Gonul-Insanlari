@@ -21,7 +21,7 @@ namespace GonulInsanlari.AutoMapper.Resolvers
             destination.Description = source.Description;
             destination.Created = source.Created;
             destination.ImagePath = source.ImagePath;
-            destination.PagedArticles = null;
+            //destination.PagedArticles = null;
             destination.Articles = new();
             
 
@@ -29,6 +29,7 @@ namespace GonulInsanlari.AutoMapper.Resolvers
             {
                 destination.Articles.Add(new ArticleListUIViewModel()
                 {
+                    Id=x.Id,
                     Title = x.Title,
                     CategoryName = x.Category.Name,
                     Description = x.Content,

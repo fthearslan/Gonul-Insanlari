@@ -23,7 +23,7 @@ namespace GonulInsanlari.Controllers
         }
 
         [Route("all")]
-        public async Task<IActionResult> All(int pageNumber =1)
+        public async Task<IActionResult> All(int pageNumber = 1)
         {
 
             IPagedList<CategoryListUIViewModel> categories = await _categoryManager.GetWhere(x => x.Status == true)
@@ -40,19 +40,22 @@ namespace GonulInsanlari.Controllers
                 })
                 .OrderByDescending(x => x.Created)
                 .OrderByDescending(x => x.ArticleCount)
-                .ToPagedListAsync(pageNumber,10);
+                .ToPagedListAsync(pageNumber, 10);
 
-           
+
 
             return View(categories);
 
         }
 
-        [Route("details/{categoryName}")]
-        public async Task<IActionResult> GetDetails(string categoryName,int pageNumber = 1)
+        [Route("{categoryName}/{categoryId}")]
+        public async Task<IActionResult> GetDetails(string categoryName, int categoryId, int pageNumber = 1)
         {
 
-            Category? category = await _categoryManager.GetByNameAsync(categoryName);
+            Category? category = await _categoryManager.
+                GetWhere(x => x.Status == true && x.Id == categoryId)
+                .Include(x=>x.Articles)
+                .SingleOrDefaultAsync();
 
             if (category is null)
                 return NotFound();

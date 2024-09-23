@@ -13,7 +13,7 @@
             <div class="col-lg-12">
                 <div class="inner-page-breadcrumb-wrapper">
                     <ul>
-                        <li><a href="#home">Home</a></li>
+                        <li><a href="/">Home</a></li>
                         <li>Categories</li>
 
                     </ul>
@@ -55,7 +55,7 @@
                                     <div class="blog-card3">
 
                                         <div class="blog-card-img">
-                                            <a href="standard-formate.html"><img src="~/Images/@category.ImagePath" width="424px;" height="256px;" alt=""> </a>
+                                            <a href="/category/@GetString.GetSlugUrl(@category.Name)/@category.Id"><img src="~/Images/@category.ImagePath" width="424px;" height="256px;" alt=""> </a>
                                         </div>
 
                                         <div class="blog-content2">
@@ -63,19 +63,19 @@
                                             <div class="blog-text">
                                                 <ul class="btn-area">
 
-                                                    <li class="basic-btn"><a href="/category/details/@category.Name"> @category.ArticleCount </a></li>
+                                                    <li class="basic-btn"><a href="/category/@GetString.GetSlugUrl(@category.Name)/@category.Id"> @category.ArticleCount </a></li>
 
                                                 </ul>
 
                                                 <h4>
-                                                    <a href="standard-formate.html">
+                                                    <a href="/category/@GetString.GetSlugUrl(@category.Name)/@category.Id">
                                                         @category.Name
                                                     </a>
                                                 </h4>
                                             </div>
                                             <div class="author-area">
                                                 <div class="author-img">
-                                                    <a href="editor-profile.html"><img src="~/Images/profile.jpg" width="40px;" height="40px;" alt=""></a>
+                                                    <a href="editor-profile.html"><img src="~/Images/profile.jpg" width="40px;" height="40px;" alt="image"></a>
                                                 </div>
                                                 <div class="author-content">
                                                     <div class="author-name">
