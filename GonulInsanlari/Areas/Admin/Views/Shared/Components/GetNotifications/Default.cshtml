@@ -18,8 +18,8 @@
 
             string title = "";
 
-            if (notify.Title.Length >= 20)
-                title = @notify.Title.Substring(0, notify.Title.Substring(0, 20).LastIndexOf(" "));
+            if (notify.Title.Length >= 25)
+                title = @notify.Title.Substring(0,25) + "...";
             else
                 title = @notify.Title;
 
@@ -32,6 +32,7 @@
                 "Article" => "/articles/details",
                 "Comment" => "/comments/details",
                 "Contact" => "/contacts/details",
+                "Subscription" => "/subscriptions/list",
                 _ => "/notifications/all"
             };
 
@@ -40,25 +41,51 @@
 
 
             <li onclick="markAsSeen('@notify.Id')" title="See notification">
-                <a href="@url/@notify.Value" class="dropdown-item">
-                    <div>
+                @if (notify.Type == "Subscription")
+                {
+                    <a href="@url" class="dropdown-item">
+                        <div>
 
 
-                        <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
+                            <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
 
 
-                        <span class="float-right text-muted small">
+                            <span class="float-right text-muted small">
 
-                            @if (!notify.IsSeen)
-                            {
+                                @if (!notify.IsSeen)
+                                {
 
-                                <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-right:3px;"></i>
-                            }
+                                    <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-right:3px;"></i>
+                                }
 
-                            @notify.Created
-                        </span>
-                    </div>
-                </a>
+                                @notify.Created
+                            </span>
+                        </div>
+                    </a>
+                }
+                else
+                {
+                    <a href="@url/@notify.Value" class="dropdown-item">
+                        <div>
+
+
+                            <i class="@notify.Symbol"></i> <span style="margin-left:25px; font-weight:600">@title</span>
+
+
+                            <span class="float-right text-muted small">
+
+                                @if (!notify.IsSeen)
+                                {
+
+                                    <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-right:3px;"></i>
+                                }
+
+                                @notify.Created
+                            </span>
+                        </div>
+                    </a>
+                }
+         
             </li>
             <li class="dropdown-divider"></li>
         }

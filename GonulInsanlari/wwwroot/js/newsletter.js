@@ -44,8 +44,12 @@ function pendOrDelete(id, action) {
                     url: '/subscriptions/pendOrDelete/' + id,
                     data: { action: action },
                     success: function (action) {
+                        if (action == "activated") {
 
-                        notifySuccess('The subscriber has been ' + action + ' successfully!')
+                            notifySuccess('The subscriber has been ' + action + ' successfully!')
+
+                        }
+
 
 
                         setTimeout(function () {
@@ -59,7 +63,7 @@ function pendOrDelete(id, action) {
 
                             notifyError('Something went wrong, please try again few minutes later.');
                         }
-                   
+
                     }
 
 

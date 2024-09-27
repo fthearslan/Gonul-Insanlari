@@ -11,8 +11,8 @@ namespace EntityLayer.Concrete.Entities
 {
     public class NewsLetter : BaseEntity
     {
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string? Name { get; set; } = "Unknown";
+        public string? Surname { get; set; }
         public string MailAddress { get; set; }
 
         public bool EmailConfirmed { get; set; }

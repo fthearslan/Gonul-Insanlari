@@ -21,6 +21,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
                 "Article" => "/articles/details",
                 "Comment" => "/comments/details",
                 "Contact" => "/contacts/details",
+                "Subscription" => "/subscriptions/list",
                 _ => "/notifications/all"
             };
 

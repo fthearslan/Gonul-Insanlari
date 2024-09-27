@@ -66,7 +66,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             await _manager.AddAsync(newsLetterSubscriber);
 
-            if (await _emailManager.SendSubscriptionConfirmationAsync(new SendConfirmEmailViewModel(model.MailAddress, "ConfirmEmailOnSubscription", "Email", HttpContext)
+            if (await _emailManager.SendSubscriptionConfirmationAsync(new SendConfirmEmailViewModel(model.MailAddress, "confirm-on-subscribe", HttpContext)
             { Subject = "Confirm Your Subscription" }))
                 return StatusCode(200);
 

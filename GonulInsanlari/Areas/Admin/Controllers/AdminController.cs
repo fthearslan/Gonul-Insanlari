@@ -109,7 +109,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 }
 
-                if (await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "ConfirmEmailOnRegister", "Email", HttpContext)))
+                if (await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "confirm-email-on-register", HttpContext)))
                     return StatusCode(200);
 
                 return BadRequest();

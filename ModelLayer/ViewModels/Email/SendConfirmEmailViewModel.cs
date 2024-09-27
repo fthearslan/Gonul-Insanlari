@@ -17,23 +17,20 @@ namespace ViewModelLayer.ViewModels.Email
         }
 
 
-        public SendConfirmEmailViewModel(string username,string callbackAction,string callbackController,HttpContext httpContext)
+        public SendConfirmEmailViewModel(string userName, string routeName, HttpContext httpContext)
         {
-            Username = username;
-            CallBackAction=callbackAction;
-            CallBackController=callbackController;
+            Username = userName;
+            RouteName = routeName;
             HttpContext = httpContext;
-        }
 
+        }
 
         public string Username { get; set; }
 
         public string? Subject { get; set; }
 
         public HttpContext HttpContext { get; set; }
-        public string CallBackAction { get; set; }
 
-        public string CallBackController { get; set; }
-
+        public string RouteName { get; set; }
     }
 }

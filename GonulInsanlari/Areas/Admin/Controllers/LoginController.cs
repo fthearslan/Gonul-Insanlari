@@ -41,9 +41,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
 
-          
-            
-        
+
+
+
             return View();
 
         }
@@ -61,7 +61,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (login.IsNotAllowed)
             {
-                if (await mailManager.SendConfirmationLinkAsync(new(user.Username,"EmailConfirmed","Email",HttpContext)))
+                if (await mailManager.SendConfirmationLinkAsync(new(user.Username, "confirm-email", HttpContext)))
                 {
                     TempData["MailInfo"] = "To log in, you need to confirm your email address first, we have sent you a confirmation link.";
 

@@ -136,21 +136,23 @@ namespace BussinessLayer.Concrete.Managers
             if (token is null)
                 return null;
 
-            return _linkGenerator.GetUriByAction(model.HttpContext, model.CallBackAction, model.CallBackController, new
+            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new
             {
                 userId = user.Id,
                 token = token
             }, model.HttpContext.Request.Scheme);
+
+
+
 
         }
 
         public string GetCallBackLink(SendConfirmEmailViewModel model)
         {
 
-            return _linkGenerator.GetUriByAction(model.HttpContext, model.CallBackAction, model.CallBackController, new
-            {
-                email = model.Username
-            }, model.HttpContext.Request.Scheme);
+            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new { email = model.Username }, model.HttpContext.Request.Scheme);
+
+
 
         }
 
@@ -160,7 +162,7 @@ namespace BussinessLayer.Concrete.Managers
 
 
             return await _newsletterManager
-                .GetWhere(sub => sub.Status == true && sub.SubscriberStatus==SubscriberStatus.Active && sub.EmailConfirmed==true)
+                .GetWhere(sub => sub.Status == true && sub.SubscriberStatus == SubscriberStatus.Active && sub.EmailConfirmed == true)
                 .Select(sub => new NewsletterSubscriberViewModel()
                 {
                     Name = sub.Name,

@@ -21,7 +21,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             this.userManager = userManager;
         }
 
-        [Route("confirmed")]
+        [Route("confirmed",Name ="confirm-email")]
         public async Task<IActionResult> EmailConfirmed(string userId, string token)
         {
 
@@ -50,7 +50,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View();
         }
 
-        [Route("confirm")]
+        [Route("confirm",Name ="confirm-email-on-register")]
         public IActionResult ConfirmEmailOnRegister(string userId, string token)
         {
             if (userId is null || token is null)
@@ -92,7 +92,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         }
 
-        [Route("confirmed-subscription")]
+        [Route("confirmed-subscription",Name ="confirm-on-subscribe")]
         public IActionResult ConfirmEmailOnSubscription([FromServices] INewsLetterService _newsLetterManager, string email)
         {
 

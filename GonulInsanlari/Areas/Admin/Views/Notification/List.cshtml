@@ -35,7 +35,17 @@
                     @if (User.HasClaim("Permission", notification.Type + ".Read"))
                     {
                         <div class="stream myBox" onclick="markAsSeen('@notification.Id')" style="cursor:pointer">
-                            <a href="@notification.Url/@notification.Value"></a>
+
+
+                            @if (notification.Type == "Subscription")
+                            {
+                                <a href="@notification.Url"></a>
+                            }
+                            else
+                            {
+                                <a href="@notification.Url/@notification.Value"></a>
+
+                            }
 
                             <div class="stream-badge">
                                 <i class="@notification.Symbol"></i>
@@ -138,8 +148,8 @@
 
                             '<div class="stream-badge">' +
                             '<i class="' + result[i].symbol + '"></i>' +
-                            '</div>'+
-                        '<div class="stream-panel">' +
+                            '</div>' +
+                            '<div class="stream-panel">' +
                             '<div class="stream-info">' +
 
                             '<span><strong>' + result[i].title + '</strong></span>' +
@@ -175,7 +185,7 @@
         });
     </script>
 
-  
+
 
 
 
