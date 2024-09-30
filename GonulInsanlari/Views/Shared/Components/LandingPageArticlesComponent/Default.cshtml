@@ -24,7 +24,11 @@
                                 <ul class="btn-area">
 
                                     <li class="basic-btn"><a href="/category/@GetString.GetSlugUrl(article.CategoryName)/@article.CategoryId"> @article.CategoryName</a></li>
-                                    <li class="basic-btn">  <a href="#"> New </a> </li>
+                                  
+                                    @if (DateTime.Now.Subtract(article.Created).Days <= 1)
+                                    {
+                                        <li class="basic-btn">  <a href=""> New </a> </li>
+                                    }
 
                                 </ul>
 

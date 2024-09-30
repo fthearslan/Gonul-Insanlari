@@ -1,0 +1,106 @@
+﻿@model List<CommentByArticleUIViewModel>
+
+<div class="row pt-100">
+    <div class="col-lg-12">
+        <div class="comment-area mb-60">
+            <div class="comment-title">
+                <h4>Comments (@Model.Count)</h4>
+            </div>
+            <ul id="comments" class="comment">
+              
+                @foreach(CommentByArticleUIViewModel comment in Model)
+                {
+                    <li>
+                        <div class="single-comment-area">
+                            <div class="author-img">
+                                <img src="~/Images/profile.jpg" alt="">
+                            </div>
+                            <div class="comment-content">
+                                <div class="author-name-deg">
+                                    <h6>@comment.NameSurname</h6>
+                                    <span>@comment.Created.ToShortDateString()</span>
+                                </div>
+                                <p>@comment.Content</p>
+                            
+                            </div>
+                        </div>
+                     
+                        
+                       @*  <ul class="comment-replay">
+                            <li>
+                                <div class="single-comment-area">
+                                    <div class="author-img">
+                                        <img src="~/Images/profile.jpg" alt="">
+                                    </div>
+                                    <div class="comment-content">
+                                        <div class="author-name-deg">
+                                            <h6>Jacoline Juie,</h6>
+                                            <span>05 March, 2024</span>
+                                        </div>
+                                        <p>Take Love Brothers!</p>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                     *@
+                    
+                    
+                    </li>
+                }
+
+        
+
+            </ul>
+            <div class="row">
+                <div  class="col-lg-12 d-flex justify-content-center">
+                    <a onclick="getComments('@ViewData["articleId"]','@Model.Count')" class="load-btn hover-btn">
+                        LOAD MORE
+                        <svg class="arrow" width="10" height="10" viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 9L9 1M9 1C7.22222 1.33333 3.33333 2 1 1M9 1C8.66667 2.66667 8 6.33333 9 9" stroke-width="1.5" stroke-linecap="round"></path>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@* 
+<script>
+    function getComments(articleId, count) {
+
+        $("#comments").alert('it worked!');
+
+        // $.ajax({
+
+
+
+        //     type: 'post',
+        //     url: '/article/details/' + articleId,
+        //     data: { skipCount: count },
+        //     success: function (result) {
+
+        //         let html = "";
+
+
+        //         for (var i = 0; i < result.comments.length; i++) {
+        //             html += '<li>' +
+        //                 '<div class="single-comment-area">' +
+        //                 '<div class="author-img">' +
+        //                 '<img src="~/Images/profile.jpg" alt="">' +
+        //                 '</div>' +
+        //                 '<div class="comment-content">' +
+        //                 '<div class="author-name-deg">' +
+        //                 '<h6>comment.NameSurname</h6>' +
+        //                 '<span>comment.Created.ToShortDateString()</span>' +
+        //                 '</div>' +
+        //                 '<p>comment.Content</p>' +
+        //                 '</div>' +
+        //                 '</div>' +
+        //                 '</li>';
+        //         }
+        //         $("#comments").append(html);
+        //     }
+        // })
+    }
+</script>
+ *@

@@ -1,0 +1,54 @@
+﻿@model List<ArticleListUIViewModel>
+
+<div class="blog-post-area pt-90">
+    <h6>You May Also Like</h6>
+    <span class="line-break3"></span>
+    <span class="line-break"></span>
+    <div class="row gy-5">
+
+        @foreach(ArticleListUIViewModel article in Model)
+        {
+            <div class="col-md-6">
+                <div class="blog-card3">
+                    <div class="blog-card-img">
+                        <a href="standard-formate.html">
+                            <img src="~/Images/@article.ImagePath" width="424px;" height="256px;" alt="">
+                        </a>
+                    </div>
+                    <div class="blog-content2">
+                        <div class="blog-text">
+                            <ul class="btn-area">
+                                <li class="basic-btn"><a href="@GetString.GetSlugUrl(article.CategoryName)/@article.CategoryId">@article.CategoryName</a></li>
+
+                                @if (DateTime.Now.Subtract(article.Created).Days <= 1)
+                                {
+                                    <li class="basic-btn">  <a href=""> New </a> </li>
+                                }                            
+
+                            </ul>
+                            <h4>
+                                <a href="@GetString.GetSlugUrl(article.Title)/@article.Id">@article.Title</a>
+                            </h4>
+                        </div>
+                        <div class="author-area">
+                            <div class="author-img">
+                                <a href=""><img src="~/Images/profile.jpg" width="40px;" height="40px;" alt=""></a>
+                            </div>
+                            <div class="author-content">
+                                <div class="author-name">
+                                    <a href="">Dr. Daniel Scoot</a>
+                                </div>
+                                <div class="publish-date">
+                                    <a href="">@article.Created.ToShortDateString()</a>
+                                    <span>@article.SeenCount read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        } 
+  
+     
+    </div>
+</div>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using ViewModelLayer.ViewModels.Article;
+using ViewModelLayer.ViewModels.Comment;
 using X.PagedList;
 
 namespace GonulInsanlari.Controllers
@@ -31,14 +32,14 @@ namespace GonulInsanlari.Controllers
 
             IPagedList<ArticleListUIViewModel> model = await _articleManager.GetWhere(x => x.Status == true && x.IsDraft == false)
                 .OrderByDescending(x => x.Created)
-                .Select(x=>  new ArticleListUIViewModel()
+                .Select(x => new ArticleListUIViewModel()
                 {
-                    Id=x.Id,
-                    CategoryName=x.Category.Name,
-                    Title=x.Title,
-                    Created=x.Created,
-                    ImagePath=x.ImagePath,
-                    SeenCount=x.SeenCount
+                    Id = x.Id,
+                    CategoryName = x.Category.Name,
+                    Title = x.Title,
+                    Created = x.Created,
+                    ImagePath = x.ImagePath,
+                    SeenCount = x.SeenCount
                 })
                 .AsNoTrackingWithIdentityResolution()
                 .ToPagedListAsync(pageNumber, 10);
@@ -54,6 +55,7 @@ namespace GonulInsanlari.Controllers
         {
 
             Article? article = await _articleManager.GetWhere(x => x.Status == true && x.IsDraft == false)
+                .Include(x => x.Comments)
              .SingleOrDefaultAsync(x => x.Id == articleId);
 
             if (article is null)
@@ -63,8 +65,11 @@ namespace GonulInsanlari.Controllers
 
             _articleManager.Update(article);
 
+       
 
             ArticleDetailsUIViewModel model = _mapper.Map<ArticleDetailsUIViewModel>(article);
+
+
 
             return View(model);
 
