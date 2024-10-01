@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using TableDependency.SqlClient;
+using ViewModelLayer.Models.Notification;
+using ViewModelLayer.ViewModels.Notification;
 
 namespace GonulInsanlari.Subscriptions
 {
@@ -48,7 +50,8 @@ namespace GonulInsanlari.Subscriptions
 
                     c.SaveChanges();
 
-                    await _hubContext.Clients.All.SendAsync("Receive", notification.Content);
+              
+                    await _hubContext.Clients.All.SendAsync("Notify", new  NotificationHubModel(notification.Title,notification.Content,notification.ResultType));
 
                 }
             };

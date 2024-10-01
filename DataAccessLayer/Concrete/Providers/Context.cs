@@ -19,7 +19,11 @@ namespace DataAccessLayer.Concrete.Providers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\MSSQLSERVER01;database=GoDb;integrated security=true; TrustServerCertificate=true;");
+            optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\MSSQLSERVER01;database=GoDb;integrated security=true; TrustServerCertificate=true;", options =>
+            {
+                options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
+
+            });
         }
 
 

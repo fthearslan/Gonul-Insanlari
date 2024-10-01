@@ -15,11 +15,24 @@ function notifyError(message) {
 function notifySuccess(message) {
 
     $.toast({
-        heading: 'Success',
+        heading: 'New Notification',
         text: message,
         showHideTransition: 'slide',
         position: 'top-right',
-        icon: 'success'
+        icon: 'success',
+        
+
+    });
+
+}
+function notify(title, message, icon) {
+
+    $.toast({
+        heading: title,
+        text: message,
+        showHideTransition: 'slide',
+        position: 'top-right',
+        icon: icon
 
     });
 
@@ -45,11 +58,22 @@ var connection = new signalR.HubConnectionBuilder().withUrl("/notificationHub").
 
         connection.start();
 
-        connection.on("Receive", function (message) {
+        
 
-            notifySuccess(message);
+connection.on("Notify", function (notification) {
+
+    notify(notification.title, notification.content, notification.resultType)
+
+});
+
+
+
+connection.on("NotifyError", function (title,message) {
+
+
+    notify(title,message,"error");
+
+
+
 
         });
-
-    
-

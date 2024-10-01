@@ -25,4 +25,8 @@
     <ProjectReference Include="..\ModelLayer\ViewModelLayer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Concrete\Exceptions\" />
+  </ItemGroup>
+
 </Project>

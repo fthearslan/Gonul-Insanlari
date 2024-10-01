@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace EntityLayer.Concrete.Entities
 {
-    public class Notification:BaseEntity
+    public class Notification : BaseEntity
     {
-       
+
         [StringLength(75)]
         public string Title { get; set; }
         [StringLength(30)]
@@ -20,8 +20,18 @@ namespace EntityLayer.Concrete.Entities
         public string Content { get; set; }
         public int? Value { get; set; }
         public bool IsSeen { get; set; } = false;
+        public NotificationResultType ResultType { get; set; } = NotificationResultType.success;
+        public List<UserNotification> Users
+        { get; set; }
 
-        public List<UserNotification> Users { get; set; }
+    }
+
+    public enum NotificationResultType
+    {
+        success,
+        warning
+
+
 
     }
 }

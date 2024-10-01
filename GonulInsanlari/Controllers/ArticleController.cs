@@ -70,7 +70,6 @@ namespace GonulInsanlari.Controllers
             ArticleDetailsUIViewModel model = _mapper.Map<ArticleDetailsUIViewModel>(article);
 
 
-
             return View(model);
 
 

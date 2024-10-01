@@ -142,7 +142,7 @@ function SearchComments() {
                     labelstatus = "text-danger"
                 }
 
-                switch (CommentProgress) {
+                switch (result[i].progress) {
                     case "Pending":
                         actionValueFirst = "approve";
                         btnFirstText = " Approve";

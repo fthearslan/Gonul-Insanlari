@@ -10,7 +10,9 @@ namespace GonulInsanlari.AutoMapper.Profiles
         {
 
             CreateMap<Comment, CommentByArticleUIViewModel>();
+            CreateMap<CommentSubmitUIViewModel,Comment>();
 
+                
         }
     }
 }

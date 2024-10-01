@@ -39,6 +39,10 @@ using GonulInsanlari.Enums;
 using Quartz.Impl.Calendar;
 using ViewModelLayer.Models.Newsletter;
 using ViewModelLayer.Models.Tools;
+using BussinessLayer.Concrete.Exceptions;
+using Microsoft.AspNetCore.SignalR;
+using GonulInsanlari.Hubs;
+using ViewModelLayer.Models.Notification;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {
@@ -108,15 +112,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
                 Article article = _mapper.Map<Article>(model);
-              
-                article.AppUserID = user.Id;
 
+                article.AppUserID = user.Id;
 
                 await _articleManager.AddAsync(article);
 
                 await _emailManager.SendNewsletterAsync(_mapper.Map<WeeklyNewsletterModel>(article));
 
                 _memoryCache.Remove("Categories");
+
+                await Task.Delay(3000);
 
                 return RedirectToAction("GetDetails", new { id = article.Id });
             }
@@ -224,7 +229,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 article.EditedBy = user?.UserName;
 
-              
+
 
                 _articleManager.Update(article);
 

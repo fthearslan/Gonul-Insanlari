@@ -18,19 +18,19 @@
 
             string title = "";
 
-            if (notify.Title.Length >= 25)
-                title = @notify.Title.Substring(0,25) + "...";
+            if (notify.Title.Length >= 20)
+                title = @notify.Title.Substring(0,20) + "...";
             else
                 title = @notify.Title;
 
-
+               
 
             string url = notify.Type switch
             {
 
                 "Category" => "/categories/details",
                 "Article" => "/articles/details",
-                "Comment" => "/comments/details",
+                "Comment" => "/comments/list",
                 "Contact" => "/contacts/details",
                 "Subscription" => "/subscriptions/list",
                 _ => "/notifications/all"

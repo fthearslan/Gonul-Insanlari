@@ -2,6 +2,7 @@
 using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete.Managers;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -35,9 +36,30 @@ namespace GonulInsanlari.Controllers
          .ToListAsync();
 
             List<CommentByArticleUIViewModel> model = _mapper.Map<List<CommentByArticleUIViewModel>>(comments);
+          
+
+            model.ForEach(x => { x.DisplayedDateTime = x.Created.ToShortDateString(); });
 
 
             return Json(model);
+
+        }
+
+
+        [HttpPost]
+        [Route("submit")]
+        public async Task<IActionResult> Submit(CommentSubmitUIViewModel input)
+        {
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetModelErrors());
+
+            Comment comment = _mapper.Map<Comment>(input);
+
+            await _commentManager.AddAsync(comment);
+
+            return StatusCode(200);
+
 
         }
 

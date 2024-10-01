@@ -168,7 +168,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("search")]
         public async Task<IActionResult> Search(CommentSearchViewModel model)
         {
-
+             
             List<Comment> results = await _manager.SearchAsync(model);
 
             List<CommentListViewModel> viewModel = new();

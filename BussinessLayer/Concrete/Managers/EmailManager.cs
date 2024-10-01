@@ -229,63 +229,63 @@ namespace BussinessLayer.Concrete.Managers
 
             string mailBody = GetBody(model);
 
-            if (mailBody is null)
-                throw new MailBodyIsNullException();
-
-            List<NewsletterSubscriberViewModel> subscribers = await GetSubscribersAsync();
-
-            if (subscribers is null)
-                throw new SubscribersAreNullException();
-            if (subscribers.Count == 0)
-                throw new SubscribersAreNullException();
-
-
-
-            SmtpClient client = ConfigureClient();
-
-            List<ContactToCollection> TOs = new();
-
-            foreach (var subscriber in subscribers)
+            if(mailBody is not null)
             {
-                string body = mailBody.Replace("{Name}", subscriber.Name);
+                List<NewsletterSubscriberViewModel> subscribers = await GetSubscribersAsync();
 
-                await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
+                if(subscribers is not null && subscribers.Count>0)
                 {
 
-                    Body = body,
-                    Subject = model.Subject,
-                    IsBodyHtml = true
+                    SmtpClient client = ConfigureClient();
 
-                });
+                    List<ContactToCollection> TOs = new();
 
-                client.SendCompleted += (sender, e) =>
-                {
-                    TOs.Add(new(subscriber.EmailAddress)
+                    foreach (var subscriber in subscribers)
                     {
-                        Name = subscriber.Name,
-                        Surname = "Arslan"
+                        string body = mailBody.Replace("{Name}", subscriber.Name);
 
-                    });
-                };
+                        await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
+                        {
+
+                            Body = body,
+                            Subject = model.Subject,
+                            IsBodyHtml = true
+
+                        });
+
+                        client.SendCompleted += (sender, e) =>
+                        {
+                            TOs.Add(new(subscriber.EmailAddress)
+                            {
+                                Name = subscriber.Name,
+                                Surname = "Arslan"
+
+                            });
+                        };
+
+                    }
+
+
+                    using (var c = new Context())
+                    {
+                        c.Contacts.Add(new(ContactStatus.Newsletter)
+                        {
+
+                            Tos = TOs,
+                            Content = model.Description,
+                            Subject = ContactStatus.Newsletter.ToString(),
+                            From = "Administration",
+                            IsSeen = true,
+
+                        });
+
+                        c.SaveChanges();
+                    }
+                }
 
             }
 
 
-            using (var c = new Context())
-            {
-                c.Contacts.Add(new(ContactStatus.Newsletter)
-                {
-
-                    Tos = TOs,
-                    Content = model.Description,
-                    Subject = ContactStatus.Newsletter.ToString(),
-                    From = "Administration",
-                    IsSeen = true,
-
-                });
-
-                c.SaveChanges();
-            }
         }
 
         public async Task SendResetPasswordLinkAsync(SendMailModel model)

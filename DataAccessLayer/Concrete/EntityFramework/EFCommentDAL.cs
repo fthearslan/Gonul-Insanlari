@@ -23,7 +23,6 @@ namespace DataAccessLayer.Concrete.EntityFramework
                 return await c.Comments
                     .Where(x => x.Progress == progress && x.Status == status)
                     .OrderByDescending(x => x.Created)
-                    .OrderByDescending(x => x.Status)
                     .AsNoTrackingWithIdentityResolution()
                     .ToListAsync();
 
