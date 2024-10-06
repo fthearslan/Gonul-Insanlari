@@ -23,6 +23,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
                 return await c.Comments
                     .Where(x => x.Progress == progress && x.Status == status)
                     .OrderByDescending(x => x.Created)
+                    .Include(x => x.Replies)
                     .AsNoTrackingWithIdentityResolution()
                     .ToListAsync();
 
@@ -105,13 +106,13 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
         }
 
-        public async Task<List<Comment>> SearchByAsync(string search,string articleTitle)
+        public async Task<List<Comment>> SearchByAsync(string search, string articleTitle)
         {
             using (var c = new Context())
             {
                 return await c.Comments
-                    .Where(x=>x.Article.Title== articleTitle && x.NameSurname.Contains(search) )
-                    .OrderByDescending(x => x.Progress==CommentProgress.Pending && x.Progress==CommentProgress.Approved) 
+                    .Where(x => x.Article.Title == articleTitle && x.NameSurname.Contains(search))
+                    .OrderByDescending(x => x.Progress == CommentProgress.Pending && x.Progress == CommentProgress.Approved)
                     .OrderByDescending(x => x.Created)
                     .AsNoTrackingWithIdentityResolution()
                     .ToListAsync();

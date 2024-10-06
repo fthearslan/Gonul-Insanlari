@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace ViewModelLayer.ViewModels.Comment
 {
-    public record CommentSubmitUIViewModel
+    public record CommentReplyViewModel
     {
-        public string? NameSurname { get; set; }
-        public string Email { get; set; }
+
+        public string NameSurname { get; set; } = "Admin";
+        public string Email { get; set; } = "gonulinsanlari@gmail.com";
         public string Content { get; set; }
         public DateTime Created { get; set; } = DateTime.Now;
-        public int ArticleID { get; set; }
+        public int CommentId { get; set; }
+
 
     }
-}   
+}

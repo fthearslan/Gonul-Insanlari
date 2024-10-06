@@ -17,7 +17,7 @@ namespace ViewModelLayer.ViewModels.Notification
         public string Content { get; set; }
         public string Url { get; set; }
         public int? Value { get; set; }
-        public string Created { get; set; }
+        public DateTime Created { get; set; }
 
         public bool IsSeen { get; set; }
 

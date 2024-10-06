@@ -14,10 +14,7 @@ namespace EntityLayer.Concrete.Configurations
         public void Configure(EntityTypeBuilder<Comment> builder)
         {
 
-
-       
-
-
+         
 
         }
     

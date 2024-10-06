@@ -15,6 +15,8 @@
         <div class="ibox-content">
 
             <div class="input-group" style="margin-bottom:15px;">
+               
+                <button class="btn btn-sm btn-success" onclick="markAsSeenAll()" type="button" style="margin-right:8px;">Mark as seen all</button>
                 <input id="progress" value="Pending" hidden />
 
                 <input type="text" id="searchbar" class="form-control form-control-sm" name="search" placeholder="Search notification...">
@@ -54,12 +56,12 @@
                                 <div class="stream-info">
 
                                     <span><strong>@notification.Title</strong></span>
-                                    <span class="date">@notification.Created</span>
+                                    <span class="date">@notification.Created.ToString("MM/dd/yyyy HH:mm")</span>
 
                                 </div>
                                 @notification.Content @if (!notification.IsSeen)
                                 {
-                                    <i class="fa fa-bell" aria-hidden="true" style="color: #1ab394;margin-left:8px;"></i>
+                                    <i class="fa fa-bell notify" aria-hidden="true" style="color: #1ab394;margin-left:8px;"></i>
 
 
                                 }
@@ -175,6 +177,36 @@
 
 
         }
+
+    </script>
+
+    <script>
+
+        function markAsSeenAll() {
+
+            $.ajax({
+
+                type: 'post',
+                url: '/notifications/markAsSeen/all',
+                success: function () {
+                    
+                    notify("Marked as seen", "Completed succesfully.", "success");
+
+                    $(".notify").hide();
+
+                }
+
+
+
+            });
+
+
+
+        }
+
+
+
+
 
     </script>
 

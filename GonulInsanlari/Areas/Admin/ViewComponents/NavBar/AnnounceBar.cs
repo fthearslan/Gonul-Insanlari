@@ -2,6 +2,7 @@
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
+using ViewModelLayer.ViewModels.NavBar;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 {
@@ -18,51 +19,27 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
         {
             var announcements = _manager.ListFilter().Take(6).ToList();
 
-            if (announcements.Any())
+
+            List<AnnouncementBarViewModel> model = new();
+
+            announcements.ForEach((announcement) =>
             {
-                List<AnnouncementBarViewModel> model = new();
-                foreach (var announcement in announcements)
+                model.Add(new()
                 {
-                    model.Add(new()
-                    {
-                        Id = announcement.Id,
-                        Title = announcement.Title,
-                        Details = announcement.Details,
-                        Created = announcement.Created,
+                    Id = announcement.Id,
+                    Title = announcement.Title,
+                    Details = announcement.Details,
+                    Created = announcement.Created,
 
-                    });
+                });
 
-                }
+            });
 
-               
-                ViewBag.Count = model.Count;
+            ViewBag.Count = model.Count;
 
-                return View(model);
-            }
-            return View();
+            return View(model);
 
         }
-        public record AnnouncementBarViewModel
-        {
-            public int Id { get; set; }
-            public string? Title { get; set; }
 
-            string? _details;
-            public string Details
-            {
-
-                get
-                {
-                    return _details;
-                }
-                set
-                {
-                    _details = value;
-                }
-
-            }
-
-            public DateTime Created { get; set; }
-        }
     }
 }

@@ -1,5 +1,4 @@
-﻿@using static GonulInsanlari.Areas.Admin.ViewComponents.NavBar.AnnounceBar;
-@model List<AnnouncementBarViewModel>
+﻿@model List<AnnouncementBarViewModel>
 
 <div id="right-sidebar" class="animated">
     <div class="sidebar-container">
@@ -34,24 +33,25 @@
 
 
                     <div>
-                        @foreach (var announce in Model)
-                        {
-                            <div class="sidebar-message">
-                                <a href="announcements/details/@announce.Id">
-                                    <div class="float-left text-center">
-                                        <i class="fa fa-bullhorn fa-lg"></i>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4>@announce.Title</h4>
+                        @if (Model is not null)
+                            @foreach (var announce in Model)
+                            {
+                                <div class="sidebar-message">
+                                    <a href="announcements/details/@announce.Id">
+                                        <div class="float-left text-center">
+                                            <i class="fa fa-bullhorn fa-lg"></i>
+                                        </div>
+                                        <div class="media-body">
+                                            <h4>@announce.Title</h4>
 
-                                        @Html.Raw(announce.Details.Substring(0,250));
+                                            @Html.Raw(announce.Details.Substring(0,250))
 
-                                        <br>
-                                        <small class="text-muted"></small>
-                                    </div>
-                                </a>
-                            </div>
-                        }
+                                            <br>
+                                            <small class="text-muted"></small>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
                     </div>
 
                 }
@@ -66,17 +66,17 @@
                 }
 
             </div>
-           
+
             <div id="tab-2" class="tab-pane">
-               
+
                 @if (User.HasClaim("Permission", "Assignment.Read"))
                 {
                     @await Component.InvokeAsync("AssignmentBar")
 
                 }
-              
+
             </div>
-         
+
 
         </div>
     </div>

@@ -28,7 +28,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
             destination.Value = notification.Value;
             destination.Title = notification.Title;
             destination.Content = notification.Content;
-            destination.Created = GetDate.GetCreateDate(notification.Created);
+            destination.Created = notification.Created;
             destination.Symbol = notification.Symbol;
             destination.Type = notification.Type;
             destination.Id = notification.Id;

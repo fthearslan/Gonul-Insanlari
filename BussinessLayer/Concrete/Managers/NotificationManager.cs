@@ -30,6 +30,11 @@ namespace BussinessLayer.Concrete.Managers
             await _notify.InsertAsync(entity);
         }
 
+        public async Task MarkAsSeenUserNotificationsAsync(List<UserNotification> userNotifications)
+        {
+            await _notify.MarkAsSeenUserNotificationsAsync(userNotifications);
+
+        }
 
         public void Delete(Notification entity)
         {
@@ -65,7 +70,7 @@ namespace BussinessLayer.Concrete.Managers
 
         public async Task<UserNotification> GetUserNotificationById(string userId, int notificationId)
         {
-            return await _notify.GetUserNotificationById(userId,notificationId);
+            return await _notify.GetUserNotificationById(userId, notificationId);
         }
 
         public IQueryable<Notification> GetWhere(Expression<Func<Notification, bool>> filter)

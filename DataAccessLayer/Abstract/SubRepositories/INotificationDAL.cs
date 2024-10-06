@@ -19,5 +19,8 @@ namespace DataAccessLayer.Abstract.SubRepositories
         Task<UserNotification> GetUserNotificationById(string userId, int notificationId);
 
         Task UpdateUserNotification(UserNotification userNotification);
+
+        Task MarkAsSeenUserNotificationsAsync(List<UserNotification> userNotifications);
+
     }
 }

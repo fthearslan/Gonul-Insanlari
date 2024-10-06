@@ -15,5 +15,7 @@ namespace BussinessLayer.Abstract.Services
         Task<UserNotification> GetUserNotificationById(string userId, int notificationId);
         Task UpdateUserNotification(UserNotification userNotification);
 
+        Task MarkAsSeenUserNotificationsAsync(List<UserNotification> userNotifications);
+
     }
 }

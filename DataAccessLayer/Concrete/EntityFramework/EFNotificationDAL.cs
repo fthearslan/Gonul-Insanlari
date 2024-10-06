@@ -13,6 +13,27 @@ namespace DataAccessLayer.Concrete.EntityFramework
 {
     public class EFNotificationDAL : GenericRepository<Notification>, INotificationDAL
     {
+        public async Task MarkAsSeenUserNotificationsAsync(List<UserNotification> userNotifications)
+        {
+            using var c = new Context();
+
+            c.AttachRange(userNotifications);
+
+            userNotifications?.ForEach((userNotification) =>
+            {
+
+
+                userNotification.IsSeen = true;
+                
+            });
+
+            await c.SaveChangesAsync();
+
+
+
+
+        }
+
         public async Task<List<UserNotification>> GetNotifications(string userId)
         {
 

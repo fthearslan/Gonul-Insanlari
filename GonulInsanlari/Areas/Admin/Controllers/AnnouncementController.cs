@@ -78,18 +78,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         
         [Route("list")]
         [HasPermission(PermissionType.Announcement, Permission.Read)]
-
         public async Task<IActionResult> List()
         {
             var list = await _manager.GetForAdminAsync();
-            if (list.Count > 0)
-            {
-                List<AnnouncementListViewModel> model = _mapper.Map<List<AnnouncementListViewModel>>(list);
-                return View(model);
+           
+            List<AnnouncementListViewModel> model = _mapper.Map<List<AnnouncementListViewModel>>(list);
+              
+            
+            return View(model);
 
-            }
 
-            return NotFound();
 
         }
 

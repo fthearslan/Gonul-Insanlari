@@ -3,9 +3,11 @@ using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
 using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
+using GonulInsanlari.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.Language.Intermediate;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.InteropServices;
 using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Comment;
@@ -38,6 +40,29 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         #endregion
 
         #region Read
+
+        [HttpPost]
+        [Route("reply")]
+        public async Task<IActionResult> Reply(CommentReplyViewModel input)
+        {
+
+            if (!ModelState.IsValid)
+                return Json(ModelState.GetModelErrors());
+
+            Comment? comment = await _manager.GetByIdAsync(input.CommentId);
+
+            if (comment is null)
+                return NotFound();
+
+            comment.Replies.Add(new Comment(input.NameSurname, input.Email, input.Content) { Progress = CommentProgress.Reply });
+
+            _manager.Update(comment);
+
+            return Ok();
+
+
+        }
+
 
         [Route("list")]
         [HasPermission(PermissionType.Comment, Permission.Read)]
@@ -75,18 +100,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<CommentListViewModel> model = new();
 
-            try
-            {
 
-                model = _mapper.Map<List<CommentListViewModel>>(comment);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
+            model = _mapper.Map<List<CommentListViewModel>>(comment);
 
-                throw;
-            }
 
             return View(await model.ToPagedListAsync(pageNumber, 10));
 
@@ -101,18 +117,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<CommentListViewModel> model = new();
 
-            try
-            {
 
-                model = _mapper.Map<List<CommentListViewModel>>(comment);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-
-                throw;
-            }
+            model = _mapper.Map<List<CommentListViewModel>>(comment);
 
             return View(await model.ToPagedListAsync(pageNumber, 10));
 
@@ -127,18 +133,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<CommentListViewModel> model = new();
 
-            try
-            {
-
-                model = _mapper.Map<List<CommentListViewModel>>(comment);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex.Message);
-                return BadRequest();
-
-                throw;
-            }
+            model = _mapper.Map<List<CommentListViewModel>>(comment);
 
             return View(await model.ToPagedListAsync(pageNumber, 10));
 
@@ -154,7 +149,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             var comments = await _manager.GetByArticleAsync(articleTitle);
             ViewData["ArticleTitle"] = articleTitle;
-       
+
 
             if (comments is null)
                 return NotFound();
@@ -168,7 +163,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("search")]
         public async Task<IActionResult> Search(CommentSearchViewModel model)
         {
-             
+
             List<Comment> results = await _manager.SearchAsync(model);
 
             List<CommentListViewModel> viewModel = new();
@@ -252,6 +247,32 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return NotFound();
 
             _manager.Delete(comment);
+
+            return Json(200);
+
+        }
+
+        [Route("deleteReply")]
+        [HttpPost]
+        public async Task<IActionResult> DeleteReply(int commentId, int replyId)
+        {
+
+            Comment? comment = await _manager
+                .GetWhere(c => c.Id == commentId)
+                .Include(c => c.Replies)
+                .AsNoTrackingWithIdentityResolution()
+                .SingleOrDefaultAsync();
+
+            Comment? reply = comment?
+                  .Replies?
+                  .SingleOrDefault(c => c.Id == replyId);
+
+            if (reply is null)
+                return NotFound();
+
+            reply.CommentId = null;
+          
+            _manager.Delete(reply);
 
             return Json(200);
 

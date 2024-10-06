@@ -7,6 +7,7 @@ namespace ViewModelLayer.ViewModels.Comment
         public int Id { get; set; }
         public string? NameSurname { get; set; }
         public string? Content { get; set; }
+        public List<CommentListViewModel> Replies { get; set; } = new();
         public string? Progress { get; set; }
         public bool? Status { get; set; }
         public DateTime? Created { get; set; }

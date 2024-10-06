@@ -36,7 +36,6 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
-using BussinessLayer.Concrete.Exceptions;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -185,42 +184,42 @@ namespace BussinessLayer.Concrete.Managers
 
             string? body = GetBody(model.Content);
 
-            if (body is null)
-                throw new MailBodyIsNullException();
-
-            SmtpClient client = ConfigureClient();
-
-
-            foreach (string email in model.To)
+            if (body is not null)
             {
-                MailMessage mail = new(_configuration.Username, email)
+
+                SmtpClient client = ConfigureClient();
+
+                foreach (string email in model.To)
                 {
-                    Body = body,
-                    Subject = model.Subject,
-                    IsBodyHtml = true,
+                    MailMessage mail = new(_configuration.Username, email)
+                    {
+                        Body = body,
+                        Subject = model.Subject,
+                        IsBodyHtml = true,
 
-                };
+                    };
 
-                if (model.ReplyTo is not null)
-                    mail.ReplyToList.Add(new(email));
+                    if (model.ReplyTo is not null)
+                        mail.ReplyToList.Add(new(email));
 
-                mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess;
+                    mail.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess;
 
-                if (model.Attachments is not null)
-                {
-                    List<string> paths = await model.GetAttachmentPathsAsync();
+                    if (model.Attachments is not null)
+                    {
+                        List<string> paths = await model.GetAttachmentPathsAsync();
 
-                    if (paths is not null)
-                        foreach (string? attachment in paths)
-                            mail.Attachments.Add(new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", attachment)));
+                        if (paths is not null)
+                            foreach (string? attachment in paths)
+                                mail.Attachments.Add(new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", attachment)));
+
+                    }
+
+                    await client.SendMailAsync(mail);
+
 
                 }
 
-                await client.SendMailAsync(mail);
-
-
             }
-
 
         }
 
@@ -229,11 +228,11 @@ namespace BussinessLayer.Concrete.Managers
 
             string mailBody = GetBody(model);
 
-            if(mailBody is not null)
+            if (mailBody is not null)
             {
                 List<NewsletterSubscriberViewModel> subscribers = await GetSubscribersAsync();
 
-                if(subscribers is not null && subscribers.Count>0)
+                if (subscribers is not null && subscribers.Count > 0)
                 {
 
                     SmtpClient client = ConfigureClient();
@@ -295,20 +294,23 @@ namespace BussinessLayer.Concrete.Managers
 
             string? body = GetBody(content);
 
-            if (body is null)
-                throw new MailBodyIsNullException();
-
-            SmtpClient client = ConfigureClient();
-
-            MailMessage mail = new(_configuration.Username, model.To.First())
+            if (body is not null)
             {
-                Body = body,
-                Subject = model.Subject,
-                IsBodyHtml = true,
 
-            };
+                SmtpClient client = ConfigureClient();
 
-            await client.SendMailAsync(mail);
+                MailMessage mail = new(_configuration.Username, model.To.First())
+                {
+                    Body = body,
+                    Subject = model.Subject,
+                    IsBodyHtml = true,
+
+                };
+
+                await client.SendMailAsync(mail);
+            }
+
+
 
         }
 
@@ -329,7 +331,8 @@ namespace BussinessLayer.Concrete.Managers
             string? body = GetBody(content);
 
             if (body is null)
-                throw new MailBodyIsNullException();
+                return false;
+
 
             SmtpClient client = ConfigureClient();
 
@@ -344,6 +347,7 @@ namespace BussinessLayer.Concrete.Managers
             await client.SendMailAsync(mail);
 
             return true;
+
 
         }
 
@@ -360,7 +364,7 @@ namespace BussinessLayer.Concrete.Managers
             string? body = GetBody(content);
 
             if (body is null)
-                throw new MailBodyIsNullException();
+                return false;
 
             SmtpClient client = ConfigureClient();
 
@@ -375,8 +379,6 @@ namespace BussinessLayer.Concrete.Managers
             await client.SendMailAsync(mail);
 
             return true;
-
-
         }
     }
 }

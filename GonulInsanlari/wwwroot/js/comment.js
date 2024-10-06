@@ -77,6 +77,78 @@ function deleteComment(id) {
 
 }
 
+
+function deleteReply(replyId,commentId) {
+
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert it..",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+    }).then((result) => {
+
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: "POST",
+                url: "/comments/deleteReply",
+                data: { commentId: commentId, replyId: replyId },
+                success: function () {
+
+                    $.toast({
+                        heading: 'Success',
+                        text: 'Comment has been successfully deleted.',
+                        showHideTransition: 'slide',
+                        position: 'top-right',
+                        icon: 'success'
+
+                    });
+
+                    $("#" + id).hide();
+
+                },
+                statusCode: {
+                    403: function () {
+                        $.toast({
+                            heading: 'Access denied!',
+                            text: 'You do not have an access to delete this comment.',
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+
+                    },
+                    404: function () {
+                        $.toast({
+                            heading: 'Not found',
+                            text: 'Source might have been changed.',
+                            showHideTransition: 'slide',
+                            position: 'top-right',
+                            icon: 'error'
+
+                        });
+                    }
+
+                }
+
+
+            });
+
+
+        }
+
+
+    });
+
+}
+
+
+
+
 let timeout = null;
 document.getElementById('searchbar').addEventListener('keyup', function (e) {
 
@@ -408,4 +480,42 @@ function searchCommentsByArticleDetails() {
 
         }
     });
+}
+
+function reply(commentId) {
+
+    var replyInput = {
+        Content:$("#reply").val(),
+        CommentId: commentId
+    
+
+    }
+
+    $.ajax({
+
+
+        type: 'post',
+        url: '/comments/reply',
+        data: { input: replyInput },
+        success: function () {
+
+
+            notifySuccess("Your reply has been succesfully submitted.");
+
+
+
+
+        },
+        statusCode: {
+            400: function () {
+
+                notifyError("Source might have been changed, please try again a few minutes later.");
+
+            }
+        }
+
+    })
+
+
+
 }

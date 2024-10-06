@@ -67,13 +67,3 @@ connection.on("Notify", function (notification) {
 });
 
 
-
-connection.on("NotifyError", function (title,message) {
-
-
-    notify(title,message,"error");
-
-
-
-
-        });
