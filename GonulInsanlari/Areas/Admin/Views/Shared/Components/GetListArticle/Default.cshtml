@@ -29,6 +29,7 @@
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Comments</th>
+                                <th>Read</th>
                                 <th>Created</th>
                                 <th>Saved by</th>
                                 <th>Status</th>
@@ -48,6 +49,7 @@
                                         <td style="cursor:pointer" class="myBox"><a href="/articles/details/@article.Id"></a><i style="margin-right:3px;" class="fa fa-file-text" aria-hidden="true"></i> @article.Title</td>
                                         <td><span style="cursor:pointer" class="text-success myBox"><a href="#categorypage"></a>@article.Category</span></td>
                                         <td>@article.CommentCount</td>
+                                        <td>@article.SeenCount</td>
                                         <td>@article.Created.ToString("dd-MMM-yyyy")</td>
                                         <td>@@@article.AppUser</td>
                                         <td><span class="@label">@text</span></td>

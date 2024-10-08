@@ -26,12 +26,15 @@ namespace GonulInsanlari.ViewComponents
 
             List<Comment> comments = _commentManager.
                 GetWhere(x => x.ArticleID == articleId && x.Status == true && x.Progress == CommentProgress.Approved)
+                .Include(c => c.Replies)
               .OrderByDescending(x => x.Created)
                 .AsNoTrackingWithIdentityResolution()
                 .Take(5)
             .ToList();
 
             List<CommentByArticleUIViewModel> model = _mapper.Map<List<CommentByArticleUIViewModel>>(comments);
+
+          
 
             @ViewData["articleId"] = articleId;
 

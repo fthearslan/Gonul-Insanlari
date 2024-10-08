@@ -8,6 +8,8 @@
         public string Category { get; set; }
         public string AppUser { get; set; }
         public bool Status { get; set; }
+
+        public int SeenCount { get; set; }
         public int CommentCount { get; set; }
         public DateTime Created { get; set; }
 

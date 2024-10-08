@@ -17,6 +17,7 @@ namespace ViewModelLayer.ViewModels.Comment
 
         public int ArticleID { get; set; }
 
+        public List<CommentByArticleUIViewModel> Replies { get; set; } = new();
 
 
     }

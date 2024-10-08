@@ -17,18 +17,14 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         public IViewComponentResult Invoke()
         {
 
-            var comments = _manager.GetAllAsync(EntityLayer.Concrete.Entities.CommentProgress.Pending, true).Result.Take(5).ToList();
-            int count;
-            if (comments is not null)
-            {
-                count = comments.Count();
+            var comments = _manager.GetAllAsync(EntityLayer.Concrete.Entities.CommentProgress.Pending, true)
+                .Result
+                .Take(5)
+                .ToList();
 
-            }
-            else
-            {
-                count = 0;
-            }
-            ViewData["Count"]= count;
+      
+          
+            ViewData["Count"]= comments.Count;
             return View(comments);
 
         }

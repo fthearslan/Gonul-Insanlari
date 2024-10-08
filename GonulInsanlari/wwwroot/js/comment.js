@@ -484,8 +484,10 @@ function searchCommentsByArticleDetails() {
 
 function reply(commentId) {
 
+    let inputId = '#reply' + commentId;
+
     var replyInput = {
-        Content:$("#reply").val(),
+        Content: $(inputId + " " + inputId).val(),
         CommentId: commentId
     
 

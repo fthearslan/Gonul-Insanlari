@@ -5,6 +5,8 @@
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
+
+
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12">
         <div class="tabs-container">
@@ -30,7 +32,7 @@
                                                 <div class="product-desc">
                                                     <span class="product-price">
                                                         <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.CommentCount
-                                                        <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> 150
+                                                        <i style="margin-right:2px;margin-left:8px;" class="fa fa-eye"> </i> @article.SeenCount
                                                     </span>
                                                     <small class="text-muted">@article.Category.Name</small>
                                                     @if (article.Title.Length > 40)
@@ -73,7 +75,7 @@
                             }
 
                         </div>
-                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}),X.PagedList.Web.Common.PagedListRenderOptions.TwitterBootstrapPager)
+                        @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("List",new { pageNumber}))
 
                     </div>
                 </div>

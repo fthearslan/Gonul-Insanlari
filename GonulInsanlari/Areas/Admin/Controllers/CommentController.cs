@@ -47,14 +47,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
             if (!ModelState.IsValid)
-                return Json(ModelState.GetModelErrors());
+                return BadRequest(ModelState.GetModelErrors());
 
             Comment? comment = await _manager.GetByIdAsync(input.CommentId);
 
             if (comment is null)
                 return NotFound();
 
-            comment.Replies.Add(new Comment(input.NameSurname, input.Email, input.Content) { Progress = CommentProgress.Reply });
+            comment.Replies.Add(new Comment(input.NameSurname, input.Email, input.Content) { Progress = CommentProgress.Reply,ArticleID=comment.ArticleID });
 
             _manager.Update(comment);
 

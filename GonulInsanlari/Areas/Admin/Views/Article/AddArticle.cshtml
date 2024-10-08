@@ -20,7 +20,7 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 
-<div  class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         <div class="col-lg-12">
 
@@ -29,16 +29,15 @@
                 <div class="panel-heading">
 
                     <div class="ibox-tools">
-                      
+
                         <a onclick="$('#info').hide();" style="margin-right:10px;" class="close-link">
                             <i style=" color:white;" class="fa fa-times"></i>
                         </a>
                     </div>
-                    
-                     <i class="fa fa-info-circle"></i> Be aware
+
+                    <i class="fa fa-info-circle"></i> Be aware
                 </div>
                 <div class="panel-body">
-                 
                 </div>
 
             </div>
@@ -61,7 +60,7 @@
                     <div class="text-center m-t-md">
                         <h2>Please fill the required fields below.</h2>
 
-                        <form id="form_id" asp-action="AddArticle"    enctype="multipart/form-data" >
+                        <form id="form_id" asp-action="AddArticle" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
                             <div style="margin-top:30px;" class="form-group  row">
                                 <label class="col-sm-2 col-form-label">Title</label>
@@ -93,7 +92,7 @@
                                     <div class="input-group m-b">
                                         <div class="input-group-prepend">
                                             <button onclick="$('#fileUpload').trigger('click'); return false;" href="#" class="btn btn-white " type="button">Upload</button>
-                                            <input style="display:none" type="file"  accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
+                                            <input style="display:none" type="file" accept="image/*" onchange="showImageName(this)" asp-for=ImagePath id="fileUpload">
                                         </div>
 
                                         <input type="text" id="textbox1" class="form-control" readonly>
@@ -109,7 +108,7 @@
                             </div>
                             <div class="hr-line-dashed"></div>
 
-               
+
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group row">
@@ -129,7 +128,7 @@
 
 
                                 <div style="margin-right:15px;margin-left:auto">
-                                    <button id="btndraft"  class="ladda-button ladda-button-demo btn btn-warning" name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
+                                    <button id="btndraft" class="ladda-button ladda-button-demo btn btn-warning" name="IsDraft" value="true" data-style="zoom-in"><i class="fa fa-floppy-o"></i> Draft</button>
                                     <button id="btn" onclick="fire()" type="button" class="ladda-button ladda-button-demo btn btn-primary" data-style="zoom-in" name="IsDraft" value="false"><i class="fa fa-check"></i> Submit</button>
 
                                 </div>
@@ -151,7 +150,7 @@
 
     <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
 
-   
+
     <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
 
     <script src="sweetalert2.all.min.js"></script>
@@ -166,31 +165,33 @@
             document.getElementById("textbox1").value = file;
         }
     </script>
-   
+
     <script>
         $(document).ready(function () {
 
             $('.summernote').summernote();
 
         });
-     
+
 
     </script>
-  <script>
+    <script>
         $(document).ready(function () {
-          
-            $('#summernote').summernote('fontName', 'Arial');
+
+            $('#summernote').summernote('fontName', 'Helvetica');
+            $('#summernote').summernote('fontSize', '16');
+
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
-</script>
-<script>
+    </script>
+    <script>
         window.onbeforeunload = function (event) {
             event.returnValue = "Write something clever here..";
         };
-</script>
-  <script>
+    </script>
+    <script>
 
-  function fire() {
+        function fire() {
 
             Swal.fire({
                 title: "Are you sure?",
@@ -205,7 +206,7 @@
                 if (result.isConfirmed) {
                     document.getElementById("form_id").submit();
 
-                  
+
                 }
 
 

@@ -43,16 +43,30 @@
             {
                 <li>
 
-                    <a href="#"><i class="fa fa-file"></i> <span class="nav-label">Contents</span><span class="fa arrow"></span></a>
+                    <a href="#">
+                        <i class="fa fa-file-text"></i> <span class="nav-label">Contents</span><span class="fa arrow"></span> @if ((int?)@ViewData["CommentCount"] > 0)
+                        {
+                            <span style="border-radius:50%;height:20px;width:20px;margin-left:5px;" class="label label-warning">@ViewData["CommentCount"]</span>
+
+                        }
+                    </a>
                     <ul class="nav nav-second-level collapse">
                         @if (User.HasClaim("Permission", "Article.Read"))
                         {
-                            <li><a href="/articles/list">Articles</a></li>
+                            <li> <a href="/articles/list"><i class="fa fa-font" style="margin-right:5px;"></i> Articles</a></li>
                         }
                         @if (User.HasClaim("Permission", "Comment.Read"))
                         {
-                            <li><a href="/comments/list">Comments</a></li>
+                            <li>
+                                <a href="/comments/list">
+                                    <i class="fa fa-comments" style="margin-right:5px;"></i> Comments @if ((int?)@ViewData["CommentCount"] > 0)
+                                    {
+                                        <span style="border-radius:50%;height:10px;width:10px;margin-left:5px;" class="label label-warning">@ViewData["CommentCount"]</span>
 
+                                    }
+                                
+                                </a>
+                            </li>
                         }
 
                     </ul>

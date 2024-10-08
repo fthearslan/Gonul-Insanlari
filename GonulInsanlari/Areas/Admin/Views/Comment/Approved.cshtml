@@ -41,7 +41,7 @@
                     {
                         string labelStatus = (comment.Status == true) ? "text-navy" : "text-danger";
 
-
+                        string modalId = "reply" + comment.Id.ToString();
 
                         <div id="@comment.Id" class="social-feed-box">
 
@@ -115,7 +115,7 @@
 
 
                                 <div class="btn-group">
-                                    <button data-toggle="modal" data-target="#replyComment" value="approve" class="btn btn-success btn-xs"><i class="fa fa-reply"></i> Reply</button>
+                                    <button data-toggle="modal" data-target="#@modalId" value="approve" class="btn btn-success btn-xs"><i class="fa fa-reply"></i> Reply</button>
                                     <a href="/articles/details/@comment.ArticleID" class="btn btn-warning btn-xs"><i class="fa fa-file"></i> Go to Article</a>
                                     <button onclick="approveOrReject('@comment.Id',this.value)" value="reject" class="btn btn-danger btn-xs"><i class="fa fa-thumbs-down"></i> Reject </button>
 
@@ -126,7 +126,7 @@
 
                         </div>
 
-                        <div class="modal inmodal fade" id="replyComment" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal inmodal fade" id="@modalId" tabindex="-1" role="dialog" aria-hidden="true">
                             <div class="modal-dialog modal-md">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -140,7 +140,7 @@
                                         <div class="form-group">
                                             <label class="col-form-label">Your reply</label>
 
-                                            <div><textarea id="reply" name="Reply" class="form-control"></textarea></div>
+                                            <div><textarea id="@modalId" name="Reply" class="form-control"></textarea></div>
 
                                         </div>
 
@@ -150,11 +150,11 @@
 
                                         </div>
 
-
+                                       
 
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" onclick="reply('@comment.Id')" id="btnReply" class="btn btn-success">Reply</button>
+                                        <button type="button" onclick="reply('@comment.Id')" id="btnReply"  class="btn btn-success">Reply</button>
                                     </div>
                                 </div>
                             </div>

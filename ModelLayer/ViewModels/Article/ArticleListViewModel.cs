@@ -11,6 +11,8 @@ namespace ViewModelLayer.ViewModels.Article
         public string ImagePath { get; set; }
         public string UserImagePath { get; set; }
         public string AppUser { get; set; }
+
+        public int SeenCount { get; set; }
         public DateTime Created { get; set; }
         public int CommentCount { get; set; }
 

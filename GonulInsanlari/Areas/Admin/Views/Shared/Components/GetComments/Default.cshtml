@@ -3,7 +3,14 @@
 <div class="col-lg-6">
     <div class="ibox ">
         <div class="ibox-title">
-            <span class="label label-success float-right">@ViewData["Count"] New Comments</span>
+
+            @if (Model.Count > 0)
+            {
+                <span class="text text-success float-right"> New Comments</span>
+
+            }
+
+
             <h5><a href="/comments/list" style="color:inherit">Recent Comments</a></h5>
             <div class="ibox-tools">
                 <a class="collapse-link">
@@ -19,25 +26,25 @@
                 @foreach (var comment in Model)
                 {
                     <div style="cursor:pointer" class="feed-element myBox">
-                       
-                            <div>
-                                <small class="float-right text-navy">@GetDate.GetCreateDate(comment.Created)</small>
-                                <i style="margin-right:10px;margin-left:2px;" class="fa fa-comment"></i>  <strong>@comment.NameSurname</strong> - <small>@comment.Progress</small>
-                                @if (comment.Content.Length >= 50)
-                                {
-                                    <div>
-                                        @comment.Content.Substring(0,comment.Content.Substring(0,50).LastIndexOf(" "))...
 
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div>@comment.Content</div>
+                        <div>
+                            <small class="float-right text-navy">@GetDate.GetCreateDate(comment.Created)</small>
+                            <i style="margin-right:10px;margin-left:2px;" class="fa fa-comment"></i>  <strong>@comment.NameSurname</strong> - <small>@comment.Progress</small>
+                            @if (comment.Content.Length >= 50)
+                            {
+                                <div>
+                                    @comment.Content.Substring(0,comment.Content.Substring(0,50).LastIndexOf(" "))...
 
-                                }
-                                <small class="text-muted"></small>
-                            </div>
-                        <a style="text-decoration-color:#525761" href="/Admin/Contact/GetDetails/@comment.Id"></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div>@comment.Content</div>
+
+                            }
+                            <small class="text-muted"></small>
+                        </div>
+                        <a style="text-decoration-color:#525761" href="mail/detail/@comment.Id"></a>
 
                     </div>
                 }

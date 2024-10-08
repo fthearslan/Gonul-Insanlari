@@ -1,5 +1,7 @@
-﻿using AutoMapper;
+﻿using AspNetCore;
+using AutoMapper;
 using BussinessLayer.Abstract.Services;
+using BussinessLayer.Concrete.Managers;
 using BussinessLayer.Concrete.Validations.FluentValidation;
 using BussinessLayer.Concrete.Validations.FluentValidation.Admin;
 using DataAccessLayer.Concrete.Providers;
@@ -7,6 +9,7 @@ using EntityLayer.Concrete.Entities;
 using FluentValidation;
 using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
+using GonulInsanlari.Extensions;
 using GonulInsanlari.Extensions.Admin;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
@@ -153,7 +156,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             if (ModelState.IsValid)
             {
-
                 if (await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == model.UserName && x.Id != model.Id) is null)
                 {
                     AppUser user = await _userManager.FindByIdAsync(model.Id.ToString());
@@ -166,6 +168,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     user.Age = model.Age;
                     user.PhoneNumber = model.PhoneNumber;
 
+                    if (user.Email != model.Email)
+                        user.EmailConfirmed = false;
+
                     await _userManager.UpdateAsync(user);
 
                     _response.success = true;
@@ -176,6 +181,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     errors.Add("This username is in used.");
                 }
+
+
 
             }
             else
@@ -420,7 +427,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                     return Json(_response);
 
-                  
+
 
             }
 
@@ -430,7 +437,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             return Json(_response);
 
-         
+
 
         }
 

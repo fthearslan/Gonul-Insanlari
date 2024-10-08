@@ -29,7 +29,8 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Comment
 
                 prohibitedWords.ForEach(word =>
                 {
-                    if (content.Contains(word))
+
+                    if ( content is not null && content.Contains(word))
                         context.AddFailure("Content", "Your comment contains prohibited words.");
 
                 });

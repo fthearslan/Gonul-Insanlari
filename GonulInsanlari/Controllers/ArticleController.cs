@@ -4,6 +4,7 @@ using EntityLayer.Concrete.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using System.Runtime.CompilerServices;
 using ViewModelLayer.ViewModels.Article;
 using ViewModelLayer.ViewModels.Comment;
@@ -54,6 +55,8 @@ namespace GonulInsanlari.Controllers
         public async Task<IActionResult> GetDetails(string articleSlug, int articleId)
         {
 
+          
+
             Article? article = await _articleManager.GetWhere(x => x.Status == true && x.IsDraft == false)
                 .Include(x => x.Comments)
              .SingleOrDefaultAsync(x => x.Id == articleId);
@@ -61,6 +64,7 @@ namespace GonulInsanlari.Controllers
             if (article is null)
                 return NotFound();
 
+            
             article.SeenCount++;
 
             _articleManager.Update(article);

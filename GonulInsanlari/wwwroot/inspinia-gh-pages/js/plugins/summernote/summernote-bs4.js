@@ -7109,6 +7109,7 @@ $$1.summernote = $$1.extend($$1.summernote, {
             ['style', ['style']],
             ['font', ['bold', 'underline', 'clear']],
             ['fontname', ['fontname']],
+            ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
             ['insert', ['link', 'picture', 'video']],
@@ -7157,11 +7158,11 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
         ],
         fontNames: [
-            'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
-            'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
+            'Arial',  
+            'Helvetica', 
             'Tahoma', 'Times New Roman', 'Verdana'
         ],
-        fontSizes: ['8', '9', '10', '11', '12', '14', '18', '24', '36'],
+        fontSizes: ['8', '9', '10', '11', '12', '14','16', '18', '24', '36'],
         // pallete colors(n x n)
         colors: [
             ['#000000', '#424242', '#636363', '#9C9C94', '#CEC6CE', '#EFEFEF', '#F7F7F7', '#FFFFFF'],
