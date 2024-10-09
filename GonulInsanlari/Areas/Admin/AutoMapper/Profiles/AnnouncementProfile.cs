@@ -13,6 +13,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region List
 
             CreateMap<Announcement, AnnouncementListViewModel>();
+
            
             #endregion
 

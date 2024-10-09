@@ -51,7 +51,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("add")]
         [HttpPost]
-        [HasPermission(PermissionType.Announcement,Permission.Create)]
+        [HasPermission(PermissionType.Announcement, Permission.Create)]
         public async Task<IActionResult> AddAnnouncement(AnnouncementCreateViewModel model)
         {
             if (ModelState.IsValid)
@@ -63,7 +63,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 _manager.InsertWithRelated(entity);
 
-                return RedirectToAction("GetDetails", entity.Id);
+                return RedirectToAction(nameof(GetDetails), new { id = entity.Id });
             }
 
             return View(model);
@@ -75,16 +75,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         #region READ
 
-        
+
         [Route("list")]
         [HasPermission(PermissionType.Announcement, Permission.Read)]
-        public async Task<IActionResult> List()
+        public IActionResult List()
         {
-            var list = await _manager.GetForAdminAsync();
-           
+            var list = _manager.List();
+
             List<AnnouncementListViewModel> model = _mapper.Map<List<AnnouncementListViewModel>>(list);
-              
-            
+
+
             return View(model);
 
 
@@ -92,24 +92,22 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("details/{id}")]
-        [HasPermission(PermissionType.Announcement,Permission.Read)]
+        [HasPermission(PermissionType.Announcement, Permission.Read)]
 
         public async Task<IActionResult> GetDetails(int id)
         {
 
-            var announcement = await _manager.GetWithUserAsync(id);
+            var announcement = await _manager.GetByIdAsync(id);
 
-            if (announcement != null)
-            {
-                var model = _mapper.Map<AnnouncementDetailsViewModel>(announcement);
+            if (announcement is null)
+                return NotFound();
 
-                ViewBag.IsUser = (announcement.User == await _userManager.GetUserAsync(HttpContext.User)) ? true : false;
+            var model = _mapper.Map<AnnouncementDetailsViewModel>(announcement);
 
-                return View(model);
 
-            }
+            return View(model);
 
-            return NotFound();
+
 
 
         }

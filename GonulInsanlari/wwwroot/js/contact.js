@@ -65,11 +65,11 @@ function refresh(status) {
 
                 }
 
-                fromOrTo = result[i].from;
+               let fromOrTo = result[i].from;
 
                 switch (result[i].contactStatus) {
 
-                    case "Received":
+                    case 1:
 
                         fromOrTo = result[i].from;
                         break;

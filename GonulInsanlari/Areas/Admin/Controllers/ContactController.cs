@@ -173,7 +173,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
 
-            List<Contact> contacts = await _manager.GetContactsAsync(ContactStatus.Received, null, null);
+            List<Contact> contacts = await _manager
+                .GetWhere(x => x.ContactStatus == ContactStatus.Received && x.Status == true)
+                .OrderByDescending(x => x.Created)
+                .ToListAsync();
+
 
             List<ContactListViewModel> model = new();
 
@@ -192,8 +196,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.Contact, Permission.Read)]
         public async Task<IActionResult> SentBox(int pageNumber = 1)
         {
-            List<Contact> contacts = await _manager.
-                GetContactsAsync(ContactStatus.Sent, _userManager.GetUserId(HttpContext.User), null);
+            List<Contact> contacts = await _manager
+             .GetWhere(x => x.ContactStatus == ContactStatus.Sent && x.Id.ToString() == _userManager.GetUserId(HttpContext.User))
+                .OrderByDescending(x => x.Created)
+                .ToListAsync();
+
 
             List<ContactListViewModel> model = new();
 
@@ -217,7 +224,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
             List<Contact> drafts = await _manager
-                .GetContactsAsync(ContactStatus.Drafted, _userManager.GetUserId(HttpContext.User), null);
+                .GetWhere(x => x.ContactStatus == ContactStatus.Drafted && x.Id.ToString() == _userManager.GetUserId(HttpContext.User))
+                .OrderByDescending(x => x.Created)
+                .ToListAsync();
+
 
             List<ContactListViewModel> model = new();
 
@@ -237,7 +247,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> GetTrash(int pageNumber = 1)
         {
 
-            List<Contact> contactsToDelete = await _manager.GetContactsAsync(null, _userManager.GetUserId(HttpContext.User), false);
+            List<Contact> contactsToDelete = await _manager.GetWhere(x => x.Status == false)
+                .OrderByDescending(x => x.Created)
+                .ToListAsync();
 
             List<ContactListViewModel> model = _mapper.Map<List<ContactListViewModel>>(contactsToDelete);
 
@@ -254,7 +266,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> Newsletters(int pageNumber = 1)
         {
 
-            List<Contact> contacts = await _manager.GetContactsAsync(ContactStatus.Newsletter, null, null);
+            List<Contact> contacts = await _manager
+                .GetWhere(x => x.ContactStatus == ContactStatus.Newsletter && x.Status == true)
+                .ToListAsync();
 
             List<ContactListViewModel> model = _mapper.Map<List<ContactListViewModel>>(contacts);
 
@@ -311,13 +325,12 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<Contact> contacts = status switch
             {
-                ContactStatus.Received or ContactStatus.Newsletter => await _manager.GetContactsAsync(status, null, null),
+                ContactStatus.Received or ContactStatus.Newsletter => await _manager.GetWhere(x => x.ContactStatus == status && x.Status == true).ToListAsync(),
 
-                ContactStatus.Trash => await _manager.GetContactsAsync(null, _userManager.GetUserId(HttpContext.User), false),
+                ContactStatus.Trash => await _manager.GetWhere(x => x.ContactStatus == status && x.Status == false).ToListAsync(),
 
-                _ => await _manager.GetContactsAsync(status, _userManager.GetUserId(HttpContext.User), null)
-
-            };
+                _ => await _manager.GetWhere(x => x.ContactStatus == status &&x.SenderId==_userManager.GetUserId(HttpContext.User) && x.Status == true ).ToListAsync()
+            }; 
 
 
             List<ContactListViewModel> model = new();
@@ -551,7 +564,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                         }
                         else
                         {
-                            contact.SenderId = _userManager.GetUserId(HttpContext.User);
+                            contact.Status = false;
 
                             _manager.Update(contact);
 

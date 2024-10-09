@@ -29,6 +29,8 @@ namespace EntityLayer.Concrete.Entities
 
         }
 
+        public string? NameSurname { get; set; }
+
 
         [StringLength(50)]
         public string From { get; set; }

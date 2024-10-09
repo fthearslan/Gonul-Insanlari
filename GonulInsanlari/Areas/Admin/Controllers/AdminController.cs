@@ -1,5 +1,4 @@
-﻿using AspNetCore;
-using AutoMapper;
+﻿using AutoMapper;
 using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete.Managers;
 using BussinessLayer.Concrete.Validations.FluentValidation;

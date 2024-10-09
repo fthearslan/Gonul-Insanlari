@@ -5,7 +5,7 @@
         <div class="ibox-title">
             @if ((int?)@ViewData["Count"] > 0)
             {
-                <span style="background-color: #1ab394" class="label float-right"> @ViewData["Count"] New Contacts</span>
+                <span  class="text text-navy float-right"> @ViewData["Count"] New Contacts</span>
             }
 
 
@@ -42,7 +42,7 @@
                                 <i style="margin-right:10px;margin-left:2px;" class="fa fa-envelope"></i>
 
                             }
-                            <strong>@contact.From</strong> - @contact.From
+                            <strong>@contact.NameSurname</strong> - @contact.From
 
 
                             @if (contact.Content.Length >= 70)

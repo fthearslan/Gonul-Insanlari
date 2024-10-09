@@ -79,7 +79,8 @@ namespace DataAccessLayer.Concrete.Repositories
 
         public IQueryable<T> GetWhere(Expression<Func<T, bool>> filter)
         {
-            return _dbset.Where(filter);
+            return _dbset.Where(filter)
+                .OrderByDescending(x=>x.Created);
         }
 
      
