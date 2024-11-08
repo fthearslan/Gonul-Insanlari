@@ -20,6 +20,9 @@ namespace EntityLayer.Concrete.Entities
         [StringLength(30)]
         public string Subject { get; set; }
         public bool IsForAdmins { get; set; }
+
+        public bool IsAttached { get; set; }
+
         public int UserId { get; set; }
         public AppUser? User { get; set; }
         public string? EditedBy { get; set; }

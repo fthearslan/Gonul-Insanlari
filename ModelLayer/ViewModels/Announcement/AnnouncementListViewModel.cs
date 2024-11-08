@@ -11,6 +11,7 @@
         public string User { get; set; }
 
         public bool IsForAdmins { get; set; }
+        public bool IsAttached { get; set; }
 
     }
 }

@@ -73,7 +73,7 @@
     @{
 
 
-        DashboardAnnouncementViewModel? dashboardAnnouncement = _announcementManager.GetWhere(x => x.IsForAdmins == false && x.Status == true).Select(x => new DashboardAnnouncementViewModel()
+        DashboardAnnouncementViewModel? dashboardAnnouncement = _announcementManager.GetWhere(x => x.IsForAdmins == false && x.Status == true && x.IsAttached==true).Select(x => new DashboardAnnouncementViewModel()
             {
                 ID = x.Id,
                 Title = x.Title

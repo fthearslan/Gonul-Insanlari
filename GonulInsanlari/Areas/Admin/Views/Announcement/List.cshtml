@@ -38,12 +38,22 @@
                         </thead>
 
                         <tbody>
-                            @if (Model.Count>0)
+                            @if (Model.Count > 0)
                             {
 
 
                                 @foreach (var announcement in Model)
                                 {
+
+
+                                    string isAttached = announcement.IsAttached switch
+                                    {
+                                        true => "Dettach",
+                                        false => "Attach"
+
+                                    };
+
+
 
                                     <tr>
                                         <td style="cursor:pointer" class="myBox">
@@ -56,6 +66,7 @@
                                         <td class="btn-group">
                                             <a class="btn-white btn btn-xs" href="/announcements/details/@announcement.Id">View</a>
                                             <a class="btn-white btn btn-xs" href="/announcements/edit/@announcement.Id">Edit</a>
+                                            <a class="btn-white btn btn-xs" onclick="attach(@announcement.Id)" href="#" ><i class="fa fa-attach" style="margin-right:3px;"></i> @isAttached</a>
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@announcement.Id)" Id="btn_delete" value="@announcement.Id"><i class="fa fa-trash"></i></a>
                                         </td>
 
@@ -100,7 +111,7 @@
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
 
     <script src="sweetalert2.all.min.js"></script>
-   
+
     <script>
         $(document).ready(function () {
             $("#dataTable").dataTable({
@@ -121,7 +132,7 @@
         });
     </script>
 
-    
+
     <script src="~/inspinia-gh-pages/js/plugins/sweetalert/sweetalert.min.js"></script>
 }
 

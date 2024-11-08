@@ -9,6 +9,8 @@ using GonulInsanlari.Areas.Admin.Authorization;
 using GonulInsanlari.Enums;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Operations;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using Org.BouncyCastle.Crypto;
 using System.Dynamic;
@@ -59,6 +61,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 var user = await _userManager.GetUserAsync(HttpContext.User);
 
                 Announcement entity = _mapper.Map<Announcement>(model);
+
                 entity.User = user;
 
                 _manager.InsertWithRelated(entity);
@@ -154,6 +157,47 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
 
             return View(model);
+        }
+
+
+        [Route("attach/{id}")]
+        [HttpPost]
+        public async Task<IActionResult> Attach(int id)
+        {
+           
+            Announcement announcementToAttach = await _manager.GetByIdAsync(id);
+
+            string action = "";
+
+            switch (announcementToAttach.IsAttached)
+            {
+                case true:
+                    announcementToAttach.IsAttached = false;
+                    action = "Dettached";
+                    break;
+                case false:
+                    announcementToAttach.IsAttached = true;
+                    action = "Attached";
+                    break;
+
+            }
+
+            var announcement = await _manager.GetWhere(x => x.IsAttached == true)
+               .SingleOrDefaultAsync();
+
+            if (announcement is not null)
+            {
+                announcement.IsAttached = false;
+
+                _manager.Update(announcement);
+
+            }
+
+            _manager.Update(announcementToAttach);
+
+            return StatusCode(200,action);
+
+
         }
 
 

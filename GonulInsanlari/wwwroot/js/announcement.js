@@ -54,3 +54,30 @@ $(".myBox").click(function () {
     window.location = $(this).find("a").attr("href");
     return false;
 });
+
+function attach(id) {
+
+
+    $.ajax({
+
+
+
+        type: 'post',
+        url: '/announcements/attach/' + id,
+        success: function (action) {
+
+            notify(action+"!", "The announcement has been successfully "+action+".", "success");
+            
+
+        }
+
+
+
+    })
+
+
+
+
+
+
+}
