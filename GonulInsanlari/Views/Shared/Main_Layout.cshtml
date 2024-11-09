@@ -45,19 +45,11 @@
 
         <ul class="menu-list">
 
-            <li class="menu-item-has-children active">
-                <a href="index.html" class="drop-down">Example</a><i class="bi bi-plus dropdown-icon"></i>
-                <ul class="sub-menu">
-                    <li><a href="/">Example</a></li>
+            <li><a href="/"> Home </a></li>
 
-                </ul>
-            </li>
+            <li><a href="/article/all">Articles</a></li>
 
-            <li><a href="article/all">Articles</a></li>
-
-            <li><a href="category/all">Categories</a></li>
-
-            <li><a href="/"> Announcements</a> </li>
+            <li><a href="/category/all">Categories</a></li>
 
             <li><a href="/">About Us</a></li>
 
@@ -102,7 +94,7 @@
                                     </defs>
                                 </svg>
                                @dashboardAnnouncement.Title
-                                <a style="color:black" href="#announcement">Click Now</a>
+                                <a style="color:black" href="/announcement/@GetString.GetSlugUrl(dashboardAnnouncement.Title)/@dashboardAnnouncement.ID">Click Now!</a>
                             </p>
                         </div>
                         <div style="cursor:pointer" onclick="$('#announcementBar').hide();" class="close-btn">
@@ -149,20 +141,20 @@
 
                             <ul class="menu-list">
 
-                                <li class="menu-item-has-children active">
-                                    <a href="#" class="drop-down">Example</a><i class="bi bi-plus dropdown-icon"></i>
+                               @*  <li class="menu-item-has-children active">
+                                    <a href="#" class="drop-down">Home</a><i class="bi bi-plus dropdown-icon"></i>
                                     <ul class="sub-menu">
                                         <li><a href="/">Example</a></li>
 
                                     </ul>
-                                </li>
+                                </li> *@
 
-                                <li><a href="article/all"> Articles </a></li>
-
-                                <li><a href="category/all"> Categories </a></li>
+                                <li><a href="/"> Home </a></li>
 
 
-                                <li><a href="/">Announcements</a></li>
+                                <li><a href="/article/all"> Articles </a></li>
+
+                                <li><a href="/category/all"> Categories </a></li>
 
 
                                 <li><a href="/"> About Us </a></li>

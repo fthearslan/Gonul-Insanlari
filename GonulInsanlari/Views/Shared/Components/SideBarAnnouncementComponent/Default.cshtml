@@ -1,0 +1,28 @@
+﻿@model List<AnnouncementSideBarViewModel>
+
+<div class="sidebar-widget featured-post">
+
+    <h6><i class="fa fa-bullhorn" style="margin-right:5px;"></i> Announcements </h6>
+
+
+    @foreach (AnnouncementSideBarViewModel announcement in Model)
+    {
+
+        <div class="recent-post mb-20">
+
+            <div class="recent-post-img">
+                <a href="/announcement/@GetString.GetSlugUrl(announcement.Title)/@announcement.ID"></a>
+
+            </div>
+
+            <div class="recent-post-content">
+                <a href=""> @announcement.Created.ToShortDateString() </a>
+                <h5><a href="/announcement/@GetString.GetSlugUrl(announcement.Title)/@announcement.ID"> @announcement.Title </a></h5>
+            </div>
+        </div>
+
+
+    }
+
+
+</div>
