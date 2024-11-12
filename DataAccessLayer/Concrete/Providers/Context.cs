@@ -19,7 +19,7 @@ namespace DataAccessLayer.Concrete.Providers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=DESKTOP-H7OKEVB\\MSSQLSERVER01;database=GoDb;integrated security=true; TrustServerCertificate=true;", options =>
+            optionsBuilder.UseSqlServer("server=surface\\DEVMSSQLSERVER;database=GoDb;integrated security=true; TrustServerCertificate=true;", options =>
             {
                 options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
 
@@ -62,5 +62,8 @@ namespace DataAccessLayer.Concrete.Providers
 
         public DbSet<UserNotification> UserNotifications { get; set; } = null!;
 
+        public DbSet<Visitor> Visitors { get; set; } = null!;
     }
+
+
 }

@@ -16,6 +16,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Dashboard
         {
             using var c = new Context();
 
+            ViewData["VisitorCount"] = c.Visitors.Count();
 
             ViewData["CommentCount"] = c.Comments
                 .Where(x => x.Status == true)

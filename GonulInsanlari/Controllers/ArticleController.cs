@@ -69,8 +69,7 @@ namespace GonulInsanlari.Controllers
 
             _articleManager.Update(article);
 
-       
-
+            
             ArticleDetailsUIViewModel model = _mapper.Map<ArticleDetailsUIViewModel>(article);
 
 

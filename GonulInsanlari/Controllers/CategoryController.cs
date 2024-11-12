@@ -44,6 +44,9 @@ namespace GonulInsanlari.Controllers
 
 
 
+           
+
+
             return View(categories);
 
         }

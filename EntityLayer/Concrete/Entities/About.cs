@@ -18,7 +18,6 @@ namespace EntityLayer.Concrete.Entities
         [StringLength(300)]
         public string? Details2 { get; set; }
         public string? ImagePath { get; set; }
-        public bool Status { get; set; }
 
 
 

@@ -142,6 +142,7 @@ app.UseSession();
 
 app.UseAuthorization();
 
+app.UseMiddleware(typeof(TotalVisitorCounterMiddleware));
 
 
 app.UseEndpoints(endpoints =>
@@ -164,3 +165,4 @@ app.MapControllerRoute(
 app.MapHub<NotificationHub>("/notificationHub");
 
 app.Run();
+

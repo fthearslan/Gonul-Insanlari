@@ -60,6 +60,9 @@ namespace GonulInsanlari.Subscriptions
         }
 
 
+        
+
+
         ~NotificationSubscription() => _tableDependency.Stop();
 
     }
