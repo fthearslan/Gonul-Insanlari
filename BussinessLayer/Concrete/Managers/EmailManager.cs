@@ -77,7 +77,7 @@ namespace BussinessLayer.Concrete.Managers
         {
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\\inspinia-gh-pages\\email_templates\\Newsletter.html")))
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/Newsletter.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
@@ -103,7 +103,9 @@ namespace BussinessLayer.Concrete.Managers
 
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\\inspinia-gh-pages\\email_templates\\Reply.html")))
+            
+
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/Reply.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
@@ -212,6 +214,7 @@ namespace BussinessLayer.Concrete.Managers
                             foreach (string? attachment in paths)
                                 mail.Attachments.Add(new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", attachment)));
 
+                     
                     }
 
                     await client.SendMailAsync(mail);

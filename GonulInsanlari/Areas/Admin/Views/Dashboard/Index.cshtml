@@ -4,6 +4,7 @@
 }
 
 <link href="~/css/jquery.toast.min.css" rel="stylesheet" />
+<script src="~/lib/jquery.toast.min.js"></script>
 
 
 
@@ -55,6 +56,14 @@
 @section Script{
 
     <script src="~/lib/jquery.toast.min.js"></script>
+
+
+    <script>
+        $(".myBox").click(function () {
+            window.location = $(this).find("a").attr("href");
+            return false;
+        });
+    </script>
 
    @*  <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 

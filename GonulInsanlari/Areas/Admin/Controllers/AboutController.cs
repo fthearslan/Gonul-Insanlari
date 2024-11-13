@@ -27,6 +27,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> About()
         {
 
+
+         
+        
+           
+
             About? about = await _aboutManager.GetWhere(x => x.Status == true)
               .FirstOrDefaultAsync();
 
@@ -46,7 +51,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return BadRequest(ModelState.GetModelErrors());
 
 
-            About? about = await _aboutManager.GetWhere(x => x.Status == true)
+            About? about = await _aboutManager.GetWhere(x => x.Id==model.Id && x.Status==true)
                  .FirstOrDefaultAsync();
 
             if (about is null)

@@ -17,6 +17,13 @@ function editAbout() {
 
             notifySuccess('About details has been successfully '+action);
 
+
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
+
+
         },
 
         statusCode: {

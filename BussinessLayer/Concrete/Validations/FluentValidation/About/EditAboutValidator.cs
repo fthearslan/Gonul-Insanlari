@@ -19,7 +19,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.About
             RuleFor(x => x.Title).MinimumLength(5).WithMessage("Too short for title...");
             RuleFor(x => x.Title).MaximumLength(30).WithMessage("Too long for title...");
 
-            RuleFor(x => x.Title).MinimumLength(100).WithMessage("Too short for details...");
+            RuleFor(x => x.Details).MinimumLength(100).WithMessage("Too short for details...");
 
 
         }
