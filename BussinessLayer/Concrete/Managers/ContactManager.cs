@@ -2,7 +2,6 @@
 using DataAccessLayer.Abstract.SubRepositories;
 using EntityLayer.Concrete.Entities;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Asn1.Nist;
 using System;
 using System.Collections.Generic;
 using System.Linq;

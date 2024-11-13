@@ -18,7 +18,6 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ViewModelLayer.Models.Configuration;
 using ViewModelLayer.Models.Newsletter;
-using MimeKit;
 using System.Data;
 using Microsoft.EntityFrameworkCore;
 using ViewModelLayer.ViewModels.Newsletter;
@@ -36,6 +35,7 @@ using Microsoft.AspNetCore.Http;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using Newtonsoft.Json.Linq;
+using MimeKit;
 
 namespace BussinessLayer.Concrete.Managers
 {
@@ -77,7 +77,7 @@ namespace BussinessLayer.Concrete.Managers
         {
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(WeeklyNewsletterModel.Path))
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\\inspinia-gh-pages\\email_templates\\Newsletter.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
@@ -103,7 +103,7 @@ namespace BussinessLayer.Concrete.Managers
 
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(SendMailModel.Path))
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "\\wwwroot\\inspinia-gh-pages\\email_templates\\Reply.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 

@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using MimeKit.Tnef;
 using ViewModelLayer.ViewModels.Comment;
 
 namespace GonulInsanlari.Controllers

@@ -12,11 +12,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
-using Org.BouncyCastle.Crypto;
 using System.Dynamic;
 using System.Reflection.Metadata.Ecma335;
 using ViewModelLayer.ViewModels.Announcement;
-using static iTextSharp.text.pdf.events.IndexEvents;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
 {

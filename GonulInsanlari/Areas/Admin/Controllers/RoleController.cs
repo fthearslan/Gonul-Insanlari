@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Org.BouncyCastle.Crypto;
-using Org.BouncyCastle.Security.Certificates;
 using System.Configuration;
 using System.Linq;
 using System.Runtime.CompilerServices;

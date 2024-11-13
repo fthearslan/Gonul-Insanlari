@@ -19,8 +19,6 @@ namespace ViewModelLayer.Models.Newsletter
         }
 
 
-        public const string Path = "C:\\Users\\Admin\\source\\repos\\GonulInsanlariCoreMVC\\GonulInsanlari\\wwwroot\\inspinia-gh-pages\\email_templates\\Reply.html";
-        
         public int Id { get; set; }
        
         List<string>? to;

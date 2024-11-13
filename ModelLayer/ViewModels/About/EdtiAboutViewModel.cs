@@ -1,21 +1,18 @@
-﻿using EntityLayer.Abstract;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EntityLayer.Concrete.Entities
+namespace ViewModelLayer.ViewModels.About
 {
-    public class About : BaseEntity
+    public record EdtiAboutViewModel
     {
-
-        [StringLength(75)]
+        public int? Id { get; set; }
         public string Title { get; set; }
         public string Details { get; set; }
-
-
 
     }
 }

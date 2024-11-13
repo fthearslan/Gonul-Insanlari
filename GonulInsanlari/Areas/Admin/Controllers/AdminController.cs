@@ -17,7 +17,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
-using Org.BouncyCastle.Crypto;
 using System.Data.SqlClient;
 using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;

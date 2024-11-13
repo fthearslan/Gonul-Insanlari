@@ -3,7 +3,6 @@ using EntityLayer.Concrete.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Ocsp;
 using ViewModelLayer.ViewModels.Email;
 
 namespace GonulInsanlari.Areas.Admin.Controllers
