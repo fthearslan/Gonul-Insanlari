@@ -12,7 +12,8 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region List
 
-            CreateMap<Announcement, AnnouncementListViewModel>();
+            CreateMap<Announcement, AnnouncementListViewModel>()
+                .ForMember(dest=>dest.User,opt=>opt.MapFrom(src=>src.User.UserName));
 
            
             #endregion

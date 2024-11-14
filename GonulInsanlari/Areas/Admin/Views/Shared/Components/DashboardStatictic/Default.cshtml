@@ -1,12 +1,11 @@
 ﻿
 
-
 <div class="row">
     <div class="col-lg-3">
         <div class="ibox ">
             <div class="ibox-title">
                 <span class="text text-success float-right">Monthly</span>
-                <i class="fa fa-eye"></i><h5 style="padding-left:5px;"><a href="#" style="color:inherit">Visits</a> </h5>
+                <i class="fa fa-eye"></i><h5 style="padding-left:5px;"><a href="#" data-toggle="modal" data-target="#visits" style="color:inherit">Visits</a> </h5>
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins">@ViewData["VisitorCount"]</h1>
@@ -51,6 +50,30 @@
             </div>
             <div class="ibox-content">
                 <h1 class="no-margins">@ViewData["SubscriberCount"]</h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal inmodal fade" id="visits" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"><i class="fa fa-file-text" style="margin-right:3px;"></i> Visits </h4>
+            </div>
+            <div id="inputLocater" class="modal-body">
+
+                <div>
+                    <canvas id="barChart" height="140"></canvas>
+                </div>
+
+                <div id="" class="modal-footer">
+
+                </div>
             </div>
         </div>
     </div>

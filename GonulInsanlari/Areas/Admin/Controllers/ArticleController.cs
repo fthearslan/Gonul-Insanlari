@@ -253,23 +253,26 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<ActionResult> Delete(int id)
         {
             var article = await _articleManager.GetByIdAsync(id);
-            if (article != null)
-                switch (article.IsDraft)
-                {
-                    case true:
 
-                        _articleManager.Delete(article);
-                        return RedirectToAction(nameof(List));
+            if (article is null)
+                return NotFound();
 
-                    case false:
 
-                        article.Status = false;
-                        _articleManager.Update(article);
 
-                        break;
-                }
+            if (article.Status == true)
+            {
+                article.Status = false;
+                _articleManager.Update(article);
 
-            return NotFound();
+            }
+            else
+            {
+                _articleManager.Delete(article);
+
+            }
+
+            return StatusCode(200);
+
 
         }
 

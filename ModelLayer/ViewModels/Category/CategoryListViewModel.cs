@@ -12,6 +12,7 @@ namespace ViewModelLayer.ViewModels.Category
 
         public bool Status { get; set; }
 
+
         public int ArticleCount { get; set; }
 
     }

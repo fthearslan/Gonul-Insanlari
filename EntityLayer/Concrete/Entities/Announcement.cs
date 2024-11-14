@@ -24,7 +24,7 @@ namespace EntityLayer.Concrete.Entities
         public bool IsAttached { get; set; }
 
         public int UserId { get; set; }
-        public AppUser? User { get; set; }
+        public AppUser User { get; set; } 
         public string? EditedBy { get; set; }
 
     }

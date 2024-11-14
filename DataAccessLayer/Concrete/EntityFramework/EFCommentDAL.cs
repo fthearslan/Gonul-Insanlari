@@ -54,6 +54,7 @@ namespace DataAccessLayer.Concrete.EntityFramework
 
             return await c.Comments
                 .Where(x => x.Article.Title == articleTitle)
+                   .OrderByDescending(x => x.Progress == CommentProgress.Pending)
                  .AsNoTrackingWithIdentityResolution()
                  .ToListAsync();
 
@@ -111,7 +112,9 @@ namespace DataAccessLayer.Concrete.EntityFramework
             using (var c = new Context())
             {
                 return await c.Comments
-                    .Where(x => x.Article.Title == articleTitle && x.NameSurname.Contains(search))
+                    .Where(x => x.Article.Title == articleTitle)
+                    .Where(x => x.NameSurname.Contains(search) || x.Content.Contains(search))
+.OrderByDescending(x => x.NameSurname.Contains(search))
                     .OrderByDescending(x => x.Progress == CommentProgress.Pending && x.Progress == CommentProgress.Approved)
                     .OrderByDescending(x => x.Created)
                     .AsNoTrackingWithIdentityResolution()
