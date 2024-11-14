@@ -4,6 +4,7 @@ using GonulInsanlari.Extensions.Admin;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Asn1.Cms;
 using System.Security.Claims;
 
 namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar

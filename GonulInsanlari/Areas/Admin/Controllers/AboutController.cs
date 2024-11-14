@@ -27,11 +27,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> About()
         {
 
-
-         
-        
-           
-
             About? about = await _aboutManager.GetWhere(x => x.Status == true)
               .FirstOrDefaultAsync();
 

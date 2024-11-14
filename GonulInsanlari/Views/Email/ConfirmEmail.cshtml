@@ -1,0 +1,52 @@
+﻿@model NewsletterConfirmSubscriptionViewModel
+@{
+    ViewData["Title"] = "ConfirmEmail";
+    Layout = "~/Views/Shared/Main_Layout.cshtml";
+}
+
+<div style="margin-right:auto;margin-left:auto;margin-top:50px;margin-bottom:50px;">
+
+    <div id="confirmForm" class="inquiry-form contact-inquiry">
+        <div class=" title">
+            <h1>Confirm Your Email</h1>
+        </div>
+
+        <form asp-action="Confirm">
+            <div class="row">
+                <div class="col-md-6">
+                    <input type="hidden" asp-for="Email" value=@ViewData["Email"] />
+                    <div class="form-inner mb-20">
+                        <label>Your Name</label>
+                        <input type="text" asp-for=Name id="name">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-inner mb-20">
+                        <label>Your Surname</label>
+                        <input type="text" asp-for=Surname id="surname">
+                    </div>
+                </div>
+            </div>
+            <div class="form-inner">
+                <button class="primary-btn1 contact-btn"  type="submit">
+                    <span>
+
+                        <svg class="arrow" width="10" height="10" viewBox="0 0 10 10"
+                             xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 9L9 1M9 1C7.22222 1.33333 3.33333 2 1 1M9 1C8.66667 2.66667 8 6.33333 9 9"
+                                  stroke="#191919" stroke-width="1.5" stroke-linecap="round"></path>
+                        </svg>
+                        SUBMIT
+                    </span>
+
+                </button>
+            </div>
+            <div style="margin-top:20px;" class="row">
+                <ul id="validations">
+                </ul>
+
+            </div>
+        </form>
+
+    </div>
+</div>
