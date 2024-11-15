@@ -35,7 +35,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [HttpGet]
-        [Route("admin")]
+        [Route("admin",Name ="Login")]
 
         public IActionResult Login()
         {

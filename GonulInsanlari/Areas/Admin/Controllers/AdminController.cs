@@ -158,6 +158,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 {
                     AppUser user = await _userManager.FindByIdAsync(model.Id.ToString());
 
+                    if (user is null)
+                        return NotFound();
+
+                    if (user.Email != model.Email)
+                        user.EmailConfirmed = false;
+
+
                     user.UserName = model.UserName;
                     user.Name = model.Name;
                     user.Surname = model.Surname;
@@ -165,9 +172,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     user.AboutMe = model.AboutMe;
                     user.Age = model.Age;
                     user.PhoneNumber = model.PhoneNumber;
-
-                    if (user.Email != model.Email)
-                        user.EmailConfirmed = false;
 
                     await _userManager.UpdateAsync(user);
 

@@ -5,7 +5,7 @@
     $.ajax({
 
         type: 'get',
-        url: '/home/visits',
+        url: '/visitors/visits',
         success: function (response) {
 
             let months = [];
@@ -68,7 +68,7 @@
     $.ajax({
 
         type: 'get',
-        url: '/home/visits/year',
+        url: '/visitors/visits/year',
         success: function (response) {
 
             let html = "";
@@ -97,3 +97,21 @@
 
 
 })
+
+function deleteRecords() {
+
+
+    $.ajax({
+
+        type: 'post',
+        url: '/visitors/delete',
+        success: function () {
+
+
+            notifySuccess('All the records has been deleted successfully!');
+
+        }
+        
+
+    })
+}

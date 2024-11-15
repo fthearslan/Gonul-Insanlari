@@ -25,12 +25,18 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
             if (userId is null || token is null)
-                return RedirectToAction("Login");
+                return RedirectToRoute("Login");
+
 
             AppUser user = await userManager.FindByIdAsync(userId);
 
             if (user is null)
-                return RedirectToAction("Login");
+                return RedirectToRoute("Login");
+
+
+            if (user.EmailConfirmed)
+                return RedirectToRoute("Login");
+
 
             user.EmailConfirmed = true;
 
@@ -78,7 +84,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             IdentityResult result = await userManager.AddPasswordAsync(user, model.Password);
 
             if (result.Succeeded)
-                return RedirectToAction("Login", "Login");
+                return RedirectToRoute("Login");
+
 
             List<string> errors = new();
 

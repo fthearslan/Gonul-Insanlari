@@ -1,6 +1,6 @@
 ﻿
 
-<div class="row">
+<div class="row d-print-none">
     <div class="col-lg-3">
         <div class="ibox ">
             <div class="ibox-title">
@@ -58,12 +58,12 @@
 
 
 
-<div class="modal inmodal fade" id="visits" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal fade " id="visits" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
+        <div id="printable" class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title"><i class="fa fa-file-text" style="margin-right:3px;"></i> Visits </h4>
+                <button type="button" class="close d-print-none" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title"><i class="fa fa-eye" style="margin-right:3px;"></i> Visits </h4>
             </div>
             <div id="inputLocater" class="modal-body">
 
@@ -98,6 +98,12 @@
                 </div>
 
                 <div id="" class="modal-footer">
+
+                    <div>
+
+                    </div style="margin-right:0;margin-top:15px;">
+                    <a class="btn btn-danger float-right" href="#" onclick="deleteRecords()"><i class="fa fa-trash"></i> Delete all the records </a>
+                    <a class="btn btn-default float-right" href="javascript:window.print()"><i class="fa fa-print"></i> Print chart</a>
 
                 </div>
             </div>
