@@ -116,7 +116,14 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 await _articleManager.AddAsync(article);
 
-                await _emailManager.SendNewsletterAsync(_mapper.Map<WeeklyNewsletterModel>(article));
+
+                WeeklyNewsletterModel mailModel = _mapper.Map<WeeklyNewsletterModel>(article);
+
+                mailModel.Context=HttpContext;
+
+                mailModel.Route = "articleDetails";
+
+                await _emailManager.SendNewsletterAsync(mailModel);
 
                 _memoryCache.Remove("Categories");
 

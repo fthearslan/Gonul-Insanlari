@@ -51,7 +51,7 @@ namespace GonulInsanlari.Controllers
 
         }
 
-        [Route("{articleSlug}/{articleId}")]
+        [Route("{articleSlug}/{articleId}",Name ="articleDetails")]
         public async Task<IActionResult> GetDetails(string articleSlug, int articleId)
         {
 

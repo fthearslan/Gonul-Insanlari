@@ -71,22 +71,40 @@
         url: '/visitors/visits/year',
         success: function (response) {
 
-            let html = "";
 
-            for (var i = 0; i < response.length; i++) {
+            if (response.length>0) {
+
+                let html = "";
+
+                for (var i = 0; i < response.length; i++) {
 
 
-                html += '<tr>' +
+                    html += '<tr>' +
+                        '<td> <i class=""> </i></td>' +
+                        '<td>' + response[i].key + '</td>' +
+                        '<td>' + response[i].value + '</td>' +
+                        '</tr>';
+
+
+
+                }
+
+                $("#visitorTable").html(html);
+
+            } else {
+
+
+                let html = '<tr>' +
                     '<td> <i class=""> </i></td>' +
-                    '<td>' + response[i].key + '</td>' +
-                    '<td>' + response[i].value + '</td>' +
+                    '<td>There is no record found for previous years.</td>' +
                     '</tr>';
 
+                $("#visitorTable").html(html);
 
 
             }
 
-            $("#visitorTable").html(html);
+
 
 
         }
@@ -111,7 +129,7 @@ function deleteRecords() {
             notifySuccess('All the records has been deleted successfully!');
 
         }
-        
+
 
     })
 }

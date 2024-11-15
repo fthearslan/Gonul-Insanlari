@@ -90,7 +90,10 @@ namespace BussinessLayer.Concrete.Managers
 
             string? withCategory = withContent?.Replace("{Category}", model.Category);
 
-            string? withUrl = withCategory?.Replace("{Url}", $"https://www.google.com/articles/{model.Id}");
+          string url =   string.Concat("https://",model.Context.Request.Host.ToString(),"/article/", GetString.GetSlugUrl(model.Title),"/",model.Id.ToString());
+
+
+            string? withUrl = withCategory?.Replace("{Url}", url);
 
 
             return withUrl;
