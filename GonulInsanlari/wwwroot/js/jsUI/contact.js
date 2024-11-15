@@ -19,7 +19,7 @@ function submit() {
 
 
         type: 'post',
-        url: '/contact/submit',
+        url: '/contact-us/submit',
         data: { model: input },
         success: function () {
             $("#validations").append('<li class="text-success">Your message has been successfully sent.</li>');

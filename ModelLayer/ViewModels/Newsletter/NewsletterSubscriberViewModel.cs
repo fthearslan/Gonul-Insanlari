@@ -13,6 +13,6 @@ namespace ViewModelLayer.ViewModels.Newsletter
 
         public string EmailAddress { get; set; } = null!;
 
-
+        public Guid SecurityStamp { get; set; }
     }
 }

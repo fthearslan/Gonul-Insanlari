@@ -20,6 +20,8 @@ namespace EntityLayer.Concrete.Entities
         public DateTime? SubscriptionStartDate { get; set; } 
         public DateTime? SubscriptionEndDate { get; set; }
 
+        public Guid SecurityStamp { get; set; }= Guid.NewGuid();
+
         public SubscriberStatus SubscriberStatus { get; set; } = SubscriberStatus.Pending;
 
     }

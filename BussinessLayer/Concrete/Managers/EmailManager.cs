@@ -91,6 +91,8 @@ namespace BussinessLayer.Concrete.Managers
             string? withCategory = withContent?.Replace("{Category}", model.Category);
 
           string url =   string.Concat("https://",model.Context.Request.Host.ToString(),"/article/", GetString.GetSlugUrl(model.Title),"/",model.Id.ToString());
+          
+            
 
 
             string? withUrl = withCategory?.Replace("{Url}", url);
@@ -154,7 +156,7 @@ namespace BussinessLayer.Concrete.Managers
         public string GetCallBackLink(SendConfirmEmailViewModel model)
         {
 
-            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new { email = model.Username }, model.HttpContext.Request.Scheme);
+            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new { email = model.Username,stamp=model.SecurityStamp }, model.HttpContext.Request.Scheme);
 
 
 
@@ -170,8 +172,9 @@ namespace BussinessLayer.Concrete.Managers
                 .Select(sub => new NewsletterSubscriberViewModel()
                 {
                     Name = sub.Name,
-                    EmailAddress = sub.MailAddress
-
+                    EmailAddress = sub.MailAddress,
+                    SecurityStamp=sub.SecurityStamp
+                    
                 })
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
@@ -249,10 +252,12 @@ namespace BussinessLayer.Concrete.Managers
                     {
                         string body = mailBody.Replace("{Name}", subscriber.Name);
 
+                      string bodyReplaced=   body.Replace("{UnsubscribeUrl}", string.Concat("https://", model.Context.Request.Host.ToString(), "/email/unsubscribe/",subscriber.SecurityStamp));
+
                         await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
                         {
 
-                            Body = body,
+                            Body = bodyReplaced,
                             Subject = model.Subject,
                             IsBodyHtml = true
 

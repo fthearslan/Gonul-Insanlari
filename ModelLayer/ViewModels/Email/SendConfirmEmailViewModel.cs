@@ -17,13 +17,22 @@ namespace ViewModelLayer.ViewModels.Email
         }
 
 
+        public SendConfirmEmailViewModel(string userName, string routeName,Guid securityStamp, HttpContext httpContext)
+        {
+            Username = userName;
+            RouteName = routeName;
+            HttpContext = httpContext;
+            SecurityStamp = securityStamp;
+        }
+
         public SendConfirmEmailViewModel(string userName, string routeName, HttpContext httpContext)
         {
             Username = userName;
             RouteName = routeName;
             HttpContext = httpContext;
-
+           
         }
+
 
         public string Username { get; set; }
 
@@ -32,5 +41,7 @@ namespace ViewModelLayer.ViewModels.Email
         public HttpContext HttpContext { get; set; }
 
         public string RouteName { get; set; }
+
+        public Guid SecurityStamp { get; set; }
     }
 }

@@ -10,7 +10,7 @@ namespace GonulInsanlari.Controllers
 {
 
     [AllowAnonymous]
-    [Route("contact")]
+    [Route("contact-us")]
     public class ContactController : Controller
     {
         private readonly IContactService _contactManager;
@@ -22,7 +22,7 @@ namespace GonulInsanlari.Controllers
             _mapper = mapper;
         }
 
-        [Route("contact-us")]
+        [Route("")]
         public IActionResult ContactUs()
         {
 

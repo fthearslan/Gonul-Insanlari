@@ -20,12 +20,12 @@ namespace GonulInsanlari.Controllers
         }
 
         [HttpGet]
-        [Route("confirm/{email}", Name = "confirm-email-on-subscribe")]
-        public async Task<IActionResult> ConfirmEmail(string email)
+        [Route("confirm/{email}/{stamp}", Name = "confirm-email-on-subscribe")]
+        public async Task<IActionResult> ConfirmEmail(string email,Guid stamp)
         {
 
             if (await _newsLetterManager
-                .GetWhere(x => x.MailAddress == email && x.EmailConfirmed == false)
+                .GetWhere(x => x.MailAddress == email && x.EmailConfirmed == false && x.SecurityStamp==stamp)
                 .FirstOrDefaultAsync() is null)
                 return NotFound();
 
@@ -68,5 +68,33 @@ namespace GonulInsanlari.Controllers
         {
             return View();
         }
+
+
+        [HttpGet]
+        [Route("unsubscribe/{stamp}", Name = "Unsubscribe")]
+        public async Task<IActionResult> Unsubscribe(Guid stamp)
+        {
+            NewsLetter? subscriber = await _newsLetterManager
+              .GetWhere(x => x.SecurityStamp==stamp)
+              .FirstOrDefaultAsync();
+
+            if (subscriber is null)
+                return NotFound();
+
+            _newsLetterManager.Delete(subscriber);
+
+            return View(nameof(Unsubscribed));
+
+        }
+
+
+        [Route("Unsubscribed")]
+        public IActionResult Unsubscribed()
+        {
+            return View();
+        }
+
+
+
     }
 }

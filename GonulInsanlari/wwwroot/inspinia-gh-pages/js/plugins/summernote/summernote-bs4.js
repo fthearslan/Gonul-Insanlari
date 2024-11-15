@@ -7158,9 +7158,9 @@ $$1.summernote = $$1.extend($$1.summernote, {
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6'
         ],
         fontNames: [
-            'Arial',  
-            'Helvetica', 
-            'Tahoma', 'Times New Roman', 'Verdana'
+             
+            'Helvetica'
+           
         ],
         fontSizes: ['8', '9', '10', '11', '12', '14','16', '18', '24', '36'],
         // pallete colors(n x n)

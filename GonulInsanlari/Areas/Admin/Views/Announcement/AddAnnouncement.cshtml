@@ -132,7 +132,11 @@
     </script>
     <script>
         $(document).ready(function () {
-            $('#summernote').summernote();
+          
+            $('#summernote').summernote('fontName', 'Helvetica');
+            $('#summernote').summernote('fontSize', '18');
+
+
             $('div.note-editable').css({ 'min-height': 250 + 'px' });
         });
     </script>

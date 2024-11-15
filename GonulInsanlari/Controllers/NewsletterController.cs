@@ -42,7 +42,7 @@ namespace GonulInsanlari.Controllers
 
             await _newsLetterManager.AddAsync(newsletterSubscriber);
 
-            if (await _emailManager.SendSubscriptionConfirmationAsync(new SendConfirmEmailViewModel(model.MailAddress, "confirm-email-on-subscribe", HttpContext)
+            if (await _emailManager.SendSubscriptionConfirmationAsync(new SendConfirmEmailViewModel(model.MailAddress, "confirm-email-on-subscribe",newsletterSubscriber.SecurityStamp ,HttpContext)
             { Subject = "Confirm Your Subscription" }))
                 return StatusCode(200);
 
