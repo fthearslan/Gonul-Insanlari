@@ -26,37 +26,91 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("visits")]
-        public async Task<IActionResult> GetVisits()
+        public IActionResult GetVisits()
         {
-
-
-
-
-
 
 
 
             using var c = new Context();
 
-
-            var test2 = c.Visitors.GroupBy(x => x.Visited.Month);
-
+            List<Visitor> visitors = c.Visitors.Where(x => x.Visited.Year == DateTime.Now.Year).ToList();
 
 
-            int count = c.Visitors
-                     .Count(x => x.Visited.Month == DateTime.Now.Month);
-            List<int> visits = new List<int>();
-            visits.Add(count);
-            visits.Add(97);
-            visits.Add(76);
-            visits.Add(54);
-            visits.Add(34);
-            visits.Add(48);
-            visits.Add(15);
+            List<KeyValuePair<int, string>> mnths = new();
+            visitors.ForEach(visitor => {
 
-            return Json(visits);
+
+                mnths.Add(new(visitor.Visited.Month, visitor.Visited.ToString("MMMM")));
+
+
+            });
+
+
+            List<KeyValuePair<int, string>> months = mnths.Distinct().ToList();
+
+            Dictionary<string, int> monthsAndcounts = new();
+
+            months.ForEach(month =>
+            {
+
+
+
+                monthsAndcounts.Add(month.Value, visitors.Count(x => x.Visited.Month == month.Key));
+
+
+            });
+
+
+            return Json(new
+            {
+
+                months=monthsAndcounts.Keys,
+                counts = monthsAndcounts.Values
+
+            });
 
         }
 
+        [Route("visits/year")]
+        public IActionResult GetVisitsByYear()
+        {
+
+
+            using var c = new Context();
+
+            List<Visitor> visitors = c.Visitors.Where(x => x.Visited.Year < DateTime.Now.Year).ToList();
+
+
+            List<KeyValuePair<int, string>> yrs = new();
+            visitors.ForEach(visitor => {
+
+
+                yrs.Add(new(visitor.Visited.Year, visitor.Visited.ToString("yyyy")));
+
+
+            });
+
+
+            List<KeyValuePair<int, string>> years = yrs.Distinct().ToList();
+
+            List<KeyValuePair<string, int>> yearsAndcounts = new();
+
+            years.ForEach(year =>
+            {
+
+
+
+                yearsAndcounts.Add(new (year.Value, visitors.Count(x => x.Visited.Year == year.Key)));
+
+
+            });
+
+
+            return Json(yearsAndcounts.OrderByDescending(x=>x.Key).ToList());
+
+
+
+
+        }
     }
 }

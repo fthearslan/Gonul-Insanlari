@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-   
+
 
     $.ajax({
 
@@ -8,27 +8,47 @@
         url: '/home/visits',
         success: function (response) {
 
-            let data1 = [];
+            let months = [];
+            let counts = [];
 
-            data1 = response;
+            months = response.months;
+            counts = response.counts;
 
 
             var barData = {
-                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                labels: months,
                 datasets: [
                     {
-                        label: "Data 1",
-                        backgroundColor: 'rgba(220, 220, 220, 0.5)',
-                        pointBorderColor: "#fff",
-                        data: data1
+                        label: "Visitor Count",
+                        backgroundColor: 'rgba(14, 8, 204, 0.8)',
+                        pointBorderColor: "#132a91",
+                        data: counts
                     }
-                 
+
 
                 ]
             };
 
             var barOptions = {
-                responsive: true
+                responsive: true,
+                scales: {
+                    yAxes: [{
+                        display: true,
+
+                        ticks: {
+                            suggestedMin: 0,
+                            suggestedMax: 10000,// minimum will be 0, unless there is a lower value.
+                            // OR //
+                            beginAtZero: true   // minimum value will be 0.
+                        }
+
+                    }],
+                    xAxes: [{
+                        // Change here
+                        barPercentage: 0.2,
+                        categoryPercentage: 0.4
+                    }]
+                }
             };
 
 
@@ -41,11 +61,39 @@
 
 
         }
-        
+
 
     });
 
+    $.ajax({
 
+        type: 'get',
+        url: '/home/visits/year',
+        success: function (response) {
+
+            let html = "";
+
+            for (var i = 0; i < response.length; i++) {
+
+
+                html += '<tr>' +
+                    '<td> <i class=""> </i></td>' +
+                    '<td>' + response[i].key + '</td>' +
+                    '<td>' + response[i].value + '</td>' +
+                    '</tr>';
+
+
+
+            }
+
+            $("#visitorTable").html(html);
+
+
+        }
+
+
+
+    });
 
 
 })
