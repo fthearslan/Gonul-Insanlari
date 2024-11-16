@@ -103,21 +103,24 @@ namespace BussinessLayer.Concrete.Managers
 
         }
 
-        public string GetBody(string content)
+        public string GetBody(string link)
         {
 
             BodyBuilder builder = new BodyBuilder();
 
             
 
-            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/Reply.html")))
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/EmailConfirm.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
             };
 
+          string withlink =  builder.HtmlBody.Replace("{url}", link);
 
-            return builder.HtmlBody.Replace("{Content}", content);
+
+           return withlink.Replace("{imagePath}", ImageUpload.ImageToBase64("email.png"));
+
 
 
         }
@@ -370,9 +373,9 @@ namespace BussinessLayer.Concrete.Managers
             if (link is null)
                 return false;
 
-            string content = "<h3> Confirm your subscription </h3>" + Environment.NewLine + "To confirm your subscription, <a href=" + quote + link + quote + "> click this link <a>.";
+            //string content = "<h3> Confirm your subscription </h3>" + Environment.NewLine + "To confirm your subscription, <a href=" + quote + link + quote + "> click this link <a>.";
 
-            string? body = GetBody(content);
+            string? body = GetBody(link);
 
             if (body is null)
                 return false;

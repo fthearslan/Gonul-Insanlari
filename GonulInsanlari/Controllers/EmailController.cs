@@ -1,5 +1,6 @@
 ﻿using BussinessLayer.Abstract.Services;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -21,11 +22,11 @@ namespace GonulInsanlari.Controllers
 
         [HttpGet]
         [Route("confirm/{email}/{stamp}", Name = "confirm-email-on-subscribe")]
-        public async Task<IActionResult> ConfirmEmail(string email,Guid stamp)
+        public async Task<IActionResult> ConfirmEmail(string email, Guid stamp)
         {
 
             if (await _newsLetterManager
-                .GetWhere(x => x.MailAddress == email && x.EmailConfirmed == false && x.SecurityStamp==stamp)
+                .GetWhere(x => x.MailAddress == email && x.EmailConfirmed == false && x.SecurityStamp == stamp)
                 .FirstOrDefaultAsync() is null)
                 return NotFound();
 
@@ -40,7 +41,7 @@ namespace GonulInsanlari.Controllers
         public async Task<IActionResult> Confirm(NewsletterConfirmSubscriptionViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+                return BadRequest(ModelState.GetModelErrors());
 
             NewsLetter? newsLetterSubscriber = await _newsLetterManager
                   .GetWhere(x => x.MailAddress == model.Email)
@@ -57,8 +58,7 @@ namespace GonulInsanlari.Controllers
 
             _newsLetterManager.Update(newsLetterSubscriber);
 
-            return View(nameof(EmailConfirmed));
-
+            return Ok();
 
 
         }
@@ -75,7 +75,7 @@ namespace GonulInsanlari.Controllers
         public async Task<IActionResult> Unsubscribe(Guid stamp)
         {
             NewsLetter? subscriber = await _newsLetterManager
-              .GetWhere(x => x.SecurityStamp==stamp)
+              .GetWhere(x => x.SecurityStamp == stamp)
               .FirstOrDefaultAsync();
 
             if (subscriber is null)

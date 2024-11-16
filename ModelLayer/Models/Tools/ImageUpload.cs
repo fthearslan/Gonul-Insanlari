@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
+using System.Drawing;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 
@@ -112,11 +113,16 @@ namespace ViewModelLayer.Models.Tools
 
         }
 
+        public static string ImageToBase64(string fileName)
+        {
+            string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Images/", fileName);
 
-     
+            byte[] imageArray = System.IO.File.ReadAllBytes(path);
+            return Convert.ToBase64String(imageArray);
 
+        }
 
-        public static Dictionary<string,string> GetMimeTypes()
+        public static Dictionary<string, string> GetMimeTypes()
         {
             return new Dictionary<string, string> {{ ".323", "text/h323"},
         { ".3g2", "video/3gpp2"},

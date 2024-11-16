@@ -40,7 +40,7 @@ namespace BussinessLayer.Abstract.Services
         /// <param name="model"></param>
         /// <returns></returns>
 
-        protected string GetBody(string content);
+        protected string GetBody(string link);
         protected Task<AppUser> GetUser(string userName);
         protected Task<string> GetCallBackLink(AppUser user, SendConfirmEmailViewModel model);
 
