@@ -12,6 +12,7 @@ namespace ViewModelLayer.ViewModels.Announcement
 
         public string Details { get; set; }
         public bool IsForAdmins { get; set; }
+        public bool IsAttached { get; set; }
         public int UserId { get; set; }
 
 

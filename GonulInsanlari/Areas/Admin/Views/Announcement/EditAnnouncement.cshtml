@@ -32,6 +32,9 @@
 
                         <form id="form_id" asp-action="EditAnnouncement" enctype="multipart/form-data">
                             @Html.AntiForgeryToken()
+
+                            <input type="hidden" asp-for="IsAttached" value=@Model.IsAttached />
+
                           <input type="hidden" asp-for="UserId"/>
                             <input type="hidden" asp-for="Id"/>
                             <div style="margin-top:30px;" class="form-group  row">

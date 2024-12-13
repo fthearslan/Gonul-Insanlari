@@ -75,6 +75,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
             List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
+           
 
             return Json(model);
 

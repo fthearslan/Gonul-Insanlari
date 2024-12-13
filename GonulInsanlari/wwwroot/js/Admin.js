@@ -594,14 +594,7 @@ function register() {
         enctype: 'multipart/form-data',
         success: function () {
 
-                $.toast({
-                    heading: 'Success',
-                    text: 'User has been successfully created.',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+            notifySuccess('User has been successfully created.');
 
                 $("#add").modal('hide');
 
@@ -622,6 +615,7 @@ function register() {
 
 
                     }
+
                     $("#validation").empty();
 
                     $("#validation").append(html);
@@ -632,15 +626,9 @@ function register() {
 
             },
             403: function () {
-                $.toast({
-                    heading: 'Access denied',
-                    text: 'You do not have an access to create a new user.',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
 
-                });
-
+                notify('Access denied', 'You do not have an access to create a new user.','error')
+               
 
             }
 

@@ -21,7 +21,7 @@
         data: { model: input },
         success: function (result) {
 
-           window.location.href = "/email/EmailConfirmed";
+            window.location.href = "/email/EmailConfirmed";
 
         },
         statusCode: {
@@ -33,6 +33,13 @@
                     $("#validations").append('<li class="text-danger">*' + errors.responseJSON[i] + '</li>');
 
                 }
+
+
+            },
+
+            404: function () {
+
+                window.location.href = "/error/not-found";
 
 
             }

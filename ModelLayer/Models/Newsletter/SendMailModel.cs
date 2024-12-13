@@ -31,7 +31,7 @@ namespace ViewModelLayer.Models.Newsletter
             }
             set
             {
-                if (value.Count == 1)
+                if (value.Count == 1 && value[0] != null)
                     to = value[0].Split(',').ToList();
 
                 if (value.Count > 1)
@@ -61,7 +61,7 @@ namespace ViewModelLayer.Models.Newsletter
         
         public IList<IFormFile>? Attachments { get; set; }
 
-
+   
         #region Methods
 
         public async Task<List<string>> GetAttachmentPathsAsync()

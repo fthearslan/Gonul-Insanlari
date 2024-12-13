@@ -4,7 +4,12 @@ function subscribeNewsletter() {
 
     let MailAddress = $("#emailInput").val();
 
+
+
     if (MailAddress.length > 0) {
+
+        $('#resultText').html('<p class="text-info">We are checking your email, please wait...</p>');
+
 
         $.ajax({
 
@@ -56,7 +61,11 @@ function subscribeNewsletterFooter() {
 
     let MailAddress = $("#emailInput2").val();
 
+
     if (MailAddress.length > 0) {
+
+        $('#resultText2').html('<p class="text-info">We are checking your email, please wait...</p>');
+
 
         $.ajax({
 

@@ -119,7 +119,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 WeeklyNewsletterModel mailModel = _mapper.Map<WeeklyNewsletterModel>(article);
 
-                mailModel.Context=HttpContext;
+                mailModel.Context = HttpContext;
 
                 mailModel.Route = "articleDetails";
 
@@ -264,19 +264,21 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (article is null)
                 return NotFound();
 
-
-
-            if (article.Status == true)
-            {
-                article.Status = false;
-                _articleManager.Update(article);
-
-            }
-            else
-            {
+            if (article.IsDraft == true)
                 _articleManager.Delete(article);
 
-            }
+
+                if (article.Status == true)
+                {
+                    article.Status = false;
+                    _articleManager.Update(article);
+
+                }
+                else
+                {
+                    _articleManager.Delete(article);
+
+                }
 
             return StatusCode(200);
 

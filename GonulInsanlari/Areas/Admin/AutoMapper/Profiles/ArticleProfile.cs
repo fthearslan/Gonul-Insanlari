@@ -4,6 +4,7 @@ using GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers;
 using GonulInsanlari.Models;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using ViewModelLayer.Models.Newsletter;
+using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Article;
 using X.PagedList;
 
@@ -22,7 +23,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
 
             CreateMap<Article, WeeklyNewsletterModel>()
-                   .ForMember(model => model.Description, opt => opt.MapFrom(article => article.Content.Substring(0,500)))
+                   .ForMember(model => model.Description, opt => opt.MapFrom(article =>  GetString.GetRawString(article.Content).Substring(0,150)))
                    .ForMember(model => model.Category, opt => opt.MapFrom(article => article.Category.Name))
                    .ForMember(model => model.Subject, opt => opt.Ignore());
      
@@ -45,7 +46,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #endregion
 
             #region Details
-            CreateMap<Article, ArticleDetailsViewModel>();
+            CreateMap<Article, ArticleDetailsViewModel>()
+                .ForMember(dest=>dest.CategoryName,opt=>opt.MapFrom(src=>src.Category.Name));
+
             CreateMap<Article, ArticleByCategoryViewModel>().ForMember(a => a.AppUserName, opt => opt.MapFrom(art => art.AppUser.UserName));
             #endregion
 

@@ -26,7 +26,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Admin
             ViewData["Articles"] = _articleManager.GetWhere(x => x.AppUserID == userId).Count();
             ViewData["Announcements"] = _announceManager.GetWhere(x => x.UserId == userId).Count();
             ViewData["Tasks"] = _assignmentManager.GetWhere(x => x.Publisher.Id == userId).Count();
-
+            
             return View();
         }
 

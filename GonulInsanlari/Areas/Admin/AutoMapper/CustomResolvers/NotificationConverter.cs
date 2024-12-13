@@ -29,6 +29,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
             destination.Title = notification.Title;
             destination.Content = notification.Content;
             destination.Created = notification.Created;
+            destination.Date=notification.Created.ToString("MM/dd/yyyy HH:mm");
             destination.Symbol = notification.Symbol;
             destination.Type = notification.Type;
             destination.Id = notification.Id;

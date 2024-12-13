@@ -19,8 +19,13 @@ namespace ViewModelLayer.Models.Tools
                 {
                     return file.FileName;
                 }
-                var stream = new FileStream(path, FileMode.Create);
+                
+                var stream = new FileStream(path, FileMode.Create,FileAccess.ReadWrite,FileShare.ReadWrite);
+                
                 await file.CopyToAsync(stream);
+
+                stream.Dispose();
+
                 return file.FileName;
             }
             return null;
@@ -46,7 +51,7 @@ namespace ViewModelLayer.Models.Tools
                         continue;
                     }
 
-                    using (var stream = new FileStream(path, FileMode.Create))
+                    using (var stream = new FileStream(path, FileMode.Create,FileAccess.ReadWrite, FileShare.ReadWrite))
                     {
                         await file.CopyToAsync(stream);
                         Paths.Add(file.FileName);

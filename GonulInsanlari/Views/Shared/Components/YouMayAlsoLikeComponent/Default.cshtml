@@ -11,7 +11,7 @@
             <div class="col-md-6">
                 <div class="blog-card3">
                     <div class="blog-card-img">
-                        <a href="standard-formate.html">
+                        <a href="@GetString.GetSlugUrl(article.Title)/@article.Id">
                             <img src="~/Images/@article.ImagePath" width="424px;" height="256px;" alt="">
                         </a>
                     </div>
@@ -36,7 +36,7 @@
                             </div>
                             <div class="author-content">
                                 <div class="author-name">
-                                    <a href="">Dr. Daniel Scoot</a>
+                                    <a href="">Admin</a>
                                 </div>
                                 <div class="publish-date">
                                     <a href="">@article.Created.ToShortDateString()</a>

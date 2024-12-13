@@ -115,7 +115,7 @@ function updatePermissions(id) {
 
                 $.toast({
                     heading: 'Success',
-                    text: 'Permissions have been successfully added!',
+                    text: 'Permissions have been successfully saved!',
                     showHideTransition: 'slide',
                     position: 'top-right',
                     icon: 'success'
@@ -123,6 +123,7 @@ function updatePermissions(id) {
                 });
 
                 $("#permissions").modal('hide');
+
 
             }
             else {

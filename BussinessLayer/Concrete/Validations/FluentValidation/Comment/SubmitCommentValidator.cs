@@ -24,7 +24,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Comment
             {
              
 
-                List<string> prohibitedWords =new List<string>(){ "kufur", "kotusoz" };
+                List<string> prohibitedWords =new List<string>(){ "FETO", "feto","pic","oc","aptal","salak","serefsiz","it"};
 
                 prohibitedWords.ForEach(word =>
                 {

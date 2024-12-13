@@ -86,7 +86,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 };
 
-                paths.ForEach((path) =>
+                paths?.ForEach((path) =>
                 {
                     contact.Attachments
                     .Add(new(path));
@@ -97,6 +97,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 if (model.Status == ContactStatus.Sent)
                     await _emailManager.SendEmailAsync(model);
 
+
                 return RedirectToAction(nameof(GetDetails), new { contact.Id });
 
             }
@@ -104,8 +105,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             return View(model);
 
         }
-
-
 
 
 
@@ -224,7 +223,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
 
             List<Contact> drafts = await _manager
-                .GetWhere(x => x.ContactStatus == ContactStatus.Drafted && x.Id.ToString() == _userManager.GetUserId(HttpContext.User))
+                .GetWhere(x => x.ContactStatus == ContactStatus.Drafted && x.SenderId == _userManager.GetUserId(HttpContext.User))
                 .OrderByDescending(x => x.Created)
                 .ToListAsync();
 
@@ -329,8 +328,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 ContactStatus.Trash => await _manager.GetWhere(x => x.ContactStatus == status && x.Status == false).ToListAsync(),
 
-                _ => await _manager.GetWhere(x => x.ContactStatus == status &&x.SenderId==_userManager.GetUserId(HttpContext.User) && x.Status == true ).ToListAsync()
-            }; 
+                _ => await _manager.GetWhere(x => x.ContactStatus == status && x.SenderId == _userManager.GetUserId(HttpContext.User) && x.Status == true).ToListAsync()
+            };
 
 
             List<ContactListViewModel> model = new();
@@ -486,11 +485,13 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.Contact, Permission.Update)]
         public async Task<IActionResult> EditDraft(SendMailModel model)
         {
+            Contact? contact = await _manager.GetByIdAsync(model.Id);
+
             if (ModelState.IsValid)
             {
                 List<string> paths = await model.GetAttachmentPathsAsync();
 
-                Contact? contact = await _manager.GetByIdAsync(model.Id);
+
 
                 if (contact is null)
                     return NotFound();
@@ -534,6 +535,16 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return RedirectToAction(nameof(GetDetails), new { contact.Id });
 
             }
+
+
+           List<string> emails =  new List<string>();
+
+            contact.Tos?.ForEach((x) =>
+            {
+                emails.Add(x.EmailAddress);
+            });
+
+            model.To = emails;
 
             return View(model);
 

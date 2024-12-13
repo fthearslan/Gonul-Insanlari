@@ -28,7 +28,7 @@
                                     <div class="col-md-3">
                                         <div class="ibox">
                                             <div class="ibox-content product-box">
-                                                <img style="width:100%" alt="image" src="~/Images/@article.ImagePath">
+                                            <img style="width:100%" alt="image" width="424px;" height="256px;" style="max-width:424px;max-height:256px;" src="~/Images/@article.ImagePath">
                                                 <div class="product-desc">
                                                     <span class="product-price">
                                                         <i style="margin-right:2px;" class="fa fa-comments"> </i> @article.CommentCount
@@ -37,12 +37,12 @@
                                                     <small class="text-muted">@article.Category.Name</small>
                                                     @if (article.Title.Length > 40)
                                                     {
-                                                        <a href="/Admin/Article/GetDetails/@article.Id" class="product-name">@article.Title.Substring(0,40)...</a>
+                                                    <a href="/articles/details/@article.Id" class="product-name">@article.Title.Substring(0, 40)...</a>
 
                                                     }
                                                     else
                                                     {
-                                                        <a href="/Admin/Article/GetDetails/@article.Id" class="product-name">@article.Title</a>
+                                                    <a href="/articles/details/@article.Id" class="product-name">@article.Title</a>
 
                                                     }
 

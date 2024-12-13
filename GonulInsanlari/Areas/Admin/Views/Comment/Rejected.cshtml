@@ -83,7 +83,7 @@
                                         </div>
                                         <div class="ibox-content">
 
-                                            @foreach (CommentListViewModel reply in comment.Replies.OrderByDescending(x => x.Created))
+                                            @foreach (CommentListViewModel reply in comment.Replies.OrderByDescending(x => x.Created).Reverse())
                                             {
                                                 <div class="social-avatar">
                                                     <a href="#" class="float-left">

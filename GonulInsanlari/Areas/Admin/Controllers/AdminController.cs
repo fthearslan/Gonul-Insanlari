@@ -84,6 +84,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             model.IsUser = await _userManager.GetUserAsync(User) == user;
             model.Roles = await _userManager.GetRolesAsync(user);
 
+            ViewData["DayPassed"] = DateTime.Now.Subtract(model.Registered).Days;
+
+
             return View(model);
 
         }
@@ -93,42 +96,34 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.User, Permission.Create)]
         public async Task<IActionResult> Register([FromServices] IEmailService emailManager, AdminRegisterViewModel model)
         {
-            List<string> modelErrors = new();
 
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetModelErrors());
+
+
+            AppUser user = _mapper.Map<AppUser>(model);
+
+            IdentityResult result = await _userManager.CreateAsync(user);
+
+            if (!result.Succeeded)
             {
 
-                AppUser user = _mapper.Map<AppUser>(model);
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError(error.Code, error.Description);
 
-                IdentityResult result = await _userManager.CreateAsync(user);
-
-                if (!result.Succeeded)
-                {
-                    foreach (var error in result.Errors)
-                        modelErrors.Add(error.Description);
-                    return BadRequest(modelErrors);
-
-                }
-
-                if (await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "confirm-email-on-register", HttpContext)))
-                    return StatusCode(200);
-
-                return BadRequest();
+                return BadRequest(ModelState.GetModelErrors());
 
             }
 
-            foreach (var Errors in ModelState.Values)
-                foreach (var error in Errors.Errors)
-                {
-                    modelErrors.Add(error.ErrorMessage);
-                }
 
-            return BadRequest(modelErrors);
+            if (!await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "confirm-email-on-register", HttpContext)))
+                return BadRequest(new List<string>() { "Something went wrong while sending email, please contact with system administrator." });
+
+                return StatusCode(200);
+
 
         }
-
-
-
 
         [HttpGet]
         [Route("edit")]

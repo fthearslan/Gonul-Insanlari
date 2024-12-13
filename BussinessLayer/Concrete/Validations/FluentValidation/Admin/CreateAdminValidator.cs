@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ViewModelLayer.ViewModels.Admin;
 
@@ -27,8 +28,22 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Admin
             RuleFor(x => x.Email).MinimumLength(12).WithMessage("Please tpye valid email adress.");
             RuleFor(x => x.Email).MaximumLength(30).WithMessage("Please tpye valid email adress.");
 
-            RuleFor(x => x.PhoneNumber).MinimumLength(10).WithMessage("Please, type valid phone number.");
-            RuleFor(x => x.PhoneNumber).MinimumLength(15).WithMessage("Please, type valid phone number.");
+            RuleFor(x => x.PhoneNumber).Must((phoneNumber) => {
+
+
+                if (phoneNumber is null)
+                    return false;
+
+                if (Regex.Match(phoneNumber, "^\\+?\\d{1,4}?[-.\\s]?\\(?\\d{1,3}?\\)?[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,4}[-.\\s]?\\d{1,9}$").Success)
+                    return true;
+
+
+                return false;
+
+
+
+            })
+                .WithMessage("Please, type valid phone number.");
 
             RuleFor(x => x.Age).GreaterThanOrEqualTo(18).WithMessage("User must be at least 18.");
           

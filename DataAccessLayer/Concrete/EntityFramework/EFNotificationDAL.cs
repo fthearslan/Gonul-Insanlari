@@ -42,7 +42,6 @@ namespace DataAccessLayer.Concrete.EntityFramework
             return await c.UserNotifications
                 .Where(x => x.UserId == Convert.ToInt32(userId))
                 .OrderByDescending(x => x.Notification.Created)
-                  .OrderByDescending(x => x.IsSeen == false)
                    .ToListAsync();
 
 

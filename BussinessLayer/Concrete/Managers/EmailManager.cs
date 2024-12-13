@@ -77,7 +77,7 @@ namespace BussinessLayer.Concrete.Managers
         {
             BodyBuilder builder = new BodyBuilder();
 
-            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/Newsletter.html")))
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/newsletterPost.html")))
             {
                 builder.HtmlBody = reader.ReadToEnd();
 
@@ -86,19 +86,18 @@ namespace BussinessLayer.Concrete.Managers
 
             string withTitle = builder.HtmlBody.Replace("{Title}", model.Title);
 
-            string? withContent = withTitle?.Replace("{Content}", model.Description);
+            string? withContent = withTitle?.Replace("{Content}", model.Description + "...");
 
-            string? withCategory = withContent?.Replace("{Category}", model.Category);
+            string? withImage = withContent?.Replace("{imagePath}", ImageUpload.ImageToBase64(model.ImagePath));
 
-          string url =   string.Concat("https://",model.Context.Request.Host.ToString(),"/article/", GetString.GetSlugUrl(model.Title),"/",model.Id.ToString());
+            string url =   string.Concat("https://",model.Context.Request.Host.ToString(),"/article/", GetString.GetSlugUrl(model.Title),"/",model.Id.ToString());
           
-            
 
 
-            string? withUrl = withCategory?.Replace("{Url}", url);
-
+            string? withUrl = withImage?.Replace("{Url}", url);
 
             return withUrl;
+
 
 
         }
@@ -124,6 +123,7 @@ namespace BussinessLayer.Concrete.Managers
 
 
         }
+
 
         public async Task<AppUser> GetUser(string userName)
         {
@@ -257,14 +257,6 @@ namespace BussinessLayer.Concrete.Managers
 
                       string bodyReplaced=   body.Replace("{UnsubscribeUrl}", string.Concat("https://", model.Context.Request.Host.ToString(), "/email/unsubscribe/",subscriber.SecurityStamp));
 
-                        await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
-                        {
-
-                            Body = bodyReplaced,
-                            Subject = model.Subject,
-                            IsBodyHtml = true
-
-                        });
 
                         client.SendCompleted += (sender, e) =>
                         {
@@ -275,6 +267,17 @@ namespace BussinessLayer.Concrete.Managers
 
                             });
                         };
+
+
+
+                        await client.SendMailAsync(new(_configuration.Username, subscriber.EmailAddress)
+                        {
+
+                            Body = bodyReplaced,
+                            Subject = model.Subject,
+                            IsBodyHtml = true
+
+                        });
 
                     }
 
@@ -340,9 +343,8 @@ namespace BussinessLayer.Concrete.Managers
             if (link is null)
                 return false;
 
-            string content = "<h3> Confirm your mail </h3>" + Environment.NewLine + "To confirm your mail, <a href=" + quote + link + quote + "> click this link <a>.";
 
-            string? body = GetBody(content);
+            string? body = GetBody(link);
 
             if (body is null)
                 return false;

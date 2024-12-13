@@ -81,7 +81,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.Announcement, Permission.Read)]
         public IActionResult List()
         {
-            var list = _manager.List();
+            var list = _manager
+                .GetWhere(x=>x.Status==true)
+                .Include(x=>x.User)
+                .ToList();
 
             List<AnnouncementListViewModel> model = _mapper.Map<List<AnnouncementListViewModel>>(list);
 
@@ -150,7 +153,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 _manager.Update(entity);
 
-                return RedirectToAction(nameof(GetDetails), entity.Id);
+                return RedirectToAction(nameof(GetDetails), new { id = entity.Id });
 
             }
 

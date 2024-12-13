@@ -25,7 +25,7 @@
                             </div>
                         </div>
                      
-                        @foreach(CommentByArticleUIViewModel reply in comment.Replies.OrderByDescending(x=>x.Created))
+                        @foreach(CommentByArticleUIViewModel reply in comment.Replies.OrderByDescending(x=>x.Created).Reverse())
                         {
                             <ul style="border:none" class="comment-replay">
                                 <li>
@@ -38,7 +38,7 @@
                                                 <h6>@reply.NameSurname</h6>
                                                 <span>@reply.Created.ToString("MM/dd/yyyy HH:mm")</span>
                                             </div>
-                                            <p>@comment.Content</p>
+                                            <p>@reply.Content</p>
                                         </div>
                                     </div>
                                 </li>

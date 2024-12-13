@@ -29,7 +29,7 @@
                     @foreach (var article in Model)
                     {
 
-                        <tr  style="cursor:pointer">
+                        <tr onclick="location.href='/articles/details/@article.Id';" style="cursor:pointer">
                           
                             <td><small>#</small></td>
                             <td>

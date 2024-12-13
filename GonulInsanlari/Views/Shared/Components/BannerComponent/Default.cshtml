@@ -29,6 +29,10 @@
 
                                                 <li class="basic-btn"><a href="/category/@GetString.GetSlugUrl(@article.CategoryName)/@article.CategoryId"> @article.CategoryName </a></li>
 
+                                                @if (DateTime.Now.Subtract(article.Created).Days <= 1)
+                                                {
+                                                    <li class="basic-btn">  <a href=""> New </a> </li>
+                                                }
 
 
                                             </ul>
@@ -42,7 +46,7 @@
                                                 </div>
                                                 <div class="author-content">
                                                     <div class="author-name">
-                                                        <a href=""> example </a>
+                                                        <a href=""> Admin </a>
                                                     </div>
                                                     <div class="publish-date">
                                                         <a href="#"> @article.Created.ToShortDateString() </a>
@@ -57,8 +61,8 @@
 
                                     <div class="col-lg-6 col-md-6 d-md-flex d-none justify-content-end">
 
-                                        <div style="cursor:pointer;" class="banner-img">
-                                            <img src="~/Images/@article.ImagePath" width="536px;" height="423px;" alt="@article.Title">
+                                        <div onclick="location.href='/article/@GetString.GetSlugUrl(article.Title)/@article.Id';" style="cursor:pointer;" class="banner-img">
+                                            <img src="~/Images/@article.ImagePath" width="536px;" height="423px;" style="max-height:432px;max-width:536px;" alt="@article.Title">
                                         </div>
 
                                     </div>
