@@ -106,6 +106,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             IdentityResult result = await _userManager.CreateAsync(user);
 
+           await _userManager.AddToRoleAsync(user, "Admin");
+
             if (!result.Succeeded)
             {
 
