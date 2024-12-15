@@ -31,7 +31,7 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
             try
             {
                 var model = _mapper.Map<List<AssignmentBarViewModel>>(assignments);
-                ViewBag.Count = "You have " + model.Count + " assignments";
+                ViewData["Count"] = "You have " + model.Count + " assignments";
                 return View(model);
             }
             catch (AutoMapperMappingException)

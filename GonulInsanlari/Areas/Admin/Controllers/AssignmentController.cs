@@ -89,6 +89,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add")]
+        [ValidateAntiForgeryToken]
         [HasPermission(PermissionType.Assignment, Permission.Create)]
 
         public async Task<IActionResult> Add(AssignmentCreateViewModel model)
@@ -101,7 +102,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 Assignment task = _mapper.Map<Assignment>(model);
 
                 task.Publisher = await _userManager.GetUserAsync(HttpContext.User);
-                task.Logs.Add(new TaskLog($"The task named {task.Title} created by ") { CreatedBy = task.Publisher });
+                task.Logs.Add(new TaskLog($"The task named {task.Title} created by {task.Publisher} ") { CreatedBy = task.Publisher });
 
                 await _manager.PublishAsync(task);
 
@@ -375,6 +376,34 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         }
+
+
+
+        [HttpPost]
+        [Route("set-progress")]
+        [HasPermission(PermissionType.Assignment, Permission.Update)]
+        public async Task<IActionResult> SetProgress(int id)
+        {
+          Assignment assignment = await _manager.GetByIdAsync(id);
+
+            if (assignment is null)
+                return NotFound();
+
+            assignment
+                 .SubTasks?.
+                 ForEach(x =>
+                 {
+                     x.Progress = SubTasksProgress.Done;
+                 });
+
+            assignment.Progress = Assignment.ProgressStatus.Done;
+
+            _manager.Update(assignment);
+
+            return Ok();
+
+        }
+
 
         #endregion
 

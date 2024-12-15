@@ -496,27 +496,49 @@ function UploadFiles(inputId, taskId) {
     );
 }
 
-//function downloadFile(fileName) {
+function setProgress(taskId) {
 
-//    let fileNameTrimmed = fileName.replace(" ", "");
+    Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, set it as Done!"
+    }).then((result) => {
 
-//    $.ajax(
-//        {
-//            url: "/assignments/downloadFile/" + fileNameTrimmed,
-//            type: "POST",
-//            success: function (result) {
-               
-//            },
-//            statusCode: {
-//                404: function () {
-//                    notifyError('Source might have been changed.');
-//                }
-//            }
+        if (result.isConfirmed) {
 
 
+            $.ajax({
+                type: "POST",
+                data: { id: taskId },
+                url: "/assignments/set-progress",
+                success: function () {
 
-//        });
 
-//        }
+                    notifySuccess("Progress successfully changed!");
+
+                },
+                statusCode: {
+                    403: function () {
+
+                        notifyError("Access denied!");
+
+                    },
+
+                    404: function () {
+
+                        notifyError("Something went wrong...");
+
+                    }
+                }
+
+            });
+
+        }
 
 
+    });
+}

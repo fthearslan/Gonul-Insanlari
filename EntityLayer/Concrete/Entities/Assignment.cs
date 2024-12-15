@@ -61,7 +61,7 @@ namespace EntityLayer.Concrete.Entities
             Published,
             InProgress,
             Done,
-            Cancelled,
+           
         }
 
     }

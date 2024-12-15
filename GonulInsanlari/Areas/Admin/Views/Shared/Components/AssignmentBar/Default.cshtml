@@ -2,7 +2,7 @@
 
 <div class="sidebar-title">
     <h3>Assignments</h3>
-    <p style="font-weight:600"><i class="fa fa-tim"></i>@ViewBag.Count, <a href="#">see all</a>.</p>
+    <p style="font-weight:600"><i class="fa fa-tim"></i>@ViewData["Count"], <a href="/assignments/list">see all</a>.</p>
 </div>
 
 <div>
@@ -17,7 +17,7 @@
                 <div class="media-body">
                     <h4> @assignment.Title</h4>
 
-                    @Html.Raw(assignment.Content.Substring(0,250));
+                    @Html.Raw(assignment.Content.Substring(0,30))...
 
                     <br>
 
