@@ -18,6 +18,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Debugger.Contracts.HotReload;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Net.Mail;
 using System.Runtime.Intrinsics.X86;
 using ViewModelLayer.Models.Tools;
@@ -106,7 +107,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             IdentityResult result = await _userManager.CreateAsync(user);
 
-           await _userManager.AddToRoleAsync(user, "Admin");
+            await _userManager.AddToRoleAsync(user, "Admin");
 
             if (!result.Succeeded)
             {
@@ -122,7 +123,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             if (!await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "confirm-email-on-register", HttpContext)))
                 return BadRequest(new List<string>() { "Something went wrong while sending email, please contact with system administrator." });
 
-                return StatusCode(200);
+            return StatusCode(200);
 
 
         }
@@ -402,10 +403,23 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             switch (action)
             {
                 case "Disable":
-                    user.Status = false; await _userManager.UpdateAsync(user); break;
+
+                    if (_userManager.Users.Count(x => x.Id != Convert.ToInt32(id) && x.Status==true ) > 1)
+                    {
+                        user.Status = false;
+
+                        await _userManager.UpdateAsync(user);
+
+                        break;
+                    }
+
+                    return StatusCode(400, "User cannot be disabled or deleted while it is the only active user.");
+                    
 
                 case "Enable":
-                    user.Status = true; await _userManager.UpdateAsync(user); break;
+                    user.Status = true; await _userManager.UpdateAsync(user);
+
+                    break;
 
                 case "Delete":
                     try
@@ -415,26 +429,19 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     catch (Exception ex)
                     {
                         if (ex is DbUpdateException)
-                            _response.responseMessage = "Cannot delete this user while it has ongoing processes such as assignment...";
+                          StatusCode(400, "Cannot delete this user while it has ongoing processes such as assignment...");
 
                         else
-                            _response.responseMessage = "Something went wrong.";
+                          StatusCode(400, "Something went wrong...");
 
-                        _response.success = false;
 
                     }
 
-                    return Json(_response);
-
-
+                    break;
 
             }
 
-            _response.responseMessage = "Action succeed!";
-            _response.success = true;
-
-
-            return Json(_response);
+            return Ok(action);
 
 
 

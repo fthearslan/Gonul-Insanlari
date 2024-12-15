@@ -33,7 +33,7 @@
                         @foreach (var user in Model)
                         {
 
-                            string color = (user.Status == true) ? "btn-warning" : "btn-success";
+                            string color = (user.Status == true) ? "btn-warning" : "btn-primary";
                             string text = (user.Status == true) ? "Disable" : "Enable";
 
 
@@ -65,15 +65,19 @@
                                     <div class="contact-box-footer">
                                         <div class="m-t-xs btn-group">
 
-                                            <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-primary"><i class="fa fa-eyes"></i>See</a>
+                                            <a href="/admin/u/user/@user.UserName" class="btn btn-xs btn-success"><i class="fa fa-eyes"></i>See</a>
 
-                                            @if (User.IsInRole("SuperAdmin"))
+                                            @if (User.HasClaim("Permission", "User.Update"))
                                             {
 
                                                 <a href="#" onclick="enableOrDisable('@user.Id','@text')" class="btn btn-xs @color"> @text</a>
-                                                <a href="#" onclick="enableOrDisable('@user.Id','Delete')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
-
                                             }
+
+                                            @if (User.HasClaim("Permission", "User.Delete"))
+                                            {
+                                                <a href="#" onclick="enableOrDisable('@user.Id','Delete')" class="btn btn-xs btn-danger"><i class="fa fa-trash"></i></a>
+                                            }
+
 
                                         </div>
                                     </div>
@@ -84,7 +88,7 @@
                         }
                     </div>
 
-                    @Html.PagedListPager((IPagedList)Model,pageNumber=>Url.Action("GetUsers",new { pageNumber}))
+                    @Html.PagedListPager((IPagedList)Model, pageNumber => Url.Action("GetUsers", new { pageNumber }))
 
                 </div>
 
@@ -220,11 +224,11 @@
     </div>
 </div>
 
-@section Script{
+@section Script {
 
     <script src="~/js/admin.js"></script>
 
-  
+
 
 
     <script type="text/javascript" src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>

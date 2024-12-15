@@ -504,34 +504,18 @@ function enableOrDisable(id, text) {
                 data: {action:text},
                 success: function (response) {
 
-                    if (response.success) {
+                 
 
+                        notifySuccess("User " + response);
                       
-                        $.toast({
-                            heading: 'Success',
-                            text: response.responseMessage,
-                            showHideTransition: 'slide',
-                            position: 'top-right',
-                            icon: 'success'
-
-                        });
+                 
 
                         setTimeout(function () {
                             window.location.reload();
                         }, 3000);
 
-                    }
-                    else {
-                        $.toast({
-                            heading: 'Error',
-                            text: response.responseMessage,
-                            showHideTransition: 'slide',
-                            position: 'top-right',
-                            icon: 'error'
-
-                        });
-                    }
-
+                    
+                 
 
                 },
                 statusCode: {
@@ -546,6 +530,15 @@ function enableOrDisable(id, text) {
 
                         });
                         
+                    }
+                    ,
+                    400: function (response) {
+
+
+                        notifyError(response.responseText);
+
+
+
                     }
                 }
 

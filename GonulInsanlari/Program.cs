@@ -166,7 +166,7 @@ app.MapHub<NotificationHub>("/notificationHub");
 
 
 
-app.UseUserConfiguration();
+//app.UseUserConfiguration();
 
 
 app.Run();

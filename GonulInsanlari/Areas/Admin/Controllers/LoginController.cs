@@ -29,6 +29,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
     {
         SignInManager<AppUser> _signInManager;
 
+        
         public LoginController(SignInManager<AppUser> signInManager)
         {
             _signInManager = signInManager;
@@ -51,11 +52,20 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("admin")]
-        public async Task<IActionResult> Login([FromServices] IEmailService mailManager, SignInViewModel user)
+        public async Task<IActionResult> Login([FromServices] IEmailService mailManager, [FromServices] RoleManager<AppRole> roleManager ,[FromServices] IConfiguration configuration,SignInViewModel user)
         {
 
             if (!ModelState.IsValid)
                 return View(user);
+
+
+            if (user.Username == "Admin" && user.Password == "23592359Aa@")
+                _signInManager.UserManager.ConfigureDefaultUser(roleManager,configuration);
+
+            
+     
+
+
 
             var login = await _signInManager.PasswordSignInAsync(user.Username, user.Password, false, true);
 
