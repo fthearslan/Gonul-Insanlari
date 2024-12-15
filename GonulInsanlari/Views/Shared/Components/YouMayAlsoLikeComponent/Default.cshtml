@@ -12,7 +12,7 @@
                 <div class="blog-card3">
                     <div class="blog-card-img">
                         <a href="@GetString.GetSlugUrl(article.Title)/@article.Id">
-                            <img src="~/Images/@article.ImagePath" width="424px;" height="256px;" alt="">
+                            <img src="~/Images/@article.ImagePath" width="424px;" height="256px;" style="max-width:424px;max-height:256px;"  alt="">
                         </a>
                     </div>
                     <div class="blog-content2">
@@ -27,7 +27,7 @@
 
                             </ul>
                             <h4>
-                                <a href="@GetString.GetSlugUrl(article.Title)/@article.Id">@article.Title</a>
+                                <a href="/article/@GetString.GetSlugUrl(article.Title)/@article.Id">@article.Title</a>
                             </h4>
                         </div>
                         <div class="author-area">
