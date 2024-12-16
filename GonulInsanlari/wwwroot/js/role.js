@@ -8,41 +8,38 @@ function remove(userId, roleName) {
         type: "POST",
         url: "/admin/roles/remove",
         data: { userId: userId, roleName: roleName },
-        success: function (response) {
+        success: function () {
+
+            notifySuccess("User has been successfully removed.")
+           
+
+        },
+
+        statusCode: {
+            404: function (response) {
+
+                notifyError(response.responseText);
+
+            },
 
 
-            if (response.success) {
-
-                $("#" + userId).hide();
-
-                $.toast({
-                    heading: 'Success',
-                    text: 'The user has been successfully removed.',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+            403: function (response) {
 
 
+                notify("Access denied", "You do not have access to delete this user.", "error");
 
-            }
-            else {
-                $.toast({
-                    heading: 'Error',
-                    text: response.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
+            },
 
-                });
+            400: function (response) {
 
-
+                notifyError("Something went wrong...");
 
             }
+
 
 
         }
+
     })
 
 
@@ -109,36 +106,20 @@ function updatePermissions(id) {
         type: "POST",
         url: "/admin/roles/permissions/manage",
         data: { permissions: perms, roleId: id },
-        success: function (result) {
+        success: function () {
 
-            if (result) {
-
-                $.toast({
-                    heading: 'Success',
-                    text: 'Permissions have been successfully saved!',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+          
+                notifySuccess('Permissions have been successfully saved!');
 
                 $("#permissions").modal('hide');
 
+        },
+        statusCode: {
+            404:function() {
+
+                notifyError("Something went wrong...");
 
             }
-            else {
-
-                $.toast({
-                    heading: 'Error',
-                    text: 'Something went wrong...',
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'error'
-
-                });
-
-            }
-
         }
     });
 

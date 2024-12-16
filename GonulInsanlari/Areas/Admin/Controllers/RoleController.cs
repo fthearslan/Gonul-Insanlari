@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using DataAccessLayer.Concrete.Providers;
 using EntityLayer.Concrete.Entities;
+using GonulInsanlari.Areas.Admin.Authorization;
+using GonulInsanlari.Enums;
 using GonulInsanlari.Extensions.Admin;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
@@ -19,7 +21,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 {
 
     [Area(nameof(Admin))]
-    [Authorize(Roles = "SuperAdmin")]
     [Route("admin/roles")]
     public class RoleController : Controller
     {
@@ -40,6 +41,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         }
 
         [Route("list")]
+        [HasPermission(Enums.PermissionType.Role, Permission.Read)]
         public async Task<IActionResult> GetRoles()
         {
 
@@ -64,18 +66,24 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [Route("remove")]
         public async Task<IActionResult> RemoveUser(string userId, string roleName)
         {
-            var result = await _userManager.RemoveFromRoleAsync(await _userManager.FindByIdAsync(userId), roleName);
+            AppUser? user = await _userManager.FindByIdAsync(userId);
 
-            _response.success = true;
+
+            if (user is null)
+                return NotFound();
+
+            IList<string> roles = await _userManager.GetRolesAsync(user);
+
+
+            if (roles.Count <= 1)
+                return BadRequest("This user cannot be removed, it has only one role.");
+
+                var result = await _userManager.RemoveFromRoleAsync(await _userManager.FindByIdAsync(userId), roleName);
 
             if (!result.Succeeded)
-            {
-                _response.responseMessage = "Something went wrong...";
-                _response.success = false;
-            }
+                return BadRequest(result?.Errors?.First().Description); 
 
-
-            return Json(_response);
+            return Ok();
 
 
         }
@@ -139,8 +147,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<string> rolePermissions = await _roleManager.GetPermissionsAsync(roleId);
 
-
-
             if (rolePermissions is null)
             {
                 result = _roleManager.AddPermission(permissions, roleId);
@@ -170,8 +176,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             }
 
-            return Json(_response.success = result);
+          if(result)
+            return Ok();
 
+          return BadRequest();
+            
 
         }
 

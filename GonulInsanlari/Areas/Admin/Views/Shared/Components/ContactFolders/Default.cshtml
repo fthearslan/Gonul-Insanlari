@@ -26,7 +26,12 @@
 
                     <li><a href="/mail/drafts"> <i class="fa fa-file-text-o"></i> Drafts </a></li>
                     <li><a href="/mail/trash"> <i class="fa fa-trash-o"></i> Trash </a></li>
-                    <li><a href="/mail/all"> <i class="fa fa-sort-alpha-asc"></i> All </a></li>
+
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <li><a href="/mail/all"> <i class="fa fa-sort-alpha-asc"></i> All </a></li>
+
+                    }
 
 
                 </ul>

@@ -88,7 +88,6 @@ namespace GonulInsanlari.Extensions.Admin
                     .GetSection("AppPermissions")
                     .Get<List<PermissionViewModel>>();
 
-
                 List<string> permissions = new();
 
 

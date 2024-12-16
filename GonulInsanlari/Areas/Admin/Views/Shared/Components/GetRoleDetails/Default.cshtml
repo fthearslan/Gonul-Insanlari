@@ -77,7 +77,7 @@
         </div>
         <div class="panel-body">
             <p>@ViewData["RoleDesc"]</p>
-            @if (id_table?.ToString() != "SuperAdmin")
+            @if (id_table?.ToString() != "Admin")
             {
                 <div>
                     <a href="#" class="text-navy" onclick="getPermissions('@ViewData["RoleId"]')" data-toggle="modal" data-target="#permissions"><i class="fa fa-id-card-o" style="margin-right:3px;"></i> Manage Permissions</a>
@@ -91,7 +91,7 @@
             </div>
 
 
-            @if (id_table?.ToString() != "SuperAdmin" && id_table?.ToString() != "Admin")
+            @if (id_table?.ToString() != "Admin")
                 {
                     <div style="margin-top:5px;">
                         <a href="#" class="text-danger" onclick="deleteRole('@ViewData["RoleId"]')"> <i class="fa fa-trash" style="margin-right:3px;"></i> Delete Role </a>

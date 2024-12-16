@@ -43,6 +43,9 @@
         </div>
     }
 
+       @if (User.HasClaim("Permission", "Subscription.Read"))
+    {
+   
     <div class="col-lg-3">
         <div class="ibox ">
             <div class="ibox-title">
@@ -53,8 +56,10 @@
             </div>
         </div>
     </div>
-</div>
+    }
 
+
+</div>
 
 
 

@@ -10,7 +10,8 @@
         Contact,
         Subscription,
         Announcement,
-        About
+        About,
+        Role
 
 
     }
