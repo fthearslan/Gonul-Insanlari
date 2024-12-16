@@ -404,7 +404,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 case "Disable":
 
-                    if (_userManager.Users.Count(x => x.Id != Convert.ToInt32(id) && x.Status==true ) > 1)
+                    if (_userManager.Users.Count(x => x.Id != Convert.ToInt32(id) && x.Status==true ) >= 1)
                     {
                         user.Status = false;
 

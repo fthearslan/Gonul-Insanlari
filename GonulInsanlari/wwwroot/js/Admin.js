@@ -506,7 +506,7 @@ function enableOrDisable(id, text) {
 
                  
 
-                        notifySuccess("User " + response);
+                        notifySuccess("User " + response + "d.");
                       
                  
 

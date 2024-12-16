@@ -31,7 +31,6 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Article
 
             }).WithMessage("There already is an article with same title.");
             RuleFor(x => x.Content).NotEmpty().WithMessage("This field is required.");
-            RuleFor(x => x.Content).MaximumLength(15000).WithMessage("Too long for an article.");
             RuleFor(x => x.ImagePath).NotEmpty().WithMessage("Please, select an image.");
             RuleFor(x => x.CategoryID).NotEmpty().WithMessage("Please, select a category.");
 

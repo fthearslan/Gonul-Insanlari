@@ -10,20 +10,24 @@ function remove(userId, roleName) {
         data: { userId: userId, roleName: roleName },
         success: function () {
 
-            notifySuccess("User has been successfully removed.")
-           
+            notifySuccess("User has been successfully removed.");
+
+
+            setTimeout(function () {
+                window.location.reload();
+            }, 3000);
 
         },
 
         statusCode: {
-            404: function (response) {
+            404: function () {
 
-                notifyError(response.responseText);
+                notifyError('Something went wrong...');
 
             },
 
 
-            403: function (response) {
+            403: function () {
 
 
                 notify("Access denied", "You do not have access to delete this user.", "error");
@@ -32,7 +36,7 @@ function remove(userId, roleName) {
 
             400: function (response) {
 
-                notifyError("Something went wrong...");
+                notifyError(response.responseText);
 
             }
 
