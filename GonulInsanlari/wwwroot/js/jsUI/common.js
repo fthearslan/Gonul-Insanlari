@@ -111,3 +111,92 @@ function subscribeNewsletterFooter() {
 
 
 }
+
+
+function quickSearch() {
+
+    $("#results").empty();
+
+
+
+    var input = $("#searchInput").val();
+
+    let html = "";
+
+    $.ajax({
+
+        type: 'Post',
+        url: '/article/search',
+        data: { input: input },
+        success: function (response) {
+
+
+            for (var i = 0; i < response.length; i++) {
+
+
+
+              //html+=  '<div class="recent-post mb-20">' +
+              //      '<div style="display:inline-block;" class="recent-post-img">' +
+              //      '<a href="/article/ ' + response[i].slugTitle + '/' + response[i].id + '"><img src="/Images/' + response[i].imagePath + '" width="88px;" height="90px;" alt=""></a>' +
+              //      '</div>' +
+              //      '<div style="display:inline-block;" class="recent-post-content">' +
+              //      '<a href="#"> '+response[i].category+' </a>' +
+              //      '<h5><a href="/article/' + response[i].slugTitle + '/' + response[i].id + '"> ' + response[i].title + ' </a></h5>' +
+              //      '</div>' +
+              //      '</div><br>';
+
+
+
+
+
+
+
+                html += '<li style="display:inline-block;"margin-bottom:5px;><a href="/article/' + response[i].slugTitle + '/' + response[i].id + '"> <svg style="margin-right:5px;" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M4.4 3h15.2A3.4 3.4 0 0 1 23 6.4v11.2a3.4 3.4 0 0 1-3.4 3.4H4.4A3.4 3.4 0 0 1 1 17.6V6.4A3.4 3.4 0 0 1 4.4 3ZM7 9a1 1 0 0 1 1-1h8a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1Zm1 2a1 1 0 1 0 0 2h8a1 1 0 1 0 0-2H8Zm-1 4a1 1 0 0 1 1-1h4a1 1 0 1 1 0 2H8a1 1 0 0 1-1-1Z" fill="#000000"/></svg>' + response[i].title + ' - '+response[i].date +' </a></li><br>'
+
+
+
+
+            }
+
+
+            $("#results").html(html);
+
+        },
+        statusCode: {
+            404: function () {
+
+                $("#results").html('<li style="display:inline-block;"><a href="#"> Nothing found...</a></li>');
+
+            }
+        }
+
+    });
+
+
+
+
+}
+
+
+
+let timeout = null;
+document.getElementById('searchInput').addEventListener('keyup', function (e) {
+
+
+    // Clear existing timeout      
+    clearTimeout(timeout);
+
+    // Reset the timeout to start again
+    timeout = setTimeout(function () {
+
+        quickSearch();
+
+    
+
+
+    }, 500);
+
+});
+
+
+

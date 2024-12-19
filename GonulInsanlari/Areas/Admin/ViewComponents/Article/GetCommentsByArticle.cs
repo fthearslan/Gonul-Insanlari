@@ -3,6 +3,7 @@ using BussinessLayer.Abstract.Services;
 using BussinessLayer.Concrete;
 using DataAccessLayer.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Runtime.CompilerServices;
 using ViewModelLayer.ViewModels.Comment;
 
@@ -20,7 +21,10 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
 
         public IViewComponentResult Invoke(int id)
         {
-            var comments = _manager.GetByArticleAsync(id).Result;
+            var comments = _manager
+                .GetWhere(x=>x.ArticleID==id)
+                .AsNoTrackingWithIdentityResolution()
+                .ToList();
 
             List<CommentListViewModel> model = _mapper.Map<List<CommentListViewModel>>(comments);
 
@@ -29,7 +33,6 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.Article
                 TempData["Warning"] = "There is no comment for this article.";
             }
 
-       
 
             return View(model);
 

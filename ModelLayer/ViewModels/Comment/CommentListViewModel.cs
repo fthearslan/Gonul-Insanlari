@@ -13,5 +13,7 @@ namespace ViewModelLayer.ViewModels.Comment
         public DateTime? Created { get; set; }
         public int ArticleID { get; set; }
 
+        public int CommentId { get; set; }
+
     }
 }

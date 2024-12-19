@@ -194,15 +194,15 @@
                                     </svg>
                                 </div>
 
-                                <div class="search-input">
+                                <div style="max-width:400px;" class="search-input">
 
                                     <div class="serch-close"></div>
                                     <form>
 
                                         <div class="search-group">
                                             <div class="form-inner2">
-                                                <input type="text" placeholder="Enter your keywords">
-                                                <button type="submit">
+                                                <input type="text" id="searchInput" placeholder="Search article">
+                                                <button onclick="quickSearch()" type="button">
                                                     <svg width="16" height="16" viewBox="0 0 16 16"
                                                          xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -212,13 +212,10 @@
                                             </div>
                                         </div>
 
-                                        <div class="quick-search">
-                                            <ul>
-                                                <li>Quick Search :</li>
-                                                <li><a href="beauty.html">Beauty,</a></li>
-                                                <li><a href="gaming.html">Gaming Tips,</a></li>
-                                                <li><a href="fashion.html">Fashion,</a></li>
-                                                <li><a href="tech.html">Tech,</a></li>
+                                        <div  class="quick-search">
+                                      
+                                              <ul style="display:inline-block;list-style-type:disc" id="results">
+                                               
                                             </ul>
                                         </div>
 

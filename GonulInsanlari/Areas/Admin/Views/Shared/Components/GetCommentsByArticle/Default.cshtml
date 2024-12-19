@@ -12,9 +12,8 @@
     <div class="col-lg-12">
 
         <h2>Comments:</h2>
-        @foreach (var comment in Model.Take(3))
+        @foreach (var comment in Model.Where(x => x.CommentId == 0).Take(3))
         {
-
 
             <div class="chat-element ">
                 <a href="#" class="float-left">
@@ -29,6 +28,25 @@
                     <small class="text-muted">@GetDate.GetCreateDate(comment.Created)</small>
                 </div>
             </div>
+
+            if (comment.Replies.Any())
+                @foreach (var comment1 in comment.Replies)
+                {
+                    <div class="chat-element">
+                        <a href="#" class="float-left">
+                            <img alt="image" class="rounded-circle" src="~/Images/profile.jpg" />
+                        </a>
+                        <div class="media-body ">
+                            <small class="float-right">@comment1.Progress?.ToString()</small>
+                            <strong>@comment1.NameSurname</strong>
+                            <p class="m-b-xs">
+                                <span class="text-success"> @@@comment.NameSurname</span>  @comment1.Content
+                            </p>
+                            <small class="text-muted">@GetDate.GetCreateDate(comment1.Created)</small>
+                        </div>
+                    </div>
+
+                }
 
 
 

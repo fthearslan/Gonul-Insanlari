@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Drawing;
 using System.Runtime.CompilerServices;
+using ViewModelLayer.Models.Tools;
 using ViewModelLayer.ViewModels.Article;
 using ViewModelLayer.ViewModels.Comment;
 using X.PagedList;
@@ -51,11 +52,11 @@ namespace GonulInsanlari.Controllers
 
         }
 
-        [Route("{articleSlug}/{articleId}",Name ="articleDetails")]
+        [Route("{articleSlug}/{articleId}", Name = "articleDetails")]
         public async Task<IActionResult> GetDetails(string articleSlug, int articleId)
         {
 
-          
+
 
             Article? article = await _articleManager.GetWhere(x => x.Status == true && x.IsDraft == false)
                 .Include(x => x.Comments)
@@ -64,12 +65,12 @@ namespace GonulInsanlari.Controllers
             if (article is null)
                 return NotFound();
 
-            
+
             article.SeenCount++;
 
             _articleManager.Update(article);
 
-            
+
             ArticleDetailsUIViewModel model = _mapper.Map<ArticleDetailsUIViewModel>(article);
 
 
@@ -78,6 +79,36 @@ namespace GonulInsanlari.Controllers
 
         }
 
+        [HttpPost]
+        [Route("search")]
+        public async Task<IActionResult> Search(string input)
+        {
+
+
+
+            var articles = await _articleManager.GetWhere(x => x.IsDraft == false && x.Status == true && x.Title.Contains(input))
+                .OrderByDescending(x => x.Created)
+                .AsNoTrackingWithIdentityResolution()
+                .Select(x => new
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    Date = x.Created.ToShortDateString(),
+                    SlugTitle = GetString.GetSlugUrl(x.Title),
+                    ImagePath = x.ImagePath
+
+
+                })
+               .ToListAsync();
+
+            if (!articles.Any())
+                return NotFound();
+
+            return Ok(articles);
+
+
+
+        }
 
 
 
