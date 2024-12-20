@@ -51,6 +51,7 @@ builder.Services.AddIdentity<AppUser, AppRole>(opt =>
 {
     opt.SignIn.RequireConfirmedEmail = true;
     opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromDays(1);
+    opt.User.RequireUniqueEmail = true;
 
 }).AddDefaultTokenProviders().AddEntityFrameworkStores<Context>();
 
@@ -68,6 +69,12 @@ builder.Services.AddCors(options =>
         .AllowAnyHeader()
         );
 });
+
+builder.Services.Configure<CookiePolicyOptions>(options => {
+    options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
+});
+
 
 
 builder.Services.AddBussinessServices();
@@ -133,6 +140,7 @@ app.UseDatabaseSubscription<NotificationSubscription>("Notifications");
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.UseCookiePolicy();
 
 app.UseRouting();
 
@@ -154,7 +162,6 @@ app.UseEndpoints(endpoints =>
 
  
 });
-
 
 
 app.MapControllerRoute(

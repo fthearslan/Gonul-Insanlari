@@ -107,7 +107,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             IdentityResult result = await _userManager.CreateAsync(user);
 
-            await _userManager.AddToRoleAsync(user, "Admin");
 
             if (!result.Succeeded)
             {
@@ -118,6 +117,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return BadRequest(ModelState.GetModelErrors());
 
             }
+
+            await _userManager.AddToRoleAsync(user, "Admin");
 
 
             if (!await emailManager.SendConfirmationLinkAsync(new SendConfirmEmailViewModel(user.UserName, "confirm-email-on-register", HttpContext)))
