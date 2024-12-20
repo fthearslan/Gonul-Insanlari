@@ -48,18 +48,9 @@ $('#btnEdit').on('click', function (e) {
         url: "/admin/u/edit",
         data: { model: object },
         enctype: 'multipart/form-data',
-        success: function (result) {
+        success: function () {
 
-            if (result.success) {
-
-                $.toast({
-                    heading: 'Success',
-                    text: result.responseMessage,
-                    showHideTransition: 'slide',
-                    position: 'top-right',
-                    icon: 'success'
-
-                });
+                notifySuccess("User informations have been successfully updated!");
 
                 $("#editUserInfo").modal('hide');
 
@@ -102,35 +93,32 @@ $('#btnEdit').on('click', function (e) {
                     '</p>';
 
 
-
-                // result.data dan donen degerler profile page de yerlerine yazilacak.
-
-
                 $("#personalInfo").html(pInfo);
                 $("#aboutMe").html(aboutMe);
 
 
+        },
+        statusCode: {
 
+            400: function (result) {
 
-            }
-            else {
-                if (result.errors != null) {
+                for (let i = 0; i < result.responseJSON.length; i++) {
 
+                   
 
-                    for (let i = 0; i < result.errors.length; i++) {
+                    html += '<li class="text-danger">' + result.responseJSON[i] + '</li>';
 
-                        html += '<li class="text-danger">' + result.errors[i] + '</li>';
-
-
-                    }
-                    $("#validation").empty();
-
-                    $("#validation").append(html);
                 }
 
+                $("#validation").empty();
+
+                $("#validation").append(html);
+            },
+            404: function () {
+
+                notifyError("Something went wrong...");
 
             }
-
         }
 
 
@@ -557,11 +545,7 @@ function enableOrDisable(id, text) {
 }
 
 
-//$('#btnAdd').on('click', function () {
 
-
-
-//});
 
 function register() {
 

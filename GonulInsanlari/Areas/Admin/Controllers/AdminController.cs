@@ -149,67 +149,40 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         [HasPermission(PermissionType.User, Permission.Update)]
         public async Task<IActionResult> EditProfile(AdminEditViewModel model)
         {
-            List<string> errors = new();
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.GetModelErrors());
+
+            AppUser user = await _userManager.FindByIdAsync(model.Id.ToString());
+
+            if (user is null)
+                return NotFound();
+
+            if (user.Email != model.Email)
+                user.EmailConfirmed = false;
+
+            user.UserName = model.UserName;
+            user.Name = model.Name;
+            user.Surname = model.Surname;
+            user.Email = model.Email;
+            user.AboutMe = model.AboutMe;
+            user.Age = model.Age;
+            user.PhoneNumber = model.PhoneNumber;
+
+            IdentityResult result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
             {
-                if (await _userManager.Users.SingleOrDefaultAsync(x => x.UserName == model.UserName && x.Id != model.Id) is null)
-                {
-                    AppUser user = await _userManager.FindByIdAsync(model.Id.ToString());
+                List<string> errors = new();
 
-                    if (user is null)
-                        return NotFound();
+                foreach (var error in result.Errors)
+                    errors.Add(error.Description);
 
-                    if (user.Email != model.Email)
-                        user.EmailConfirmed = false;
-
-
-                    user.UserName = model.UserName;
-                    user.Name = model.Name;
-                    user.Surname = model.Surname;
-                    user.Email = model.Email;
-                    user.AboutMe = model.AboutMe;
-                    user.Age = model.Age;
-                    user.PhoneNumber = model.PhoneNumber;
-
-                    await _userManager.UpdateAsync(user);
-
-                    _response.success = true;
-                    _response.responseMessage = "Informations have been successfully updated.";
-
-                }
-                else
-                {
-                    errors.Add("This username is in used.");
-                }
-
-
+                return BadRequest(errors);
 
             }
-            else
-            {
 
-
-                foreach (var error in ModelState.Values)
-                {
-                    foreach (var item in error.Errors)
-                    {
-                        errors.Add(item.ErrorMessage);
-                    }
-                }
-            }
-
-
-            return Json(new
-            {
-                success = _response.success,
-                responseMessage = _response.responseMessage,
-                data = model,
-                errors = errors
-
-
-            });
-
+            return Ok();
 
         }
 
@@ -405,7 +378,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             {
                 case "Disable":
 
-                    if (_userManager.Users.Count(x => x.Id != Convert.ToInt32(id) && x.Status==true ) >= 1)
+                    if (_userManager.Users.Count(x => x.Id != Convert.ToInt32(id) && x.Status == true) >= 1)
                     {
                         user.Status = false;
 
@@ -415,7 +388,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     }
 
                     return StatusCode(400, "User cannot be disabled or deleted while it is the only active user.");
-                    
+
 
                 case "Enable":
                     user.Status = true; await _userManager.UpdateAsync(user);
@@ -430,10 +403,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     catch (Exception ex)
                     {
                         if (ex is DbUpdateException)
-                          StatusCode(400, "Cannot delete this user while it has ongoing processes such as assignment...");
+                            StatusCode(400, "Cannot delete this user while it has ongoing processes such as assignment...");
 
                         else
-                          StatusCode(400, "Something went wrong...");
+                            StatusCode(400, "Something went wrong...");
 
 
                     }

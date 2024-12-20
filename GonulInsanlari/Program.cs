@@ -26,6 +26,7 @@ using TableDependency.SqlClient;
 using GonulInsanlari.Subscriptions;
 using GonulInsanlari.Configurations;
 using GonulInsanlari.Hubs;
+using Microsoft.AspNetCore.Http.Features;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,9 +71,13 @@ builder.Services.AddCors(options =>
         );
 });
 
+
 builder.Services.Configure<CookiePolicyOptions>(options => {
     options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.None;
+    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+    options.ConsentCookie.Expiration = TimeSpan.FromHours(1);
+    options.ConsentCookie.MaxAge = TimeSpan.FromHours(1);
+
 });
 
 
@@ -102,11 +107,19 @@ builder.Services.AddAuthentication(
     CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(x =>
 {
     x.LoginPath = "/login/admin";
-
+   
 }
+
     );
 
-builder.Services.ConfigureApplicationCookie(opt => opt.AccessDeniedPath = new PathString("/error/accessDenied"));
+
+builder.Services.ConfigureApplicationCookie(opt => {
+
+    opt.AccessDeniedPath = new PathString("/error/accessDenied");
+
+});
+
+
 
 var logger = new LoggerConfiguration()
     .ReadFrom.Configuration(builder.Configuration)
