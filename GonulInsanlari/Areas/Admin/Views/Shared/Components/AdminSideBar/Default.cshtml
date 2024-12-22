@@ -125,6 +125,14 @@
                 </li>
             }
 
+            @if (User.HasClaim("Permission", "About.Read"))
+            {
+                <li>
+                    <a href="/privacy/display"><i class="fa fa-file-text"></i> <span class="nav-label">Privacy Statement</span></a>
+                </li>
+            }
+
+
             <li class="landing_link">
                 <a target="_blank" href="/"><i class="fa fa-arrow-circle-right"></i> <span class="nav-label">Go to Website</span></a>
             </li>

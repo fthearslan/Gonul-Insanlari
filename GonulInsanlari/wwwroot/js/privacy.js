@@ -1,21 +1,21 @@
 ﻿
-function editAbout() {
+function editPrivacy() {
 
     var input = {
 
         Id: $('#Id').val(),
         Title: $('#title').val(),
-        Details: $('#details').val()
+        Content: $('#content').val()
     };
 
     $.ajax({
 
         type: 'post',
-        url: '/about/edit',
+        url: '/privacy/edit',
         data: { model: input },
         success: function (action) {
 
-            notifySuccess('About details has been successfully ' + action);
+            notifySuccess('Privacy statement has been successfully ' + action);
 
 
 
@@ -54,7 +54,7 @@ function editAbout() {
 function clearRoleInput() {
 
     document.getElementById('title').value = "";
-    document.getElementById('details').value = "";
+    document.getElementById('content').value = "";
 
 
     $("#validation").empty();
@@ -62,24 +62,26 @@ function clearRoleInput() {
 
 }
 
-function getAbout(id) {
+function getPrivacy(id) {
 
     $.ajax({
         type: 'post',
-        url: '/privacy/getAbout',
+        url: '/privacy/getPrivacy',
         data: { id: id },
-        success: function (about) {
-            if (about != null) {
-                document.getElementById('Id').value = about.id;
+        success: function (privacy) {
 
-                document.getElementById('title').value = about.title;
-                $('#details').summernote('code', about.details);
+            if (privacy != null) {
+
+                document.getElementById('Id').value = privacy.Id;
+                document.getElementById('title').value = privacy.title;
+                $('#content').summernote('code', privacy.content);
 
             }
 
 
-        }
 
+        }
+        
     })
 
 

@@ -15,11 +15,11 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Comment
         public SubmitCommentValidator()
         {
 
-            RuleFor(c => c.NameSurname).MinimumLength(2).WithMessage("Too short for name and surname");
-            RuleFor(c => c.NameSurname).MaximumLength(50).WithMessage("Too long for name and surname");
+            RuleFor(c => c.NameSurname).MinimumLength(2).WithMessage("Ad ve soyad için çok kısa...");
+            RuleFor(c => c.NameSurname).MaximumLength(50).WithMessage("Ad ve soyad için çok uzun...");
 
-            RuleFor(c => c.Email).EmailAddress(EmailValidationMode.AspNetCoreCompatible).WithMessage("Please, type a valid email address.");
-            RuleFor(c=>c.Content).MaximumLength(1000).WithMessage("Too long for comment.");
+            RuleFor(c => c.Email).EmailAddress(EmailValidationMode.AspNetCoreCompatible).WithMessage("Lütfen geçerli bir mail adresi giriniz...");
+            RuleFor(c=>c.Content).MaximumLength(1000).WithMessage("Yorum için çok uzun...");
             RuleFor(c => c.Content).Custom((content,context) =>
             {
              
@@ -29,7 +29,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Comment
                 prohibitedWords.ForEach(word =>
                 {
                     if (content.Contains(word))
-                        context.AddFailure("Content", "Your comment contains prohibited words.");
+                        context.AddFailure("Content", "Yorumunuz uygunsuz sözcükler içeriyor...");
 
                 });
 

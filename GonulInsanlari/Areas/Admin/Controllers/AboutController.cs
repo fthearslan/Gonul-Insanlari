@@ -46,7 +46,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 return BadRequest(ModelState.GetModelErrors());
 
 
-            About? about = await _aboutManager.GetWhere(x => x.Id==model.Id && x.Status==true)
+            About? about = await _aboutManager.GetWhere(x => x.Id == model.Id && x.Status == true)
                  .FirstOrDefaultAsync();
 
             if (about is null)
@@ -61,7 +61,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
                 await _aboutManager.AddAsync(aboutTobeAdded);
 
-                return StatusCode(200,"added!");
+                return StatusCode(200, "added!");
             }
 
             about.Title = model.Title;
@@ -70,11 +70,28 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             _aboutManager.Update(about);
 
-            return StatusCode(200,"changed!");
+            return StatusCode(200, "changed!");
 
         }
 
+        [HttpPost]
+        [Route("getAbout")]
+        public async Task<IActionResult> GetAbout(int id)
+        {
+            About? about = await _aboutManager.GetByIdAsync(id);
 
+            if (about is null)
+                return NotFound();
+
+
+            return Json(new
+            {
+                Id = about.Id,
+                Title = about.Title,
+                Details = about.Details
+            });
+
+        }
 
     }
 }

@@ -18,7 +18,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Newsletter
 
             RuleFor(x => x.MailAddress).EmailAddress(EmailValidationMode.AspNetCoreCompatible);
 
-            RuleFor(x => x.MailAddress).MinimumLength(11).WithMessage("Please, type valid email.");
+            RuleFor(x => x.MailAddress).MinimumLength(11).WithMessage("Lütfen geçerli bir mail adresi giriniz...");
 
             RuleFor(x => x.MailAddress).Must((email) =>
             {
@@ -29,7 +29,7 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Newsletter
 
                 return true;
 
-            }).WithMessage("There already is a subscriber with same email adress.");
+            }).WithMessage("Bu mail adresiyle oluşturulmuş bir abonelik zaten bulunuyor.");
 
 
         }

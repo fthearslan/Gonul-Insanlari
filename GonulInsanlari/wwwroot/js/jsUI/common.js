@@ -1,4 +1,4 @@
-
+﻿
 function subscribeNewsletter() {
 
 
@@ -8,7 +8,7 @@ function subscribeNewsletter() {
 
     if (MailAddress.length > 0) {
 
-        $('#resultText').html('<p class="text-info">We are checking your email, please wait...</p>');
+        $('#resultText').html('<p class="text-info">Mail adresinizi kontrol ediyoruz, lütfen bekleyiniz...</p>');
 
 
         $.ajax({
@@ -19,7 +19,7 @@ function subscribeNewsletter() {
             data: { MailAddress: MailAddress },
             success: function (result) {
 
-                $('#resultText').html('<p class="text-success">Confirmation email has been successfully sent, please check your email.</p>');
+                $('#resultText').html('<p class="text-success">Mail adresinize onaylama linki başarıyla gönderdildi. </p>');
 
             },
             statusCode: {
@@ -64,7 +64,7 @@ function subscribeNewsletterFooter() {
 
     if (MailAddress.length > 0) {
 
-        $('#resultText2').html('<p class="text-info">We are checking your email, please wait...</p>');
+        $('#resultText2').html('<p class="text-info">Mail adresinizi kontrol ediyoruz, lütfen bekleyiniz...</p>');
 
 
         $.ajax({
@@ -75,7 +75,7 @@ function subscribeNewsletterFooter() {
             data: { MailAddress: MailAddress },
             success: function (result) {
 
-                $('#resultText2').html('<p class="text-success">Confirmation email has been successfully sent, please check your email.</p>');
+                $('#resultText2').html('<p class="text-success">Mail adresinize onaylama linki başarıyla gönderdildi. </p>');
 
             },
             statusCode: {
@@ -135,16 +135,6 @@ function quickSearch() {
 
 
 
-              //html+=  '<div class="recent-post mb-20">' +
-              //      '<div style="display:inline-block;" class="recent-post-img">' +
-              //      '<a href="/article/ ' + response[i].slugTitle + '/' + response[i].id + '"><img src="/Images/' + response[i].imagePath + '" width="88px;" height="90px;" alt=""></a>' +
-              //      '</div>' +
-              //      '<div style="display:inline-block;" class="recent-post-content">' +
-              //      '<a href="#"> '+response[i].category+' </a>' +
-              //      '<h5><a href="/article/' + response[i].slugTitle + '/' + response[i].id + '"> ' + response[i].title + ' </a></h5>' +
-              //      '</div>' +
-              //      '</div><br>';
-
 
 
 
@@ -165,7 +155,7 @@ function quickSearch() {
         statusCode: {
             404: function () {
 
-                $("#results").html('<li style="display:inline-block;"><a href="#"> Nothing found...</a></li>');
+                $("#results").html('<li style="display:inline-block;"><a href="#">Yazı bulunamadı.</a></li>');
 
             }
         }

@@ -125,6 +125,26 @@ namespace BussinessLayer.Concrete.Managers
         }
 
 
+      public  string GetSubscriptionBody(string link)
+        {
+            BodyBuilder builder = new BodyBuilder();
+
+
+
+            using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/EmailConfirmTr.html")))
+            {
+                builder.HtmlBody = reader.ReadToEnd();
+
+            };
+
+            string withlink = builder.HtmlBody.Replace("{url}", link);
+
+
+            return withlink.Replace("{imagePath}", ImageUpload.ImageToBase64("email.png"));
+
+
+        }
+
         public async Task<AppUser> GetUser(string userName)
         {
             UserManager<AppUser> _userManager = _signInManager.UserManager;
@@ -375,9 +395,8 @@ namespace BussinessLayer.Concrete.Managers
             if (link is null)
                 return false;
 
-            //string content = "<h3> Confirm your subscription </h3>" + Environment.NewLine + "To confirm your subscription, <a href=" + quote + link + quote + "> click this link <a>.";
 
-            string? body = GetBody(link);
+            string? body = GetSubscriptionBody(link);
 
             if (body is null)
                 return false;

@@ -31,7 +31,7 @@
 
                                                 @if (DateTime.Now.Subtract(article.Created).Days <= 1)
                                                 {
-                                                    <li class="basic-btn">  <a href=""> New </a> </li>
+                                                    <li class="basic-btn">  <a href=""> Yeni </a> </li>
                                                 }
 
 
@@ -50,7 +50,7 @@
                                                     </div>
                                                     <div class="publish-date">
                                                         <a href="#"> @article.Created.ToShortDateString() </a>
-                                                        <span> @article.SeenCount read </span>
+                                                        <span> @article.SeenCount kez okundu </span>
                                                     </div>
                                                 </div>
                                             </div>

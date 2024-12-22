@@ -14,18 +14,18 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Contact
         {
 
 
-            RuleFor(x => x.NameSurname).MinimumLength(3).WithMessage("Too short for a name.");
+            RuleFor(x => x.NameSurname).MinimumLength(3).WithMessage("Ad ve soyad için çok kısa...");
 
-            RuleFor(x => x.NameSurname).MaximumLength(35).WithMessage("Too long for a name.");
-
-
-            RuleFor(x => x.Subject).MinimumLength(2).WithMessage("Too short for a subject.");
-            RuleFor(x => x.Subject).MaximumLength(30).WithMessage("Too long for a subject.");
+            RuleFor(x => x.NameSurname).MaximumLength(35).WithMessage("Ad ve soyad  için çok uzun...");
 
 
-            RuleFor(x => x.Content).MinimumLength(5).WithMessage("Too short for a message");
+            RuleFor(x => x.Subject).MinimumLength(2).WithMessage("Konu için çok kısa...");
+            RuleFor(x => x.Subject).MaximumLength(30).WithMessage("Konu için çok uzun...");
 
-            RuleFor(x => x.Content).MaximumLength(2000).WithMessage("Too short for a message.");
+
+            RuleFor(x => x.Content).MinimumLength(5).WithMessage("Mesaj için çok kısa...");
+
+            RuleFor(x => x.Content).MaximumLength(2000).WithMessage("Mesaj için çok uzun...");
 
 
 

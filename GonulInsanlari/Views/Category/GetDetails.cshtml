@@ -10,8 +10,8 @@
             <div class="col-lg-12">
                 <div class="inner-page-breadcrumb-wrapper">
                     <ul>
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/category/all">Categories</a></li>
+                        <li><a href="/">Anasayfa</a></li>
+                        <li><a href="/category/all">Kategoriler</a></li>
                         <li>@Model.Name</li>
                     </ul>
                 </div>
@@ -19,7 +19,7 @@
             <div class="col-lg-12">
                 <div class="page-title-area">
                 
-                    <h1>@Model.Name <span>@Model.Articles.Count Articles</span></h1>
+                    <h1>@Model.Name <span>@Model.Articles.Count yazı</span></h1>
                     <p>@GetString.GetRawString(@Model.Description)</p>
                  
                     <div class="page-content">
@@ -75,11 +75,11 @@
                                                 </div>
                                                 <div class="author-content">
                                                     <div class="author-name">
-                                                        <a href="editor-profile.html"> Author Name </a>
+                                                        <a href="#"> Admin </a>
                                                     </div>
                                                     <div class="publish-date">
                                                         <a href="#"> @article.Created.ToShortDateString() </a>
-                                                        <span> @article.SeenCount Read </span>
+                                                        <span> @article.SeenCount kez okundu </span>
                                                     </div>
                                                 </div>
                                             </div>

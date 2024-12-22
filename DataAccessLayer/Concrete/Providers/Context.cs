@@ -63,6 +63,8 @@ namespace DataAccessLayer.Concrete.Providers
         public DbSet<UserNotification> UserNotifications { get; set; } = null!;
 
         public DbSet<Visitor> Visitors { get; set; } = null!;
+
+        public DbSet<Privacy> Privacies { get; set; } = null!;
     }
 
 

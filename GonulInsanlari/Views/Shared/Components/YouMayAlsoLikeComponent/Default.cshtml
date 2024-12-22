@@ -1,7 +1,7 @@
 ﻿@model List<ArticleListUIViewModel>
 
 <div class="blog-post-area pt-90">
-    <h6>You May Also Like</h6>
+    <h6>Bunları da beğenebilirsiniz</h6>
     <span class="line-break3"></span>
     <span class="line-break"></span>
     <div class="row gy-5">
@@ -22,7 +22,7 @@
 
                                 @if (DateTime.Now.Subtract(article.Created).Days <= 1)
                                 {
-                                    <li class="basic-btn">  <a href=""> New </a> </li>
+                                    <li class="basic-btn">  <a href=""> Yeni </a> </li>
                                 }                            
 
                             </ul>
@@ -40,7 +40,7 @@
                                 </div>
                                 <div class="publish-date">
                                     <a href="">@article.Created.ToShortDateString()</a>
-                                    <span>@article.SeenCount read</span>
+                                    <span>@article.SeenCount kez okundu</span>
                                 </div>
                             </div>
                         </div>

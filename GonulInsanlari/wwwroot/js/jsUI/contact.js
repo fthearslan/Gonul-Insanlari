@@ -22,7 +22,7 @@ function submit() {
         url: '/contact-us/submit',
         data: { model: input },
         success: function () {
-            $("#validations").append('<li class="text-success">Your message has been successfully sent.</li>');
+            $("#validations").append('<li class="text-success">Mesaj?n?z ba?ar?yla gönderildi.</li>');
 
         },
         statusCode: {

@@ -13,12 +13,12 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Newsletter
 
         public ConfirmSubscriptionValidator()
         {
-            RuleFor(x => x.Name).MinimumLength(2).WithMessage("Too short for name...");
-            RuleFor(x => x.Name).MaximumLength(10).WithMessage("Too long for name...");
+            RuleFor(x => x.Name).MinimumLength(2).WithMessage("Ad için çok kısa...");
+            RuleFor(x => x.Name).MaximumLength(10).WithMessage("Ad için çok uzun...");
 
 
-            RuleFor(x => x.Surname).MinimumLength(2).WithMessage("Too short for name...");
-            RuleFor(x => x.Surname).MaximumLength(10).WithMessage("Too short for name...");
+            RuleFor(x => x.Surname).MinimumLength(2).WithMessage("Soyad için çok kısa...");
+            RuleFor(x => x.Surname).MaximumLength(10).WithMessage("Soyad için çok uzun...");
 
 
         }

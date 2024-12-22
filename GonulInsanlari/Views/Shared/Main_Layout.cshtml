@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/css/boxicons.min.css">
     <link rel="stylesheet" href="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/css/style.css">
-    <title>Rightous Path </title>
+    <title>Gönül İnsanları </title>
     <link rel="icon" href="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/Documentaion/assets/image/sm-logo.svg" type="image/gif" sizes="20x20">
 
 </head>
@@ -36,7 +36,6 @@
     <div class="sidebar-menu">
         <div class="mobile-logo-area d-flex justify-content-between align-items-center">
             <div class="header-logo">
-          
             </div>
             <div class="menu-button menu-close-btn">
                 <i class="bi bi-x"></i>
@@ -45,15 +44,15 @@
 
         <ul class="menu-list">
 
-            <li><a href="/"> Home </a></li>
+            <li><a href="/"> Anasayfa </a></li>
 
-            <li><a href="/article/all">Articles</a></li>
+            <li><a href="/article/all">Yazılar </a></li>
 
-            <li><a href="/category/all">Categories</a></li>
+            <li><a href="/category/all">Kategoriler</a></li>
 
-            <li><a href="/about-us">About Us</a></li>
+            <li><a href="/about-us">Hakkımızda</a></li>
 
-            <li><a href="/contact-us">Contact Us</a></li>
+            <li><a href="/contact-us">Bize Ulaşın</a></li>
 
         </ul>
 
@@ -65,7 +64,7 @@
     @{
 
 
-        DashboardAnnouncementViewModel? dashboardAnnouncement = _announcementManager.GetWhere(x => x.IsForAdmins == false && x.Status == true && x.IsAttached==true).Select(x => new DashboardAnnouncementViewModel()
+        DashboardAnnouncementViewModel? dashboardAnnouncement = _announcementManager.GetWhere(x => x.IsForAdmins == false && x.Status == true && x.IsAttached == true).Select(x => new DashboardAnnouncementViewModel()
             {
                 ID = x.Id,
                 Title = x.Title
@@ -81,14 +80,14 @@
                     <div class="col-lg-12 d-flex justify-content-center">
                         <div class="topbar-wrapper">
                             <p style="color:white">
-                              
+
 
                                 <svg style="margin-right:3px;" version="1.1"
                                      id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="bullhorn.svg" inkscape:version="0.48.4 r9939"
                                      xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="16px" height="16px"
                                      viewBox="0 0 1200 1200" enable-background="new 0 0 1200 1200" xml:space="preserve">
                                 <sodipodi:namedview inkscape:cy="739.20589" inkscape:cx="163.60254" inkscape:zoom="0.26339286" showgrid="false" id="namedview3041" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" bordercolor="#666666" pagecolor="#ffffff" inkscape:current-layer="svg2" inkscape:window-maximized="1" inkscape:window-y="24" inkscape:window-height="876" inkscape:window-width="1535" inkscape:pageshadow="2" inkscape:pageopacity="0" inkscape:window-x="65">
-            </sodipodi:namedview>
+                </sodipodi:namedview>
                                 <path id="path3007" inkscape:connector-curvature="0" sodipodi:nodetypes="cccccccccccccccccccccc" d="M1030.014,96.91
 	C874.836,250.578,646.766,344.637,427.042,357.866H100.749C49.358,358.572,2.898,402.262,0,459.889V607.02
 	c0.701,51.369,43.068,99.121,100.699,102.021h130.821c-34.962,118.567,2.593,238.596,43.15,356.415
@@ -96,12 +95,12 @@
 	c196.285,22.271,390.749,122.01,539.594,255.716c51.169-0.701,97.705-42.745,100.699-100.062V628.618
 	c102.449-36.383,81.738-164.259,0-190.28V197.659c-0.683-51.365-43.073-97.799-100.699-100.7V96.91z M1032.609,227.045v613.453
 	C888.778,728.424,711.072,653.216,527.741,619.46V448.134C707.635,421.062,883.576,338.057,1032.609,227.045z" />
-        </svg>
+            </svg>
 
 
 
                                 @dashboardAnnouncement.Title
-                                <a style="color:black" href="/announcement/@GetString.GetSlugUrl(dashboardAnnouncement.Title)/@dashboardAnnouncement.ID">Click Now!</a>
+                                <a style="color:black" href="/announcement/@GetString.GetSlugUrl(dashboardAnnouncement.Title)/@dashboardAnnouncement.ID"> Hemen Tıkla!</a>
                             </p>
                         </div>
                         <div style="cursor:pointer" onclick="$('#announcementBar').hide();" class="close-btn">
@@ -139,7 +138,6 @@
                             </svg>
                         </div>
                         <div class="header-logo">
-                          
                         </div>
 
 
@@ -149,16 +147,16 @@
 
                             <ul class="menu-list">
 
-                                <li><a href="/"> Home </a></li>
+                                <li><a href="/"> Anasayfa </a></li>
 
 
-                                <li><a href="/article/all"> Articles </a></li>
+                                <li><a href="/article/all"> Yazılar </a></li>
 
-                                <li><a href="/category/all"> Categories </a></li>
+                                <li><a href="/category/all"> Kategoriler </a></li>
 
-                                <li><a href="/about-us"> About Us </a></li>
+                                <li><a href="/about-us"> Hakkımızda </a></li>
 
-                                <li><a href="/contact-us">Contact Us</a></li>
+                                <li><a href="/contact-us">Bize Ulaşın</a></li>
 
 
                             </ul>
@@ -171,7 +169,7 @@
                                         <path d="M1 10L10 1M10 1C8 1.375 3.625 2.125 1 1M10 1C9.625 2.875 8.875 7 10 10"
                                               stroke-width="1.5" stroke-linecap="round" />
                                     </svg>
-                                    Login
+                                    <svg fill="#000000" width="16px" height="16px" viewBox="0 0 24 24" id="user" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M21,20a2,2,0,0,1-2,2H5a2,2,0,0,1-2-2,6,6,0,0,1,6-6h6A6,6,0,0,1,21,20Zm-9-8A5,5,0,1,0,7,7,5,5,0,0,0,12,12Z" style="fill: rgb(0, 0, 0);"></path></svg>
                                 </a>
                             </div>
                         </div>
@@ -201,7 +199,7 @@
 
                                         <div class="search-group">
                                             <div class="form-inner2">
-                                                <input type="text" id="searchInput" placeholder="Search article">
+                                                <input type="text" id="searchInput" placeholder="Yazı ara...">
                                                 <button onclick="quickSearch()" type="button">
                                                     <svg width="16" height="16" viewBox="0 0 16 16"
                                                          xmlns="http://www.w3.org/2000/svg">
@@ -212,10 +210,9 @@
                                             </div>
                                         </div>
 
-                                        <div  class="quick-search">
-                                      
-                                              <ul style="display:inline-block;list-style-type:disc" id="results">
-                                               
+                                        <div class="quick-search">
+
+                                            <ul style="display:inline-block;list-style-type:disc" id="results">
                                             </ul>
                                         </div>
 
@@ -229,12 +226,9 @@
 
                         </ul>
                         <a href="/login/admin" class="header-btn hover-btn three">
-                            <svg width="11" height="11" viewBox="0 0 11 11" fill="none"
-                                 xmlns="http://www.w3.org/2000/svg">
-                                <path d="M1 10L10 1M10 1C8 1.375 3.625 2.125 1 1M10 1C9.625 2.875 8.875 7 10 10"
-                                      stroke-width="1.5" stroke-linecap="round" />
-                            </svg>
-                            Login
+                           
+                            <svg fill="#000000" width="16px" height="16px" viewBox="0 0 24 24" id="user" data-name="Flat Color" xmlns="http://www.w3.org/2000/svg" class="icon flat-color"><path id="primary" d="M21,20a2,2,0,0,1-2,2H5a2,2,0,0,1-2-2,6,6,0,0,1,6-6h6A6,6,0,0,1,21,20Zm-9-8A5,5,0,1,0,7,7,5,5,0,0,0,12,12Z" style="fill: rgb(0, 0, 0);"></path></svg>
+
                         </a>
                     </div>
                 </div>
@@ -258,7 +252,7 @@
     @await Component.InvokeAsync("FooterComponent")
 
     <!-- Footer section ends here -->
-   
+
     <script src="~/js/jsui/common.js"></script>
     <script src="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/js/jquery-3.7.1.min.js"></script>
     <script src="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/js/jquery-ui.js"></script>
@@ -274,7 +268,7 @@
     <script src="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/js/bootstrap.min.js"></script>
     <script src="~/themeforest-PGuHNIZx-zorik-modern-lightweight-blog-html-template/main-files/zorik/assets/js/custom.js"></script>
 
-    @RenderSection("scripts",false)
+    @RenderSection("scripts", false)
 
 </body>
 

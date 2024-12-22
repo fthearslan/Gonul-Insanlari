@@ -1,4 +1,4 @@
-
+﻿
 
 
 function getComments(articleId,modelCount) {
@@ -125,7 +125,7 @@ function submit(articleId) {
         success: function (result) {
 
 
-            $("#validationErrors").html('<p class="text-success">Your comment has been successfully submitted.</p>');
+            $("#validationErrors").html('<p class="text-success">Yorumunuz başarıyla yapıldı.</p>');
 
         },
         statusCode: {
@@ -144,7 +144,7 @@ function submit(articleId) {
 
         error: function () {
 
-            $("#validationErrors").append('<li class="text-danger">Something went wrong while proccessing your comment, please try again a few minute later.</li>');
+            $("#validationErrors").append('<li class="text-danger">Yorumunuz işlenirken bir hata meydana geldi, lütfen bir kaç dakika sonra tekrar deneyiniz.</li>');
 
         }
 

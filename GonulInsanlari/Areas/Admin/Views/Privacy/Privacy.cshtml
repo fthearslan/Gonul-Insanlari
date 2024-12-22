@@ -1,6 +1,6 @@
-﻿@model AboutDetailsViewModel
+﻿@model PrivacyViewModel
 @{
-    ViewData["Title"] = "About";
+    ViewData["Title"] = "Privacy";
     Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
 }
 
@@ -9,19 +9,19 @@
 
 
 
-<div class="modal inmodal fade" id="editAbout" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal inmodal fade" id="editPrivacy" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title"><i class="fa fa-file-text" style="margin-right:3px;"></i> About Details</h4>
+                <h4 class="modal-title"><i class="fa fa-file-text" style="margin-right:3px;"></i> Privacy Statement</h4>
             </div>
             <div id="inputLocater" class="modal-body">
 
                 <div class="row">
                     <div class="col-lg-12">
 
-                        <input type="hidden" id="Id" value="@Model?.Id" />
+                        <input type="hidden"  id="Id" value="@Model?.Id" />
 
                         <div class="form-group">
 
@@ -34,7 +34,7 @@
                             <label class="col-form-label">Details</label>
 
                             <div>
-                                <textarea style="height:200px;" id="details" type="text" name="Details" class="summernote">
+                                <textarea style="height:200px;" id="content" type="text" name="Content" class="summernote">
 
                                     </textarea>
                             </div>
@@ -56,7 +56,7 @@
 
 
                 <div id="" class="modal-footer">
-                    <button type="button" id="btnEdit" onclick="editAbout();" class="btn btn-primary"> Save </button>
+                    <button type="button" id="btnEdit" onclick="editPrivacy();" class="btn btn-primary"> Save </button>
 
                 </div>
             </div>
@@ -75,23 +75,21 @@
                     <div class="ibox-content" style="overflow-x:hidden">
                         <div style="margin-bottom:25px;" class="text-center article-title">
 
-
                             <h1 style="margin-bottom:40px;">
                                 @Model.Title
                             </h1>
 
                             <div>
                                 <p style="margin-top:50px;">
-                                    @Html.Raw(@Model.Details)
+                                    @Html.Raw(@Model.Content)
 
                                 </p>
 
 
-                                @if (User.HasClaim("Permission", "About.Update"))
-                                {
-                                    <a style="margin-right:0;margin-top:15px;" data-toggle="modal" data-target="#editAbout" onclick="clearRoleInput();" class="btn btn-primary float-right" href="#"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+                               
+                                    <a style="margin-right:0;margin-top:15px;" data-toggle="modal" data-target="#editPrivacy" onclick="getPrivacy('@Model.Id');" class="btn btn-primary float-right" href="#"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
 
-                                }
+                                
 
 
 
@@ -100,7 +98,7 @@
                         </div>
 
 
-                       
+
 
 
 
@@ -118,19 +116,19 @@ else
 {
     <div class="middle-box text-center animated fadeInDown">
         <h1>Sorry!</h1>
-        <h3 class="font-bold">No About Details Found</h3>
+        <h3 class="font-bold">No Privacy Statement Found</h3>
 
         <div class="error-desc">
-            There is no About Details found. You can add it by clicking the button below.
+            There is no Privacy Statement found. You can add it by clicking the button below.
         </div>
 
         <div>
 
-            <a href="#" data-toggle="modal" data-target="#editAbout" onclick="clearRoleInput();" class="btn btn-primary"> <i class="fa fa-plus" style="margin-right:3px;"></i>Add </a>
+            <a href="#" data-toggle="modal" data-target="#editPrivacy" onclick="getPrivacy();" class="btn btn-primary"> <i class="fa fa-plus" style="margin-right:3px;"></i>Add </a>
 
 
 
-           
+
 
 
 
@@ -145,7 +143,7 @@ else
 
     <script src="~/lib/jquery.toast.min.js"></script>
 
-    <script src="~/js/about.js"></script>
+    <script src="~/js/privacy.js"></script>
     <script src="~/inspinia-gh-pages/js/plugins/summernote/summernote-bs4.js"></script>
 
 
@@ -169,3 +167,4 @@ else
     </script>
 
 }
+

@@ -41,6 +41,8 @@ namespace BussinessLayer.Abstract.Services
         /// <returns></returns>
 
         protected string GetBody(string link);
+
+        protected string GetSubscriptionBody(string link);
         protected Task<AppUser> GetUser(string userName);
         protected Task<string> GetCallBackLink(AppUser user, SendConfirmEmailViewModel model);
 
