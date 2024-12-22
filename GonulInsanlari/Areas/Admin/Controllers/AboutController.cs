@@ -81,7 +81,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             About? about = await _aboutManager.GetByIdAsync(id);
 
             if (about is null)
-                return NotFound();
+                return Json(null);
 
 
             return Json(new

@@ -30,8 +30,8 @@
             @await Component.InvokeAsync("AdminTopNavBar")
 
             <div class="wrapper wrapper-content">
-               
-           
+
+
                 @RenderBody()
 
                 <div id="ss_menu">
@@ -72,12 +72,15 @@
                         <a href=@taskLink></a>
                     </div>
 
-                    <div class="myBox">
-                        <i class="fa fa-commenting"></i>
-                        <a href="/Admin/Message/GetList"></a>
-                    </div>
+                    @if (User.HasClaim("Permission", "Contact.Create"))
+                    {
 
+                        <div class="myBox">
+                            <i class="fa fa-paper-plane"></i>
+                            <a href="/mail/compose"></a>
+                        </div>
 
+                    }
 
                     @if (User.HasClaim("Permission", "Announcement.Create"))
                     {
@@ -101,7 +104,7 @@
 
                 </div>
             </div>
-          
+
 
 
             @await Component.InvokeAsync("AnnounceBar")
@@ -133,7 +136,7 @@
     <script src="~/lib/jquery.toast.min.js"></script>
     <script src="~/lib/microsoft/signalr/dist/browser/signalr.js"></script>
 
-    @RenderSection("Script",required:false)
+    @RenderSection("Script", required: false)
 </body>
 
 </html>

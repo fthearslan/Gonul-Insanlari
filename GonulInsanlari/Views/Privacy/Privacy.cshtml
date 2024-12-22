@@ -1,4 +1,4 @@
-﻿
+﻿@model PrivacyViewModel
 @{
     ViewData["Title"] = "Privacy";
     Layout = "~/Views/Shared/Main_Layout.cshtml";
@@ -6,26 +6,71 @@
 
 
 
-<div class="blog-post-10 pt-20 mb-120">
+
+<div class="blog-post-10 pt-20">
     <div class="container">
+
         <div class="inner-page-breadcrumb-wrapper">
             <ul>
                 <li><a href="/">Anasayfa</a></li>
-                <li>Gizlilik Sözleşmesi</li>
+                <li>Gizlilik Politikası</li>
             </ul>
         </div>
-        <span class="line-break2"></span>
-        <span class="line-break2"></span>
-        <span class="line-break2"></span>
-        <div class="row g-lg-4 gy-5">
-            <div class="col-lg-8">
-               
 
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="banner-area-section">
+                    <span class="line-break2"></span>
+
+                    <span class="line-break"></span>
+                    <span class="line-break3"></span>
+                    <div class="banner-content">
+                        <h1>  @Model.Title</h1>
+                        <span class="line-break"></span>
+                    </div>
+                    <span class="line-break2"></span>
+                    <span class="line-break3"></span>
                 </div>
             </div>
-            <div class="col-lg-4">
-                @await Component.InvokeAsync("SideBarComponent")
+        </div>
+        <div class="row justify-content-lg-center g-lg-4 gy-5">
+            <div class="col-lg-8">
 
+                <div class="update-date mb-30">
+                    <h6> Last Updated</h6>
+                    <p>@Model.LastUpdated.ToString("dd MMMM yyyy")</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="blog-content-area">
+                            <span class="line-break3"></span>
+
+                            @Html.Raw(Model.Content)
+
+
+                        </div>
+                    </div>
+                    <span class="line-break2"></span>
+
+                </div>
+                <span class="line-break3"></span>
+                <span class="line-break2"></span>
+                <span class="line-break2"></span>
+                <span class="line-break3"></span>
+                <span class="line-break"></span>
+                <div class="blog-tag">
+                </div>
+                <span class="line-break2"></span>
+                <span class="line-break3"></span>
             </div>
         </div>
     </div>
+</div>
+
+
+
+
+
+
+

@@ -43,7 +43,7 @@ namespace GonulInsanlari.Controllers
             await _newsLetterManager.AddAsync(newsletterSubscriber);
 
             if (await _emailManager.SendSubscriptionConfirmationAsync(new SendConfirmEmailViewModel(model.MailAddress, "confirm-email-on-subscribe",newsletterSubscriber.SecurityStamp ,HttpContext)
-            { Subject = "Confirm Your Subscription" }))
+            { Subject = "Mail adresiniz onaylayın" }))
                 return StatusCode(200);
 
             return NotFound();

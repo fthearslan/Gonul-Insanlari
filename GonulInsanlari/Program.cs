@@ -72,7 +72,8 @@ builder.Services.AddCors(options =>
 });
 
 
-builder.Services.Configure<CookiePolicyOptions>(options => {
+builder.Services.Configure<CookiePolicyOptions>(options =>
+{
     options.CheckConsentNeeded = context => true;
     options.MinimumSameSitePolicy = SameSiteMode.Strict;
     options.ConsentCookie.Expiration = TimeSpan.FromHours(1);

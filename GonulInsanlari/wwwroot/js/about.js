@@ -66,7 +66,7 @@ function getAbout(id) {
 
     $.ajax({
         type: 'post',
-        url: '/privacy/getAbout',
+        url: '/about/getAbout',
         data: { id: id },
         success: function (about) {
             if (about != null) {

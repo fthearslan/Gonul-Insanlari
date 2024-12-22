@@ -20,7 +20,7 @@ namespace ViewModelLayer.Models.Newsletter
         public string ImagePath     { get; set; }
         public DateTime Created { get; set; }
 
-        public string Subject { get; set; } = "New Article";
+        public string Subject { get; set; } = "Yeni yazımızı kaçırmayın!!!";
 
         public HttpContext Context { get; set; }
 

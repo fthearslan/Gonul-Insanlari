@@ -48,6 +48,10 @@
                                 <a href="@notification.Url/@notification.Value"></a>
 
                             }
+                            @if (notification.Type == "Comment")
+                            {
+                                <a href="/comments/list"></a>
+                            }
 
                             <div class="stream-badge">
                                 <i class="@notification.Symbol"></i>

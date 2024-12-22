@@ -89,7 +89,7 @@
 
                                 @if (User.HasClaim("Permission", "About.Update"))
                                 {
-                                    <a style="margin-right:0;margin-top:15px;" data-toggle="modal" data-target="#editAbout" onclick="clearRoleInput();" class="btn btn-primary float-right" href="#"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
+                                    <a style="margin-right:0;margin-top:15px;" data-toggle="modal" data-target="#editAbout" onclick="getAbout('@Model.Id')" class="btn btn-primary float-right" href="#"><i style="margin-right:3px;" class="fa fa-pencil"></i> Edit</a>
 
                                 }
 
@@ -126,7 +126,7 @@ else
 
         <div>
 
-            <a href="#" data-toggle="modal" data-target="#editAbout" onclick="clearRoleInput();" class="btn btn-primary"> <i class="fa fa-plus" style="margin-right:3px;"></i>Add </a>
+            <a href="#" data-toggle="modal" data-target="#editAbout" onclick="getAbout('@Model.Id');" class="btn btn-primary"> <i class="fa fa-plus" style="margin-right:3px;"></i>Add </a>
 
 
 
