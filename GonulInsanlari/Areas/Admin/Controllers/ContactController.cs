@@ -196,7 +196,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         public async Task<IActionResult> SentBox(int pageNumber = 1)
         {
             List<Contact> contacts = await _manager
-             .GetWhere(x => x.ContactStatus == ContactStatus.Sent && x.Id.ToString() == _userManager.GetUserId(HttpContext.User))
+             .GetWhere(x => x.ContactStatus == ContactStatus.Sent && x.SenderId == _userManager.GetUserId(HttpContext.User))
                 .OrderByDescending(x => x.Created)
                 .ToListAsync();
 
@@ -502,6 +502,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 contact.Content = model.Content;
                 contact.ContactStatus = model.Status;
 
+                if (contact.ContactStatus == ContactStatus.Sent)
+                    contact.Created = DateTime.Now;
+
                 paths?.ForEach((path) =>
                 {
                     contact.Attachments
@@ -537,7 +540,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
             }
 
 
-           List<string> emails =  new List<string>();
+            List<string> emails = new List<string>();
 
             contact.Tos?.ForEach((x) =>
             {

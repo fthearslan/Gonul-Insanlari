@@ -19,7 +19,7 @@
                 success: function () {
                     Swal.fire({
                         title: "Disabled!",
-                        text: "The category has been disabled.",
+                        text: "The category has been successfully  disabled.",
                         icon: "success"
 
 
@@ -70,8 +70,8 @@ function firedelete(id,type) {
                 url: "/categories/delete/" + id,
                 success: function () {
                     Swal.fire({
-                        title: "Disabled!",
-                        text: "The category has been disabled.",
+                        title: "Deleted!",
+                        text: "The category has been successfully deleted.",
                         icon: "success"
 
 

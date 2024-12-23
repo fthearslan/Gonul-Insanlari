@@ -167,7 +167,8 @@
 
                         <div style="margin-right:5px;margin-left:auto">
 
-                            <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Sent" title="Send"><i class="fa fa-reply"></i> Reply </button>
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#sendModal" name="Status" value=@ContactStatus.Sent title="Send"><i class="fa fa-reply"></i> Send</button>
+
                             <button type="submit" class="btn btn-white btn-sm" data-toggle="tooltip" data-placement="top" name="Status" value="@ContactStatus.Drafted" title="Move to draft folder"><i class="fa fa-pencil"></i> Draft</button>
 
                         </div>
@@ -175,6 +176,32 @@
                     </div>
 
                 </div>
+
+
+                <div class="modal inmodal fade" id="sendModal" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-md">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                                <h4 class="modal-title"><i class="fa fa-question-circle" aria-hidden="true"></i> Are you sure?</h4>
+                            </div>
+                            <div class="modal-body">
+
+                                <h5> <i class="fa fa-info-circle" aria-hidden="true"></i> You can not revert it, you may want to check it out again.</h5>
+
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button type="submit" class="btn btn-sm btn-primary" data-toggle="tooltip" data-placement="top" name="Status" value=@ContactStatus.Sent title="Send"><i class="fa fa-reply"></i> Send</button>
+                                <button type="button" class="btn btn-white btn-sm " data-toggle="tooltip" data-dismiss="modal" data-placement="top"> Cancel </button>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
 
 

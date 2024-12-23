@@ -215,7 +215,7 @@ namespace BussinessLayer.Concrete.Managers
 
             string? body = GetBody(model.Content);
 
-            if (body is not null)
+            if (model.Content is not null)
             {
 
                 SmtpClient client = ConfigureClient();
@@ -224,7 +224,7 @@ namespace BussinessLayer.Concrete.Managers
                 {
                     MailMessage mail = new(_configuration.Username, email)
                     {
-                        Body = body,
+                        Body = model.Content,
                         Subject = model.Subject,
                         IsBodyHtml = true,
 
