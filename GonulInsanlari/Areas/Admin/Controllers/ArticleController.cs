@@ -98,7 +98,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("add")]
         [HttpPost]
-        [ValidateAntiForgeryToken]
+      
         [HasPermission(PermissionType.Article, Permission.Create)]
         public async Task<IActionResult> AddArticle([FromServices] IEmailService _emailManager, ArticleCreateViewModel model)
         {

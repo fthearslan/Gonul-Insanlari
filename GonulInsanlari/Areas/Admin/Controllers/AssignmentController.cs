@@ -89,7 +89,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [HttpPost]
         [Route("add")]
-        [ValidateAntiForgeryToken]
         [HasPermission(PermissionType.Assignment, Permission.Create)]
 
         public async Task<IActionResult> Add(AssignmentCreateViewModel model)

@@ -48,7 +48,6 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         [Route("add")]
         [HasPermission(PermissionType.Category,Permission.Create)]
         public async Task<IActionResult> AddCategory(CategoryCreateViewModel model)

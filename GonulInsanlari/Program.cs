@@ -120,6 +120,8 @@ builder.Services.ConfigureApplicationCookie(opt => {
 
 });
 
+builder.Services.AddDataProtection();
+
 
 
 var logger = new LoggerConfiguration()
@@ -135,13 +137,13 @@ builder.Logging.AddSerilog(logger);
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (!app.Environment.IsDevelopment())
-{
-    app.UseExceptionHandler();
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
-}
+//// Configure the HTTP request pipeline.
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler();
+//    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+//    app.UseHsts();
+//}
 
 
 
@@ -167,6 +169,7 @@ app.UseAuthorization();
 app.UseMiddleware(typeof(TotalVisitorCounterMiddleware));
 
 
+
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
@@ -176,6 +179,7 @@ app.UseEndpoints(endpoints =>
 
  
 });
+
 
 
 app.MapControllerRoute(
