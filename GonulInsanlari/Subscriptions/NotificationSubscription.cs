@@ -35,6 +35,24 @@ namespace GonulInsanlari.Subscriptions
                 {
                     Notification notification = e.Entity;
 
+                    using var c = new Context();
+
+                    List<AppUser> users = c.Users.
+                     Where(x => x.Status == true)
+                     .ToList();
+
+                    users?.ForEach(user =>
+                    {
+
+                        if (!c.UserNotifications.Any(x => x.UserId == user.Id && x.NotificationId == notification.Id))
+                            user.Notifications
+                            .Add(new(user.Id, notification.Id));
+
+
+                    });
+
+                    c.SaveChanges();
+
                     await _hubContext.Clients.All.SendAsync("Notify", new NotificationHubModel(notification.Title, notification.Content, notification.ResultType));
 
                 }
@@ -44,7 +62,7 @@ namespace GonulInsanlari.Subscriptions
         }
 
 
-        
+
 
 
         ~NotificationSubscription() => _tableDependency.Stop();
