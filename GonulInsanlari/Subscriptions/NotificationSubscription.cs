@@ -35,23 +35,7 @@ namespace GonulInsanlari.Subscriptions
                 {
                     Notification notification = e.Entity;
 
-                    using var c = new Context();
-
-                    List<AppUser> users = c.Users.
-                     Where(x => x.Status == true)
-                     .ToList();
-
-                    users?.ForEach(user =>
-                    {
-                        user.Notifications
-                        .Add(new(user.Id,notification.Id));
-
-                    });
-
-                    c.SaveChanges();
-
-              
-                    await _hubContext.Clients.All.SendAsync("Notify", new  NotificationHubModel(notification.Title,notification.Content,notification.ResultType));
+                    await _hubContext.Clients.All.SendAsync("Notify", new NotificationHubModel(notification.Title, notification.Content, notification.ResultType));
 
                 }
             };
