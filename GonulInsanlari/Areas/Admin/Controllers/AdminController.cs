@@ -403,15 +403,15 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                     catch (Exception ex)
                     {
                         if (ex is DbUpdateException)
-                            StatusCode(400, "Cannot delete this user while it has ongoing processes such as assignment...");
+                            return StatusCode(400, "Cannot delete this user while it has ongoing processes such as assignment...");
 
                         else
-                            StatusCode(400, "Something went wrong...");
+                            return StatusCode(400, "Something went wrong...");
 
 
                     }
 
-                    break;
+                
 
             }
 

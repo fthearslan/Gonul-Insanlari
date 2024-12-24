@@ -19,7 +19,7 @@ namespace DataAccessLayer.Concrete.Providers
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("server=SQL6033.site4now.net;Database=db_ab0eb7_godb;User Id=db_ab0eb7_godb_admin;Password=23592359Aa@", options =>
+            optionsBuilder.UseSqlServer("server=SQL6033.site4now.net;Database=db_ab0eb7_godb;User Id=db_ab0eb7_godb_admin;Password=23592359Aa", options =>
             {
                 options.EnableRetryOnFailure(3, TimeSpan.FromSeconds(10), null);
 

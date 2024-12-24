@@ -72,7 +72,7 @@ function getPrivacy(id) {
 
             if (privacy != null) {
 
-                document.getElementById('Id').value = privacy.Id;
+                document.getElementById('Id').value = privacy.id;
                 document.getElementById('title').value = privacy.title;
                 $('#content').summernote('code', privacy.content);
 
