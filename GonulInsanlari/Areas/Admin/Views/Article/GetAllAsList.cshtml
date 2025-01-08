@@ -42,19 +42,20 @@
                         <tbody>
                             @foreach (var article in Model)
                             {
-                                string color,text,draftcolor,drafttext;
+                                string color,text,draftcolor,drafttext,action;
                                 
                                 if (article.Status == true)
                                 {
                                      color = "label label-success";
                                     text = "Enabled";
+                                    action = "disable";
 
                                 }
                                 else
                                 {
                                     color = "label label-danger";
                                     text = "Disabled";
-
+                                    action = "delete";
                                 }
                                 if (article.IsDraft== true)
                                 {
@@ -77,11 +78,11 @@
                                     <td>@article.Created.ToString("dd-MMM-yyyy")</td>
                                     <td><span class="@color">@text</span></td>
                                     <td><span class="@draftcolor"> @drafttext</span></td>
-                                    <td>@@@article.AppUser.UserName</td>
+                                    <td>@@@article?.AppUser?.UserName</td>
                                     <td class="btn-group">
-                                        <a class="btn-white btn btn-xs" href="/articles/details/@article.Id">View</a>
-                                        <a class="btn-warning btn btn-xs" href="/articles/edit/@article.Id">Edit</a>
-                                        <a class="btn-danger btn btn-xs" onclick="fire(@id)"  href="#"><i class="fa fa-trash"></i></a>
+                                        <a class="btn-white btn btn-xs" href="/articles/details/@article?.Id">View</a>
+                                        <a class="btn-warning btn btn-xs" href="/articles/edit/@article?.Id">Edit</a>
+                                        <a class="btn-danger btn btn-xs" onclick="fire(@id,'@action')"  href="#"><i class="fa fa-trash"></i></a>
                                     </td>
                                 </tr>
                             
@@ -137,7 +138,7 @@
     </script>
 
     <script>
-        function fire(id) {
+        function fire(id,action) {
 
             Swal.fire({
                 title: "Are you sure?",
@@ -146,7 +147,7 @@
                 showCancelButton: true,
                 confirmButtonColor: "#3085d6",
                 cancelButtonColor: "#d33",
-                confirmButtonText: "Yes, delete it!"
+                confirmButtonText: "Yes, " + action +" it!"
             }).then((result) => {
 
                 if (result.isConfirmed) {
@@ -158,7 +159,7 @@
                     });
                     Swal.fire({
                         title: "Deleted!",
-                        text: "Your file has been deleted.",
+                        text: "Your file has been " + action +"d.",
                         icon: "success"
                     }).then(function () {
                         window.location.reload();
