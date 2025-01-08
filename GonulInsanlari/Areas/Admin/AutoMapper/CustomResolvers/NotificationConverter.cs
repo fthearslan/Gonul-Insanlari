@@ -25,11 +25,13 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.CustomResolvers
                 _ => "/notifications/all"
             };
 
+            notification.Created = notification.Created.AddHours(9);
+
             destination.Value = notification.Value;
             destination.Title = notification.Title;
             destination.Content = notification.Content;
             destination.Created = notification.Created;
-            destination.Date=notification.Created.ToString("MM/dd/yyyy HH:mm");
+            destination.Date = notification.Created.ToString("MM/dd/yyyy HH:mm");
             destination.Symbol = notification.Symbol;
             destination.Type = notification.Type;
             destination.Id = notification.Id;

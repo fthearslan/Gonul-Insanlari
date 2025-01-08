@@ -11,7 +11,6 @@ namespace ViewModelLayer.ViewModels.Article
 
         public int? CategoryID { get; set; }
 
-        public DateTime Created { get; set; }
 
         public string Content { get; set; } = null!;
         public string? ImagePath { get; set; }

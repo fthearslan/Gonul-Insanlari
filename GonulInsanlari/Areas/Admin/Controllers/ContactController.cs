@@ -306,6 +306,8 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             contact.IsSeen = true;
 
+            _manager.Update(contact);
+
             var model = _mapper.Map<ContactDetailsViewModel>(contact);
 
             return View(model);

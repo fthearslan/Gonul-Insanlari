@@ -29,15 +29,17 @@ namespace GonulInsanlari.Areas.Admin.ViewComponents.NavBar
 
             var notifications = _manager
                 .GetPermittedNotifications(permissions, userId)
-                .Result.OrderByDescending(x=>x.Notification.Created);
+                .Result.OrderByDescending(x => x.Notification.Created);
 
             ViewData["Count"] = notifications
                 .Where(x => x.IsSeen == false)
                 .Count();
 
+
+
             List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
 
-            return View(model.Take(3).ToList());
+               return View(model.Take(3).ToList());
 
         }
     }

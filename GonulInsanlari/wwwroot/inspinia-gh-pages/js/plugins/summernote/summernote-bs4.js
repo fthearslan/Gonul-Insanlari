@@ -6385,7 +6385,7 @@ var VideoDialog = /** @class */ (function () {
             $video = $$1('<iframe>')
                 .attr('frameborder', 0)
                 .attr('src', '//www.youtube.com/embed/' + youtubeId)
-                .attr('width', '640').attr('height', '360');
+                .attr('width', '100%').attr('height', '360');
         }
         else if (igMatch && igMatch[0].length) {
             $video = $$1('<iframe>')

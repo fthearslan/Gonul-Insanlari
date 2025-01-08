@@ -32,9 +32,13 @@ namespace GonulInsanlari.ViewComponents
                 .Take(5)
             .ToList();
 
+            ViewData["Count"] = _commentManager.GetWhere(x => x.ArticleID == articleId && x.Status == true)
+                .Include(x=>x.Replies)
+                .Count();
+
             List<CommentByArticleUIViewModel> model = _mapper.Map<List<CommentByArticleUIViewModel>>(comments);
 
-          
+
 
             @ViewData["articleId"] = articleId;
 

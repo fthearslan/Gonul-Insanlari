@@ -98,7 +98,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
         [Route("add")]
         [HttpPost]
-      
+
         [HasPermission(PermissionType.Article, Permission.Create)]
         public async Task<IActionResult> AddArticle([FromServices] IEmailService _emailManager, ArticleCreateViewModel model)
         {
@@ -204,6 +204,11 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                                                    Text = x.Name
                                                }).ToList();
 
+            TempData["SeenCount"] = article.SeenCount;
+            TempData["SeenCount"] = article.SeenCount;
+
+
+
             ViewData["Categories"] = categories;
             _memoryCache.Set("Categories", categories);
 
@@ -222,6 +227,10 @@ namespace GonulInsanlari.Areas.Admin.Controllers
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
 
+            Article? articleToEdit = _articleManager.GetByIdInclude(model.Id);
+            if (articleToEdit is null)
+                return NotFound();
+
             ViewData["Categories"] = _memoryCache.Get("Categories");
 
             if (ModelState.IsValid)
@@ -232,10 +241,9 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 model.GetVideoUrl(model.VideoPath);
 
                 Article article = _mapper.Map<Article>(model);
-
                 article.EditedBy = user?.UserName;
-
-
+                article.SeenCount = articleToEdit.SeenCount;
+                article.Created = articleToEdit.Created;
 
                 _articleManager.Update(article);
 
@@ -268,17 +276,17 @@ namespace GonulInsanlari.Areas.Admin.Controllers
                 _articleManager.Delete(article);
 
 
-                if (article.Status == true)
-                {
-                    article.Status = false;
-                    _articleManager.Update(article);
+            if (article.Status == true)
+            {
+                article.Status = false;
+                _articleManager.Update(article);
 
-                }
-                else
-                {
-                    _articleManager.Delete(article);
+            }
+            else
+            {
+                _articleManager.Delete(article);
 
-                }
+            }
 
             return StatusCode(200);
 

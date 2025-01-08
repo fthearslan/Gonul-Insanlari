@@ -66,7 +66,6 @@ namespace DataAccessLayer.Concrete.EntityFramework
             return await c.UserNotifications
                 .Where(x => x.UserId == Convert.ToInt32(userId) && x.Notification.Title.Contains(searchInput) | x.Notification.Content.Contains(searchInput) | x.Notification.Type.Contains(searchInput))
                 .OrderByDescending(x => x.Notification.Created)
-                .OrderByDescending(x => x.IsSeen == false)
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
 

@@ -90,8 +90,8 @@ namespace BussinessLayer.Concrete.Managers
 
             string? withImage = withContent?.Replace("{imagePath}", ImageUpload.ImageToBase64(model.ImagePath));
 
-            string url =   string.Concat("https://",model.Context.Request.Host.ToString(),"/article/", GetString.GetSlugUrl(model.Title),"/",model.Id.ToString());
-          
+            string url = string.Concat("https://", model.Context.Request.Host.ToString(), "/article/", GetString.GetSlugUrl(model.Title), "/", model.Id.ToString());
+
 
 
             string? withUrl = withImage?.Replace("{Url}", url);
@@ -107,7 +107,7 @@ namespace BussinessLayer.Concrete.Managers
 
             BodyBuilder builder = new BodyBuilder();
 
-            
+
 
             using (StreamReader reader = System.IO.File.OpenText(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/inspinia-gh-pages/email_templates/EmailConfirm.html")))
             {
@@ -115,17 +115,17 @@ namespace BussinessLayer.Concrete.Managers
 
             };
 
-          string withlink =  builder.HtmlBody.Replace("{url}", link);
+            string withlink = builder.HtmlBody.Replace("{url}", link);
 
 
-           return withlink.Replace("{imagePath}", ImageUpload.ImageToBase64("email.png"));
+            return withlink.Replace("{imagePath}", ImageUpload.ImageToBase64("email.png"));
 
 
 
         }
 
 
-      public  string GetSubscriptionBody(string link)
+        public string GetSubscriptionBody(string link)
         {
             BodyBuilder builder = new BodyBuilder();
 
@@ -179,7 +179,7 @@ namespace BussinessLayer.Concrete.Managers
         public string GetCallBackLink(SendConfirmEmailViewModel model)
         {
 
-            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new { email = model.Username,stamp=model.SecurityStamp }, model.HttpContext.Request.Scheme);
+            return _linkGenerator.GetUriByRouteValues(model.HttpContext, model.RouteName, new { email = model.Username, stamp = model.SecurityStamp }, model.HttpContext.Request.Scheme);
 
 
 
@@ -196,8 +196,8 @@ namespace BussinessLayer.Concrete.Managers
                 {
                     Name = sub.Name,
                     EmailAddress = sub.MailAddress,
-                    SecurityStamp=sub.SecurityStamp
-                    
+                    SecurityStamp = sub.SecurityStamp
+
                 })
                 .AsNoTrackingWithIdentityResolution()
                 .ToListAsync();
@@ -243,7 +243,7 @@ namespace BussinessLayer.Concrete.Managers
                             foreach (string? attachment in paths)
                                 mail.Attachments.Add(new(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Files/", attachment)));
 
-                     
+
                     }
 
                     await client.SendMailAsync(mail);
@@ -275,7 +275,7 @@ namespace BussinessLayer.Concrete.Managers
                     {
                         string body = mailBody.Replace("{Name}", subscriber.Name);
 
-                      string bodyReplaced=   body.Replace("{UnsubscribeUrl}", string.Concat("https://", model.Context.Request.Host.ToString(), "/email/unsubscribe/",subscriber.SecurityStamp));
+                        string bodyReplaced = body.Replace("{UnsubscribeUrl}", string.Concat("https://", model.Context.Request.Host.ToString(), "/email/unsubscribe/", subscriber.SecurityStamp));
 
 
                         client.SendCompleted += (sender, e) =>
@@ -283,7 +283,7 @@ namespace BussinessLayer.Concrete.Managers
                             TOs.Add(new(subscriber.EmailAddress)
                             {
                                 Name = subscriber.Name,
-                                Surname = "Arslan"
+                                Surname = ""
 
                             });
                         };
@@ -307,8 +307,8 @@ namespace BussinessLayer.Concrete.Managers
                         c.Contacts.Add(new(ContactStatus.Newsletter)
                         {
 
-                            Tos = TOs,
-                            Content = model.Description,
+                            Tos = TOs.DistinctBy(x=>x.EmailAddress).ToList(),
+                            Content = model.Description + "...<a href=" + quote + "/articles/details/" + model.Id + quote + ">Read More</a>",
                             Subject = ContactStatus.Newsletter.ToString(),
                             From = "Administration",
                             IsSeen = true,

@@ -23,18 +23,21 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
                 .ForMember(art => art.ImagePath, opt => opt.MapFrom<ImagePathResolver>());
 
             CreateMap<Article, WeeklyNewsletterModel>()
-                   .ForMember(model => model.Description, opt => opt.MapFrom(article =>  GetString.GetRawString(article.Content).Substring(0,150)))
+                   .ForMember(model => model.Description, opt => opt.MapFrom(article => GetString.GetRawString(article.Content).Substring(0, 150)))
                    .ForMember(model => model.Category, opt => opt.MapFrom(article => article.Category.Name))
                    .ForMember(model => model.Subject, opt => opt.Ignore());
-     
-                   
-            
+
+
+
 
 
             #endregion
 
             #region Edit
-            CreateMap<ArticleEditViewModel, Article>();
+            CreateMap<ArticleEditViewModel, Article>()
+                .ForMember(x => x.SeenCount, opt => opt.Ignore())
+                .ForMember(x => x.Created, opt => opt.Ignore());
+            
             CreateMap<Article, ArticleEditViewModel>();
             #endregion
 
@@ -47,7 +50,7 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
 
             #region Details
             CreateMap<Article, ArticleDetailsViewModel>()
-                .ForMember(dest=>dest.CategoryName,opt=>opt.MapFrom(src=>src.Category.Name));
+                .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name));
 
             CreateMap<Article, ArticleByCategoryViewModel>().ForMember(a => a.AppUserName, opt => opt.MapFrom(art => art.AppUser.UserName));
             #endregion
@@ -55,9 +58,9 @@ namespace GonulInsanlari.Areas.Admin.AutoMapper.Profiles
             #region All
 
             CreateMap<Article, ArticleAllViewModel>()
-                .ForMember(dest=>dest.CommentCount,opt=>opt.MapFrom(src=>src.Comments.Count))
-                .ForMember(dest=>dest.Category,opt=>opt.MapFrom(src=>src.Category.Name));
-            
+                .ForMember(dest => dest.CommentCount, opt => opt.MapFrom(src => src.Comments.Count))
+                .ForMember(dest => dest.Category, opt => opt.MapFrom(src => src.Category.Name));
+
             #endregion
 
         }

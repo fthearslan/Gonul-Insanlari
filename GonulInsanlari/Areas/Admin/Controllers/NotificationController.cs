@@ -39,6 +39,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
             List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
 
+         
             return View(await model.ToPagedListAsync(pageNumber, 20));
 
         }
@@ -75,8 +76,7 @@ namespace GonulInsanlari.Areas.Admin.Controllers
 
 
             List<NotificationListViewModel> model = _mapper.Map<List<NotificationListViewModel>>(notifications);
-           
-
+       
             return Json(model);
 
         }
