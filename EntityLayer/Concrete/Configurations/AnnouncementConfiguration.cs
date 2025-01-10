@@ -19,6 +19,9 @@ namespace EntityLayer.Concrete.Configurations
                 .WithMany(u => u.Announcements)
                 .HasForeignKey(a => a.UserId);
 
+            builder.Navigation(x => x.User)
+                .AutoInclude();
+
         }
     }
 }

@@ -80,18 +80,19 @@ function refresh(status) {
                         icon = "";
 
                 }
+                let url = "/mail/detail/" + result[i].id;
 
-                var html = '<tr id="' + result[i].id + '" class="' + cls + '" style="cursor:pointer">' +
+                var html = '<tr id="' + result[i].id + '" class="' + cls + '" onclick="Redirect(' + result[i].id + ')"  data-href="/mail/detail/' + result[i].id + '" style="cursor:pointer">' +
                     '<td class="check-mail">' +
                     '<input type="checkbox" class="i-checks" value="' + result[i].id + '">' +
                     ' </td>' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-ontact">' + fromOrTo + '<a href=""></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class="mail-subject">' + result[i].subject + '<a href="mail/detail/' + result[i].id + '"></a></td >' +
-                    '<td onclick="Send(' + result[i].id + ')" class=""> </td>' +
+                    '<td  class="mail-ontact">' + fromOrTo + '<a href=""></a></td >' +
+                    '<td  class="mail-subject">' + result[i].subject + '<a href="mail/detail/' + result[i].id + '"></a></td >' +
+                    '<td  class=""> </td>' +
 
-                    '<td onclick="Send(' + result[i].id + ')" class="" > <i class="' + icon + ' ' + result[i].id + '" > </i></td >' +
+                    '<td  class="" > <i class="' + icon + ' ' + result[i].id + '" > </i></td >' +
 
-                    '<td onclick="Send(' + result[i].id + ')" class="text-right mail-date">' + result[i].createdDate + '</td>' +
+                    '<td  class="text-right mail-date">' + result[i].createdDate + '</td>' +
                     '</tr>';
 
 
@@ -106,43 +107,48 @@ function refresh(status) {
 };
 
 
-function Send(id) {
+//function Send(id) {
 
 
-    Swal.fire({
-        title: "Are you sure?",
-        text: "You won't be able to revert it...",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
+//    Swal.fire({
+//        title: "Are you sure?",
+//        text: "You won't be able to revert it...",
+//        icon: "warning",
+//        showCancelButton: true,
+//        confirmButtonColor: "#3085d6",
+//        cancelButtonColor: "#d33",
+//        confirmButtonText: "Yes, delete it!"
+//    }).then((result) => {
 
-        if (result.isConfirmed) {
+//        if (result.isConfirmed) {
 
-            $.ajax({
-                type: "POST",
-                url: "/mail//" + id,
-                success: function () {
+//            $.ajax({
+//                type: "POST",
+//                url: "/mail//" + id,
+//                success: function () {
 
-                    window.location.replace("/mail/inbox");
-                }
-
-
-            }
-            );
+//                    window.location.replace("/mail/inbox");
+//                }
 
 
-        }
+//            }
+//            );
 
 
-    });
+//        }
+
+
+//    });
 
 
 
-    /*  window.location = "/Admin/Contact/GetDetails/" + id;*/
-    window.location = "/mail/detail/" + id;
+//    /*  window.location = "/Admin/Contact/GetDetails/" + id;*/
+//    window.location = "/mail/detail/" + id;
+//}
+
+function Redirect(id) {
+
+    window.location.replace("/mail/detail/"+id)
 }
 
 function markAsRead() {

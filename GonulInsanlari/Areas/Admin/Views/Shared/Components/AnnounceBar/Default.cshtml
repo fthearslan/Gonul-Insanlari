@@ -28,7 +28,7 @@
                 {
                     <div class="sidebar-title">
                         <h3>Announcements</h3>
-                        <p style="font-weight:600">There are @ViewBag.Count announcements, <a href="#">see all</a>.</p>
+                        <p style="font-weight:600">There are @ViewBag.Count announcements, <a href="/announcements/list">see all</a>.</p>
                     </div>
 
 
@@ -44,7 +44,7 @@
                                         <div class="media-body">
                                             <h4>@announce.Title</h4>
 
-                                            @Html.Raw(announce.Details.Substring(0,250))
+                                            @Html.Raw(announce.Details.Substring(0,100))...
 
                                             <br>
                                             <small class="text-muted"></small>

@@ -1,4 +1,4 @@
-
+﻿
 function submit() {
 
     $("#validationErrors").html("");
@@ -22,7 +22,7 @@ function submit() {
         url: '/contact-us/submit',
         data: { model: input },
         success: function () {
-            $("#validations").append('<li class="text-success">Mesaj?n?z ba?ar?yla g�nderildi.</li>');
+            $("#validations").append('<li class="text-success">Mesajınız başarıyla gönderildi.</li>');
 
         },
         statusCode: {

@@ -13,7 +13,6 @@ namespace BussinessLayer.Concrete.Validations.FluentValidation.Contact
         public SubmitContactValidator()
         {
 
-
             RuleFor(x => x.NameSurname).MinimumLength(3).WithMessage("Ad ve soyad için çok kısa...");
 
             RuleFor(x => x.NameSurname).MaximumLength(35).WithMessage("Ad ve soyad  için çok uzun...");

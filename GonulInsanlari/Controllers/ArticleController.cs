@@ -38,6 +38,7 @@ namespace GonulInsanlari.Controllers
                 {
                     Id = x.Id,
                     CategoryName = x.Category.Name,
+                    CategoryId=x.Category.Id.ToString(),
                     Title = x.Title,
                     Created = x.Created,
                     ImagePath = x.ImagePath,

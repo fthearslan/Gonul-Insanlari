@@ -66,7 +66,13 @@
                                         <td class="btn-group">
                                             <a class="btn-white btn btn-xs" href="/announcements/details/@announcement.Id">View</a>
                                             <a class="btn-white btn btn-xs" href="/announcements/edit/@announcement.Id">Edit</a>
-                                            <a class="btn-white btn btn-xs" onclick="attach(@announcement.Id)" href="#" ><i class="fa fa-attach" style="margin-right:3px;"></i> @isAttached</a>
+                                        
+                                            @if(!announcement.IsForAdmins){
+                                                <a class="btn-white btn btn-xs" onclick="attach(@announcement.Id)" href="#"><i class="fa fa-attach" style="margin-right:3px;"></i> @isAttached</a>
+
+                                            }
+                                            
+                                            
                                             <a class="btn-danger btn btn-xs" onclick="firedelete(@announcement.Id)" Id="btn_delete" value="@announcement.Id"><i class="fa fa-trash"></i></a>
                                         </td>
 

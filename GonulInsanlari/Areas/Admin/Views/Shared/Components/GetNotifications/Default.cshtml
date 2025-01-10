@@ -41,7 +41,7 @@
 
 
             <li onclick="markAsSeen('@notify.Id')" title="See notification">
-                @if (notify.Type == "Subscription")
+                @if (notify.Type == "Subscription" | notify.Type=="Comment")
                 {
                     <a href="@url" class="dropdown-item">
                         <div>
